@@ -1,0 +1,447 @@
+# 41
+attainment | thành tựu, sự đạt được | achievement, accomplishment, realization | failure
+  attain | v | attain | đạt được
+  attainment | n | attain+-ment | thành tựu
+  attainable | adj | attain+-able | có thể đạt được
+  unattainable | adj | un-+attain+-able | không thể đạt được
+combine | kết hợp | merge, join, unite, blend | separate, divide
+  combine | v | combine | kết hợp
+  combination | n | combine+-ation | sự kết hợp
+  combined | adj | combine+-ed | tổng hợp
+continue | tiếp tục | carry on, proceed, go on, persist | stop, cease
+  continue | v | continue | tiếp tục
+  continual | adj | continue+-al | liên tục (lặp lại) | bỏ e
+  continuous | adj | continue+-ous | liên tục (không ngắt) | bỏ e
+  continuation | n | continue+-ation | sự tiếp tục
+  discontinue | v | dis-+continue | ngừng
+description | sự mô tả | account, explanation, portrayal, depiction | -
+  describe | v | describe | mô tả
+  description | n | describe+-tion | sự mô tả | describe → descrip-
+  descriptive | adj | describe+-ive | mang tính mô tả | describe → descript-
+disperse | phân tán, giải tán | scatter, spread, distribute, dissipate | gather, assemble
+  disperse | v | disperse | phân tán
+  dispersal | n | disperse+-al | sự phân tán | bỏ e
+entertainment | sự giải trí | amusement, recreation, enjoyment, fun | boredom
+  entertain | v | entertain | giải trí, tiếp đãi
+  entertainment | n | entertain+-ment | sự giải trí
+  entertaining | adj | entertain+-ing | thú vị, mang tính giải trí
+  entertainer | n | entertain+-er | nghệ sĩ giải trí
+influence | sự ảnh hưởng; (v) gây ảnh hưởng | effect, impact; affect, sway | -
+  influence | v | influence | gây ảnh hưởng
+  influential | adj | influence+-ial | có ảnh hưởng | influence → influent-
+range | phạm vi, dải; (v) dao động | scope, variety, span, extent | -
+release | phát hành; (v) giải phóng | issue, launch, publish, free | withhold, hold back
+representation | sự thể hiện, sự đại diện | portrayal, depiction, image, likeness | -
+  represent | v | represent | đại diện
+  representation | n | represent+-ation | sự thể hiện
+  representative | n | represent+-ative | người đại diện
+separately | riêng rẽ | individually, independently, apart, one by one | together, jointly
+  separate | adj | separate | riêng biệt; (v) tách ra
+  separately | adv | separate+-ly | riêng rẽ
+  separation | n | separate+-ion | sự tách rời
+  inseparable | adj | in-+separate+-able | không thể tách rời
+successive | liên tiếp | consecutive, sequential, following | intermittent
+  succeed | v | succeed | kế tiếp; thành công
+  succession | n | succeed+-ion | sự liên tiếp | succeed → success-
+  successive | adj | succeed+-ive | liên tiếp | ⚠ nghĩa "liên tiếp", không phải "thành công"
+  successor | n | succeed+-or | người kế nhiệm
+
+# 42
+action | hành động; diễn biến (phim, kịch) | act, deed, movement, activity | inaction
+  act | v | act | hành động; diễn
+  action | n | act+-ion | hành động
+  actor | n | act+-or | diễn viên
+  active | adj | act+-ive | năng động
+  inactive | adj | in-+act+-ive | thụ động
+approach | cách tiếp cận; (v) tiếp cận | method, technique, way; come near | -
+  approach | v | approach | tiếp cận
+  approachable | adj | approach+-able | dễ gần
+audience | khán giả | spectators, viewers, crowd, listeners | -
+creative | sáng tạo | inventive, imaginative, innovative, original | unimaginative
+  create | v | create | tạo ra
+  creation | n | create+-ion | sự sáng tạo; tác phẩm
+  creative | adj | create+-ive | sáng tạo
+  creativity | n | create+-ive+-ity | sự sáng tạo
+  creator | n | create+-or | người sáng tạo
+dialogue | lời thoại, cuộc đối thoại | conversation, discussion, exchange, script | monologue
+element | yếu tố, thành phần | component, part, factor, ingredient | -
+  element | n | element | yếu tố
+  elementary | adj | element+-ary | cơ bản
+experience | kinh nghiệm; (v) trải qua | knowledge, skill, practice; undergo | inexperience
+  experience | v | experience | trải qua
+  experienced | adj | experience+-ed | có kinh nghiệm
+  inexperienced | adj | in-+experience+-ed | thiếu kinh nghiệm
+occur | xảy ra | happen, take place, arise, come about | -
+  occur | v | occur | xảy ra
+  occurrence | n | occur+-ence | sự việc xảy ra | gấp đôi r
+perform | biểu diễn; thực hiện | act, present, carry out, execute | -
+  perform | v | perform | biểu diễn
+  performance | n | perform+-ance | buổi biểu diễn; hiệu suất
+  performer | n | perform+-er | người biểu diễn
+rehearse | diễn tập | practice, prepare, run through, drill | -
+  rehearse | v | rehearse | diễn tập
+  rehearsal | n | rehearse+-al | buổi diễn tập | bỏ e
+  rehearsed | adj | rehearse+-ed | đã diễn tập
+review | bài phê bình, đánh giá; (v) xem xét lại | critique, evaluation, assessment; examine | -
+  review | v | re-+view | xem xét lại
+  reviewer | n | re-+view+-er | nhà phê bình
+sell out | bán hết | be sold out, run out, exhaust | -
+
+# 43
+available | sẵn có | accessible, obtainable, at hand, free | unavailable
+  avail | v | avail | có ích
+  available | adj | avail+-able | sẵn có
+  availability | n | avail+-able+-ity | tính sẵn có | able → abil-
+  unavailable | adj | un-+avail+-able | không sẵn có
+broaden | mở rộng | widen, expand, extend, enlarge | narrow, limit
+  broad | adj | broad | rộng
+  broaden | v | broad+-en | mở rộng
+  broadly | adv | broad+-ly | nhìn chung
+category | loại, hạng mục | class, group, type, kind | -
+  categorize | v | category+-ize | phân loại | bỏ y
+  category | n | category | hạng mục
+  categorical | adj | category+-ical | dứt khoát | bỏ y
+disparate | khác biệt, khác hẳn | different, dissimilar, distinct, diverse | similar, alike
+divide | phân chia | separate, split, partition, share | unite, combine
+  divide | v | divide | chia
+  division | n | divide+-sion | sự phân chia; bộ phận | divide → divi-
+favor | ưu ái, ủng hộ; (n) sự ủng hộ | prefer, support, approve; kindness | oppose
+  favor | v | favor | ưu ái
+  favorable | adj | favor+-able | thuận lợi
+  favorite | adj | favor+-ite | yêu thích
+  unfavorable | adj | un-+favor+-able | bất lợi
+instinct | bản năng | intuition, impulse, feeling, sense | reason
+  instinct | n | instinct | bản năng
+  instinctive | adj | instinct+-ive | theo bản năng
+  instinctively | adv | instinct+-ive+-ly | theo bản năng
+prefer | thích hơn | favor, choose, select, opt for | -
+  prefer | v | prefer | thích hơn
+  preference | n | prefer+-ence | sự ưa thích
+  preferable | adj | prefer+-able | đáng ưa hơn
+  preferential | adj | prefer+-ence+-ial | ưu đãi | preference → preferent-
+reason | lý do; khả năng suy luận | cause, motive, grounds, logic | -
+  reason | n | reason | lý do
+  reasonable | adj | reason+-able | hợp lý; giá phải chăng
+  unreasonable | adj | un-+reason+-able | vô lý
+relaxation | sự thư giãn | rest, leisure, recreation, calm | stress, tension
+  relax | v | relax | thư giãn
+  relaxation | n | relax+-ation | sự thư giãn
+  relaxed | adj | relax+-ed | thoải mái
+  relaxing | adj | relax+-ing | dễ chịu, giúp thư giãn
+taste | khẩu vị, gu; (v) nếm | preference, liking, palate, flavor | -
+  taste | v | taste | nếm
+  tasteful | adj | taste+-ful | trang nhã
+  tasteless | adj | taste+-less | nhạt; thiếu thẩm mỹ
+urge | sự thôi thúc; (v) thúc giục | desire, impulse; encourage, push | discourage
+  urge | v | urge | thúc giục
+  urgent | adj | urge+-ent | khẩn cấp | bỏ e
+  urgency | n | urge+-ency | sự khẩn cấp | bỏ e
+
+# 44
+acquire | thu được, mua lại | obtain, get, gain, purchase | lose, sell
+  acquire | v | acquire | thu được
+  acquisition | n | acquire+-ition | sự mua lại | acquire → acquis-
+admire | ngưỡng mộ | respect, appreciate, esteem, look up to | despise
+  admire | v | admire | ngưỡng mộ
+  admiration | n | admire+-ation | sự ngưỡng mộ
+  admirable | adj | admire+-able | đáng ngưỡng mộ
+  admirer | n | admire+-er | người hâm mộ
+collection | bộ sưu tập | assortment, group, set, accumulation | -
+  collect | v | collect | sưu tầm, thu thập
+  collection | n | collect+-ion | bộ sưu tập
+  collector | n | collect+-or | nhà sưu tầm
+  collective | adj | collect+-ive | tập thể
+criticism | sự phê bình, chỉ trích | critique, judgment, disapproval, review | praise
+  critic | n | critic | nhà phê bình
+  criticize | v | critic+-ize | phê bình
+  criticism | n | critic+-ism | sự phê bình
+  critical | adj | critic+-al | phê phán; then chốt
+express | bày tỏ, thể hiện | state, convey, communicate, voice | suppress
+  express | v | express | bày tỏ
+  expression | n | express+-ion | sự biểu lộ
+  expressive | adj | express+-ive | giàu biểu cảm
+fashion | thời trang; cách thức | style, trend, vogue; manner | -
+  fashion | n | fashion | thời trang
+  fashionable | adj | fashion+-able | hợp thời trang
+  unfashionable | adj | un-+fashion+-able | lỗi mốt
+leisure | thời gian rảnh, giải trí | free time, spare time, relaxation | work
+  leisure | n | leisure | thời gian rảnh
+  leisurely | adj | leisure+-ly | thong thả
+respond | phản hồi, đáp lại | reply, answer, react | ignore
+  respond | v | respond | phản hồi
+  response | n | respond+-se | sự phản hồi | respond → respon-
+  responsive | adj | respond+-ive | nhanh nhạy, đáp ứng tốt | respond → respons-
+  unresponsive | adj | un-+respond+-ive | không phản hồi
+schedule | lịch trình; (v) lên lịch | timetable, agenda, program; arrange | -
+  schedule | v | schedule | lên lịch
+  scheduled | adj | schedule+-ed | theo lịch
+  reschedule | v | re-+schedule | dời lịch
+significant | quan trọng, đáng kể | important, considerable, notable, major | insignificant, minor
+  signify | v | signify | biểu thị
+  significance | n | signify+-ance | tầm quan trọng | signify → signific-
+  significant | adj | signify+-ant | đáng kể | signify → signific-
+  significantly | adv | signify+-ant+-ly | đáng kể
+  insignificant | adj | in-+signify+-ant | không đáng kể
+specialize | chuyên về | focus on, concentrate on, major in | generalize
+  special | adj | special | đặc biệt
+  specialize | v | special+-ize | chuyên về
+  specialist | n | special+-ist | chuyên gia
+  specialized | adj | special+-ize+-ed | chuyên biệt
+spectrum | phổ, dải, phạm vi | range, scope, span, variety | -
+
+# 45
+assignment | nhiệm vụ, bài tập được giao | task, job, duty, project | -
+  assign | v | assign | giao (việc)
+  assignment | n | assign+-ment | nhiệm vụ
+  reassign | v | re-+assign | điều chuyển
+choose | lựa chọn | select, pick, opt for, decide on | reject
+  choose | v | choose | chọn
+  choice | n | choice | sự lựa chọn
+  choosy | adj | choose+-y | kén chọn | bỏ e
+constantly | liên tục, luôn luôn | continually, always, all the time, nonstop | occasionally
+  constant | adj | constant | liên tục
+  constancy | n | constant+-cy | sự kiên định | constant → constan-
+  constantly | adv | constant+-ly | liên tục
+constitute | cấu thành, tạo thành | make up, compose, form, represent | -
+  constitute | v | constitute | cấu thành
+  constitution | n | constitute+-ion | hiến pháp; thể trạng
+decision | quyết định | conclusion, resolution, judgment, choice | indecision
+  decide | v | decide | quyết định
+  decision | n | decide+-sion | quyết định | decide → deci-
+  decisive | adj | decide+-ive | quyết đoán | decide → decis-
+  indecisive | adj | in-+decide+-ive | thiếu quyết đoán
+disseminate | phổ biến, lan truyền | spread, distribute, circulate, broadcast | suppress
+  disseminate | v | disseminate | lan truyền
+  dissemination | n | disseminate+-ion | sự phổ biến
+impact | tác động; (v) ảnh hưởng | effect, influence, consequence; affect | -
+in-depth | chuyên sâu, kỹ lưỡng | thorough, detailed, comprehensive, exhaustive | superficial
+investigate | điều tra, nghiên cứu | examine, look into, inquire, explore | -
+  investigate | v | investigate | điều tra
+  investigation | n | investigate+-ion | cuộc điều tra
+  investigative | adj | investigate+-ive | mang tính điều tra
+  investigator | n | investigate+-or | điều tra viên
+link | liên kết; (v) kết nối | connection, relationship, tie; connect | separate
+subscribe | đăng ký (dài hạn) | sign up, register, enroll | unsubscribe, cancel
+  subscribe | v | subscribe | đăng ký
+  subscription | n | subscribe+-tion | sự đăng ký | subscribe → subscrip-
+  subscriber | n | subscribe+-er | người đăng ký
+  unsubscribe | v | un-+subscribe | huỷ đăng ký
+thorough | kỹ lưỡng, toàn diện | complete, comprehensive, detailed, meticulous | superficial, careless
+  thorough | adj | thorough | kỹ lưỡng
+  thoroughly | adv | thorough+-ly | kỹ lưỡng
+  thoroughness | n | thorough+-ness | sự kỹ lưỡng
+
+# 46
+annually | hằng năm | yearly, once a year, per year | -
+  annual | adj | annual | hằng năm
+  annually | adv | annual+-ly | hằng năm
+appointment | cuộc hẹn; sự bổ nhiệm | meeting, engagement, booking; nomination | -
+  appoint | v | appoint | bổ nhiệm; hẹn
+  appointment | n | appoint+-ment | cuộc hẹn
+  disappoint | v | dis-+appoint | làm thất vọng
+assess | đánh giá | evaluate, judge, appraise, estimate | -
+  assess | v | assess | đánh giá
+  assessment | n | assess+-ment | sự đánh giá
+  assessable | adj | assess+-able | có thể đánh giá
+diagnose | chẩn đoán | identify, detect, determine, recognize | -
+  diagnose | v | diagnose | chẩn đoán
+  diagnosis | n | diagnose+-is | sự chẩn đoán | bỏ e
+  diagnostic | adj | diagnose+-tic | thuộc chẩn đoán | diagnose → diagnos-
+  misdiagnose | v | mis-+diagnose | chẩn đoán sai
+effective | hiệu quả; có hiệu lực | successful, efficient, useful; in effect | ineffective
+  effect | n | effect | tác động
+  effective | adj | effect+-ive | hiệu quả
+  effectively | adv | effect+-ive+-ly | hiệu quả
+  ineffective | adj | in-+effect+-ive | không hiệu quả
+  effectiveness | n | effect+-ive+-ness | tính hiệu quả
+instrument | dụng cụ, công cụ | tool, device, implement, apparatus | -
+  instrument | n | instrument | dụng cụ
+  instrumental | adj | instrument+-al | đóng vai trò quan trọng
+manage | xoay xở; quản lý | cope, handle, deal with; run | fail
+  manage | v | manage | quản lý; xoay xở
+  management | n | manage+-ment | sự quản lý
+  manageable | adj | manage+-able | có thể kiểm soát
+  manager | n | manage+-er | quản lý
+prevent | ngăn ngừa | avoid, stop, avert, hinder | allow, cause
+  prevent | v | prevent | ngăn ngừa
+  prevention | n | prevent+-ion | sự phòng ngừa
+  preventive | adj | prevent+-ive | phòng ngừa
+  preventable | adj | prevent+-able | có thể ngăn ngừa
+recommendation | lời khuyên, sự giới thiệu | advice, suggestion, proposal, endorsement | -
+  recommend | v | recommend | đề xuất, khuyên
+  recommendation | n | recommend+-ation | lời khuyên
+  recommendable | adj | recommend+-able | đáng giới thiệu
+record | hồ sơ; (v) ghi lại | file, document, register, log | -
+  record | v | record | ghi lại
+  recorded | adj | record+-ed | được ghi lại
+  recorder | n | record+-er | máy ghi âm
+refer | giới thiệu, chuyển đến; đề cập | send, direct, pass on; mention | -
+  refer | v | refer | chuyển đến; đề cập
+  referral | n | refer+-al | sự giới thiệu (đến bác sĩ khác) | gấp đôi r
+  reference | n | refer+-ence | sự tham khảo
+serious | nghiêm trọng; nghiêm túc | severe, grave, critical; earnest | minor, trivial
+  serious | adj | serious | nghiêm trọng
+  seriously | adv | serious+-ly | nghiêm trọng
+  seriousness | n | serious+-ness | mức độ nghiêm trọng
+
+# 47
+aware | nhận thức được | conscious, informed, mindful, knowledgeable | unaware, ignorant
+  aware | adj | aware | nhận thức được
+  awareness | n | aware+-ness | sự nhận thức
+  unaware | adj | un-+aware | không biết
+catch up | bắt kịp | keep up, reach, draw level | fall behind
+distraction | sự xao nhãng | diversion, interruption, disturbance | concentration, focus
+  distract | v | distract | làm xao nhãng
+  distraction | n | distract+-ion | sự xao nhãng
+  distracted | adj | distract+-ed | mất tập trung
+encouragement | sự khích lệ | support, motivation, inspiration, praise | discouragement
+  courage | n | courage | lòng can đảm
+  encourage | v | en-+courage | khích lệ
+  encouragement | n | en-+courage+-ment | sự khích lệ
+  discourage | v | dis-+courage | làm nản lòng
+evident | rõ ràng, hiển nhiên | obvious, clear, apparent, plain | unclear, hidden
+  evidence | n | evident+-ence | bằng chứng | evident → evid-
+  evident | adj | evident | rõ ràng
+  evidently | adv | evident+-ly | rõ ràng là
+habit | thói quen | routine, practice, custom, tendency | -
+  habit | n | habit | thói quen
+  habitual | adj | habit+-ual | thường xuyên, thành thói quen
+  habitually | adv | habit+-ual+-ly | theo thói quen
+illuminate | chiếu sáng; làm sáng tỏ | light up, brighten; clarify, explain | darken, obscure
+  illuminate | v | illuminate | chiếu sáng
+  illumination | n | illuminate+-ion | sự chiếu sáng
+irritate | gây kích ứng; làm bực mình | inflame, annoy, bother, aggravate | soothe, calm
+  irritate | v | irritate | gây kích ứng
+  irritation | n | irritate+-ion | sự kích ứng
+  irritating | adj | irritate+-ing | khó chịu
+overview | sự tổng quan | summary, outline, survey, synopsis | -
+  view | n | view | cái nhìn
+  overview | n | over-+view | tổng quan
+  review | v | re-+view | xem xét lại
+position | vị trí; tư thế | place, location, posture, post | -
+regularly | thường xuyên, đều đặn | routinely, frequently, consistently | irregularly, rarely
+  regular | adj | regular | đều đặn
+  regularly | adv | regular+-ly | thường xuyên
+  irregular | adj | ir-+regular | không đều
+restore | phục hồi | repair, renew, rebuild, return | damage, destroy
+  restore | v | restore | phục hồi
+  restoration | n | restore+-ation | sự phục hồi
+
+# 48
+allow | cho phép | permit, let, enable, authorize | prohibit, forbid
+  allow | v | allow | cho phép
+  allowance | n | allow+-ance | trợ cấp; khoản cho phép
+  allowable | adj | allow+-able | được phép
+alternative | sự lựa chọn thay thế; (adj) thay thế | option, choice, substitute, other | -
+  alternate | v | alternate | luân phiên
+  alternative | n | alternate+-ive | sự lựa chọn khác | bỏ e
+  alternatively | adv | alternate+-ive+-ly | hoặc là
+aspect | khía cạnh | feature, side, facet, element | -
+concern | mối quan tâm, lo lắng; (v) liên quan | worry, anxiety, issue; involve | -
+  concern | v | concern | liên quan; làm lo lắng
+  concerned | adj | concern+-ed | lo lắng; có liên quan
+  concerning | prep | concern+-ing | liên quan đến
+emphasize | nhấn mạnh | stress, highlight, underline, accentuate | downplay
+  emphasis | n | emphasis | sự nhấn mạnh
+  emphasize | v | emphasis+-ize | nhấn mạnh | emphasis → emphas-
+  emphatic | adj | emphasis+-tic | nhấn mạnh, dứt khoát | emphasis → empha-
+incur | gánh chịu (chi phí, nợ) | sustain, suffer, bear, run up | avoid
+personnel | nhân sự | staff, employees, workforce, human resources | -
+policy | hợp đồng bảo hiểm; chính sách | insurance contract, plan; rule, guideline | -
+portion | phần | part, share, section, segment | whole
+regardless | bất kể | despite, notwithstanding, irrespective | -
+  regard | v | regard | coi như
+  regardless | adv | regard+-less | bất kể
+  regarding | prep | regard+-ing | về việc
+  regardful | adj | regard+-ful | chú ý, quan tâm
+salary | lương (tháng/năm) | pay, wage, income, earnings | -
+suit | phù hợp | fit, match, satisfy, be appropriate | -
+  suit | v | suit | phù hợp
+  suitable | adj | suit+-able | phù hợp
+  suitably | adv | suit+-able+-ly | phù hợp | bỏ e
+  unsuitable | adj | un-+suit+-able | không phù hợp
+
+# 49
+admit | cho nhập viện; thừa nhận | let in, receive, accept; confess | discharge, deny
+  admit | v | admit | cho vào; thừa nhận
+  admittance | n | admit+-ance | sự cho vào | gấp đôi t
+  admission | n | admit+-ion | sự nhập học/nhập viện | admit → admiss-
+authorize | uỷ quyền, cho phép | permit, allow, approve, sanction | forbid
+  authority | n | authority | quyền lực; nhà chức trách
+  authorize | v | authority+-ize | uỷ quyền | authority → author-
+  authorization | n | authority+-ize+-ation | sự uỷ quyền
+  unauthorized | adj | un-+authority+-ize+-ed | trái phép
+designate | chỉ định | appoint, assign, name, nominate | -
+  designate | v | designate | chỉ định
+  designation | n | designate+-ion | sự chỉ định
+  designated | adj | designate+-ed | được chỉ định
+  designator | n | designate+-or | người chỉ định
+escort | hộ tống; (n) người hộ tống | accompany, guide, lead, conduct | abandon
+identify | xác định, nhận dạng | recognize, distinguish, determine, pinpoint | -
+  identify | v | identify | xác định
+  identification | n | identify+-ation | sự nhận dạng; giấy tờ tuỳ thân | identify → identific-
+  identifiable | adj | identify+-able | có thể nhận dạng | y → i
+mission | nhiệm vụ, sứ mệnh | goal, purpose, task, objective | -
+permit | cho phép; (n) giấy phép | allow, authorize, let; license | forbid, prohibit
+  permit | v | permit | cho phép
+  permission | n | permit+-ion | sự cho phép | permit → permiss-
+  permissible | adj | permit+-ible | được phép | permit → permiss-
+pertinent | thích hợp, liên quan | relevant, applicable, related, appropriate | irrelevant
+procedure | thủ tục, quy trình | process, method, routine, technique | -
+  proceed | v | proceed | tiến hành
+  procedure | n | proceed+-ure | thủ tục | proceed → proced-
+  procedural | adj | proceed+-ure+-al | thuộc thủ tục
+result | kết quả; (v) dẫn đến | outcome, consequence, effect; lead to | cause
+statement | báo cáo, bản kê; lời tuyên bố | account, report, bill, declaration | -
+  state | v | state | phát biểu, tuyên bố
+  statement | n | state+-ment | bản kê; lời tuyên bố
+  understate | v | under-+state | nói giảm
+usually | thường thường | normally, generally, typically, commonly | rarely, unusually
+  usual | adj | usual | thông thường
+  usually | adv | usual+-ly | thường
+  unusual | adj | un-+usual | bất thường
+
+# 50
+consult | tham khảo ý kiến | ask, confer with, seek advice from, refer to | -
+  consult | v | consult | tham khảo
+  consultation | n | consult+-ation | sự tư vấn
+  consultant | n | consult+-ant | chuyên gia tư vấn
+  consultative | adj | consult+-ative | mang tính tư vấn
+control | kiểm soát; (n) sự kiểm soát | manage, regulate, restrain, limit | -
+  control | v | control | kiểm soát
+  controllable | adj | control+-able | có thể kiểm soát | gấp đôi l
+  uncontrollable | adj | un-+control+-able | không kiểm soát được
+convenient | thuận tiện | handy, suitable, accessible, practical | inconvenient
+  convenience | n | convenient+-ence | sự tiện lợi | convenient → conveni-
+  convenient | adj | convenient | thuận tiện
+  conveniently | adv | convenient+-ly | thuận tiện
+  inconvenient | adj | in-+convenient | bất tiện
+detect | phát hiện | discover, notice, identify, find | miss, overlook
+  detect | v | detect | phát hiện
+  detection | n | detect+-ion | sự phát hiện
+  detectable | adj | detect+-able | có thể phát hiện
+  detective | n | detect+-ive | thám tử
+factor | yếu tố | element, aspect, cause, component | -
+interaction | sự tương tác | interplay, reaction, communication | -
+  act | v | act | hành động
+  interact | v | inter-+act | tương tác
+  interaction | n | inter-+act+-ion | sự tương tác
+  interactive | adj | inter-+act+-ive | có tính tương tác
+limit | giới hạn; (v) hạn chế | restriction, maximum, cap; restrict | -
+  limit | v | limit | hạn chế
+  limited | adj | limit+-ed | hạn chế
+  unlimited | adj | un-+limit+-ed | không giới hạn
+  limitation | n | limit+-ation | sự hạn chế
+monitor | theo dõi, giám sát | observe, watch, check, track | ignore
+potential | tiềm năng; (adj) tiềm tàng | possibility, capacity, capability; possible | -
+  potential | n | potential | tiềm năng
+  potentially | adv | potential+-ly | có thể
+sample | mẫu thử; (v) dùng thử | specimen, example, trial; try | -
+sense | cảm giác; (v) cảm nhận | feeling, awareness, impression; perceive | -
+  sense | v | sense | cảm nhận
+  sensible | adj | sense+-ible | hợp lý | bỏ e
+  sensitive | adj | sense+-itive | nhạy cảm | bỏ e
+volunteer | tình nguyện; (n) tình nguyện viên | offer, step forward | -
+  volunteer | n | volunteer | tình nguyện viên
+  voluntary | adj | voluntary | tự nguyện
+  involuntary | adj | in-+voluntary | vô ý, không tự nguyện

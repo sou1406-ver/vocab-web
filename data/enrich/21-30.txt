@@ -1,0 +1,375 @@
+# 21
+accept | chấp nhận | receive, take, approve, agree to | reject, refuse
+  accept | v | accept | chấp nhận
+  acceptance | n | accept+-ance | sự chấp nhận
+  acceptable | adj | accept+-able | chấp nhận được
+  unacceptable | adj | un-+accept+-able | không thể chấp nhận
+balance | số dư; sự cân bằng; (v) cân đối | remainder, equilibrium; reconcile | imbalance
+  balance | v | balance | cân đối
+  balanced | adj | balance+-ed | cân bằng
+  imbalance | n | im-+balance | sự mất cân bằng
+borrow | vay, mượn | take out a loan, take on loan | lend
+  borrow | v | borrow | vay
+  borrower | n | borrow+-er | người vay
+cautiously | thận trọng | carefully, warily, prudently | carelessly, recklessly
+  caution | n | caution | sự thận trọng; (v) cảnh báo
+  cautious | adj | caution+-ous | thận trọng | caution → cauti-
+  cautiously | adv | caution+-ous+-ly | thận trọng
+  incautious | adj | in-+caution+-ous | thiếu thận trọng
+deduct | khấu trừ | subtract, take off, withhold, remove | add
+  deduct | v | deduct | khấu trừ
+  deduction | n | deduct+-ion | khoản khấu trừ
+  deductible | adj | deduct+-ible | có thể khấu trừ
+dividend | cổ tức | share, payout, return, profit | -
+down payment | khoản trả trước, tiền đặt cọc | deposit, initial payment | -
+mortgage | khoản vay thế chấp; (v) thế chấp | loan, home loan, lien | -
+restricted | bị hạn chế | limited, controlled, confined | unrestricted, free
+  restrict | v | restrict | hạn chế
+  restriction | n | restrict+-ion | sự hạn chế
+  restricted | adj | restrict+-ed | bị hạn chế
+  unrestricted | adj | un-+restrict+-ed | không hạn chế
+signature | chữ ký | autograph, name, endorsement | -
+  sign | v | sign | ký
+  signature | n | sign+-ature | chữ ký
+  signatory | n | sign+-atory | bên ký kết
+take out | rút (tiền); vay | withdraw, borrow, remove | deposit, put in
+transaction | giao dịch | deal, exchange, operation, business | -
+  transact | v | transact | giao dịch
+  transaction | n | transact+-ion | giao dịch
+
+# 22
+accounting | kế toán | bookkeeping, auditing, financial reporting | -
+  account | n | account | tài khoản
+  accountant | n | account+-ant | kế toán viên
+  accounting | n | account+-ing | kế toán
+  accountable | adj | account+-able | chịu trách nhiệm
+accumulate | tích luỹ | gather, collect, amass, build up | disperse, spend
+  accumulate | v | accumulate | tích luỹ
+  accumulation | n | accumulate+-ion | sự tích luỹ
+  accumulated | adj | accumulate+-ed | được tích luỹ
+asset | tài sản | property, resource, holding, advantage | liability
+audit | kiểm toán; (n) cuộc kiểm toán | inspect, examine, review, check | -
+  audit | v | audit | kiểm toán
+  auditor | n | audit+-or | kiểm toán viên
+budget | ngân sách; (v) lập ngân sách | allowance, funds, financial plan | -
+  budget | v | budget | lập ngân sách
+  budgetary | adj | budget+-ary | thuộc ngân sách
+build up | tăng dần, tích tụ | increase, accumulate, develop, grow | decrease
+client | khách hàng (dịch vụ) | customer, patron, buyer | -
+  client | n | client | khách hàng
+  clientele | n | client+-ele | tập khách hàng
+debt | khoản nợ | liability, obligation, loan, arrears | credit, asset
+  debt | n | debt | nợ
+  debtor | n | debt+-or | con nợ
+outstanding | chưa thanh toán; nổi bật | unpaid, owing, due; excellent | paid, settled
+profitably | có lợi nhuận | advantageously, lucratively, gainfully | unprofitably
+  profit | n | profit | lợi nhuận; (v) có lợi
+  profitable | adj | profit+-able | có lợi nhuận
+  unprofitable | adj | un-+profit+-able | không có lãi
+  profitably | adv | profit+-able+-ly | có lãi | bỏ e
+  profitability | n | profit+-able+-ity | khả năng sinh lời | able → abil-
+reconcile | đối chiếu, làm khớp; hoà giải | balance, match, settle, harmonize | -
+  reconcile | v | reconcile | đối chiếu; hoà giải
+  reconciliation | n | reconcile+-ation | sự đối chiếu; sự hoà giải | reconcile → reconcili-
+turnover | doanh thu; tỷ lệ thay thế nhân viên | revenue, sales; staff change | -
+
+# 23
+aggressively | mạnh mẽ, quyết liệt | forcefully, assertively, vigorously | passively, cautiously
+  aggression | n | aggression | sự gây hấn
+  aggressive | adj | aggression+-ive | quyết liệt, hung hăng | aggression → aggress-
+  aggressively | adv | aggression+-ive+-ly | mạnh mẽ
+attitude | thái độ | outlook, approach, view, stance | -
+commit | cam kết; dành (tiền, thời gian) | pledge, devote, dedicate, promise | -
+  commit | v | commit | cam kết
+  commitment | n | commit+-ment | sự cam kết
+  committed | adj | commit+-ed | tận tâm | gấp đôi t
+conservative | thận trọng, bảo thủ | cautious, careful, moderate, traditional | risky, liberal
+  conserve | v | conserve | bảo tồn
+  conservation | n | conserve+-ation | sự bảo tồn
+  conservative | adj | conserve+-ative | thận trọng
+  conservatively | adv | conserve+-ative+-ly | một cách thận trọng
+fund | quỹ; (v) tài trợ | finance, capital, money; sponsor | -
+  fund | v | fund | tài trợ
+  funding | n | fund+-ing | nguồn tài trợ
+  underfunded | adj | under-+fund+-ed | thiếu kinh phí
+invest | đầu tư | put money into, finance, fund | divest
+  invest | v | invest | đầu tư
+  investment | n | invest+-ment | khoản đầu tư
+  investor | n | invest+-or | nhà đầu tư
+  reinvest | v | re-+invest | tái đầu tư
+long-term | dài hạn | lasting, enduring, extended | short-term
+portfolio | danh mục đầu tư; hồ sơ năng lực | holdings, investments, collection | -
+pull out | rút ra, rút lui | withdraw, leave, exit, retreat | put in, join
+resource | nguồn lực, tài nguyên | asset, supply, reserve, means | -
+  resource | n | resource | nguồn lực
+  resourceful | adj | resource+-ful | tháo vát
+return | lợi nhuận; (v) hoàn lại | profit, yield, gain; give back | loss
+  return | v | return | trả lại
+  returns | n | return+-s | lợi nhuận thu về
+  returnable | adj | return+-able | có thể trả lại
+wisely | khôn ngoan | sensibly, prudently, judiciously | foolishly, unwisely
+  wise | adj | wise | khôn ngoan
+  wisdom | n | wise+-dom | sự khôn ngoan | wise → wis-
+  wisely | adv | wise+-ly | khôn ngoan
+  unwise | adj | un-+wise | thiếu khôn ngoan
+
+# 24
+calculation | sự tính toán | computation, estimate, reckoning | -
+  calculate | v | calculate | tính toán
+  calculation | n | calculate+-ion | sự tính toán
+  calculator | n | calculate+-or | máy tính
+  miscalculate | v | mis-+calculate | tính sai
+deadline | hạn chót | due date, time limit, cutoff | -
+file | nộp (hồ sơ); (n) hồ sơ, tập tin | submit, lodge, record; document | withdraw
+  file | v | file | nộp hồ sơ
+  filing | n | file+-ing | việc nộp hồ sơ
+fill out | điền (mẫu đơn) | complete, fill in | -
+give up | từ bỏ | quit, abandon, surrender, stop | continue, persist
+joint | chung | shared, combined, mutual, common | separate, individual
+  joint | adj | joint | chung
+  jointly | adv | joint+-ly | cùng nhau
+owe | nợ | be in debt, be indebted | -
+penalty | tiền phạt, hình phạt | fine, punishment, sanction | reward
+  penal | adj | penal | thuộc hình phạt
+  penalize | v | penal+-ize | phạt
+  penalty | n | penal+-ty | tiền phạt
+preparation | sự chuẩn bị | arrangement, planning, readiness | -
+  prepare | v | prepare | chuẩn bị
+  preparation | n | prepare+-ation | sự chuẩn bị
+  preparatory | adj | prepare+-atory | dự bị
+  prepared | adj | prepare+-ed | đã chuẩn bị
+  unprepared | adj | un-+prepare+-ed | chưa chuẩn bị
+refund | tiền hoàn lại; (v) hoàn tiền | reimbursement, repayment, rebate | charge
+  refund | v | refund | hoàn tiền
+  refundable | adj | refund+-able | có thể hoàn tiền
+  non-refundable | adj | non-+refund+-able | không hoàn tiền
+spouse | vợ/chồng | partner, husband, wife | -
+withhold | khấu trừ; giữ lại | deduct, keep back, retain, hold back | release, give
+  withhold | v | withhold | giữ lại
+  withholding | n | withhold+-ing | khoản khấu trừ
+
+# 25
+desire | mong muốn; (v) khao khát | wish, want, longing, aspiration | aversion
+  desire | v | desire | mong muốn
+  desirable | adj | desire+-able | đáng mong muốn
+  undesirable | adj | un-+desire+-able | không mong muốn
+detail | chi tiết; (v) trình bày chi tiết | particular, specifics; itemize | -
+  detail | v | detail | trình bày chi tiết
+  detailed | adj | detail+-ed | chi tiết
+forecast | dự báo | prediction, projection, outlook, estimate | -
+  forecast | v | fore-+cast | dự báo
+  forecaster | n | fore-+cast+-er | người dự báo
+level | mức độ, cấp độ | degree, standard, grade, rank | -
+overall | tổng thể, nhìn chung | general, total, comprehensive, entire | partial, specific
+perspective | quan điểm, góc nhìn | viewpoint, outlook, standpoint, angle | -
+project | dự đoán; (n) dự án | forecast, predict, estimate; plan | -
+  project | v | project | dự đoán
+  projection | n | project+-ion | sự dự đoán
+  projected | adj | project+-ed | được dự kiến
+realistic | thực tế | practical, sensible, feasible, achievable | unrealistic, idealistic
+  real | adj | real | thực
+  reality | n | real+-ity | thực tế
+  realize | v | real+-ize | nhận ra; thực hiện
+  realistic | adj | real+-ist+-ic | thực tế
+  unrealistic | adj | un-+real+-ist+-ic | không thực tế
+target | mục tiêu | goal, objective, aim | -
+translation | sự chuyển đổi, bản dịch | conversion, interpretation, rendering | -
+  translate | v | translate | dịch
+  translation | n | translate+-ion | bản dịch
+  translator | n | translate+-or | biên dịch viên
+  translatable | adj | translate+-able | có thể dịch
+typically | thông thường, điển hình | usually, normally, generally, characteristically | unusually
+  type | n | type | loại
+  typical | adj | type+-ical | điển hình | type → typ-
+  typically | adv | type+-ical+-ly | thông thường
+  atypical | adj | a-+type+-ical | không điển hình
+yield | lợi nhuận; (v) mang lại | return, profit, produce, generate | -
+
+# 26
+adjacent | liền kề | next to, neighboring, adjoining, bordering | distant, separate
+collaboration | sự hợp tác | cooperation, partnership, teamwork, alliance | competition
+  collaborate | v | collaborate | hợp tác
+  collaboration | n | collaborate+-ion | sự hợp tác
+  collaborative | adj | collaborate+-ive | mang tính hợp tác
+  collaborator | n | collaborate+-or | cộng tác viên
+concentrate | tập trung | focus, center, pay attention | disperse
+  concentrate | v | concentrate | tập trung
+  concentration | n | concentrate+-ion | sự tập trung
+  concentrated | adj | concentrate+-ed | tập trung; cô đặc
+conducive | có lợi, thuận lợi cho | favorable, helpful, beneficial, contributory | unfavorable, detrimental
+disruption | sự gián đoạn | interruption, disturbance, interference | continuity
+  disrupt | v | disrupt | làm gián đoạn
+  disruption | n | disrupt+-ion | sự gián đoạn
+  disruptive | adj | disrupt+-ive | gây rối
+hamper | cản trở | hinder, obstruct, impede, restrict | help, facilitate
+inconsiderately | thiếu chu đáo, thiếu tôn trọng | thoughtlessly, rudely, selfishly | considerately
+  consider | v | consider | cân nhắc
+  considerate | adj | consider+-ate | chu đáo
+  inconsiderate | adj | in-+consider+-ate | thiếu chu đáo
+  inconsiderately | adv | in-+consider+-ate+-ly | thiếu chu đáo
+  inconsiderateness | n | in-+consider+-ate+-ness | sự thiếu chu đáo
+lobby | sảnh; (v) vận động hành lang | foyer, entrance hall, reception area | -
+move up | thăng tiến, chuyển lên | advance, get promoted, rise | move down
+open to | sẵn sàng tiếp nhận; dễ bị | receptive to, willing to accept, susceptible to | closed to
+opt | lựa chọn | choose, select, decide, go for | reject
+  opt | v | opt | lựa chọn
+  option | n | opt+-ion | sự lựa chọn
+  optional | adj | opt+-ion+-al | tuỳ chọn
+scrutiny | sự xem xét kỹ lưỡng | examination, inspection, review, analysis | neglect
+  scrutinize | v | scrutiny+-ize | xem xét kỹ | bỏ y
+  scrutiny | n | scrutiny | sự xem xét kỹ
+
+# 27
+adhere to | tuân thủ, tôn trọng | follow, obey, comply with, stick to | violate, ignore
+  adhere | v | adhere | tuân thủ; dính chặt
+  adherence | n | adhere+-ence | sự tuân thủ | bỏ e
+  adherent | n | adhere+-ent | người ủng hộ
+agenda | chương trình nghị sự | schedule, program, plan, list | -
+bring up | nêu ra, đề cập | raise, mention, introduce, put forward | drop
+conclude | kết luận; kết thúc | finish, end, close, decide | begin, start
+  conclude | v | conclude | kết luận
+  conclusion | n | conclude+-sion | sự kết luận | conclude → conclu-
+  conclusive | adj | conclude+-ive | mang tính quyết định
+  inconclusive | adj | in-+conclude+-ive | chưa ngã ngũ
+go ahead | tiến hành; (n) sự cho phép | proceed, continue, approval | halt, stop
+goal | mục tiêu | aim, objective, target, purpose | -
+lengthy | dài dòng, kéo dài | long, extended, prolonged, protracted | brief, short
+  long | adj | long | dài
+  length | n | long+-th | độ dài | long → leng-
+  lengthen | v | long+-th+-en | kéo dài
+  lengthy | adj | long+-th+-y | dài dòng
+matter | vấn đề; (v) có ý nghĩa | issue, subject, topic; count | -
+periodically | định kỳ | regularly, at intervals, from time to time | constantly, continuously
+  period | n | period | giai đoạn
+  periodic | adj | period+-ic | định kỳ
+  periodically | adv | period+-ic+-al+-ly | định kỳ
+priority | sự ưu tiên | precedence, preference, first concern | -
+  prior | adj | prior | trước
+  priority | n | prior+-ity | sự ưu tiên
+  prioritize | v | prior+-ity+-ize | ưu tiên | y → i
+progress | tiến triển; (n) sự tiến bộ | advance, development, improvement | regress
+  progress | v | progress | tiến triển
+  progression | n | progress+-ion | sự tiến triển
+  progressive | adj | progress+-ive | tiến bộ, tăng dần
+waste | lãng phí; (n) rác thải | squander, misuse; garbage | save, conserve
+  waste | v | waste | lãng phí
+  wasteful | adj | waste+-ful | lãng phí
+
+# 28
+brand | nhãn hiệu, thương hiệu | label, trademark, make | -
+  brand | v | brand | gắn nhãn hiệu
+  branding | n | brand+-ing | xây dựng thương hiệu
+conform | tuân theo, phù hợp với | comply, follow, obey, match | deviate, differ
+  conform | v | conform | tuân theo
+  conformity | n | conform+-ity | sự phù hợp
+  nonconformist | n | non-+conform+-ist | người không theo khuôn phép
+defect | khuyết tật, lỗi | flaw, fault, imperfection, deficiency | -
+  defect | n | defect | lỗi
+  defective | adj | defect+-ive | bị lỗi
+enhance | nâng cao, cải thiện | improve, boost, increase, upgrade | reduce, diminish
+  enhance | v | enhance | nâng cao
+  enhancement | n | enhance+-ment | sự nâng cao
+garment | quần áo, trang phục | clothing, apparel, attire, outfit | -
+inspect | kiểm tra, thanh tra | examine, check, scrutinize, investigate | overlook
+  inspect | v | inspect | kiểm tra
+  inspection | n | inspect+-ion | sự kiểm tra
+  inspector | n | inspect+-or | thanh tra viên
+perceptive | nhạy bén, sâu sắc | insightful, observant, sharp, astute | unobservant, obtuse
+  perceive | v | perceive | nhận thấy
+  perception | n | perceive+-tion | nhận thức | perceive → percep-
+  perceptive | adj | perceive+-ive | nhạy bén | perceive → percept-
+repel | đẩy lùi, chống lại | resist, repulse, fend off, keep away | attract
+  repel | v | repel | đẩy lùi
+  repellent | n | repel+-ent | chất chống (côn trùng, nước) | gấp đôi l
+take back | trả lại; rút lại | return, retract, withdraw | -
+throw out | vứt bỏ; bác bỏ | discard, dispose of, reject | keep
+uniformly | đồng đều, đồng nhất | evenly, consistently, equally, regularly | irregularly, variably
+  uniform | adj | uniform | đồng nhất; (n) đồng phục
+  uniformly | adv | uniform+-ly | đồng đều
+  uniformity | n | uniform+-ity | sự đồng nhất
+wrinkle | nếp nhăn; (v) làm nhăn | crease, fold, line, crinkle | -
+  wrinkle | v | wrinkle | làm nhăn
+  wrinkled | adj | wrinkle+-ed | bị nhăn
+  wrinkle-free | adj | wrinkle+free | chống nhăn
+
+# 29
+anxious | lo lắng; háo hức | worried, nervous, uneasy; eager | calm, relaxed
+  anxiety | n | anxious+-ity | sự lo âu | anxious → anxi-
+  anxious | adj | anxious | lo lắng
+  anxiously | adv | anxious+-ly | lo lắng
+ascertain | xác định, tìm ra | determine, establish, find out, discover | -
+assume | cho rằng; đảm nhận | suppose, presume; take on, undertake | -
+  assume | v | assume | cho rằng; đảm nhận
+  assumption | n | assume+-tion | giả định | assume → assump-
+  assumed | adj | assume+-ed | được giả định
+decade | thập kỷ | ten years | -
+examine | kiểm tra, xem xét | inspect, study, analyze, investigate | overlook
+  examine | v | examine | xem xét
+  examination | n | examine+-ation | sự kiểm tra; kỳ thi
+  examiner | n | examine+-er | giám khảo
+experiment | thí nghiệm; (v) thử nghiệm | test, trial, investigation | -
+  experiment | v | experiment | thử nghiệm
+  experimentation | n | experiment+-ation | sự thử nghiệm
+  experimental | adj | experiment+-al | mang tính thử nghiệm
+logical | hợp lý, logic | reasonable, rational, sensible, coherent | illogical
+  logic | n | logic | lô-gic
+  logical | adj | logic+-al | hợp lý
+  logically | adv | logic+-al+-ly | hợp lý
+  illogical | adj | il-+logic+-al | phi lý
+research | nghiên cứu | study, investigation, inquiry, analysis | -
+  research | v | research | nghiên cứu
+  researcher | n | research+-er | nhà nghiên cứu
+responsibility | trách nhiệm | duty, obligation, accountability | -
+  responsible | adj | responsible | chịu trách nhiệm
+  responsibility | n | responsible+-ity | trách nhiệm | ible → ibil-
+  responsibly | adv | responsible+-ly | có trách nhiệm | bỏ e
+  irresponsible | adj | ir-+responsible | vô trách nhiệm
+solve | giải quyết | resolve, fix, work out, figure out | -
+  solve | v | solve | giải quyết
+  solution | n | solve+-tion | giải pháp | solve → solu-
+  solvable | adj | solve+-able | giải quyết được | bỏ e
+  unsolved | adj | un-+solve+-ed | chưa được giải quyết
+supervisor | người giám sát | manager, boss, overseer, superintendent | subordinate
+  supervise | v | supervise | giám sát
+  supervision | n | supervise+-ion | sự giám sát | bỏ e
+  supervisor | n | supervise+-or | người giám sát | bỏ e
+systematically | có hệ thống | methodically, orderly, logically | randomly, haphazardly
+  system | n | system | hệ thống
+  systematic | adj | system+-atic | có hệ thống
+  systematically | adv | system+-atic+-al+-ly | một cách có hệ thống
+
+# 30
+apprehensive | e ngại, lo sợ | anxious, uneasy, nervous, worried | confident, calm
+  apprehend | v | apprehend | lo sợ; bắt giữ
+  apprehension | n | apprehend+-sion | sự e ngại | apprehend → apprehen-
+  apprehensive | adj | apprehend+-ive | e ngại | apprehend → apprehens-
+circumstance | hoàn cảnh, tình huống | situation, condition, context, event | -
+  circumstance | n | circumstance | hoàn cảnh
+  circumstantial | adj | circumstance+-ial | thuộc hoàn cảnh; gián tiếp | circumstance → circumstant-
+  circumstantially | adv | circumstance+-ial+-ly | dựa trên hoàn cảnh
+condition | điều kiện; tình trạng | requirement, state, situation, term | -
+  condition | v | condition | điều hoà; quy định
+  conditional | adj | condition+-al | có điều kiện
+  unconditional | adj | un-+condition+-al | vô điều kiện
+due to | do, bởi vì | because of, owing to, as a result of | -
+fluctuate | dao động, biến động | vary, change, rise and fall, shift | stabilize
+  fluctuate | v | fluctuate | dao động
+  fluctuation | n | fluctuate+-ion | sự biến động
+get out of | thoát khỏi, tránh khỏi | escape, avoid, evade, back out of | -
+indicator | chỉ số, dấu hiệu | sign, signal, measure, index | -
+  indicate | v | indicate | chỉ ra
+  indication | n | indicate+-ion | dấu hiệu
+  indicator | n | indicate+-or | chỉ số
+lease | hợp đồng thuê; (v) cho thuê | rental agreement, contract; rent | -
+lock into | ràng buộc (vào hợp đồng, cam kết) | commit to, bind to, tie to | -
+occupy | chiếm giữ, sử dụng (nơi ở) | inhabit, live in, fill, take up | vacate
+  occupy | v | occupy | chiếm giữ
+  occupant | n | occupy+-ant | người cư ngụ | occupy → occup-
+  occupancy | n | occupy+-ancy | sự cư ngụ | occupy → occup-
+  occupied | adj | occupy+-ed | có người | y → i
+  unoccupied | adj | un-+occupy+-ed | bỏ trống
+option | sự lựa chọn; quyền chọn | choice, alternative, possibility | obligation
+  opt | v | opt | lựa chọn
+  option | n | opt+-ion | sự lựa chọn
+  optional | adj | opt+-ion+-al | tuỳ chọn
+subject to | phụ thuộc vào; dễ bị | dependent on, liable to, conditional on | exempt from

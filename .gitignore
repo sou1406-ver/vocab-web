@@ -1,0 +1,10 @@
+# Sách gốc (có bản quyền, ~12MB) — dữ liệu đã trích ở data/source/
+*.pdf
+# File giao diện tham khảo
+vocanetwork_*.html
+
+__pycache__/
+*.pyc
+.DS_Store
+Thumbs.db
+.vscode/

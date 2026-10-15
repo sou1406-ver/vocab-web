@@ -1,0 +1,3827 @@
+{
+ "15": [
+  {
+   "pos": "verb",
+   "word": "agree",
+   "sent": "If both parties agree to the terms, we can finalize the contract."
+  },
+  {
+   "pos": "noun",
+   "word": "agreement",
+   "sent": "As soon as the labor agreement was signed, the factory resumed production of new cars and vans."
+  },
+  {
+   "pos": "adjective",
+   "word": "agreeable",
+   "sent": "The parties are agreeable to the terms."
+  },
+  {
+   "pos": "verb",
+   "word": "assure",
+   "sent": "I assure you that our drug-testing policy is applied fairly."
+  },
+  {
+   "pos": "noun",
+   "word": "assurance",
+   "sent": "What assurance is there that the company will still be in business?"
+  },
+  {
+   "pos": "adverb",
+   "word": "assuredly",
+   "sent": "He spoke assuredly, but his follow-up memo showed less conviction."
+  },
+  {
+   "pos": "verb",
+   "word": "cancel",
+   "sent": "The man canceled his magazine subscription and got his money back."
+  },
+  {
+   "pos": "noun",
+   "word": "cancellation",
+   "sent": "Writers usually receive a cancellation fee even if their articles are not published."
+  },
+  {
+   "pos": "adjective",
+   "word": "canceled",
+   "sent": "The canceled concert ended up costing our agency millions."
+  },
+  {
+   "pos": "verb",
+   "word": "obligate",
+   "sent": "The terms of the contracts obligate us to work for at least one more month."
+  },
+  {
+   "pos": "noun",
+   "word": "obligation",
+   "sent": "The factory managers have a legal and moral obligation to provide a safe work site."
+  },
+  {
+   "pos": "adjective",
+   "word": "obligatory",
+   "sent": "He finished his obligatory military service, and then joined his father on the orange farm."
+  },
+  {
+   "pos": "verb",
+   "word": "provide",
+   "sent": "Since the machine is very reliable, why don't we cancel the service contract they provided?"
+  },
+  {
+   "pos": "noun",
+   "word": "provider",
+   "sent": "We must negotiate a new contract with our Internet service provider."
+  },
+  {
+   "pos": "noun",
+   "word": "provision",
+   "sent": "The provision for canceling the contract is in the last clause."
+  },
+  {
+   "pos": "verb",
+   "word": "specify",
+   "sent": "The contract specifies the percentage of raise the workers will see next year."
+  },
+  {
+   "pos": "noun",
+   "word": "specification",
+   "sent": "The work was done according to our specifications."
+  },
+  {
+   "pos": "adjective",
+   "word": "specific",
+   "sent": "We have not chosen a specific location for the reunion."
+  }
+ ],
+ "21": [
+  {
+   "pos": "verb",
+   "word": "attract",
+   "sent": "The store's poor location did not help it attract customers."
+  },
+  {
+   "pos": "noun",
+   "word": "attraction",
+   "sent": "Having a clown in the toy store was a foolproof attraction for getting kids to enter."
+  },
+  {
+   "pos": "adjective",
+   "word": "attractive",
+   "sent": "Lou ran his store on an old-fashioned premise: quality merchandise at attractive prices."
+  },
+  {
+   "pos": "verb",
+   "word": "",
+   "sent": "She compared the prices before she made a decision."
+  },
+  {
+   "pos": "noun",
+   "word": "comparison",
+   "sent": "There was no comparison in the quality of the two brands."
+  },
+  {
+   "pos": "adjective",
+   "word": "comparable",
+   "sent": "To get an average for home costs, the agent sought prices on comparable homes."
+  },
+  {
+   "pos": "noun",
+   "word": "competition",
+   "sent": "Try to think of yourself as someone who leads the competition."
+  },
+  {
+   "pos": "verb",
+   "word": "compete",
+   "sent": "We competed against three or four other agencies to get this contract."
+  },
+  {
+   "pos": "adjective",
+   "word": "competitive",
+   "sent": "His competitive character made him quite successful in his department."
+  },
+  {
+   "pos": "verb",
+   "word": "consume",
+   "sent": "The analyst was able to consume new information quickly."
+  },
+  {
+   "pos": "noun",
+   "word": "consumer",
+   "sent": "The government tracks consumer spending closely."
+  },
+  {
+   "pos": "adjective",
+   "word": "consumable",
+   "sent": "He ran a study of the use of consumable goods."
+  },
+  {
+   "pos": "verb",
+   "word": "market",
+   "sent": "The sales department disagreed about how to market their newest product."
+  },
+  {
+   "pos": "noun",
+   "word": "marketing",
+   "sent": "A good director of marketing can find a way to sell even an unattractive product."
+  },
+  {
+   "pos": "adjective",
+   "word": "marketable",
+   "sent": "Once the sales manager decided to change the packaging, the product became much more marketable."
+  },
+  {
+   "pos": "noun",
+   "word": "satisfaction",
+   "sent": "Our highest priority is customer satisfaction."
+  },
+  {
+   "pos": "verb",
+   "word": "satisfy",
+   "sent": "Henri was perfectly satisfied with his new fishing rod."
+  },
+  {
+   "pos": "adjective",
+   "word": "satisfactory",
+   "sent": "The rods were not in satisfactory condition."
+  }
+ ],
+ "27": [
+  {
+   "pos": "adjective",
+   "word": "characteristic",
+   "sent": "One characteristic of the new Lexus is its computerized seat settings."
+  },
+  {
+   "pos": "verb",
+   "word": "characterize",
+   "sent": "This line is characterized by its bold flavor and spicy aftertaste."
+  },
+  {
+   "pos": "adverb",
+   "word": "characteristically",
+   "sent": "Characteristically, she accused middle-level management of the accounting error."
+  },
+  {
+   "pos": "verb",
+   "word": "consider",
+   "sent": "You should consider carefully whether a product will meet your needs."
+  },
+  {
+   "pos": "noun",
+   "word": "consideration",
+   "sent": "After long consideration, Heloise decided that the five-year warranty would be sufficient."
+  },
+  {
+   "pos": "adjective",
+   "word": "considerable",
+   "sent": "The fee for the extra year of protection was a considerable expense."
+  },
+  {
+   "pos": "verb",
+   "word": "imply",
+   "sent": "She that she had graduated from Harvard."
+  },
+  {
+   "pos": "noun",
+   "word": "implication",
+   "sent": "What are the implications of the accident?"
+  },
+  {
+   "pos": "adjective",
+   "word": "implicit",
+   "sent": "It is implicit in her demands that if she doesn't get the promotion, she will leave the company."
+  },
+  {
+   "pos": "verb",
+   "word": "",
+   "sent": "Juan protected the warranty by taking excellent care of his lawn mower."
+  },
+  {
+   "pos": "noun",
+   "word": "protection",
+   "sent": "For your own protection, you should have a warranty that provides for a replacement product. protective Alfredo is very protective of the condition of his car and gets all the preventive maintenance his warranty requires."
+  },
+  {
+   "pos": "noun",
+   "word": "reputation",
+   "sent": "The good reputation of the manufacturer inspired Maria Jose to try the new product."
+  },
+  {
+   "pos": "adjective",
+   "word": "reputable",
+   "sent": "Because the company had a reputable name, I did not spend sufficient time reading the details of the warranty."
+  },
+  {
+   "pos": "adjective",
+   "word": "reputed",
+   "sent": "The new store is reputed to carry items that are not of the highest quality."
+  },
+  {
+   "pos": "verb",
+   "word": "require",
+   "sent": "The warranty requires that you send the watch to an approved repair shop to have it fixed."
+  },
+  {
+   "pos": "noun",
+   "word": "requirement",
+   "sent": "The terms of the warranty divulge the legal requirement the manufacturer has to the consumer."
+  },
+  {
+   "pos": "adjective",
+   "word": "requisite",
+   "sent": "The warranty spelled out the requisite steps to take to request a replacement product."
+  }
+ ],
+ "33": [
+  {
+   "pos": "verb",
+   "word": "avoid",
+   "sent": "It is best to avoid get-rich-quick schemes."
+  },
+  {
+   "pos": "noun",
+   "word": "avoidance",
+   "sent": "Your avoidance of these issues will not make them go away."
+  },
+  {
+   "pos": "adjective",
+   "word": "avoided",
+   "sent": "The avoided question became more important over time."
+  },
+  {
+   "pos": "verb",
+   "word": "demonstrate",
+   "sent": "Let me demonstrate how this computer program works."
+  },
+  {
+   "pos": "noun",
+   "word": "demonstration",
+   "sent": "After the lecture, there was a demonstration of new marketing techniques."
+  },
+  {
+   "pos": "adjective",
+   "word": "demonstrative",
+   "sent": "The densely encoded programming was demonstrative of the computer language of the era."
+  },
+  {
+   "pos": "verb",
+   "word": "develop",
+   "sent": "Our assignment is to develop a cogent business plan."
+  },
+  {
+   "pos": "noun",
+   "word": "development",
+   "sent": "The plan was under development and would not be ready for months."
+  },
+  {
+   "pos": "noun",
+   "word": "developer",
+   "sent": "The job developer was kept busy trying to place the recent college graduates."
+  },
+  {
+   "pos": "verb",
+   "word": "evaluate",
+   "sent": "Please review these articles and evaluate their usefulness for our plan."
+  },
+  {
+   "pos": "noun",
+   "word": "evaluation",
+   "sent": "Yoko feared the professor's evaluation of her business plan."
+  },
+  {
+   "pos": "noun",
+   "word": "evaluator",
+   "sent": "The independent evaluator our business plan and gave us goa:i feedback."
+  },
+  {
+   "pos": "verb",
+   "word": "strategize",
+   "sent": "Instead of going into a panic, let's strategize the best way to meet the deadline."
+  },
+  {
+   "pos": "noun",
+   "word": "strategy",
+   "sent": "The business plan lays out a strategy for future growth."
+  },
+  {
+   "pos": "adjective",
+   "word": "strategic",
+   "sent": "The handout outlined the strategic points to cover in a business plan."
+  },
+  {
+   "pos": "noun",
+   "word": "substitution",
+   "sent": "The substitution of gasses is not so easy in this experiment."
+  },
+  {
+   "pos": "verb",
+   "word": "substitute",
+   "sent": "Don't try to substitute intuition for good planning."
+  },
+  {
+   "pos": "adjective",
+   "word": "substituted",
+   "sent": "Customers complain whenever the substituted product is of lesser value, even though we don't charge them for it."
+  }
+ ],
+ "39": [
+  {
+   "pos": "verb",
+   "word": "accommodate",
+   "sent": "The hotel staff was able to accommodate our many needs for the conference."
+  },
+  {
+   "pos": "noun",
+   "word": "accommodation",
+   "sent": "The accommodations at the hotel include swimming pool, gym, and restaurant."
+  },
+  {
+   "pos": "adjective",
+   "word": "accommodating",
+   "sent": "The conference center manager was extremely accommodating and tried to make our stay pleasant."
+  },
+  {
+   "pos": "noun",
+   "word": "arrangement",
+   "sent": "Nobody could understand the seating arrangement."
+  },
+  {
+   "pos": "verb",
+   "word": "arrange",
+   "sent": "We will arrange the chairs in a circle."
+  },
+  {
+   "pos": "adjective",
+   "word": "arranged",
+   "sent": "The arranged flowers didn't look like those we chose from the catalog."
+  },
+  {
+   "pos": "noun",
+   "word": "association",
+   "sent": "Any association with the former company will put us in a negative light."
+  },
+  {
+   "pos": "verb",
+   "word": "associate",
+   "sent": "Do you think customers will associate the failed upstart with ours?"
+  },
+  {
+   "pos": "adjective",
+   "word": "associated",
+   "sent": "The associated costs will put this project out of our reach."
+  },
+  {
+   "pos": "verb",
+   "word": "attend",
+   "sent": "Gillian attended the reception for visiting ambassadors."
+  },
+  {
+   "pos": "noun",
+   "word": "attendee",
+   "sent": "More than 500 attendees packed the ballroom."
+  },
+  {
+   "pos": "noun",
+   "word": "attendance",
+   "sent": "Attendance was low for this year's annual meeting."
+  },
+  {
+   "pos": "verb",
+   "word": "select",
+   "sent": "Since there are overlapping workshops, participants will have to select which one most appeals to them."
+  },
+  {
+   "pos": "noun",
+   "word": "selection",
+   "sent": "His dinner selection of stuffed quail sounded better on the menu than it looked on the plate."
+  },
+  {
+   "pos": "adjective",
+   "word": "selective",
+   "sent": "The planning committee was very selective about who received invitations."
+  },
+  {
+   "pos": "verb",
+   "word": "register",
+   "sent": "He registered for his classes via the Internet."
+  },
+  {
+   "pos": "noun",
+   "word": "register",
+   "sent": "The hotel's register showed that only half the members had arrived."
+  },
+  {
+   "pos": "noun",
+   "word": "registration",
+   "sent": "Registration is a detail-oriented and crucial part of running any meeting."
+  }
+ ],
+ "47": [
+  {
+   "pos": "verb",
+   "word": "access",
+   "sent": "To gain access to the computer lab, alt users must have a valid ID. access Internet cafés allow you to access your web-based e-mail account."
+  },
+  {
+   "pos": "adjective",
+   "word": "accessible",
+   "sent": "The staff assistant always keeps the door to her office open to show she is accessible."
+  },
+  {
+   "pos": "verb",
+   "word": "allocate",
+   "sent": "Marla didn't allocate enough time to train the new hires on our computer systems."
+  },
+  {
+   "pos": "noun",
+   "word": "allocation",
+   "sent": "A different allocation of resources could certainly strengthen the R&D department."
+  },
+  {
+   "pos": "adjective",
+   "word": "allocated",
+   "sent": "The allocated money was never spent on new monitors. duplicate If we work hard, we can duplicate last year's sales records for computers. duplicate Don't worry, I have a duplicate on my hard drive."
+  },
+  {
+   "pos": "noun",
+   "word": "duplication",
+   "sent": "His success at our company was based on the duplication of management techniques he had used elsewhere in his career."
+  },
+  {
+   "pos": "noun",
+   "word": "failure",
+   "sent": "The power failure caused the system to shut down."
+  },
+  {
+   "pos": "verb",
+   "word": "fail",
+   "sent": "We failed to tell you that your records were deleted."
+  },
+  {
+   "pos": "adjective",
+   "word": "fallible",
+   "sent": "Everyone can make a mistake. Even a computer is fallible."
+  },
+  {
+   "pos": "verb",
+   "word": "ignore",
+   "sent": "Unfortunately, she ignored the warning about the virus. ignorance His ignorance of this word processing program surprised everyone. ignored The ignored computer glitch caused the database to function improperly."
+  },
+  {
+   "pos": "verb",
+   "word": "warn",
+   "sent": "We were warned that our e-mail was not private."
+  },
+  {
+   "pos": "noun",
+   "word": "warning",
+   "sent": "The warning was written on the box."
+  },
+  {
+   "pos": "adjective",
+   "word": "warning",
+   "sent": "The warning signs were all there; we should have paid attention to them."
+  }
+ ],
+ "53": [
+  {
+   "pos": "adjective",
+   "word": "affordable",
+   "sent": "Broad-band access to the Internet became more affordable at the beginning of the millennium."
+  },
+  {
+   "pos": "verb",
+   "word": "afford",
+   "sent": "Lucinda has taken so much leave this year that she can't afford to miss another day's work."
+  },
+  {
+   "pos": "noun",
+   "word": "affordability",
+   "sent": "We looked into the affordability of placing a scanner at each designer's desk. The company will initiate its new products at the beginning of the year. initiate initiative The manager, knowing how concerned his employees were, took the initiative to provide training for them on the new equipment."
+  },
+  {
+   "pos": "noun",
+   "word": "initiation",
+   "sent": "As an initiation into the sales field, Mr. Jenkins was given the most problematic customer's account. physically The vagrant had to be physically removed from the building."
+  },
+  {
+   "pos": "adjective",
+   "word": "physical",
+   "sent": "The physical presence of a computer engineer is vastly superior to telephone tech support."
+  },
+  {
+   "pos": "noun",
+   "word": "physique",
+   "sent": "We need a model with a proportional physique."
+  },
+  {
+   "pos": "verb",
+   "word": "provide",
+   "sent": "The company provides a five-year warranty on its products."
+  },
+  {
+   "pos": "noun",
+   "word": "provider",
+   "sent": "As your provider of network services, I promise to give you the best prices and service."
+  },
+  {
+   "pos": "noun",
+   "word": "provision",
+   "sent": "Our provisions of supplies should last to the end of the quarter."
+  },
+  {
+   "pos": "verb",
+   "word": "recur",
+   "sent": "We don't want that problem to recur every month."
+  },
+  {
+   "pos": "noun",
+   "word": "recurrence",
+   "sent": "Every recurrence of the same problem costs us money."
+  },
+  {
+   "pos": "adjective",
+   "word": "recurring",
+   "sent": "Recurring problems waste time and money. reduce Buying in bulk can help to reduce costs."
+  },
+  {
+   "pos": "noun",
+   "word": "reduction",
+   "sent": "The introduction of the fax machine created a noticeable increase in phone bills."
+  },
+  {
+   "pos": "adjective",
+   "word": "reducible",
+   "sent": "Although our system is working at capacity, the amount of information being processed is not reducible."
+  }
+ ],
+ "59": [
+  {
+   "pos": "noun",
+   "word": "appreciation",
+   "sent": "In appreciation for your hard work, we are giving you a top-priority project."
+  },
+  {
+   "pos": "verb",
+   "word": "appreciate",
+   "sent": "We appreciate the time that you have put into this project, but we need to see more positive results."
+  },
+  {
+   "pos": "adjective",
+   "word": "appreciated",
+   "sent": "The intern feit appreciated, like a member of the team."
+  },
+  {
+   "pos": "noun",
+   "word": "code",
+   "sent": "The programmer spent three days searching for the bug in his code."
+  },
+  {
+   "pos": "adjective",
+   "word": "coded",
+   "sent": "Their web page contained a coded message for insiders."
+  },
+  {
+   "pos": "verb",
+   "word": "code",
+   "sent": "If we code the password into each user's ID number, can users avoid one step for logging on?"
+  },
+  {
+   "pos": "verb",
+   "word": "expose",
+   "sent": "As a matter of company policy, we try to expose all managers to the challenging work of telephone sales through hands-on experience."
+  },
+  {
+   "pos": "noun",
+   "word": "exposure",
+   "sent": "Exposure to the elements will corrode the container for the sensor."
+  },
+  {
+   "pos": "adjective",
+   "word": "exposed",
+   "sent": "Mr. Lee was exposed to Chinese business practices during his three-year assignment as a manager in Beijing."
+  },
+  {
+   "pos": "noun",
+   "word": "practice",
+   "sent": "He was surprised at the difference in office practices from one local office to another. practice All managers are expected to practice caution in their spending until the end of the year."
+  },
+  {
+   "pos": "adjective",
+   "word": "practical",
+   "sent": "We need a practical solution to this common problem."
+  },
+  {
+   "pos": "verb",
+   "word": "reinforce",
+   "sent": "The practical training reinforced the theoretical studies."
+  },
+  {
+   "pos": "noun",
+   "word": "reinforcement",
+   "sent": "If reinforcement is needed, you have the support of the executive committee. reinforcing Reinforcing the preferred way of selling the product was one of their job requirements. verbally No employees should be verbally reprimanded in front of their peers."
+  },
+  {
+   "pos": "verb",
+   "word": "verbalize",
+   "sent": "Well-established procedures are often difficult to verbalize."
+  },
+  {
+   "pos": "adjective",
+   "word": "verbal",
+   "sent": "The company operated on a practice of verbal and not written contracts."
+  }
+ ],
+ "65": [
+  {
+   "pos": "verb",
+   "word": "popularize",
+   "sent": "The Intemet has popularized last-minute travel."
+  },
+  {
+   "pos": "noun",
+   "word": "popularity",
+   "sent": "The popularity of the product was extremely short-lived, and it soon disappeared from the store shelves."
+  },
+  {
+   "pos": "adjective",
+   "word": "popular",
+   "sent": "The new computer program was extremely popular, and people asked for it at all the stores."
+  },
+  {
+   "pos": "verb",
+   "word": "replace",
+   "sent": "I replaced your music CDs that I borrowed from your desk last week."
+  },
+  {
+   "pos": "noun",
+   "word": "replacement",
+   "sent": "A replacement for this damaged computer will not be cheap."
+  },
+  {
+   "pos": "adjective",
+   "word": "replaceable",
+   "sent": "That hard disk is not easily replaceable."
+  },
+  {
+   "pos": "verb",
+   "word": "revolutionized",
+   "sent": "Using diamond has revolutionized the pressure sensor industry during the last decade."
+  },
+  {
+   "pos": "noun",
+   "word": "revolution",
+   "sent": "The revolution in electronics technology has allowed products such as phones to get smaller and more portable."
+  },
+  {
+   "pos": "adjective",
+   "word": "revolutionary",
+   "sent": "The Internet is revolutionary in how it has changed the way we communicate."
+  },
+  {
+   "pos": "noun",
+   "word": "skill",
+   "sent": "Her marketing skills inspired Jason to return to school for his MBA."
+  },
+  {
+   "pos": "adjective",
+   "word": "skilled",
+   "sent": "Our carpenters are skilled in everything from cabinetry to furniture making."
+  },
+  {
+   "pos": "adverb",
+   "word": "skillfully",
+   "sent": "He negotiates so skillfully that both parties end up feeling that they've gotten what they wanted."
+  },
+  {
+   "pos": "verb",
+   "word": "store",
+   "sent": "He stored too much information on the hard drive, making the computer sluggish."
+  },
+  {
+   "pos": "noun",
+   "word": "store",
+   "sent": "The store's inventory has to be entered manually into the database."
+  },
+  {
+   "pos": "noun",
+   "word": "storage",
+   "sent": "The storage closet is where you will find all our office supplies."
+  },
+  {
+   "pos": "adverb",
+   "word": "technically",
+   "sent": "Technically, she was fired from her job."
+  },
+  {
+   "pos": "adjective",
+   "word": "technical",
+   "sent": "The computer can only be repaired by someone with technical knowledge."
+  },
+  {
+   "pos": "noun",
+   "word": "technicality",
+   "sent": "After we go over these minor technicalities, the agreement will be set."
+  }
+ ],
+ "71": [
+  {
+   "pos": "verb",
+   "word": "complicate",
+   "sent": "Dont try to complicate things by making two-sided copies; single-sided will do."
+  },
+  {
+   "pos": "noun",
+   "word": "complication",
+   "sent": "There are a few complications with your layout, but they can be easily solved."
+  },
+  {
+   "pos": "adjective",
+   "word": "complicated",
+   "sent": "The revisions in the document made it more complicated, rather than simpler."
+  },
+  {
+   "pos": "noun",
+   "word": "mention",
+   "sent": "The mention of layoffs made us worry."
+  },
+  {
+   "pos": "verb",
+   "word": "mention",
+   "sent": "As I mentioned in my note to you, you should try to be less wordy and more concise in your writing."
+  },
+  {
+   "pos": "adjective",
+   "word": "mentionable",
+   "sent": "No one considered the mediocre design a mentionable achievement."
+  },
+  {
+   "pos": "noun",
+   "word": "petition",
+   "sent": "In order to be valid, the contents of the petition need to be printed at the top of each page that will contain signatures."
+  },
+  {
+   "pos": "verb",
+   "word": "petition",
+   "sent": "The welders petitioned the factory to install air conditioning."
+  },
+  {
+   "pos": "noun",
+   "word": "petitioners",
+   "sent": "The petitioners spent the night outside of the"
+  },
+  {
+   "pos": "verb",
+   "word": "proof",
+   "sent": "It is your responsibility to proof your own work before sending it out."
+  },
+  {
+   "pos": "noun",
+   "word": "proofreader",
+   "sent": "The proofreader did not find the errors. proofing Proofing a document is best done by starting at the end and reading backward. register Register this letter and bring back the receipt."
+  },
+  {
+   "pos": "noun",
+   "word": "registration",
+   "sent": "Registration for the seminar can be done by fax."
+  },
+  {
+   "pos": "adjective",
+   "word": "registered",
+   "sent": "Always get a receipt for registered mail. revise After you revise the document, give it a new name so that we wili still have access to both drafts."
+  },
+  {
+   "pos": "adjective",
+   "word": "revised",
+   "sent": "His revised memo was easier to read."
+  },
+  {
+   "pos": "noun",
+   "word": "revision",
+   "sent": "You may have to do three or four full revisions to this document before it is acceptable."
+  }
+ ],
+ "79": [
+  {
+   "pos": "verb",
+   "word": "accomplish",
+   "sent": "You can anything if you put your mind to it."
+  },
+  {
+   "pos": "noun",
+   "word": "accomplishment",
+   "sent": "The company is proud of our team's accomplishments."
+  },
+  {
+   "pos": "adjective",
+   "word": "accomplished",
+   "sent": "The accomplished artist had his paintings in all the major galleries."
+  },
+  {
+   "pos": "noun",
+   "word": "match",
+   "sent": "The former marketing director is a good match for this position in public relations."
+  },
+  {
+   "pos": "verb",
+   "word": "match",
+   "sent": "We need to match both job experience and personality for this position."
+  },
+  {
+   "pos": "adjective",
+   "word": "matching",
+   "sent": "The matching cushions look better on the chair."
+  },
+  {
+   "pos": "noun",
+   "word": "profile",
+   "sent": "His customer profile shows that he always pays on time."
+  },
+  {
+   "pos": "verb",
+   "word": "profile",
+   "sent": "Through telephone surveys, we try to profile our clientele in order to understand who is using our services."
+  },
+  {
+   "pos": "adjective",
+   "word": "profiled",
+   "sent": "The profiled candidate only met half of the job requirements."
+  },
+  {
+   "pos": "verb",
+   "word": "qualify",
+   "sent": "In order to qualify, you must have two years of work experience."
+  },
+  {
+   "pos": "noun",
+   "word": "qualifications",
+   "sent": "The manager made a list of qualifications for the vacant job position."
+  },
+  {
+   "pos": "adjective",
+   "word": "qualified",
+   "sent": "He found himself overqualified for the entry-level position."
+  },
+  {
+   "pos": "verb",
+   "word": "recruit",
+   "sent": "Large accounting firms recruit on college campuses every spring."
+  },
+  {
+   "pos": "noun",
+   "word": "recruitment",
+   "sent": "The company's recruitment resulted in ten highly qualified new employees."
+  },
+  {
+   "pos": "noun",
+   "word": "recruiter",
+   "sent": "As a recruiter, he traveled around the country speaking to recent college graduates."
+  },
+  {
+   "pos": "verb",
+   "word": "submit",
+   "sent": "Anyone who is interested in the position should submit a résumé and writing samples."
+  },
+  {
+   "pos": "noun",
+   "word": "submission",
+   "sent": "I'm very sorry, the submission date was last week. We cant take any more applications."
+  },
+  {
+   "pos": "noun",
+   "word": "submittal",
+   "sent": "The submittal of his resignation prompted his colleagues to apply for his job."
+  }
+ ],
+ "85": [
+  {
+   "pos": "verb",
+   "word": "apply",
+   "sent": "Your chances are better if you apply for a job in the spring. applicant The manager selected him from all the applicants."
+  },
+  {
+   "pos": "noun",
+   "word": "application",
+   "sent": "The department can't process your application until all documents have been received."
+  },
+  {
+   "pos": "noun",
+   "word": "confidence",
+   "sent": "It's refreshing to see a manager with so much confidence in her employees."
+  },
+  {
+   "pos": "adjective",
+   "word": "confident",
+   "sent": "Don't be too cx)nfident until you actually have an offer."
+  },
+  {
+   "pos": "adverb",
+   "word": "confidently",
+   "sent": "The applicant confidently walked into the interview, sat down, and began to talk about himself."
+  },
+  {
+   "pos": "noun",
+   "word": "expert",
+   "sent": "Dont portray yourself as an expert if you arent. The worker gained expertise over the years and was promoted to a higher expertise position."
+  },
+  {
+   "pos": "adjective",
+   "word": "expert",
+   "sent": "As an expert negotiator, she should have no problems getting what the company wants."
+  },
+  {
+   "pos": "adjective",
+   "word": "hesitant",
+   "sent": "The applicant was hesitant to explain his reason for leaving his last job. hesitation Her hesitation about accepting the job made the department wonder if she was really interested."
+  },
+  {
+   "pos": "verb",
+   "word": "hesitate",
+   "sent": "Don't hesitate to call if you have any questions concerning the job. I'd like to present my résumé for your consideration. present"
+  },
+  {
+   "pos": "noun",
+   "word": "presentation",
+   "sent": "The applicant's presentation made a favorable impression. presentable The applicant was well dressed and presentable. weakly The applicant shook hands weakly, making me question her strength of character. weak She gave a weak description of her computer skills."
+  },
+  {
+   "pos": "noun",
+   "word": "weakness",
+   "sent": "Interviewers often ask candidates about their strengths and weaknesses."
+  }
+ ],
+ "91": [
+  {
+   "pos": "noun",
+   "word": "conduct",
+   "sent": "Your conduct during the meeting reflected poorly on the company. conduct If you conduct yourself with professionalism, you will always impress your wuorkers."
+  },
+  {
+   "pos": "noun",
+   "word": "conductor",
+   "sent": "The conductor gathered tickets before the first stop."
+  },
+  {
+   "pos": "verb",
+   "word": "generate",
+   "sent": "The purpose of the demonstration is to generate interest in the new product."
+  },
+  {
+   "pos": "noun",
+   "word": "generator",
+   "sent": "The generator goes on automatically when the electricity goes off."
+  },
+  {
+   "pos": "adjective",
+   "word": "generated",
+   "sent": "The sales that were generated by the giveaway surprised even the sales department."
+  },
+  {
+   "pos": "verb",
+   "word": "hire",
+   "sent": "The personnel director needed to hire 15 people within a week."
+  },
+  {
+   "pos": "noun",
+   "word": "hire",
+   "sent": "The new hire quickly gained a reputation for exællent work. hiring The hiring took the company much longer than expected."
+  },
+  {
+   "pos": "verb",
+   "word": "reject",
+   "sent": "The candidate rejected the offer the first time, but the second time she accepted it."
+  },
+  {
+   "pos": "noun",
+   "word": "rejection",
+   "sent": "Rejections are difficult, but you can learn something from them. rejecting Rejecting a job offer before you have it is not a smart thing to do."
+  },
+  {
+   "pos": "verb",
+   "word": "succeed",
+   "sent": "In order to suweed in this business, you must be persistent."
+  },
+  {
+   "pos": "noun",
+   "word": "success",
+   "sent": "Don't let success go to your head!"
+  },
+  {
+   "pos": "adjective",
+   "word": "successful",
+   "sent": "The trainers were very successful with this last group of new hires."
+  },
+  {
+   "pos": "verb",
+   "word": "train",
+   "sent": "Even though you were trained on a Macintosh, you'll have to learn how to use a PC."
+  },
+  {
+   "pos": "noun",
+   "word": "trainer",
+   "sent": "The trainer stayed after the meeting to answer any questions."
+  },
+  {
+   "pos": "noun",
+   "word": "trainee",
+   "sent": "Each new employee spends six weeks as a trainee."
+  }
+ ],
+ "97": [
+  {
+   "pos": "noun",
+   "word": "basis",
+   "sent": "Your raise will be determined on the basis of performance alone."
+  },
+  {
+   "pos": "verb",
+   "word": "base",
+   "sent": "We base promotions on seniority."
+  },
+  {
+   "pos": "adjective",
+   "word": "based",
+   "sent": "Based on the assumption that you will earn more in your new position, you can afford the car you've been wanting."
+  },
+  {
+   "pos": "verb",
+   "word": "benefit",
+   "sent": "In order to benefit from the plan, you must fill out the paperwork and submit it to the personnel office."
+  },
+  {
+   "pos": "noun",
+   "word": "benefits",
+   "sent": "The new employee's benefits went into effect three months after his start date."
+  },
+  {
+   "pos": "adjective",
+   "word": "beneficial",
+   "sent": "The service that the insurance has provided has been very beneficial. The company compensates its full-time employees well. compensate"
+  },
+  {
+   "pos": "noun",
+   "word": "compensation",
+   "sent": "Compensation will be based on your work performance over the past six months."
+  },
+  {
+   "pos": "adjective",
+   "word": "compensatory",
+   "sent": "Compensatory time is given in lieu of overtime pay."
+  },
+  {
+   "pos": "adverb",
+   "word": "flexibly",
+   "sent": "She approaches problems flexibly, looking at the situation from every different angle."
+  },
+  {
+   "pos": "adjective",
+   "word": "flexible",
+   "sent": "Younger workers tend to be more flexible with their work schedules. flexibility His flexibility on benefits was one of the main reasons we were able to hire him at this time."
+  },
+  {
+   "pos": "verb",
+   "word": "negotiate",
+   "sent": "The employee prepared a list of her accomplishments to share with her supervisor so that she could negotiate a higher salary."
+  },
+  {
+   "pos": "noun",
+   "word": "negotiation",
+   "sent": "The director was very pleased that the negotiations brought about the end of the strike."
+  },
+  {
+   "pos": "noun",
+   "word": "negotiator",
+   "sent": "I should take lessons from Mr. Tarsa; he is such a skilled negotiator."
+  },
+  {
+   "pos": "verb",
+   "word": "retire",
+   "sent": "Many people don't know what to do with all their time when they retire from work."
+  },
+  {
+   "pos": "noun",
+   "word": "retirement",
+   "sent": "The administrator added more money to the fund for her retirement."
+  },
+  {
+   "pos": "adjective",
+   "word": "retired",
+   "sent": "The retired worker came back to the office from time to time to see his friends."
+  }
+ ],
+ "103": [
+  {
+   "pos": "noun",
+   "word": "achievement",
+   "sent": "His achievements were noticed by the vice president and he was sent to the London office."
+  },
+  {
+   "pos": "verb",
+   "word": "achieve",
+   "sent": "Making a list of your objectives will help you achieve them."
+  },
+  {
+   "pos": "noun",
+   "word": "achiever",
+   "sent": "Mr. Vadji always considered himself a high achiever."
+  },
+  {
+   "pos": "verb",
+   "word": "contribute",
+   "sent": "All employees were urged to contribute something useful at the staff meetings."
+  },
+  {
+   "pos": "noun",
+   "word": "contribution",
+   "sent": "Each of you has made a significant contribution to our team's success."
+  },
+  {
+   "pos": "noun",
+   "word": "contributor",
+   "sent": "As contributors to the company's outstanding year, all employees will receive an additional holiday bonus."
+  },
+  {
+   "pos": "verb",
+   "word": "dedicate",
+   "sent": "The manager dedicates too much time to reports and not enough time to the customer."
+  },
+  {
+   "pos": "noun",
+   "word": "dedication",
+   "sent": "Margo's dedication to the company was rewarded with a two-week trip to Hawaii."
+  },
+  {
+   "pos": "adjective",
+   "word": "dedicated",
+   "sent": "Before the change in management, he used to be a more dedicated worker."
+  },
+  {
+   "pos": "adjective",
+   "word": "loyal",
+   "sent": "He has been both a loyal and a loyal friend."
+  },
+  {
+   "pos": "noun",
+   "word": "loyalty",
+   "sent": "Her loyalty to the impressed even the owners."
+  },
+  {
+   "pos": "adverb",
+   "word": "loyally",
+   "sent": "The security officer loyally guarded the company's vault."
+  },
+  {
+   "pos": "adjective",
+   "word": "productive",
+   "sent": "The most productive team in the department will win a two-day vacation in the Bahamas."
+  },
+  {
+   "pos": "noun",
+   "word": "product",
+   "sent": "The new product will be released in the early spring."
+  },
+  {
+   "pos": "verb",
+   "word": "produce",
+   "sent": "The film was produced in Manila."
+  },
+  {
+   "pos": "verb",
+   "word": "promote",
+   "sent": "In order to move ahead in the company, you must promote yourself."
+  },
+  {
+   "pos": "noun",
+   "word": "promotion",
+   "sent": "Promotions are given to those who prove their worth."
+  },
+  {
+   "pos": "noun",
+   "word": "promoter",
+   "sent": "As the main promoter of the product, Ms. Ross was responsible for the marketing campaign."
+  }
+ ],
+ "111": [
+  {
+   "pos": "noun",
+   "word": "comfort",
+   "sent": "This car is designed with plush seats for your comfort and air bags for your safety."
+  },
+  {
+   "pos": "adjective",
+   "word": "comfortable",
+   "sent": "I prefer this sweater because it's more comfortable. comfortably I'd suggest buying the larger table, which comfortably seats six. expand The music store expanded its selection by offering more classical music on compact discs."
+  },
+  {
+   "pos": "noun",
+   "word": "expansion",
+   "sent": "The expansion of our sales territory into a new region will mean more stock will have to be ordered. expanded The expanded inventory is great, but it's hard to find room to store it. explore Ms. Marce explored the bins of hardware, looking for the right size nails. exploration The store designer's exploration of the art of different cultures gave the store an exotic look. exploratory The oil company's exploratory drill led to a new supply of petroleum."
+  },
+  {
+   "pos": "adjective",
+   "word": "mandatory",
+   "sent": "Ankle-high boots are mandatory with that skirt."
+  },
+  {
+   "pos": "noun",
+   "word": "mandate",
+   "sent": "One of the company mandates is to treat the customer with the greatest respect."
+  },
+  {
+   "pos": "verb",
+   "word": "mandate",
+   "sent": "The handbook mandates that all keys be turned in to the night shift supervisor by 9:00."
+  },
+  {
+   "pos": "noun",
+   "word": "merchandise",
+   "sent": "The store's buyer is aggressive about finding unique, high-quality merchandise. merchandise The home superstore merchandises hardware and other goods for do-it- yourself home improvements. merchant The Downtown Merchants Association is offering free gift wrapping this year."
+  },
+  {
+   "pos": "noun",
+   "word": "strictness",
+   "sent": "Ms. Judd was appalled by the strictness of the store's policy not to renew her gift certificate after it had expired. Our store has a strict policy of no returns. strict"
+  },
+  {
+   "pos": "adverb",
+   "word": "strictly",
+   "sent": "The no-food-or-drinks rule is strictly enforced in the bookstore."
+  }
+ ],
+ "117": [
+  {
+   "pos": "verb",
+   "word": "diversify",
+   "sent": "We are going to diversify our product line and start selling software as well as computers."
+  },
+  {
+   "pos": "noun",
+   "word": "diversity",
+   "sent": "The diversity of services that your company offers amazes me."
+  },
+  {
+   "pos": "adjective",
+   "word": "diverse",
+   "sent": "The wholesaler offered a more diverse range of computer accessories than I expected."
+  },
+  {
+   "pos": "noun",
+   "word": "enterprise",
+   "sent": "When she began this enterprise, she had no idea of the time it would require."
+  },
+  {
+   "pos": "adjective",
+   "word": "enterprising",
+   "sent": "The program gives enterprising young people a chance to test their entrepreneurial skills."
+  },
+  {
+   "pos": "noun",
+   "word": "enterpriser",
+   "sent": "Many enterprisers find themselves in daring and exciting ventures that lack the structure for long-term success."
+  },
+  {
+   "pos": "adverb",
+   "word": "essentially",
+   "sent": "Essentially, you will be sitting in a bath of mud for two hours."
+  },
+  {
+   "pos": "adjective",
+   "word": "essential",
+   "sent": "Having Ann on this team is essential if we are to win the contract."
+  },
+  {
+   "pos": "noun",
+   "word": "essence",
+   "sent": "The essence of the problem lies in Jeff's relationship with his manager."
+  },
+  {
+   "pos": "verb",
+   "word": "function",
+   "sent": "He is still functioning as administrator until they find a replacement."
+  },
+  {
+   "pos": "noun",
+   "word": "function",
+   "sent": "The function was attended by all the leading scientists."
+  },
+  {
+   "pos": "adjective",
+   "word": "functional",
+   "sent": "This machine is not functional; we need to purchase a new one."
+  },
+  {
+   "pos": "verb",
+   "word": "maintain",
+   "sent": "Don't worry, I'll maintain the good relationships that you've established with our clients."
+  },
+  {
+   "pos": "noun",
+   "word": "maintainability",
+   "sent": "The maintainability of our second office is called into question by next year's budget cutbacks. maintainable This level of performance will not be maintainable without increasing salaries."
+  },
+  {
+   "pos": "verb",
+   "word": "smooth out",
+   "sent": "In order to smooth out the process of ordering supplies, we're going to use this new software to keep track of purchases and deliveries."
+  },
+  {
+   "pos": "adverb",
+   "word": "smoothly",
+   "sent": "The meeting went smoothly, and the contract was signed without any disagreements."
+  },
+  {
+   "pos": "adjective",
+   "word": "smooth",
+   "sent": "The vendor was so smooth on the phone that he had no difficulty in obtaining an appointment with the busy executive."
+  }
+ ],
+ "123": [
+  {
+   "pos": "noun",
+   "word": "accuracy",
+   "sent": "His firm was well known for its accuracy in predicting how long shipping would take."
+  },
+  {
+   "pos": "adjective",
+   "word": "accurate",
+   "sent": "Don't forget to keep accurate records; you will need them when you have your annual inventory."
+  },
+  {
+   "pos": "adverb",
+   "word": "accurately",
+   "sent": "The in-depth shipping records made it possible for Max to accurately estimate when the mixing bowls would arrive in the store."
+  },
+  {
+   "pos": "verb",
+   "word": "fulfill",
+   "sent": "We take pride in fulfilling customers' unusual requests. fulfilling Fulfilling the requirement of the contract will necessitate hiring extra staff."
+  },
+  {
+   "pos": "noun",
+   "word": "fulfillment",
+   "sent": "Fulfillment of duties can be tedious, but job satisfaction demands attention to detail."
+  },
+  {
+   "pos": "adjective",
+   "word": "integral",
+   "sent": "This paperwork is integral to our ability to track packages."
+  },
+  {
+   "pos": "verb",
+   "word": "integrate",
+   "sent": "The new foreman is unable to integrate information about shipping perishables."
+  },
+  {
+   "pos": "noun",
+   "word": "integration",
+   "sent": "His full integration into the team could take weeks."
+  },
+  {
+   "pos": "verb",
+   "word": "minimize",
+   "sent": "To minimize any potential risk of injury, all workers must wear closed-toed shoes in the stockroom."
+  },
+  {
+   "pos": "adjective",
+   "word": "minimal",
+   "sent": "Luckily, the leak from the roof did only minimal damage to the inventory in the stockroom."
+  },
+  {
+   "pos": "noun",
+   "word": "minimum",
+   "sent": "The minimum is $50; orders of less will be assessed a shipping charge. ship We ship all orders within 24 hours of your phone call."
+  },
+  {
+   "pos": "noun",
+   "word": "shipper",
+   "sent": "We can rely on our shipper to pack large, fragile items carefully."
+  },
+  {
+   "pos": "noun",
+   "word": "shipment",
+   "sent": "The shipment from the supplier was short a number of items, so we complained. sufficiently If you are sufficiently certain that the crate is in this room, I will check them one by one."
+  },
+  {
+   "pos": "adjective",
+   "word": "sufficient",
+   "sent": "The postage on that box is not sufficient to get it to its destination. suffice Will this much Styrofoam suffice?"
+  }
+ ],
+ "129": [
+  {
+   "pos": "verb",
+   "word": "compile",
+   "sent": "Once the data is compiled, we will know more about sales of the R500 model."
+  },
+  {
+   "pos": "noun",
+   "word": "compilation",
+   "sent": "A compilation of factors led us to believe that employee theft had led to the missing inventory. According to the numbers we've compiled, sales remained flat in the second compiled quarter."
+  },
+  {
+   "pos": "adjective",
+   "word": "efficient",
+   "sent": "Counting by twos or threes is much more efficient than counting by one. If we work efficiently, we may be done by midnight. efficiently"
+  },
+  {
+   "pos": "noun",
+   "word": "efficiency",
+   "sent": "His efficiency makes him one of the finest operators in the company."
+  },
+  {
+   "pos": "verb",
+   "word": "estimate",
+   "sent": "We need to estimate the number of work hours spent on this project."
+  },
+  {
+   "pos": "noun",
+   "word": "estimation",
+   "sent": "Clients prefer itemization to estimation on their invoices. Estimating an order for office supplies is difficult because of the increased size estimating of the staff. impose The state intends to impose an additional tax on certain office equipment."
+  },
+  {
+   "pos": "noun",
+   "word": "imposition",
+   "sent": "Clients complained when they discovered the contractor's imposition of charges that should have been included under the terms of the contract."
+  },
+  {
+   "pos": "adjective",
+   "word": "imposing",
+   "sent": "The new clients found the company's reputation imposing."
+  },
+  {
+   "pos": "verb",
+   "word": "mistaken",
+   "sent": "The receptionist dialed the wrong number because she had mistaken a \"7\" for a \"4\" in the phone number she wrote down."
+  },
+  {
+   "pos": "noun",
+   "word": "mistake",
+   "sent": "The manager called the supplier as soon as he saw the mistake on his invoice."
+  },
+  {
+   "pos": "adjective",
+   "word": "mistaken",
+   "sent": "The director admitted that he was mistaken about the amount of the discount for payment received in 30 days."
+  },
+  {
+   "pos": "verb",
+   "word": "prompt",
+   "sent": "The computer cursor prompted the temporary employee about where to insert information on the billing form."
+  },
+  {
+   "pos": "noun",
+   "word": "promptness",
+   "sent": "Employers appreciate promptness in their employees."
+  },
+  {
+   "pos": "adjective",
+   "word": "prompt",
+   "sent": "I am happy to receive statements that thank me for prompt payment."
+  }
+ ],
+ "135": [
+  {
+   "pos": "verb",
+   "word": "adjust",
+   "sent": "After you've verified the quantities in the stockroom, I'll adjust the numbers in the computer."
+  },
+  {
+   "pos": "noun",
+   "word": "adjustment",
+   "sent": "While the adjustments are being made to the computer inventory, the computer will be off-line and unavailable for use."
+  },
+  {
+   "pos": "adjective",
+   "word": "adjustable",
+   "sent": "The height of the shelves is adjustable, which makes it easier to reach and count the merchandise."
+  },
+  {
+   "pos": "noun",
+   "word": "automation",
+   "sent": "Computers have brought a heightened level of automation into the retail industry."
+  },
+  {
+   "pos": "adjective",
+   "word": "automatic",
+   "sent": "The automatic updating of the inventory is convenient, but always a day behind. automatically After every cash register transaction, the computer automatically updates the inventory record."
+  },
+  {
+   "pos": "verb",
+   "word": "disturb",
+   "sent": "Count as many of the items on the salesroom floor as you can without disturbing the customers."
+  },
+  {
+   "pos": "noun",
+   "word": "disturbance",
+   "sent": "After considering all the options, Ellen decided that closing the store a day to do the annual inventory would cause the least amount of disturbance for customers."
+  },
+  {
+   "pos": "adverb",
+   "word": "disturbingly",
+   "sent": "The computer count and the physical count were disturbingly incongruous, which distressed the store manager. reflect The numbers in the computer log should accurately reflect the actual numbers available on the shelf or in the warehouse."
+  },
+  {
+   "pos": "noun",
+   "word": "reflection",
+   "sent": "Upon reflection, the supply clerk decided that there was an error in the inventory."
+  },
+  {
+   "pos": "noun",
+   "word": "reflector",
+   "sent": "Reflectors were attached to the comers of the shelves to alert the clerks that the shelf edges were sharp."
+  },
+  {
+   "pos": "verb",
+   "word": "scan",
+   "sent": "Scan the aisles and see if you find the missing carton. We will install a scanner at two of the computer terminals. scanner scanned These scanned documents need to be returned to their original owners."
+  },
+  {
+   "pos": "verb",
+   "word": "subtract",
+   "sent": "Subtract 50 from the total—I just found an unusable box."
+  },
+  {
+   "pos": "noun",
+   "word": "subtraction",
+   "sent": "If you feel confident doing basic addition and subtraction in your head, you don't have to carry the calculator with you."
+  },
+  {
+   "pos": "adjective",
+   "word": "subtracted",
+   "sent": "These subtracted figures don't add up to the total that was supposed to be subtracted."
+  }
+ ],
+ "143": [
+  {
+   "pos": "verb",
+   "word": "accept",
+   "sent": "The bank will not accept a student ID as a valid form of identification."
+  },
+  {
+   "pos": "noun",
+   "word": "acceptance",
+   "sent": "The bank's acceptance of checks allows extra time for out-of-state checks to clear before they are credited to your account."
+  },
+  {
+   "pos": "adjective",
+   "word": "acceptable",
+   "sent": "Shorter banking hours would not be acceptable to many customers, who might close their accounts as a result."
+  },
+  {
+   "pos": "verb",
+   "word": "caution",
+   "sent": "Our friends cautioned us against putting our money into an account that pays such a low interest rate."
+  },
+  {
+   "pos": "adjective",
+   "word": "cautious",
+   "sent": "The bank officer was cautious about approving Chen's loan because of his unfavorable credit history."
+  },
+  {
+   "pos": "adverb",
+   "word": "cautiously",
+   "sent": "We spent our money cautiously because we were not sure we would be able to borrow more. deduct Remember to deduct the monthly bank fee from your statement."
+  },
+  {
+   "pos": "noun",
+   "word": "deductible",
+   "sent": "Taxes and health insurance payments are called deductibles because they are deducted from your paycheck."
+  },
+  {
+   "pos": "noun",
+   "word": "deduction",
+   "sent": "Deductions are made electronically every month and will appear on your statement."
+  },
+  {
+   "pos": "verb",
+   "word": "restrict",
+   "sent": "The bank's policies restrict the number of deductions you can make from your account without a penalty."
+  },
+  {
+   "pos": "noun",
+   "word": "restriction",
+   "sent": "The restrictions on who was eligible for a mortgage made it impossible for many low-income families to borrow money."
+  },
+  {
+   "pos": "adjective",
+   "word": "restricted",
+   "sent": "Information about your account is confidential and its use without your permission is restricted. sign Once you have signed the mortgage contract, the bank will make a check payable to you."
+  },
+  {
+   "pos": "noun",
+   "word": "sign",
+   "sent": "The sign in the bank's lobby announces their rates for savings accounts and for loans."
+  },
+  {
+   "pos": "noun",
+   "word": "signature",
+   "sent": "Your signature can be electronically recorded to be verified later."
+  },
+  {
+   "pos": "verb",
+   "word": "transact",
+   "sent": "Our company transacts all its financial business at this bank."
+  },
+  {
+   "pos": "noun",
+   "word": "transaction",
+   "sent": "All parties concerned were pleased with the results of the business transactions."
+  }
+ ],
+ "149": [
+  {
+   "pos": "verb",
+   "word": "audit",
+   "sent": "The accountant was precise and hardworking. accountant accounting Accounting is a popular field of study. The client closed his bank account and withdrew all of his money. account accumulate The owner's goal was to accumulate as much wealth as possible. accumulation The accumulation of goods may lead to an inventory problem. accumulated The sum of all the accumulated resources equals your total assets. Some bookkeeping inconsistencies showed up when our records were audited. If you keep your financial records carefully, you will always be ready for audit. audit"
+  },
+  {
+   "pos": "noun",
+   "word": "auditor",
+   "sent": "The tax auditor will ask to see records from the past several years."
+  },
+  {
+   "pos": "verb",
+   "word": "budget",
+   "sent": "There was no travel expense budgeted for the editorial department."
+  },
+  {
+   "pos": "noun",
+   "word": "budget",
+   "sent": "The boss asked for input on next year's budget. budgetary Due to budgetary constraints, we cannot hire additional staff at this time. build up Over the years, our office has built up a solid list of clients. buildup A buildup of debt will weaken the company's finances."
+  },
+  {
+   "pos": "verb",
+   "word": "profit",
+   "sent": "The engineer will profit from the successful introduction of the new product. The profits exceeded all expectations. profit profitable Marketing is the most profitable department this year."
+  }
+ ],
+ "155": [
+  {
+   "pos": "noun",
+   "word": "aggression",
+   "sent": "The act of aggression against our country caused a fear of war and had a negative effect on the stock market."
+  },
+  {
+   "pos": "adjective",
+   "word": "aggressive",
+   "sent": "The director's aggressive position on investing was frowned upon by the Board of Directors. aggressively I chose this stockbroker because he invests my money aggressively. I'm committed to keeping the money in my pension fund until I retire. commit The employee's commitment to working hard and saving her money was commitment commendable. I had hoped that the discussion would yield a definite answer from them, but noncommittal they were noncommittal."
+  },
+  {
+   "pos": "verb",
+   "word": "conserve",
+   "sent": "Conserve your money now so you will be able to invest when the stock market gets better."
+  },
+  {
+   "pos": "adjective",
+   "word": "conservative",
+   "sent": "Some people are conservative investors and take few risks with their money."
+  },
+  {
+   "pos": "adverb",
+   "word": "conservatively",
+   "sent": "If you invest too conservatively, you may lose some chances for making money."
+  },
+  {
+   "pos": "verb",
+   "word": "invest",
+   "sent": "The company has been successful because it has invested wisely in its resources."
+  },
+  {
+   "pos": "noun",
+   "word": "investment",
+   "sent": "The CFO is responsible for corporate investment. investor The fall in the stock market shook up the investors."
+  },
+  {
+   "pos": "verb",
+   "word": "return",
+   "sent": "I wish I could return to the days where investing was simple."
+  },
+  {
+   "pos": "noun",
+   "word": "returns",
+   "sent": "Our returns on our investments exceeded expectations."
+  },
+  {
+   "pos": "adjective",
+   "word": "returnable",
+   "sent": "The merchandise is returnable as long as you have your receipt. Common wisdom is to place your money in a variety of investments. wisdom wise The wise investor does her homework before parting with her money."
+  },
+  {
+   "pos": "adverb",
+   "word": "wisely",
+   "sent": "She planned her retirement wisely and was able to retire to her summer house."
+  }
+ ],
+ "161": [
+  {
+   "pos": "noun",
+   "word": "calculation",
+   "sent": "calculate The young man tries to calculate his expenses every month. The calculation is no more difficult than high school math."
+  },
+  {
+   "pos": "noun",
+   "word": "calculator",
+   "sent": "In order to avoid making addition and subtraction errors, I suggest you use a calculator."
+  },
+  {
+   "pos": "verb",
+   "word": "file",
+   "sent": "Don't wait until the last minute to file your taxes."
+  },
+  {
+   "pos": "noun",
+   "word": "file",
+   "sent": "I keep all my tax information in one file."
+  },
+  {
+   "pos": "adjective",
+   "word": "joint",
+   "sent": "My husband and I filed a joint tax retum."
+  },
+  {
+   "pos": "adverb",
+   "word": "jointly",
+   "sent": "Even though you are separated right now, you will save money if you and your wife file your taxes jointly."
+  },
+  {
+   "pos": "verb",
+   "word": "penalize",
+   "sent": "The government will penalize taxpayers who try to evade paying their fair share of taxes."
+  },
+  {
+   "pos": "noun",
+   "word": "penalty",
+   "sent": "For every dollar you owe in overdue taxes, a 10 percent penalty is imposed."
+  },
+  {
+   "pos": "adjective",
+   "word": "penal",
+   "sent": "Tax evasion is a penal offense."
+  },
+  {
+   "pos": "verb",
+   "word": "prepare",
+   "sent": "Most people wait until the last minute to prepare their tax returns."
+  },
+  {
+   "pos": "noun",
+   "word": "preparation",
+   "sent": "If you are organized, income tax preparation takes only a few hours."
+  },
+  {
+   "pos": "adjective",
+   "word": "preparatory",
+   "sent": "The preparatory work for doing my taxes is more time-consuming than filling out the forms."
+  },
+  {
+   "pos": "verb",
+   "word": "refund",
+   "sent": "The government should refund your overpaid taxes within a few weeks of filing your tax return."
+  },
+  {
+   "pos": "noun",
+   "word": "refund",
+   "sent": "If you have overpaid your income taxes, you will get a refund at the end of the year."
+  },
+  {
+   "pos": "adjective",
+   "word": "refundable",
+   "sent": "Sales tax that tourists pay in a foreign country may be refundable when they leave the country."
+  }
+ ],
+ "167": [
+  {
+   "pos": "verb",
+   "word": "desire",
+   "sent": "Our manager is trying to predict how many customers will desire our product over the next quarter."
+  },
+  {
+   "pos": "noun",
+   "word": "desire",
+   "sent": "Her desire for greater control of the business ted her to discuss her need for more information with her accountant."
+  },
+  {
+   "pos": "adjective",
+   "word": "desirable",
+   "sent": "The category summary, while desirable, was time-consuming to prepare."
+  },
+  {
+   "pos": "verb",
+   "word": "detail",
+   "sent": "The job description details all the duties of this position."
+  },
+  {
+   "pos": "noun",
+   "word": "detail",
+   "sent": "The budget report needs to be accurate down to the last detail."
+  },
+  {
+   "pos": "adjective",
+   "word": "detailed",
+   "sent": "The director asked for a detailed description of our meeting."
+  },
+  {
+   "pos": "verb",
+   "word": "project",
+   "sent": "The budget summary helped us project our expenditures for the year."
+  },
+  {
+   "pos": "noun",
+   "word": "project",
+   "sent": "The financial project was time-consuming and challenging."
+  },
+  {
+   "pos": "noun",
+   "word": "projection",
+   "sent": "Maurice's projections for the upcoming fiscal year were not as helpful as we had hoped."
+  },
+  {
+   "pos": "verb",
+   "word": "realize",
+   "sent": "The plan helps her realize her dream of having the business turn a profit."
+  },
+  {
+   "pos": "noun",
+   "word": "reality",
+   "sent": "The financial statement reinforced the reality that our business is in deep trouble."
+  },
+  {
+   "pos": "adjective",
+   "word": "realistic",
+   "sent": "The accountant needs realistic numbers on which to base his plan."
+  },
+  {
+   "pos": "verb",
+   "word": "translate",
+   "sent": "The computer was able to translate data from the created spreadsheet into the spreadsheet program I prefer. The translation of the document was provided at no charge. translation"
+  },
+  {
+   "pos": "adjective",
+   "word": "translatable",
+   "sent": "The data was not translatable between programs and had to be entered by hand, which took hours."
+  },
+  {
+   "pos": "noun",
+   "word": "type",
+   "sent": "This type of business requires a lot of start-up money."
+  },
+  {
+   "pos": "adjective",
+   "word": "typical",
+   "sent": "Part of a category summary is defining the expenses that are typical of the business in question."
+  },
+  {
+   "pos": "adverb",
+   "word": "typically",
+   "sent": "Typically, we finished preparing the budget just in time to meet the deadline."
+  }
+ ],
+ "175": [
+  {
+   "pos": "verb",
+   "word": "collaborate",
+   "sent": "If we collaborate on this project, you will be sure to receive credit."
+  },
+  {
+   "pos": "noun",
+   "word": "collaboration",
+   "sent": "Collaboration often brings about results that no one could have predicted."
+  },
+  {
+   "pos": "adjective",
+   "word": "collaborative",
+   "sent": "The new project is a collaborative effort among several departments."
+  },
+  {
+   "pos": "verb",
+   "word": "concentrate",
+   "sent": "Some people find it difficult to concentrate when there is a lot of noise and activity around them."
+  },
+  {
+   "pos": "noun",
+   "word": "concentration",
+   "sent": "The concentration of a large percentage of the company's funds in just a few areas left several departments underfunded."
+  },
+  {
+   "pos": "adjective",
+   "word": "concentrated",
+   "sent": "With some effort, we should be able to finish this work by the deadline."
+  },
+  {
+   "pos": "verb",
+   "word": "disrupt",
+   "sent": "Try not to disrupt the meeting being held in the sales department. disruption I'm sorry for the disruption, but this phone call is very important. disruptive Having to temporarily move the offices proved to be very disruptive and sales decreased during that quarter."
+  },
+  {
+   "pos": "noun",
+   "word": "inconsiderateness",
+   "sent": "The inconsiderateness of many of the customers caused several employees to quit their jobs. inconsiderate Would it be inconsiderate to ask to use your office while you are away?"
+  },
+  {
+   "pos": "adverb",
+   "word": "inconsiderately",
+   "sent": "John inconsiderately looked through his coworker's mail before putting it on his desk."
+  },
+  {
+   "pos": "verb",
+   "word": "opt",
+   "sent": "When we moved offices, I opted for the one without a window."
+  },
+  {
+   "pos": "noun",
+   "word": "option",
+   "sent": "Presented with several options, we chose the one that required the least amount of effort."
+  },
+  {
+   "pos": "adjective",
+   "word": "optional",
+   "sent": "Attendance at tomorrow's meeting is optional for the people working in this department. scrutinize The auditor carefully scrutinized the financial records."
+  },
+  {
+   "pos": "noun",
+   "word": "scrutiny",
+   "sent": "Employees under constant scrutiny tend to perform worse than those employees who have more freedom. inscrutable You can never tell what she is thinking, since her facial expressions are inscrutable."
+  }
+ ],
+ "181": [
+  {
+   "pos": "verb",
+   "word": "adhere",
+   "sent": "The chairperson asked us to adhere to the items on the agenda."
+  },
+  {
+   "pos": "noun",
+   "word": "adherence",
+   "sent": "Your adherence to these guidelines would be appreciated. conclude To conclude, we must all focus on the year ahead of us and the challenges that we will face."
+  },
+  {
+   "pos": "noun",
+   "word": "conclusion",
+   "sent": "Unfortunately, the conclusion of the meeting was that they needed to downsize their workforce. conclusive There is no conclusive evidence to back up the report. Ms. Greene decided to lengthen the time allotted to the meeting to allow each lengthen person a chance to speak."
+  },
+  {
+   "pos": "noun",
+   "word": "length",
+   "sent": "Because of its length, we decided not to read the entire report at the meeting."
+  },
+  {
+   "pos": "adjective",
+   "word": "lengthy",
+   "sent": "A presentation that is too lengthy will only put the audience to sleep."
+  },
+  {
+   "pos": "noun",
+   "word": "period",
+   "sent": "The sales reports for the current period are excellent. periodic They received periodic updates from the overseas licensees."
+  },
+  {
+   "pos": "adverb",
+   "word": "periodically",
+   "sent": "The employee checked his messages periodically during the week-long seminar."
+  },
+  {
+   "pos": "verb",
+   "word": "prioritize",
+   "sent": "Once the team members learned to prioritize their work, they were much more productive. The committee member has difficulties setting priorities for herself. priority prior The director did not give much attention to Ellen's proposal as he had several prior matters to attend to."
+  },
+  {
+   "pos": "verb",
+   "word": "progress",
+   "sent": "Everyone was surprised at how quickly the meeting had progressed."
+  },
+  {
+   "pos": "noun",
+   "word": "progression",
+   "sent": "The quick progression of events didn't surprise anyone."
+  },
+  {
+   "pos": "adjective",
+   "word": "progressive",
+   "sent": "The new president is very progressive and is always looking for ways to improve the business."
+  }
+ ],
+ "187": [
+  {
+   "pos": "verb",
+   "word": "defect",
+   "sent": "Disgusted by the poor quality of products at the factory, the employee defected to a plant that took pride in its work."
+  },
+  {
+   "pos": "noun",
+   "word": "defect",
+   "sent": "Even a small defect can cause a product to fail."
+  },
+  {
+   "pos": "adjective",
+   "word": "defective",
+   "sent": "Good quality control employees wilt notice defective machinery before a serious breakdown occurs."
+  },
+  {
+   "pos": "verb",
+   "word": "inspect",
+   "sent": "We must inspect every product before we self it."
+  },
+  {
+   "pos": "noun",
+   "word": "inspection",
+   "sent": "Each employee must conduct a careful inspection."
+  },
+  {
+   "pos": "noun",
+   "word": "inspector",
+   "sent": "The inspector leaves his identification number on the product to ensure accountability. The worker perceived that the stitching on the seams could not withstand perceive normal strain."
+  },
+  {
+   "pos": "noun",
+   "word": "perception",
+   "sent": "Customers' perception of quality is often based on their experience with a given store or brand."
+  },
+  {
+   "pos": "adjective",
+   "word": "perceptive",
+   "sent": "Perceptive workers are excellent quality control inspectors. repel A quality raincoat can repel rain and keep you dry."
+  },
+  {
+   "pos": "noun",
+   "word": "repellent",
+   "sent": "Testing insect repellent is never a pleasant task."
+  },
+  {
+   "pos": "adjective",
+   "word": "repellent",
+   "sent": "Testing stain removers can be repellent to workers because of the toxic fumes."
+  },
+  {
+   "pos": "noun",
+   "word": "uniform",
+   "sent": "The employees at this company are required to wear uniforms."
+  },
+  {
+   "pos": "adjective",
+   "word": "uniform",
+   "sent": "A successful company will ensure the uniform quality of its products."
+  },
+  {
+   "pos": "adverb",
+   "word": "uniformly",
+   "sent": "All of our company's products must be uniformly labeled. wrinkle Linen is not a practical fabric because it wrinkles easily."
+  },
+  {
+   "pos": "noun",
+   "word": "wrinkle",
+   "sent": "Inspect garments carefully and remove any wrinkles that you find."
+  },
+  {
+   "pos": "adjective",
+   "word": "wrinkled",
+   "sent": "Garments become wrinkled after they have been tried on several times at the store."
+  }
+ ],
+ "193": [
+  {
+   "pos": "noun",
+   "word": "anxiety",
+   "sent": "The level of anxiety was high when the experimental car underwent road tests."
+  },
+  {
+   "pos": "adjective",
+   "word": "anxious",
+   "sent": "If you feel anxious, sit down and try to relax."
+  },
+  {
+   "pos": "adverb",
+   "word": "anxiously",
+   "sent": "The stockholders anxiously awaited the release of the new drug that, if successful, would make their stocks more valuable."
+  },
+  {
+   "pos": "verb",
+   "word": "assume",
+   "sent": "Product developers should assume nothing that research does not support."
+  },
+  {
+   "pos": "noun",
+   "word": "assumption",
+   "sent": "Most consumers make the assumption that, unless they are warned otherwise, the products they buy are safe."
+  },
+  {
+   "pos": "adjective",
+   "word": "assumed",
+   "sent": "The assumed results should be kept confidential until the product is retested."
+  },
+  {
+   "pos": "verb",
+   "word": "experiment",
+   "sent": "The product developer had experimented with improving electronic equipment since she was in the sixth grade."
+  },
+  {
+   "pos": "noun",
+   "word": "experimentation",
+   "sent": "Hi-tech companies are constantly involved in experimentation with new products in order to stay ahead of their competitors."
+  },
+  {
+   "pos": "adjective",
+   "word": "experimental",
+   "sent": "The new computer was experimental, so you could try it at the store, but you couldn't buy one."
+  },
+  {
+   "pos": "noun",
+   "word": "logic",
+   "sent": "Most problems can be easily solved by the application of logic."
+  },
+  {
+   "pos": "adjective",
+   "word": "logical",
+   "sent": "It was logical to put Martha in charge of the project as she had spent so much time developing the idea."
+  },
+  {
+   "pos": "adverb",
+   "word": "logically",
+   "sent": "I thought Mr. Lee answered the question quite logically."
+  },
+  {
+   "pos": "noun",
+   "word": "responsibility",
+   "sent": "Although the ultimate responsibility falls on the supervisor, every employee shares it."
+  },
+  {
+   "pos": "adjective",
+   "word": "responsible",
+   "sent": "The researcher responsible for passing the defective product has joined the cafeteria workers' assembly line."
+  },
+  {
+   "pos": "adverb",
+   "word": "responsibly",
+   "sent": "Product designers must act responsibly when they consider how a product might be misused."
+  },
+  {
+   "pos": "verb",
+   "word": "supervise",
+   "sent": "It's important to carefully supervise the collection of research data to ensure its accuracy."
+  },
+  {
+   "pos": "noun",
+   "word": "supervisor",
+   "sent": "George hopes to be promoted to supervisor of his department."
+  },
+  {
+   "pos": "noun",
+   "word": "supervision",
+   "sent": "Many employees do better work when they are under less supervision."
+  }
+ ],
+ "199": [
+  {
+   "pos": "verb",
+   "word": "apprehend",
+   "sent": "A child can't apprehend the importance of saving for the future."
+  },
+  {
+   "pos": "noun",
+   "word": "apprehension",
+   "sent": "The air was thick with apprehension as the landlord met with the tenants."
+  },
+  {
+   "pos": "adjective",
+   "word": "apprehensive",
+   "sent": "The tenants were apprehensive about the conditions of their rental agreement."
+  },
+  {
+   "pos": "adverb",
+   "word": "circumstantially",
+   "sent": "The building owner circumstantially takes money out of the escrow account for emergency repairs."
+  },
+  {
+   "pos": "noun",
+   "word": "circumstance",
+   "sent": "Because of our circumstances, the rental agent kindly allowed us to get out of our lease early."
+  },
+  {
+   "pos": "adjective",
+   "word": "circumstantial",
+   "sent": "The judge's decision that the tenant was responsible for repairing the damage was based solely on circumstantial evidence."
+  },
+  {
+   "pos": "verb",
+   "word": "condition",
+   "sent": "The president conditioned her acceptance on two factors that were spelled out in the letter of agreement."
+  },
+  {
+   "pos": "noun",
+   "word": "condition",
+   "sent": "They decided to rent the space, under the condition that the price would not be raised for the next two years."
+  },
+  {
+   "pos": "adjective",
+   "word": "conditionat",
+   "sent": "If you give a conditional go-ahead, we will start drawing up the plans."
+  },
+  {
+   "pos": "verb",
+   "word": "indicate",
+   "sent": "As was indicated in the terms of the lease, any changes to the property must be approved by the owners."
+  },
+  {
+   "pos": "noun",
+   "word": "indicator",
+   "sent": "The state of local schools is a good indicator of the health of the economy."
+  },
+  {
+   "pos": "noun",
+   "word": "indication",
+   "sent": "The management team had every indication that the tenants were planning to stay for the near future."
+  },
+  {
+   "pos": "verb",
+   "word": "fluctuate",
+   "sent": "As interest rates began to fluctuate, many investors became nervous and took their money out of the real estate market."
+  },
+  {
+   "pos": "noun",
+   "word": "fluctuation",
+   "sent": "Construction is sensitive to any fluctuations in the economy. fluctuating Any additional fluctuating on prices will not be accepted."
+  },
+  {
+   "pos": "verb",
+   "word": "occupy",
+   "sent": "The owner must make sure that the space is in good condition before the tenant occupies it."
+  },
+  {
+   "pos": "noun",
+   "word": "occupant",
+   "sent": "Most of the occupants of this building are doctors and lawyers."
+  },
+  {
+   "pos": "noun",
+   "word": "occupancy",
+   "sent": "The occupancy rate of the building has never fallen below 85 percent."
+  }
+ ],
+ "207": [
+  {
+   "pos": "verb",
+   "word": "appeal",
+   "sent": "On a beautiful spring day, a sidewalk café appeals to many people."
+  },
+  {
+   "pos": "noun",
+   "word": "appeal",
+   "sent": "That restaurant has been around for a long time but it hasn't lost its appeal."
+  },
+  {
+   "pos": "adjective",
+   "word": "appealing",
+   "sent": "An ice-cold drink seems very appealing on a hot day."
+  },
+  {
+   "pos": "verb",
+   "word": "dare",
+   "sent": "I prefer familiar things and don't usually dare to try new restaurants."
+  },
+  {
+   "pos": "adjective",
+   "word": "daring",
+   "sent": "Kobi had more daring tastes than the rest of his family."
+  },
+  {
+   "pos": "adverb",
+   "word": "daringly",
+   "sent": "Jane daringly refused a fork and attempted to eat her entire meal with chopsticks."
+  },
+  {
+   "pos": "verb",
+   "word": "guide",
+   "sent": "The hostess guided us to our table."
+  },
+  {
+   "pos": "noun",
+   "word": "guidance",
+   "sent": "Li asked the waiter for guidance in selecting the wine."
+  },
+  {
+   "pos": "adjective",
+   "word": "guidable",
+   "sent": "Finding the patrons to be very guidable, the waiter steered them to the most expensive items on the menu."
+  },
+  {
+   "pos": "verb",
+   "word": "mix",
+   "sent": "The chef was famous for mixing unfamiliar ingredients."
+  },
+  {
+   "pos": "noun",
+   "word": "mixture",
+   "sent": "The texture of the vegetable mixture was too lumpy for my taste."
+  },
+  {
+   "pos": "adjective",
+   "word": "mixable",
+   "sent": "Oil and water are not mixable."
+  },
+  {
+   "pos": "verb",
+   "word": "rely",
+   "sent": "We will rely on the hostess's recommendations."
+  },
+  {
+   "pos": "noun",
+   "word": "reliability",
+   "sent": "The reliability of deliveries became a problem for the manager."
+  },
+  {
+   "pos": "adjective",
+   "word": "reliable",
+   "sent": "Hiring a reliable staff is the first priority for every restaurant manager."
+  },
+  {
+   "pos": "verb",
+   "word": "suggest",
+   "sent": "Can I suggest a good wine to go with the entrée?"
+  },
+  {
+   "pos": "noun",
+   "word": "suggestion",
+   "sent": "Clark asked his boss for a suggestion for a good place to eat."
+  },
+  {
+   "pos": "adjective",
+   "word": "suggestible",
+   "sent": "The patrons were in a suggestible mood, and were easily convinced to have dessert."
+  }
+ ],
+ "213": [
+  {
+   "pos": "verb",
+   "word": "",
+   "sent": "The meal could not be completed without dessert."
+  },
+  {
+   "pos": "noun",
+   "word": "completion",
+   "sent": "The coffee was the last item ordered and brought the meal to completion."
+  },
+  {
+   "pos": "adverb",
+   "word": "completely",
+   "sent": "The chef forgot that the dessert was in the oven and completely ruined it."
+  },
+  {
+   "pos": "verb",
+   "word": "excite",
+   "sent": "The chef knows how to excite his patrons."
+  },
+  {
+   "pos": "noun",
+   "word": "excitement",
+   "sent": "You can feel the excitement in the air."
+  },
+  {
+   "pos": "adjective",
+   "word": "excited",
+   "sent": "I am really excited about trying out this new restaurant."
+  },
+  {
+   "pos": "verb",
+   "word": "flavor",
+   "sent": "I like a chef who uses exotic spices to flavor the food."
+  },
+  {
+   "pos": "noun",
+   "word": "flavor",
+   "sent": "Some people don't like Mexican food because the flavors are too spicy."
+  },
+  {
+   "pos": "adjective",
+   "word": "flavorful",
+   "sent": "The special ingredients made the dish very flavorful. Don't forget to bring us the check. forget"
+  },
+  {
+   "pos": "adjective",
+   "word": "forgetful",
+   "sent": "The forgetful waitress put a burden on the rest of the staff."
+  },
+  {
+   "pos": "adjective",
+   "word": "forgettable",
+   "sent": "The meal was bland and forgettable."
+  },
+  {
+   "pos": "verb",
+   "word": "mix up",
+   "sent": "An inexperienced waiter can easily mix up orders."
+  },
+  {
+   "pos": "noun",
+   "word": "mix-up",
+   "sent": "We had a big mix-up in our plans and I ended up waiting for my friends at the wrong restaurant."
+  },
+  {
+   "pos": "adjective",
+   "word": "mixed up",
+   "sent": "Bob always gets mixed up when he tries to order food at a foreign restaurant. predict I predict that this restaurant will be a success."
+  },
+  {
+   "pos": "noun",
+   "word": "prediction",
+   "sent": "The manager's prediction came true, and the chef was named to the \"Top 100\" list."
+  },
+  {
+   "pos": "adverb",
+   "word": "predictably",
+   "sent": "Predictably, because the waiter neglected to write down the order, he forgot some necessary items."
+  }
+ ],
+ "219": [
+  {
+   "pos": "verb",
+   "word": "burden",
+   "sent": "The frequently complicated lunch orders unfairly burdened Jacques."
+  },
+  {
+   "pos": "noun",
+   "word": "burden",
+   "sent": "In addition to all her other responsibilities, Marie had the burden of picking up the daily lunch order."
+  },
+  {
+   "pos": "adjective",
+   "word": "burdensome",
+   "sent": "Keeping track of everybody's lunch orders can be a burdensome task."
+  },
+  {
+   "pos": "noun",
+   "word": "in common",
+   "sent": "The two secretaries keep a file of restaurant menus in common to facilitate placing an order."
+  },
+  {
+   "pos": "adjective",
+   "word": "common",
+   "sent": "It is a common practice for restaurants to deliver. commonly It was commonly known that the sandwich shop had slow deliverymen."
+  },
+  {
+   "pos": "verb",
+   "word": "deliver",
+   "sent": "That restaurant delivers food at no extra charge."
+  },
+  {
+   "pos": "noun",
+   "word": "delivery",
+   "sent": "We all got very hungry waiting for the delivery to arrive,"
+  },
+  {
+   "pos": "noun",
+   "word": "elegance",
+   "sent": "The elegance of the surroundings was accentuated by the wonderful meal the caterers delivered."
+  },
+  {
+   "pos": "adjective",
+   "word": "elegant",
+   "sent": "Delores set an elegant table that was sure to impress."
+  },
+  {
+   "pos": "adverb",
+   "word": "elegantly",
+   "sent": "The tasty appetizers were elegantly served from silver platters. impress am favorably impressed by how quickly the pizza was delivered."
+  },
+  {
+   "pos": "noun",
+   "word": "impression",
+   "sent": "She gave the impression that the food would be delivered within the hour."
+  },
+  {
+   "pos": "adjective",
+   "word": "impressionable",
+   "sent": "I have an impressionable child, so I don't like him to see deliverymen running red traffic lights. The take-out shop does not allow you to individualize your order by asking for individualize substitutions."
+  },
+  {
+   "pos": "noun",
+   "word": "individual",
+   "sent": "The portions are large enough to feed two individuals."
+  },
+  {
+   "pos": "adverb",
+   "word": "individually",
+   "sent": "The individually marked boxes made it easy for us to claim our orders."
+  }
+ ],
+ "225": [
+  {
+   "pos": "verb",
+   "word": "accustom to",
+   "sent": "Shirley could not accustom herself to the demands of her new job."
+  },
+  {
+   "pos": "noun",
+   "word": "custom",
+   "sent": "It is the custom at this restaurant to offer free meals to patrons on their birthdays."
+  },
+  {
+   "pos": "adjective",
+   "word": "accustomed to",
+   "sent": "Janet has become accustomed to eating spicy food."
+  },
+  {
+   "pos": "verb",
+   "word": "apprentice",
+   "sent": "Instead of attending cooking school, Michael decided to apprentice to a master chef."
+  },
+  {
+   "pos": "noun",
+   "word": "apprentice",
+   "sent": "The new group of apprentices will start working any day now."
+  },
+  {
+   "pos": "noun",
+   "word": "apprenticeship",
+   "sent": "The apprenticeship was a grueling period, but George learned a lot."
+  },
+  {
+   "pos": "verb",
+   "word": "demand",
+   "sent": "The head chef demands a lot from his assistants."
+  },
+  {
+   "pos": "noun",
+   "word": "demand",
+   "sent": "Pierre could not keep up with the many demands of the customers."
+  },
+  {
+   "pos": "adjective",
+   "word": "demanding",
+   "sent": "Working as a chef is a very demanding job."
+  },
+  {
+   "pos": "verb",
+   "word": "incorporate",
+   "sent": "Take these items and incorporate them into a stew."
+  },
+  {
+   "pos": "noun",
+   "word": "incorporation",
+   "sent": "The restaurant was the incorporation of every good idea the chef had thought of in his career. incorporating Chef Tao was famous for incorporating different cooking styles into one."
+  },
+  {
+   "pos": "noun",
+   "word": "method",
+   "sent": "The chef discovered a more efficient method of peeling boiled eggs."
+  },
+  {
+   "pos": "noun",
+   "word": "methodology",
+   "sent": "Even the order of adding ingredients is an unappreciated aspect of cooking methodology."
+  },
+  {
+   "pos": "adjective",
+   "word": "methodical",
+   "sent": "The head cook was not so artistic as methodical in preparing standard dishes."
+  },
+  {
+   "pos": "noun",
+   "word": "profession",
+   "sent": "The number of people choosing cooking as a profession has risen over the past decade."
+  },
+  {
+   "pos": "adjective",
+   "word": "professional",
+   "sent": "She was professional in her approach to dealing with the problem of late deliveries."
+  },
+  {
+   "pos": "adverb",
+   "word": "professionally",
+   "sent": "Although the customer was rude and loud, the waiter handled the situation very professionally."
+  }
+ ],
+ "231": [
+  {
+   "pos": "verb",
+   "word": "assist",
+   "sent": "Let me assist you with planning your next event."
+  },
+  {
+   "pos": "noun",
+   "word": "assistance",
+   "sent": "Dennis's idea of assistance is to a professional firm for advice."
+  },
+  {
+   "pos": "noun",
+   "word": "assistant",
+   "sent": "In light of the number of events she had to run this year, Annu asked her boss for an assistant."
+  },
+  {
+   "pos": "verb",
+   "word": "coordinate",
+   "sent": "Ralph had a hard time coordinating the schedules of everybody involved in planning the event."
+  },
+  {
+   "pos": "noun",
+   "word": "coordination",
+   "sent": "Edna is a very good organizer, and coordination of events is one of her specialties."
+  },
+  {
+   "pos": "noun",
+   "word": "",
+   "sent": "The staff chose Marcel to be the coordinator for the company picnic."
+  },
+  {
+   "pos": "verb",
+   "word": "generalize",
+   "sent": "When we generalize, we must be aware of the many exceptions."
+  },
+  {
+   "pos": "adjective",
+   "word": "general",
+   "sent": "I need a general idea of what you want before f can provide specific answers."
+  },
+  {
+   "pos": "adverb",
+   "word": "generally",
+   "sent": "Although I cannot speak for every case, generally it is less expensive to buy in quantity."
+  },
+  {
+   "pos": "verb",
+   "word": "idealize",
+   "sent": "Rhoda idealized the location until she could no longer see any flaws in it."
+  },
+  {
+   "pos": "adjective",
+   "word": "ideal",
+   "sent": "A hotel with a large garden wouid be the ideal site for the reception."
+  },
+  {
+   "pos": "adverb",
+   "word": "ideally",
+   "sent": "Ideally, the site would be within our budget and have an outdoor area."
+  },
+  {
+   "pos": "verb",
+   "word": "plan",
+   "sent": "The committee planned to hold the luncheon in the office conference room rather than at a restaurant."
+  },
+  {
+   "pos": "noun",
+   "word": "plan",
+   "sent": "The finalized plans for the event will be presented at the staff meeting tomorrow."
+  },
+  {
+   "pos": "noun",
+   "word": "planner",
+   "sent": "Since she wanted to have a large wedding, Matilda decided to hire a wedding planner to help her make the arrangements. regulate The state will regulate the food-handling precautions."
+  },
+  {
+   "pos": "noun",
+   "word": "regulation",
+   "sent": "Please obey the state regulations regarding serving alcohol to minors."
+  },
+  {
+   "pos": "adjective",
+   "word": "regulatory",
+   "sent": "Even though it is private, the country club's kitchen is subject to the rules of regulatory agencies."
+  }
+ ],
+ "239": [
+  {
+   "pos": "noun",
+   "word": "announcement",
+   "sent": "The captain announced that the flight would be landing in approximately 15 announce minutes. The flight attendant made an announcement reminding the passengers that this was a no-smoking flight."
+  },
+  {
+   "pos": "noun",
+   "word": "announcer",
+   "sent": "The announcer gave the instructions for boarding, in three languages."
+  },
+  {
+   "pos": "verb",
+   "word": "board",
+   "sent": "You can't board the flight without an embarkation card."
+  },
+  {
+   "pos": "noun",
+   "word": "board",
+   "sent": "The board of directors met to discuss problems with the striking pilots."
+  },
+  {
+   "pos": "adjective",
+   "word": "onboard",
+   "sent": "The onboard telephone was expensive to use, but a true time-saver."
+  },
+  {
+   "pos": "verb",
+   "word": "claim",
+   "sent": "International passengers must proceed to customs as soon as they claim their baggage."
+  },
+  {
+   "pos": "noun",
+   "word": "claim",
+   "sent": "If the airline has lost your luggage, you can file a claim with the insurance company."
+  },
+  {
+   "pos": "noun",
+   "word": "claimant",
+   "sent": "There was a long line of claimants waiting at the lost luggage office."
+  },
+  {
+   "pos": "verb",
+   "word": "delay",
+   "sent": "Please don't delay me; I need to get to my gate immediately."
+  },
+  {
+   "pos": "noun",
+   "word": "delay",
+   "sent": "The delay in takeoff times was caused by a bad storm."
+  },
+  {
+   "pos": "verb",
+   "word": "depart",
+   "sent": "The flight will depart from Gate 25."
+  },
+  {
+   "pos": "noun",
+   "word": "departure",
+   "sent": "The pilot always reminds the flight attendants to make sure that all passengers are ready for departure."
+  },
+  {
+   "pos": "adjective",
+   "word": "departed",
+   "sent": "The house felt empty without the departed guests. validate You can get your parking ticket validated at the concierge desk."
+  },
+  {
+   "pos": "noun",
+   "word": "validation",
+   "sent": "The restaurant received three stars, which is quite a validation of the chef's skills."
+  },
+  {
+   "pos": "adjective",
+   "word": "valid",
+   "sent": "Your ticket is no longer valid because it was issued over a year ago."
+  }
+ ],
+ "245": [
+  {
+   "pos": "verb",
+   "word": "distinguish",
+   "sent": "I can't distinguish any difference in the two airlines, since their fares are the same."
+  },
+  {
+   "pos": "adjective",
+   "word": "distinguishable",
+   "sent": "The airline's planes were easily distinguishable by the bright logo on the planes' tails. distinguishably Even though you have paid a lower fare, you won't be distinguishably different than the other passengers on the plane."
+  },
+  {
+   "pos": "verb",
+   "word": "economize",
+   "sent": "We no longer fly first class, since our company is trying to economize."
+  },
+  {
+   "pos": "adjective",
+   "word": "economical",
+   "sent": "Without hesitation, we chose the more economical of the two airline tickets."
+  },
+  {
+   "pos": "adverb",
+   "word": "economically",
+   "sent": "A good travel agent can help you plan your trip economically. To stay within our travel budget, we must keep all our expenses as low as expense possible."
+  },
+  {
+   "pos": "adjective",
+   "word": "expensively",
+   "sent": "The first-class seats are for those who travel expensively but with great style."
+  },
+  {
+   "pos": "adverb",
+   "word": "expensive",
+   "sent": "Only the most expensive fares were still available."
+  },
+  {
+   "pos": "verb",
+   "word": "extend",
+   "sent": "When people travel to an interesting destination for business, they often extend their trip by a few days in order to enjoy the place as a tourist."
+  },
+  {
+   "pos": "noun",
+   "word": "extent",
+   "sent": "Larry has traveled to Japan many times and the extent of his knowledge of that country is impressive."
+  },
+  {
+   "pos": "adjective",
+   "word": "extensive",
+   "sent": "Pamela is taking six months off from work in order to take an extensive tour of South America."
+  },
+  {
+   "pos": "noun",
+   "word": "prospect",
+   "sent": "The prospects of getting a seat on this evening's flight are not good."
+  },
+  {
+   "pos": "adjective",
+   "word": "prospective",
+   "sent": "The travel agency offered special deals in order to attract prospective customers."
+  },
+  {
+   "pos": "noun",
+   "word": "substance",
+   "sent": "I couldn't recognize the substance that was on my meal tray and that the airlines called dinner."
+  },
+  {
+   "pos": "adjective",
+   "word": "substantial",
+   "sent": "Ms. Qin found there was a substantial difference in the price quoted for the plane ticket, depending on which day she flew. There is substantially no difference in the quality of food served in first class substantially and in economy class."
+  }
+ ],
+ "251": [
+  {
+   "pos": "noun",
+   "word": "comprehensiveness",
+   "sent": "Due to the comprehensiveness of the train system, the complete timetable was a thick document."
+  },
+  {
+   "pos": "adjective",
+   "word": "comprehensive",
+   "sent": "Due to the comprehensive reach of the rail system, the train can take you to every major city and many smaller ones."
+  },
+  {
+   "pos": "adverb",
+   "word": "comprehensively",
+   "sent": "The surveyors comprehensively studied the terrain before planning the site for the new train tracks."
+  },
+  {
+   "pos": "verb",
+   "word": "direct",
+   "sent": "We were unfamiliar with the city, so the hotel manager directed us to the train station."
+  },
+  {
+   "pos": "noun",
+   "word": "direction",
+   "sent": "The ticket agent at the train station gave us directions to the nearest restaurant."
+  },
+  {
+   "pos": "noun",
+   "word": "directory",
+   "sent": "At the train station you can pick up a free directory to local restaurants, museums, and other places of interest to visitors."
+  },
+  {
+   "pos": "verb",
+   "word": "operate",
+   "sent": "Trains don't operate in this town after the summer tourism season is over."
+  },
+  {
+   "pos": "noun",
+   "word": "operation",
+   "sent": "The train system is a massive operation with thousands of large and small stations across the country."
+  },
+  {
+   "pos": "adjective",
+   "word": "operational",
+   "sent": "As the operational expenses for the train system rose, the managers were forced to either cut services or raise prices."
+  },
+  {
+   "pos": "noun",
+   "word": "punctuality",
+   "sent": "The Swiss trains are legendary for their punctuality. For a transportation service to have any credibility, it must be punctual. punctual"
+  },
+  {
+   "pos": "adverb",
+   "word": "punctually",
+   "sent": "The conductor arrived punctually at the train station."
+  },
+  {
+   "pos": "verb",
+   "word": "remain",
+   "sent": "It is safer for all passengers to remain in their seats until the train to a complete stop."
+  },
+  {
+   "pos": "noun",
+   "word": "remains",
+   "sent": "The waiter cleared off the remains of our meal after we left the dining car. After our exciting stay in New York, the remainder of the trip seemed dull. remainder"
+  },
+  {
+   "pos": "noun",
+   "word": "remoteness",
+   "sent": "The remoteness of the state park was part of its attraction, but since it's not served by a train line, I couldn't get to it."
+  },
+  {
+   "pos": "adjective",
+   "word": "remote",
+   "sent": "The remote cabin in the woods can only be reached by car; the nearest train station or airport is more than 100 miles away."
+  },
+  {
+   "pos": "adverb",
+   "word": "remotely",
+   "sent": "I wasn't remotely interested in taking a cross-country trip by train since I can't stand to be confined for a long time."
+  }
+ ],
+ "257": [
+  {
+   "pos": "verb",
+   "word": "advance",
+   "sent": "We are advancing steadily toward our goal of improving customer service at every hotel in the chain."
+  },
+  {
+   "pos": "noun",
+   "word": "advance",
+   "sent": "Clarissa booked the bridal suite in advance of the hotel's official opening."
+  },
+  {
+   "pos": "adjective",
+   "word": "advanced",
+   "sent": "All hotel employees who do well at their jobs will be given the opportunity to move up to an advanced position. It is wise to confirm your reservation before you leave for your trip. confirm confirmation The confirmation code given to Suzanne when she booked her room made it easy for her to resolve her problem."
+  },
+  {
+   "pos": "adjective",
+   "word": "confirmed",
+   "sent": "The concierge had the confirmed helpful manner that is necessary in her position."
+  },
+  {
+   "pos": "verb",
+   "word": "expect",
+   "sent": "We expect to reach our destination by dinner."
+  },
+  {
+   "pos": "noun",
+   "word": "expectation",
+   "sent": "The guest's expectations were not met, so he complained to the manager."
+  },
+  {
+   "pos": "adjective",
+   "word": "expectant",
+   "sent": "The expectant travelers, loaded with luggage, left the hotel for their scheduled flight."
+  },
+  {
+   "pos": "verb",
+   "word": "notify",
+   "sent": "Please notify the front desk clerk if there are any problems with your room."
+  },
+  {
+   "pos": "noun",
+   "word": "notification",
+   "sent": "Written notification is required for any changes in reservations."
+  },
+  {
+   "pos": "verb",
+   "word": "quote",
+   "sent": "When customers ask for the room rate, just quote them the prices listed on this sheet. The quotation given to me didn't make sense, so I called again to verify it. quotation quotable Our manager instructed us that the current room rates would be quotable only until the end of the month, when a rate increase would go into effect."
+  },
+  {
+   "pos": "verb",
+   "word": "reserve",
+   "sent": "We reserved a room well in advance."
+  },
+  {
+   "pos": "noun",
+   "word": "reservation",
+   "sent": "Seeing the crowds on the highway, I decided to pull over and telephone the hotel to make a reservation."
+  },
+  {
+   "pos": "noun",
+   "word": "in reserve",
+   "sent": "Like many other businesses, a hotel must keep some cash in reserve to pay for emergencies."
+  }
+ ],
+ "263": [
+  {
+   "pos": "noun",
+   "word": "confusion",
+   "sent": "confuse These long car rental contracts always confuse me. The crowds at the car rental office resulted in a lot of confusion. confusing Driving in an unfamiliar city can be quite confusing."
+  },
+  {
+   "pos": "verb",
+   "word": "coincide",
+   "sent": "This year, my vacation coincides with a national holiday, which will make renting a car more expensive."
+  },
+  {
+   "pos": "noun",
+   "word": "coincidence",
+   "sent": "By coincidence, I ran into an old friend in line waiting to rent a car. Coincidentally, we are offering a special discount if you are over age 65. coincidentally disappoint The service at that car rental agency always disappoints me, so next time I plan to use a different agency."
+  },
+  {
+   "pos": "noun",
+   "word": "disappointment",
+   "sent": "The poor condition of the car we rented was an unexpected disappointment."
+  },
+  {
+   "pos": "adjective",
+   "word": "disappointing",
+   "sent": "The weather during our trip was so disappointing that we came home early."
+  },
+  {
+   "pos": "noun",
+   "word": "intention",
+   "sent": "I have every intention of paying by cash even though I reserved the car with my credit card."
+  },
+  {
+   "pos": "adjective",
+   "word": "intent",
+   "sent": "Intent on avoiding an accident, Zola drove cautiously through the rush hour traffic. intently The tourist intently studied the road map."
+  },
+  {
+   "pos": "noun",
+   "word": "nervousness",
+   "sent": "I hope my nervousness did not show when I was filling out the forms."
+  },
+  {
+   "pos": "adjective",
+   "word": "nervous",
+   "sent": "This was Jane's first time renting a car, so she was somewhat nervous."
+  },
+  {
+   "pos": "adverb",
+   "word": "nervously",
+   "sent": "Mr. Lane nervously parallel parked the rental car between two others in the parking garage. Can I tempt you to rent a larger car with a special discount? tempt"
+  },
+  {
+   "pos": "noun",
+   "word": "temptation",
+   "sent": "The temptation to drive the sports car fast was too great for Karl to resist."
+  },
+  {
+   "pos": "adjective",
+   "word": "tempting",
+   "sent": "As tempting as it sounds to drive to Florida, I think I'd rather fly."
+  }
+ ],
+ "271": [
+  {
+   "pos": "verb",
+   "word": "attain",
+   "sent": "The film quickly attained a reputation as a \"must-see\" movie."
+  },
+  {
+   "pos": "noun",
+   "word": "attainment",
+   "sent": "The attainments in the movie's special effects were impressive."
+  },
+  {
+   "pos": "adjective",
+   "word": "attainable",
+   "sent": "The director's goal of having an unlimited budget was not attainable."
+  },
+  {
+   "pos": "verb",
+   "word": "continue",
+   "sent": "Continue giving out movie passes until I tell you to stop. continuation The continuation of the film will be shown after the intermission."
+  },
+  {
+   "pos": "adjective",
+   "word": "continual",
+   "sent": "The actors' continual demands slowed down the pace of production. describe Please describe the new movie theater to me."
+  },
+  {
+   "pos": "noun",
+   "word": "description",
+   "sent": "The description of Africa in the film was not as I remembered it. descriptive The writer's descriptive of the war is shocking and saddening."
+  },
+  {
+   "pos": "verb",
+   "word": "entertain",
+   "sent": "The comedian worked hard to entertain the children in the hospital. entertainment Movies are one of the most popular forms of entertainment."
+  },
+  {
+   "pos": "adjective",
+   "word": "entertaining",
+   "sent": "The light comedy was entertaining, if not memorable."
+  },
+  {
+   "pos": "verb",
+   "word": "represent",
+   "sent": "The actor represented the ideals of the culture."
+  },
+  {
+   "pos": "noun",
+   "word": "representation",
+   "sent": "We felt that the movie's representation of the effects of war was very realistic."
+  },
+  {
+   "pos": "noun",
+   "word": "representative",
+   "sent": "The actress couldnt attend the awards ceremony so she had a representative accept the award for her."
+  },
+  {
+   "pos": "verb",
+   "word": "separate",
+   "sent": "Some movie fans can't separate fantasy from reality and confuse an actor with the character he plays."
+  },
+  {
+   "pos": "adjective",
+   "word": "separate",
+   "sent": "Moviemaking combines several separate processes."
+  },
+  {
+   "pos": "adverb",
+   "word": "separately",
+   "sent": "The actors rehearsed their lines separately before filming the scene together."
+  }
+ ],
+ "277": [
+  {
+   "pos": "noun",
+   "word": "action",
+   "sent": "Roger's dream is to act in a Broadway play. act There isn't much action in the play, but it is captivating nonetheless."
+  },
+  {
+   "pos": "noun",
+   "word": "actor",
+   "sent": "There are quite a few well-known actors in the cast."
+  },
+  {
+   "pos": "verb",
+   "word": "approach",
+   "sent": "The actress approached me with the idea for a new play."
+  },
+  {
+   "pos": "noun",
+   "word": "approach",
+   "sent": "The informal approach to the play was unconventional. Despite his great fame, the director was friendly and approachable. approachable"
+  },
+  {
+   "pos": "verb",
+   "word": "create",
+   "sent": "The playwright created a realistic town and townspeople with the scenery and dialogue."
+  },
+  {
+   "pos": "noun",
+   "word": "creation",
+   "sent": "The creation of the elaborate costumes took months."
+  },
+  {
+   "pos": "adjective",
+   "word": "creative",
+   "sent": "The director is one of the most creative people I know."
+  },
+  {
+   "pos": "verb",
+   "word": "experience",
+   "sent": "The actor experienced great self-doubt before he became famous."
+  },
+  {
+   "pos": "noun",
+   "word": "experience",
+   "sent": "Directors bring their experience of the world onto the stage."
+  },
+  {
+   "pos": "adjective",
+   "word": "experienced",
+   "sent": "The experienced make-up artist transformed Maxine into an old woman in a matter of minutes."
+  },
+  {
+   "pos": "verb",
+   "word": "perform",
+   "sent": "The popular actress was hired to perform Shakespeare on a world tour."
+  },
+  {
+   "pos": "noun",
+   "word": "performance",
+   "sent": "I booked tickets for the performance the day they went on sale."
+  },
+  {
+   "pos": "noun",
+   "word": "performer",
+   "sent": "The performers each had three costume changes."
+  },
+  {
+   "pos": "verb",
+   "word": "rehearse",
+   "sent": "The cast had to rehearse the scene over and over again until the director was finally satisfied."
+  },
+  {
+   "pos": "noun",
+   "word": "rehearsal",
+   "sent": "The actors spent several months in rehearsal before they performed the play."
+  },
+  {
+   "pos": "adjective",
+   "word": "rehearsed",
+   "sent": "Lydia's acceptance speech for her award sounded more rehearsed than natural."
+  }
+ ],
+ "283": [
+  {
+   "pos": "adjective",
+   "word": "broad",
+   "sent": "Connie would like to broaden her collection of CDs and add a few more music broaden categories to it. We'll cover a broad range of music in the music appreciation class."
+  },
+  {
+   "pos": "adverb",
+   "word": "broadly",
+   "sent": "The orchestra director travels broadly in search of new musical talent."
+  },
+  {
+   "pos": "verb",
+   "word": "categorize",
+   "sent": "Some singers have a broad range of styles and are difficult to categorize."
+  },
+  {
+   "pos": "noun",
+   "word": "category",
+   "sent": "Most of Sam's compact discs fall into the category of classical music."
+  },
+  {
+   "pos": "adjective",
+   "word": "categorical",
+   "sent": "The sheet music follows the categorical system used in most libraries. favor The music critic clearly favors some musicians over others. The teenager had an extensive collection of music by all her favorite groups. favorite"
+  },
+  {
+   "pos": "adjective",
+   "word": "favorable",
+   "sent": "The favorable reviews of the group's new album helped to push the album up the sales charts."
+  },
+  {
+   "pos": "verb",
+   "word": "prefer",
+   "sent": "I would prefer tickets for Saturday's concert, but will accept Sunday tickets if that is all that is available."
+  },
+  {
+   "pos": "noun",
+   "word": "preference",
+   "sent": "Jazz is his preference, but he is usually happy to hear anything playing locally."
+  },
+  {
+   "pos": "adjective",
+   "word": "preferential",
+   "sent": "The stage manager gave the opera diva preferential treatment, fearing her famous temper."
+  },
+  {
+   "pos": "verb",
+   "word": "relax",
+   "sent": "After a long concert tour, the singer liked to relax by the pool."
+  },
+  {
+   "pos": "noun",
+   "word": "relaxation",
+   "sent": "Listening to music is an enduring form of relaxation. relaxing There is nothing more relaxing than listening to music. My music teacher urged me not to give up the violin even though I was having urge such a hard time with it."
+  },
+  {
+   "pos": "noun",
+   "word": "urge",
+   "sent": "Richard gets the urge to play the guitar every time he passes a music store window."
+  },
+  {
+   "pos": "adjective",
+   "word": "urgent",
+   "sent": "It's urgent to order those concert tickets as soon as possible because they will sell out quickly."
+  }
+ ],
+ "289": [
+  {
+   "pos": "verb",
+   "word": "admire",
+   "sent": "People from all around the world visit the museum to admire the great works of art on display."
+  },
+  {
+   "pos": "noun",
+   "word": "admiration",
+   "sent": "I have great admiration for anyone who can create art. admired Monet is one of the most admired artists of the Impressionist movement."
+  },
+  {
+   "pos": "verb",
+   "word": "collect",
+   "sent": "The enthusiast began to collect Shaker furniture in the 1960s."
+  },
+  {
+   "pos": "noun",
+   "word": "collection",
+   "sent": "My parents' collection of crystal had outgrown their dining room cupboard."
+  },
+  {
+   "pos": "noun",
+   "word": "collector",
+   "sent": "The avid collector spent weekends at estate sales looking for rare art objects."
+  },
+  {
+   "pos": "verb",
+   "word": "criticize",
+   "sent": "The sculptor was criticized for his lack of perspective."
+  },
+  {
+   "pos": "noun",
+   "word": "critic",
+   "sent": "The art critic gave the show a poor review, which saddened the exhibition team."
+  },
+  {
+   "pos": "noun",
+   "word": "criticism",
+   "sent": "The writer's elegant essays on the use of light in Flemish painting were landmarks in art criticism."
+  },
+  {
+   "pos": "verb",
+   "word": "respond",
+   "sent": "When Mr. Hon did not respond to the invitation to the opening, we assumed he was not abte to attend."
+  },
+  {
+   "pos": "noun",
+   "word": "response",
+   "sent": "The response to the request for assistance was overwhelming."
+  },
+  {
+   "pos": "adjective",
+   "word": "responsive",
+   "sent": "The director was not responsive to any of the staff's suggestions, which made them both annoyed and anxious. schedule The museum has scheduled a lecture series to accompany the special exhibit."
+  },
+  {
+   "pos": "noun",
+   "word": "schedule",
+   "sent": "Several local artists are featured on the gallery's winter schedule."
+  },
+  {
+   "pos": "adjective",
+   "word": "scheduled",
+   "sent": "There are several scheduled events at the museum this weekend. specialize The art student decided to specialize in French and English paintings of the 1860s."
+  },
+  {
+   "pos": "noun",
+   "word": "specialist",
+   "sent": "The curator is a specialist in native Caribbean art."
+  },
+  {
+   "pos": "adjective",
+   "word": "specialized",
+   "sent": "The museum hired specialized personnel to adjust the humidity and light for the display of ancient books."
+  }
+ ],
+ "295": [
+  {
+   "pos": "noun",
+   "word": "choice",
+   "sent": "choose No one was surprised when the student decided to choose a career in journalism. It's your choice whether we use a color or black and white photo."
+  },
+  {
+   "pos": "adjective",
+   "word": "choosy",
+   "sent": "The editor was famous for being choosy about whom she wanted on her staff."
+  },
+  {
+   "pos": "noun",
+   "word": "constancy",
+   "sent": "The reporter's constancy in writing thorough news reports earned her a loyal following of readers."
+  },
+  {
+   "pos": "adjective",
+   "word": "constant",
+   "sent": "The constant ringing of the telephone distracted Susan from writing her report."
+  },
+  {
+   "pos": "adverb",
+   "word": "constantly",
+   "sent": "The editor constantly asks the reporters to recheck their facts. decide The editor decided not to publish the story because the facts were unreliable."
+  },
+  {
+   "pos": "noun",
+   "word": "decision",
+   "sent": "The decision to lay off several reporters was made for financial reasons alone. decisive Newspaper editors must be decisive when determining which stories go on the front page."
+  },
+  {
+   "pos": "verb",
+   "word": "investigate",
+   "sent": "Alban was excited about his first chance to investigate a story."
+  },
+  {
+   "pos": "noun",
+   "word": "investigation",
+   "sent": "The investigation into the president's past was covered by the media worldwide."
+  },
+  {
+   "pos": "adjective",
+   "word": "investigative",
+   "sent": "After turning up details in the crime that even the police had missed, Helen became well known as an investigative reporter."
+  },
+  {
+   "pos": "verb",
+   "word": "subscribe",
+   "sent": "I subscribe to the local newspaper to stay current."
+  },
+  {
+   "pos": "noun",
+   "word": "subscription",
+   "sent": "Buying a subscription to the magazine was much less expensive than buying individual issues."
+  },
+  {
+   "pos": "noun",
+   "word": "subscribers",
+   "sent": "The magazine went out of business because it did not have enough subscribers."
+  },
+  {
+   "pos": "noun",
+   "word": "thoroughness",
+   "sent": "A newspaper cannot survive long without a reputation for thoroughness."
+  },
+  {
+   "pos": "adjective",
+   "word": "thorough",
+   "sent": "Toshi is famous for her thorough and fair reporting of the issues."
+  },
+  {
+   "pos": "adverb",
+   "word": "thoroughly",
+   "sent": "The reporter thoroughly checked all his facts to avoid any potential embarrassment."
+  }
+ ],
+ "303": [
+  {
+   "pos": "verb",
+   "word": "assess",
+   "sent": "He was able to assess her health problems with the help of her detailed medical history."
+  },
+  {
+   "pos": "noun",
+   "word": "assessment",
+   "sent": "The specialist's assessment of the patient's condition was consistent with the general practitioner's."
+  },
+  {
+   "pos": "adjective",
+   "word": "assessable",
+   "sent": "That medical condition is not assessable by this laboratory test."
+  },
+  {
+   "pos": "verb",
+   "word": "diagnose",
+   "sent": "Her symptoms are overlapping, making it difficult to diagnose the exact cause of her chest pain. diagnosis Phil did a much better job of taking care of himself once his father had a diagnosis of lung cancer."
+  },
+  {
+   "pos": "adjective",
+   "word": "diagnostic",
+   "sent": "The new X-ray suite has all the latest diagnostic equipment."
+  },
+  {
+   "pos": "verb",
+   "word": "prevent",
+   "sent": "By stopping smoking now, you may be able to prevent lung cancer."
+  },
+  {
+   "pos": "noun",
+   "word": "prevention",
+   "sent": "He made a career of disease prevention through mass vaccinations."
+  },
+  {
+   "pos": "adjective",
+   "word": "preventive",
+   "sent": "Eloise took preventive steps against gum disease by more thorough toothbrushing."
+  },
+  {
+   "pos": "verb",
+   "word": "recommend",
+   "sent": "I recommend that you have this test annually starting at age 40."
+  },
+  {
+   "pos": "noun",
+   "word": "recommendation",
+   "sent": "Against my doctor's recommendation, I decided to purchase the generic brand of medication."
+  },
+  {
+   "pos": "adjective",
+   "word": "recommendable",
+   "sent": "There is nothing particularly recommendable about this therapy over the other therapy I mentioned. record The doctor records the patient's description of her symptoms in the patient's medical chart."
+  },
+  {
+   "pos": "noun",
+   "word": "record",
+   "sent": "When you apply for health insurance, the insurance company will probably want to look at your medical records."
+  },
+  {
+   "pos": "adjective",
+   "word": "recorded",
+   "sent": "After office hours there is a recorded message on the doctor's answering machine that gives an emergency telephone number. seriousness Martha's doctor tried to make her understand the seriousness of her condition."
+  },
+  {
+   "pos": "adjective",
+   "word": "serious",
+   "sent": "Mr. Kim was relieved to find out that his disease was not serious."
+  },
+  {
+   "pos": "adverb",
+   "word": "seriously",
+   "sent": "The doctor spoke seriously with Arthur about the need to lose weight."
+  }
+ ],
+ "309": [
+  {
+   "pos": "verb",
+   "word": "distract",
+   "sent": "The child is frightened by the instruments. Try to distract his attention while I get ready."
+  },
+  {
+   "pos": "noun",
+   "word": "distraction",
+   "sent": "The soothing background music was a pleasant distraction from the drilling sounds at the dentist's office. distracted The distracted patient left the office without paying her bill. My dentist has been encouraging me to see a specialist about my gum problem. encourage"
+  },
+  {
+   "pos": "noun",
+   "word": "encouragement",
+   "sent": "Although the cleaning routine recommended by the dentist was tedious, with some encouragement, Richard was able to follow it regularly. It was encouraging to find out that I had no serious problems at my last dental encouraging checkup. The dentist found evidence of decay on my wisdom tooth. evidence"
+  },
+  {
+   "pos": "adjective",
+   "word": "evident",
+   "sent": "My lack of dental hygiene was evident without a checkup. evidently Proper flossing evidently worked, since my gums are now in good health."
+  },
+  {
+   "pos": "noun",
+   "word": "habit",
+   "sent": "I'm tying to start the habit of flossing at least once a day."
+  },
+  {
+   "pos": "adjective",
+   "word": "habitual",
+   "sent": "His habitual coffee drinking stained his teeth."
+  },
+  {
+   "pos": "adverb",
+   "word": "habitually",
+   "sent": "Jack is habitually late for his appointments, which forced the receptionist to scold him."
+  },
+  {
+   "pos": "verb",
+   "word": "irritate",
+   "sent": "My dentist was late for my appointment, which irritated me, especially since he did not apologize."
+  },
+  {
+   "pos": "noun",
+   "word": "irritation",
+   "sent": "I have an irritation on the inside of my mouth that won't heat."
+  },
+  {
+   "pos": "adjective",
+   "word": "irritating",
+   "sent": "Matthew decided to visit the dentist because of an irritating gum problem. regulate We cannot regulate the temperature in the waiting room today because the thermostat is broken."
+  },
+  {
+   "pos": "adjective",
+   "word": "regular",
+   "sent": "Many dental problems can be avoided by following a regular cleaning routine."
+  },
+  {
+   "pos": "adverb",
+   "word": "regularly",
+   "sent": "I haven't been visiting the dentist regularly."
+  }
+ ],
+ "315": [
+  {
+   "pos": "verb",
+   "word": "allow",
+   "sent": "The insurance policy did not allow multiple prescription refills."
+  },
+  {
+   "pos": "noun",
+   "word": "allowance",
+   "sent": "The policy is liberal in its allowance for optometry services."
+  },
+  {
+   "pos": "adjective",
+   "word": "allowable",
+   "sent": "A maximum of two dental visits is allowable under the plan. alternate We alternate turns in taking the kids to the doctor."
+  },
+  {
+   "pos": "noun",
+   "word": "alternative",
+   "sent": "Our medical insurance was too expensive, so we sought a cheaper altemative."
+  },
+  {
+   "pos": "adjective",
+   "word": "alternative",
+   "sent": "We need to find an alternative health plan as this one is too expensive."
+  },
+  {
+   "pos": "verb",
+   "word": "concern",
+   "sent": "It concerns me that we haven't been able to find a suitable health insurance plan."
+  },
+  {
+   "pos": "noun",
+   "word": "concern",
+   "sent": "A good doctor will pay attention to any and all concerns the patient expresses about his or her health."
+  },
+  {
+   "pos": "adjective",
+   "word": "concemed",
+   "sent": "I am concemed about the limited benefits this insurance plan offers."
+  },
+  {
+   "pos": "verb",
+   "word": "emphasize",
+   "sent": "The plan representative emphasized the need for a second medical opinion."
+  },
+  {
+   "pos": "noun",
+   "word": "emphasis",
+   "sent": "The emphasis of the health plan is on staying well."
+  },
+  {
+   "pos": "adjective",
+   "word": "emphatic",
+   "sent": "Hassan made an emphatic appeal to the medical insurance director."
+  },
+  {
+   "pos": "verb",
+   "word": "regard",
+   "sent": "We regard this health insurance plan as one of the best options available."
+  },
+  {
+   "pos": "adjective",
+   "word": "regardful",
+   "sent": "The company was not regardful of the needs of most of the employees when it chose this health insurance plan."
+  },
+  {
+   "pos": "adverb",
+   "word": "regardless",
+   "sent": "I took the job regardless of the poor health benefits the company offers."
+  },
+  {
+   "pos": "verb",
+   "word": "suit",
+   "sent": "I'm dropping my health plan because it does not suit my needs."
+  },
+  {
+   "pos": "adjective",
+   "word": "suitable",
+   "sent": "Not every kind of health insurance is suitable for every family."
+  },
+  {
+   "pos": "adverb",
+   "word": "suitably",
+   "sent": "The errors on my insurance statement were caught and suitably fixed."
+  }
+ ],
+ "321": [
+  {
+   "pos": "verb",
+   "word": "admit",
+   "sent": "The patients lined the hospital corridors waiting to be admitted."
+  },
+  {
+   "pos": "noun",
+   "word": "admittance",
+   "sent": "Your admittance to the hospital is dependent on your showing proof that you can pay the bills. admission Take these records down to Admissions and have them duplicate the files for you."
+  },
+  {
+   "pos": "verb",
+   "word": "authorize",
+   "sent": "Your doctor has to authorize these tests before we can proceed with them."
+  },
+  {
+   "pos": "noun",
+   "word": "authority",
+   "sent": "Before major surgery, it is a good idea to give decision-making authority to a close relative in case something happens to you. The nurse could not submit an authorization over the phone; it had to be done authorization in writing."
+  },
+  {
+   "pos": "verb",
+   "word": "designate",
+   "sent": "The hospital administrator designated a team to create an emergency preparedness plan."
+  },
+  {
+   "pos": "noun",
+   "word": "designation",
+   "sent": "The designation of the hospital as one of the best in the region certainly helped its marketing efforts."
+  },
+  {
+   "pos": "noun",
+   "word": "designator",
+   "sent": "The national health service is the sole designator of which hospitals will get the grants."
+  },
+  {
+   "pos": "verb",
+   "word": "identify",
+   "sent": "If you will identify your valuables, the nurse will give them back to you. identification Please remember to bring some form of identification with you when you check in at the hospital."
+  },
+  {
+   "pos": "adjective",
+   "word": "identifiable",
+   "sent": "The red cross on the hospital's helicopter landing pad was identifiable from the air."
+  },
+  {
+   "pos": "verb",
+   "word": "permit",
+   "sent": "I can't permit more than one visitor at a time in the intensive care unit."
+  },
+  {
+   "pos": "noun",
+   "word": "permission",
+   "sent": "Mohammed got his insurance company's permission to stay another day in the hospital. permissible It is not permissible to smoke inside the hospital."
+  },
+  {
+   "pos": "adjective",
+   "word": "usual",
+   "sent": "It is usual for health insurance companies to require patients to make co- payments for hospital stays."
+  },
+  {
+   "pos": "adjective",
+   "word": "unusual",
+   "sent": "Because of her unusual condition, Martha's doctor sent her to a specialist for treatment."
+  },
+  {
+   "pos": "adverb",
+   "word": "usually",
+   "sent": "These days, patients usually stay in the hospital for only a few days at a time."
+  }
+ ],
+ "327": [
+  {
+   "pos": "noun",
+   "word": "consultation",
+   "sent": "consult Beatrice consulted her pharmacist about the number of different medications she is taking. Let me arrange a consultation with a specialist to discuss your heart problem and some possible medications."
+  },
+  {
+   "pos": "adjective",
+   "word": "consultative",
+   "sent": "This is a consultative process and you probably won't have a definitive answer immediately."
+  },
+  {
+   "pos": "noun",
+   "word": "convenience",
+   "sent": "The convenience of a 24-hour neighborhood pharmacy is not to be underestimated."
+  },
+  {
+   "pos": "adjective",
+   "word": "convenient",
+   "sent": "Many people shop there because of its convenient location."
+  },
+  {
+   "pos": "adverb",
+   "word": "conveniently",
+   "sent": "The pharmacy is conveniently located on my way home from work. detect The laboratory test detected the presence of medication in his blood."
+  },
+  {
+   "pos": "noun",
+   "word": "detection",
+   "sent": "Early detection of diseases usually means that medications can be more effective."
+  },
+  {
+   "pos": "adjective",
+   "word": "detectable",
+   "sent": "After he took his medication faithfully for a few months and exercised more, Jack's disease was no ionger detectable."
+  },
+  {
+   "pos": "verb",
+   "word": "limit",
+   "sent": "My health insurance company has severely limited the amount of money it will pay out for prescription medicine."
+  },
+  {
+   "pos": "noun",
+   "word": "limit",
+   "sent": "Even though that headache medicine does not require a prescription, there is a limit to how many times a day you should take it."
+  },
+  {
+   "pos": "adjective",
+   "word": "limited",
+   "sent": "The new drugstore on the corner really isn't convenient because of its limited hours of operation."
+  },
+  {
+   "pos": "noun",
+   "word": "potential",
+   "sent": "Be careful when taking this medication because it has the potential to make you feel sleepy."
+  },
+  {
+   "pos": "adjective",
+   "word": "potential",
+   "sent": "Margaret decided not to take the medicine the doctor had prescribed because of its potential side effects."
+  },
+  {
+   "pos": "adverb",
+   "word": "potentially",
+   "sent": "Many medications are potentially dangerous so it is important to take them exactly as prescribed by the doctor. volunteer The pharmacist volunteers his services monthly at the free clinic for homeless people."
+  },
+  {
+   "pos": "noun",
+   "word": "volunteer",
+   "sent": "Volunteers bring filled prescriptions from the pharmacy to the homes of shut-ins."
+  },
+  {
+   "pos": "adjective",
+   "word": "voluntary",
+   "sent": "Your compliance with this new policy is completely voluntary, but we think it is in the public interest that you do so."
+  }
+ ]
+}
