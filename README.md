@@ -17,12 +17,12 @@ npm run build      # xuất ra dist/
 npm run preview    # xem bản build
 ```
 
-| Lệnh                                    | Việc                                                                          |
-| --------------------------------------- | ----------------------------------------------------------------------------- |
-| `npm run typecheck` / `lint` / `format` | Kiểm tra kiểu TypeScript, ESLint, Prettier                                    |
-| `npm test`                              | Unit test (Vitest): dữ liệu, gộp đồng bộ, sinh câu hỏi, tìm kiếm              |
-| `npm run e2e`                           | Test giao diện (Playwright trên Microsoft Edge có sẵn của máy), 3 cỡ màn hình |
-| `npm run data`                          | Dựng lại `src/data/*.json` từ `data/`                                         |
+| Lệnh                                    | Việc                                                                                                                            |
+| --------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| `npm run typecheck` / `lint` / `format` | Kiểm tra kiểu TypeScript, ESLint, Prettier                                                                                      |
+| `npm test`                              | Unit test (Vitest): dữ liệu, gộp đồng bộ, sinh câu hỏi, tìm kiếm                                                                |
+| `npm run e2e`                           | Test giao diện (Playwright, 3 cỡ màn hình) — lần đầu: `npx playwright install chromium`; dùng Edge của máy: `PW_CHANNEL=msedge` |
+| `npm run data`                          | Dựng lại `src/data/*.json` từ `data/`                                                                                           |
 
 Đẩy lên nhánh `main` thì GitHub Actions (`.github/workflows/deploy.yml`) tự kiểm tra, build và đưa lên GitHub Pages
 (cần bật một lần: **Settings → Pages → Source: GitHub Actions**).
