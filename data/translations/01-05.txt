@@ -1,0 +1,425 @@
+# Bản dịch tiếng Việt cho câu ví dụ (câu mẫu của từ gốc + câu trong mục Word Families).
+# Mỗi câu gồm 2 dòng: dòng tiếng Anh y hệt dữ liệu, dòng tiếp theo bắt đầu bằng "= " là bản dịch.
+# Dòng "# n" chỉ để đánh dấu bài, không bắt buộc.
+
+# 1
+The two parties agreed to abide by the judge's decision.
+= Hai bên đồng ý tuân theo phán quyết của thẩm phán.
+For years he has abided by a commitment to annual employee raises.
+= Suốt nhiều năm, ông ấy luôn giữ cam kết tăng lương hằng năm cho nhân viên.
+The landlord and tenant were in agreement that the rent should be prorated to the middle of the month.
+= Chủ nhà và người thuê thống nhất rằng tiền thuê sẽ được tính theo tỷ lệ đến giữa tháng.
+According to the agreement, the caterer will also supply the flowers for the event.
+= Theo thỏa thuận, bên cung cấp tiệc cũng sẽ lo hoa cho sự kiện.
+If both parties agree to the terms, we can finalize the contract.
+= Nếu cả hai bên đồng ý với các điều khoản, chúng ta có thể chốt hợp đồng.
+As soon as the labor agreement was signed, the factory resumed production of new cars and vans.
+= Ngay khi thỏa thuận lao động được ký, nhà máy tiếp tục sản xuất ô tô và xe tải mới.
+The parties are agreeable to the terms.
+= Các bên đều sẵn lòng chấp nhận các điều khoản.
+The sales associate gave his assurance that the missing keyboard would be replaced the next day.
+= Nhân viên bán hàng cam đoan rằng chiếc bàn phím bị thiếu sẽ được thay vào ngày hôm sau.
+Her self-assurance made it easy to see why she was in charge of the negotiations.
+= Sự tự tin của cô ấy cho thấy rõ vì sao cô được giao phụ trách các cuộc đàm phán.
+I assure you that our drug-testing policy is applied fairly.
+= Tôi cam đoan với anh rằng chính sách kiểm tra chất kích thích của chúng tôi được áp dụng công bằng.
+What assurance is there that the company will still be in business?
+= Lấy gì bảo đảm rằng công ty vẫn còn hoạt động?
+He spoke assuredly, but his follow-up memo showed less conviction.
+= Anh ấy nói rất chắc chắn, nhưng bản ghi nhớ sau đó lại kém thuyết phục hơn.
+The cancellation of her flight caused her problems for the rest of the week.
+= Việc chuyến bay bị hủy gây rắc rối cho cô ấy suốt cả tuần còn lại.
+The cancellation clause appears at the back of the contract
+= Điều khoản hủy bỏ nằm ở cuối hợp đồng.
+The man canceled his magazine subscription and got his money back.
+= Người đàn ông hủy đăng ký báo và được hoàn tiền.
+Writers usually receive a cancellation fee even if their articles are not published.
+= Người viết thường nhận phí hủy dù bài của họ không được đăng.
+The canceled concert ended up costing our agency millions.
+= Buổi hòa nhạc bị hủy rốt cuộc khiến công ty chúng tôi thiệt hại hàng triệu.
+After reading the contract, I was still unable to determine if our company was liable for back wages.
+= Đọc xong hợp đồng, tôi vẫn không xác định được công ty mình có phải trả khoản lương còn nợ hay không.
+The skill of the union bargainers will determine whether the automotive plant will open next week.
+= Kỹ năng của những người đàm phán bên công đoàn sẽ quyết định nhà máy ô tô có mở cửa vào tuần tới hay không.
+Before engaging in a new business, it is important to do thorough research.
+= Trước khi tham gia một lĩnh vực kinh doanh mới, điều quan trọng là phải nghiên cứu kỹ.
+He engaged us in a fascinating discussion about current business law.
+= Ông ấy lôi cuốn chúng tôi vào một cuộc thảo luận thú vị về luật kinh doanh hiện hành.
+Through her many books and interviews, Dr. Wan established herself as an authority on conflict resolution.
+= Qua nhiều cuốn sách và bài phỏng vấn, tiến sĩ Wan đã khẳng định mình là chuyên gia về giải quyết xung đột.
+The merger of the two companies established a powerful new corporation.
+= Việc sáp nhập hai công ty đã tạo nên một tập đoàn mới hùng mạnh.
+The contractor was obligated by the contract to work 40 hours a week.
+= Theo hợp đồng, nhà thầu có nghĩa vụ làm việc 40 giờ mỗi tuần.
+I felt obligated to finish the project even though I could have exercised my option to quit.
+= Tôi thấy mình có bổn phận hoàn thành dự án dù tôi hoàn toàn có quyền rút lui.
+The terms of the contracts obligate us to work for at least one more month.
+= Các điều khoản hợp đồng buộc chúng tôi phải làm thêm ít nhất một tháng nữa.
+The factory managers have a legal and moral obligation to provide a safe work site.
+= Quản lý nhà máy có nghĩa vụ pháp lý và đạo đức phải bảo đảm nơi làm việc an toàn.
+He finished his obligatory military service, and then joined his father on the orange farm.
+= Anh ấy hoàn thành nghĩa vụ quân sự bắt buộc rồi về làm cùng cha ở trang trại cam.
+The parties agreed to a settlement in their contract dispute.
+= Các bên đã đồng ý dàn xếp vụ tranh chấp hợp đồng.
+The party that prepares the contract has a distinct advantage.
+= Bên soạn thảo hợp đồng có lợi thế rõ rệt.
+The father made provisions for his children through his will.
+= Người cha đã lo liệu cho các con qua bản di chúc.
+The contract contains a provision to deal with how payments are made if John loses his job.
+= Hợp đồng có một điều khoản quy định cách thanh toán nếu John mất việc.
+Since the machine is very reliable, why don't we cancel the service contract they provided?
+= Máy này rất bền, sao chúng ta không hủy hợp đồng dịch vụ mà họ cung cấp?
+We must negotiate a new contract with our Internet service provider.
+= Chúng ta phải thương lượng hợp đồng mới với nhà cung cấp dịch vụ Internet.
+The provision for canceling the contract is in the last clause.
+= Quy định về việc hủy hợp đồng nằm ở điều khoản cuối cùng.
+The mediator was able to resolve the problem to everyone's satisfaction.
+= Người hòa giải đã giải quyết vấn đề khiến ai cũng hài lòng.
+The businessman resolved to clean out all the files by the end of the week.
+= Doanh nhân quyết tâm dọn sạch toàn bộ hồ sơ trước cuối tuần.
+The customer's specific complaint was not addressed in his e-mail.
+= Lời phàn nàn cụ thể của khách hàng không được giải quyết trong email của anh ta.
+In a contract, one specific word can change the meaning dramatically.
+= Trong hợp đồng, chỉ một từ cụ thể cũng có thể làm thay đổi ý nghĩa rất nhiều.
+The contract specifies the percentage of raise the workers will see next year.
+= Hợp đồng ghi rõ tỷ lệ tăng lương mà công nhân sẽ nhận vào năm tới.
+The work was done according to our specifications.
+= Công việc được thực hiện theo đúng yêu cầu kỹ thuật của chúng tôi.
+We have not chosen a specific location for the reunion.
+= Chúng tôi chưa chọn được địa điểm cụ thể cho buổi họp mặt.
+
+# 2
+The display attracted a number of people at the convention.
+= Gian trưng bày thu hút khá nhiều người tại hội nghị.
+The new advertising attracts the wrong kind of customer into the store.
+= Quảng cáo mới lại thu hút nhầm đối tượng khách hàng vào cửa hàng.
+The store's poor location did not help it attract customers.
+= Vị trí kém của cửa hàng không giúp nó thu hút khách.
+Having a clown in the toy store was a foolproof attraction for getting kids to enter.
+= Có chú hề trong cửa hàng đồ chơi là cách thu hút trẻ em vào chắc chắn hiệu quả.
+Lou ran his store on an old-fashioned premise: quality merchandise at attractive prices.
+= Lou điều hành cửa hàng theo một nguyên tắc truyền thống: hàng chất lượng với giá hấp dẫn.
+Once the customer compared the two products, her choice was easy.
+= Khi đã so sánh hai sản phẩm, khách hàng dễ dàng đưa ra lựa chọn.
+The price for this brand is high compared to the other brands on the market.
+= Giá của thương hiệu này cao so với các thương hiệu khác trên thị trường.
+There was no comparison in the quality of the two brands.
+= Chất lượng của hai thương hiệu không thể so sánh được với nhau.
+To get an average for home costs, the agent sought prices on comparable homes.
+= Để có mức giá nhà trung bình, người môi giới đã tìm giá của những căn nhà tương đương.
+In the competition for afternoon diners, Hector's has come out on top.
+= Trong cuộc cạnh tranh giành thực khách buổi chiều, quán Hector's đã dẫn đầu.
+The company has decided not to join the growing competition for dominance in the semiconductor market.
+= Công ty quyết định không tham gia cuộc cạnh tranh ngày càng gay gắt để thống lĩnh thị trường chất bán dẫn.
+We competed against three or four other agencies to get this contract.
+= Chúng tôi đã cạnh tranh với ba bốn công ty khác để giành hợp đồng này.
+Try to think of yourself as someone who leads the competition.
+= Hãy nghĩ về bản thân như một người dẫn đầu các đối thủ.
+His competitive character made him quite successful in his department.
+= Tính hiếu thắng giúp anh ấy khá thành công trong bộ phận của mình.
+The business plans consumed all of Fritz's attention this fall.
+= Các kế hoạch kinh doanh chiếm trọn sự chú ý của Fritz suốt mùa thu này.
+This printer consumes more toner than the downstairs printer.
+= Máy in này tốn mực hơn máy in ở tầng dưới.
+The analyst was able to consume new information quickly.
+= Nhà phân tích có thể tiếp thu thông tin mới rất nhanh.
+The government tracks consumer spending closely.
+= Chính phủ theo dõi sát chi tiêu của người tiêu dùng.
+He ran a study of the use of consumable goods.
+= Anh ấy thực hiện một nghiên cứu về việc sử dụng hàng tiêu dùng.
+The salesman convinced his customer to buy his entire inventory of pens.
+= Người bán hàng thuyết phục khách mua toàn bộ số bút tồn kho của mình.
+Before a business can convince customers that it provides a quality product, it must convince its marketing staff.
+= Trước khi thuyết phục khách hàng rằng sản phẩm của mình có chất lượng, doanh nghiệp phải thuyết phục được đội ngũ tiếp thị của mình.
+We are currently exploring plans to the MX3 model.
+= Chúng tôi hiện đang xem xét các kế hoạch cho mẫu MX3.
+Currently, customers are demanding big discounts for bulk orders.
+= Hiện nay, khách hàng đang đòi giảm giá mạnh cho đơn hàng số lượng lớn.
+The mini dress was a fad once thought to be finished, but now it is making a comeback.
+= Váy ngắn từng là mốt nhất thời tưởng đã qua, nhưng giờ đang quay trở lại.
+Classic tastes may seem boring but they have proven to resist fads.
+= Gu cổ điển có vẻ nhàm chán nhưng đã chứng tỏ không bị cuốn theo mốt nhất thời.
+His work is an inspiration to the marketing department.
+= Công việc của anh ấy là nguồn cảm hứng cho phòng tiếp thị.
+Marta's high sales in Spain were an inspiration to other European reps.
+= Doanh số cao của Marta ở Tây Ban Nha là nguồn cảm hứng cho các đại diện khác ở châu Âu.
+When Omar first began making his chutneys, he marketed them door-to-door to gourmet shops.
+= Khi mới bắt đầu làm nước sốt chutney, Omar đã đi chào bán đến từng cửa hàng thực phẩm cao cấp.
+The market for brightly colored clothing was brisk last year, but it's moving sluggishly this year.
+= Thị trường quần áo màu sáng năm ngoái rất sôi động, nhưng năm nay lại chậm chạp.
+The sales department disagreed about how to market their newest product.
+= Phòng kinh doanh bất đồng về cách tiếp thị sản phẩm mới nhất.
+A good director of marketing can find a way to sell even an unattractive product.
+= Một giám đốc tiếp thị giỏi có thể tìm ra cách bán ngay cả sản phẩm kém hấp dẫn.
+Once the sales manager decided to change the packaging, the product became much more marketable.
+= Khi trưởng phòng kinh doanh quyết định đổi bao bì, sản phẩm trở nên dễ bán hơn hẳn.
+The seminar teaches techniques of persuasion to increase sales.
+= Buổi hội thảo dạy các kỹ thuật thuyết phục để tăng doanh số.
+Under his persuasion, she returned to school for her MBA.
+= Nhờ anh ấy thuyết phục, cô đã quay lại trường học lấy bằng MBA.
+The unproductive sales meeting brought many staff complaints.
+= Cuộc họp kinh doanh kém hiệu quả khiến nhân viên phàn nàn nhiều.
+Alonzo is excited about his productive staff.
+= Alonzo rất hào hứng vì đội ngũ nhân viên làm việc hiệu quả của mình.
+Your satisfaction is guaranteed or you'll get your money back.
+= Chúng tôi bảo đảm quý khách hài lòng, nếu không sẽ hoàn tiền.
+We will print the advertisement to your satisfaction.
+= Chúng tôi sẽ in quảng cáo đúng như ý quý khách.
+Henri was perfectly satisfied with his new fishing rod.
+= Henri hoàn toàn hài lòng với chiếc cần câu mới.
+Our highest priority is customer satisfaction.
+= Ưu tiên hàng đầu của chúng tôi là sự hài lòng của khách hàng.
+The rods were not in satisfactory condition.
+= Những chiếc cần câu không ở tình trạng đạt yêu cầu.
+
+# 3
+The cooking pot has features characteristic of the brand, such as "heat- resistant' handles.
+= Chiếc nồi có những đặc điểm tiêu biểu của thương hiệu, chẳng hạn tay cầm chịu nhiệt.
+One characteristic of the store is that it is slow in mailing refund checks.
+= Một đặc điểm của cửa hàng này là gửi séc hoàn tiền rất chậm.
+This line is characterized by its bold flavor and spicy aftertaste.
+= Dòng sản phẩm này đặc trưng bởi hương vị đậm và hậu vị cay.
+One characteristic of the new Lexus is its computerized seat settings.
+= Một đặc điểm của mẫu Lexus mới là ghế được điều chỉnh bằng máy tính.
+Characteristically, she accused middle-level management of the accounting error.
+= Đúng như tính cách của mình, cô ấy đổ lỗi sai sót kế toán cho cấp quản lý trung gian.
+The consequence of not following the service instructions for your car is that the warranty is invalidated.
+= Hậu quả của việc không làm theo hướng dẫn bảo dưỡng xe là chế độ bảo hành bị mất hiệu lực.
+As a consequence of not having seen a dentist for several years, Lydia had several cavities.
+= Do nhiều năm không đi khám răng, Lydia bị sâu mấy chiếc răng.
+The customer considered buying the DVD player until he learned that the warranty coverage was very limited.
+= Khách hàng đã cân nhắc mua đầu DVD cho đến khi biết phạm vi bảo hành rất hạn chế.
+After considering all the options, Della decided to buy a used car.
+= Sau khi cân nhắc mọi lựa chọn, Della quyết định mua xe cũ.
+You should consider carefully whether a product will meet your needs.
+= Bạn nên cân nhắc kỹ xem sản phẩm có đáp ứng nhu cầu của mình không.
+After long consideration, Heloise decided that the five-year warranty would be sufficient.
+= Sau một thời gian dài cân nhắc, Heloise quyết định rằng bảo hành năm năm là đủ.
+The fee for the extra year of protection was a considerable expense.
+= Phí cho năm bảo vệ bổ sung là một khoản chi đáng kể.
+Will my medical insurance cover this surgery?
+= Bảo hiểm y tế của tôi có chi trả cho ca phẫu thuật này không?
+Her car insurance provided for complete coverage against collision.
+= Bảo hiểm xe của cô ấy chi trả toàn bộ cho thiệt hại do va chạm.
+Have you checked the expiration date on this yogurt?
+= Bạn đã xem hạn sử dụng của hộp sữa chua này chưa?
+We can expect that the expiration of our Japan contract will impact sales next year.
+= Có thể dự đoán việc hợp đồng ở Nhật Bản hết hạn sẽ ảnh hưởng đến doanh số năm sau.
+Appliances frequently come with a one-year warranty.
+= Đồ gia dụng thường đi kèm bảo hành một năm.
+Warranties for this kind of appliance are frequently limited in their coverage.
+= Bảo hành cho loại thiết bị này thường có phạm vi hạn chế.
+The guarantee on the iPod implied that all damages were covered under warranty for one year.
+= Giấy bảo đảm của chiếc iPod ngụ ý rằng mọi hư hỏng đều được bảo hành trong một năm.
+The travel agent implied that our hotel was not in the safest part of the city, but, when pressed for details, he said the location was fine.
+= Nhân viên du lịch ám chỉ khách sạn của chúng tôi không nằm ở khu an toàn nhất thành phố, nhưng khi bị hỏi kỹ, anh ta lại nói vị trí ổn.
+She that she had graduated from Harvard.
+= Cô ấy ngụ ý rằng mình đã tốt nghiệp Harvard.
+What are the implications of the accident?
+= Vụ tai nạn này kéo theo những hệ quả gì?
+It is implicit in her demands that if she doesn't get the promotion, she will leave the company.
+= Trong yêu cầu của cô ấy có hàm ý rằng nếu không được thăng chức, cô sẽ rời công ty.
+A warranty is a promise the manufacturer makes to the consumer.
+= Bảo hành là lời hứa của nhà sản xuất với người tiêu dùng.
+The sales associate promised that our new mattress would arrive by noon on Saturday.
+= Nhân viên bán hàng hứa rằng tấm nệm mới của chúng tôi sẽ được giao trước trưa thứ Bảy.
+Consumer laws are designed to protect the public against unscrupulous vendors.
+= Luật người tiêu dùng được đặt ra để bảo vệ công chúng trước những người bán vô lương tâm.
+You can protect yourself from scams by getting detailed information on the seller.
+= Bạn có thể tự bảo vệ mình khỏi lừa đảo bằng cách tìm hiểu kỹ thông tin về người bán.
+For your own protection, you should have a warranty that provides for a replacement product. protective Alfredo is very protective of the condition of his car and gets all the preventive maintenance his warranty requires.
+= Để tự bảo vệ, bạn nên có chế độ bảo hành cho phép đổi sản phẩm mới. Alfredo rất giữ gìn chiếc xe của mình và làm đủ mọi lần bảo dưỡng định kỳ mà chế độ bảo hành yêu cầu.
+Even though the salesperson showed me a product I had never heard of, I bought it because of the good reputation of the manufacturer.
+= Dù nhân viên bán hàng giới thiệu một sản phẩm tôi chưa từng nghe tên, tôi vẫn mua vì nhà sản xuất có uy tín tốt.
+The company knew that the reputation of its products was the most important asset it had.
+= Công ty biết rằng danh tiếng sản phẩm là tài sản quý giá nhất của mình.
+The new store is reputed to carry items that are not of the highest quality.
+= Cửa hàng mới bị đồn là bán những mặt hàng không có chất lượng tốt nhất.
+The good reputation of the manufacturer inspired Maria Jose to try the new product.
+= Uy tín của nhà sản xuất đã khiến Maria Jose muốn dùng thử sản phẩm mới.
+Because the company had a reputable name, I did not spend sufficient time reading the details of the warranty.
+= Vì công ty có tên tuổi đáng tin cậy, tôi đã không dành đủ thời gian đọc kỹ các chi tiết bảo hành.
+A car warranty may require the owner to have it serviced by a certified mechanic.
+= Bảo hành xe có thể yêu cầu chủ xe phải bảo dưỡng tại thợ máy được chứng nhận.
+The law requires that each item clearly display the warranty information.
+= Luật yêu cầu mỗi sản phẩm phải ghi rõ thông tin bảo hành.
+The warranty requires that you send the watch to an approved repair shop to have it fixed.
+= Chế độ bảo hành yêu cầu bạn gửi đồng hồ đến cửa hàng sửa chữa được ủy quyền.
+The terms of the warranty divulge the legal requirement the manufacturer has to the consumer.
+= Các điều khoản bảo hành cho biết những yêu cầu pháp lý mà nhà sản xuất phải đáp ứng với người tiêu dùng.
+The warranty spelled out the requisite steps to take to request a replacement product.
+= Giấy bảo hành nêu rõ các bước cần thiết để yêu cầu đổi sản phẩm.
+There's a variety of standard terms that you'll find in warranties.
+= Có nhiều điều khoản tiêu chuẩn mà bạn sẽ thấy trong các giấy bảo hành.
+A variety of unexpected problems appeared after the had been on the market for about six months.
+= Nhiều vấn đề bất ngờ xuất hiện sau khi sản phẩm có mặt trên thị trường khoảng sáu tháng.
+
+# 4
+The article praised her address to the steering committee.
+= Bài báo khen ngợi bài phát biểu của cô ấy trước ban chỉ đạo.
+Marco's business plan addresses the needs of small business owners.
+= Kế hoạch kinh doanh của Marco giải quyết nhu cầu của các chủ doanh nghiệp nhỏ.
+To avoid going out of business, owners should prepare a proper business plan.
+= Để tránh phá sản, chủ doanh nghiệp nên chuẩn bị một kế hoạch kinh doanh bài bản.
+Lloyd's errors in accounting could have been avoided by a business con- sultation with his banker.
+= Lẽ ra Lloyd đã tránh được các sai sót kế toán nếu tham vấn kinh doanh với nhân viên ngân hàng của mình.
+It is best to avoid get-rich-quick schemes.
+= Tốt nhất nên tránh những mánh làm giàu nhanh.
+Your avoidance of these issues will not make them go away.
+= Việc bạn né tránh những vấn đề này sẽ không làm chúng biến mất.
+The avoided question became more important over time.
+= Câu hỏi bị né tránh càng ngày càng trở nên quan trọng.
+Alban's business plan demonstrated that he had put a lot of thought into making his dream a reality.
+= Kế hoạch kinh doanh của Alban cho thấy anh ấy đã suy nghĩ rất nhiều để biến ước mơ thành hiện thực.
+The professor demonstrated through a case study that a business plan can impress a lender.
+= Giáo sư chứng minh qua một nghiên cứu tình huống rằng kế hoạch kinh doanh có thể gây ấn tượng với bên cho vay.
+Let me demonstrate how this computer program works.
+= Để tôi trình bày cách chương trình máy tính này hoạt động.
+After the lecture, there was a demonstration of new marketing techniques.
+= Sau bài giảng có phần trình diễn các kỹ thuật tiếp thị mới.
+The densely encoded programming was demonstrative of the computer language of the era.
+= Đoạn chương trình mã hóa dày đặc là minh chứng cho ngôn ngữ máy tính của thời kỳ đó.
+Lily developed her ideas into a business plan by taking a class at the community college.
+= Lily đã phát triển ý tưởng của mình thành kế hoạch kinh doanh nhờ học một lớp ở trường cao đẳng cộng đồng.
+The restaurant Wanda opened ten years ago has developed into a national chain.
+= Nhà hàng Wanda mở mười năm trước đã phát triển thành một chuỗi toàn quốc.
+Our assignment is to develop a cogent business plan.
+= Nhiệm vụ của chúng ta là xây dựng một kế hoạch kinh doanh thuyết phục.
+The plan was under development and would not be ready for months.
+= Kế hoạch đang trong giai đoạn xây dựng và vài tháng nữa mới xong.
+The job developer was kept busy trying to place the recent college graduates.
+= Chuyên viên giới thiệu việc làm bận rộn tìm chỗ làm cho các sinh viên mới tốt nghiệp.
+It's important to evaluate your competition when making a business plan.
+= Khi lập kế hoạch kinh doanh, việc đánh giá đối thủ cạnh tranh là rất quan trọng.
+The lenders evaluated our creditability and decided to loan us money.
+= Bên cho vay đã đánh giá mức tín nhiệm của chúng tôi và quyết định cho vay.
+Please review these articles and evaluate their usefulness for our plan.
+= Hãy xem lại các bài viết này và đánh giá mức hữu ích của chúng đối với kế hoạch.
+Yoko feared the professor's evaluation of her business plan.
+= Yoko lo sợ lời đánh giá của giáo sư về kế hoạch kinh doanh của mình.
+The independent evaluator our business plan and gave us goa:i feedback.
+= Chuyên gia đánh giá độc lập đã xem xét kế hoạch kinh doanh của chúng tôi và đưa ra nhận xét tốt.
+We gathered information for our plan from many sources.
+= Chúng tôi thu thập thông tin cho kế hoạch từ nhiều nguồn.
+I gather that interest rates for small businesses will soon change.
+= Tôi được biết lãi suất cho doanh nghiệp nhỏ sắp thay đổi.
+Devon accepted our offer to write the business plan.
+= Devon đã nhận lời đề nghị viết kế hoạch kinh doanh của chúng tôi.
+Jackie must offer her banker new statistics in order to encourage the bank to lend her money toward her start-up business.
+= Jackie phải đưa cho nhân viên ngân hàng số liệu mới để ngân hàng chịu cho vay tiền khởi nghiệp.
+We are primarily concerned with convincing the board of directors to apply for the second loan.
+= Mối quan tâm chính của chúng tôi là thuyết phục hội đồng quản trị nộp đơn vay khoản thứ hai.
+The developers are thinking primarily of how to enter the South American market.
+= Các nhà phát triển chủ yếu đang tính cách thâm nhập thị trường Nam Mỹ.
+The primary risk for most start-up businesses is insufficient capital.
+= Rủi ro chính của hầu hết doanh nghiệp khởi nghiệp là thiếu vốn.
+Expanding into a new market is a big risk.
+= Mở rộng sang thị trường mới là một rủi ro lớn.
+A business plan is a strategy for running a business and avoiding problems.
+= Kế hoạch kinh doanh là chiến lược để vận hành doanh nghiệp và tránh rắc rối.
+Let's develop a strategy for promoting our ice cream parlor.
+= Hãy xây dựng chiến lược quảng bá tiệm kem của chúng ta.
+Instead of going into a panic, let's strategize the best way to meet the deadline.
+= Thay vì hoảng loạn, hãy lên chiến lược tốt nhất để kịp hạn chót.
+The business plan lays out a strategy for future growth.
+= Kế hoạch kinh doanh vạch ra chiến lược tăng trưởng trong tương lai.
+The handout outlined the strategic points to cover in a business plan.
+= Tài liệu phát tay tóm tắt những điểm chiến lược cần có trong kế hoạch kinh doanh.
+The professor made a strong argument for the value of a good business plan.
+= Giáo sư đưa ra lập luận chặt chẽ về giá trị của một kế hoạch kinh doanh tốt.
+Even in a strong economic climate many businesses fail, so do your planning carefully.
+= Ngay cả khi kinh tế vững mạnh, nhiều doanh nghiệp vẫn thất bại, nên hãy lập kế hoạch thật cẩn thận.
+Your substitution of fake names for real ones makes the document seem insincere.
+= Việc bạn thay tên thật bằng tên giả khiến tài liệu có vẻ thiếu trung thực.
+There is no substitution for hard work and perseverance.
+= Không gì có thể thay thế cho sự chăm chỉ và kiên trì.
+Don't try to substitute intuition for good planning.
+= Đừng lấy trực giác thay cho việc lập kế hoạch kỹ lưỡng.
+The substitution of gasses is not so easy in this experiment.
+= Việc thay thế các loại khí trong thí nghiệm này không dễ.
+Customers complain whenever the substituted product is of lesser value, even though we don't charge them for it.
+= Khách hàng phàn nàn mỗi khi sản phẩm thay thế có giá trị thấp hơn, dù chúng tôi không tính tiền.
+
+# 5
+The meeting room was large enough to accommodate the various needs of the groups using it.
+= Phòng họp đủ rộng để đáp ứng nhu cầu khác nhau của các nhóm sử dụng.
+Because the deadline for reserving rooms was past, the hotel manager could not accommodate our need for more rooms.
+= Vì đã quá hạn đặt phòng, quản lý khách sạn không thể đáp ứng nhu cầu thêm phòng của chúng tôi.
+The hotel staff was able to accommodate our many needs for the conference.
+= Nhân viên khách sạn đã đáp ứng được nhiều nhu cầu của chúng tôi cho hội nghị.
+The accommodations at the hotel include swimming pool, gym, and restaurant.
+= Tiện nghi của khách sạn gồm hồ bơi, phòng tập và nhà hàng.
+The conference center manager was extremely accommodating and tried to make our stay pleasant.
+= Quản lý trung tâm hội nghị cực kỳ chiều khách và cố gắng để chúng tôi có kỳ lưu trú dễ chịu.
+The travel arrangements were taken care of by Sara, Mr. Billings's capable assistant.
+= Việc sắp xếp chuyến đi do Sara, trợ lý đắc lực của ông Billings, lo liệu.
+The arrangement of speakers was alphabetical to avoid any hurt feelings.
+= Thứ tự diễn giả được xếp theo bảng chữ cái để tránh làm ai phật lòng.
+We will arrange the chairs in a circle.
+= Chúng ta sẽ xếp ghế thành vòng tròn.
+Nobody could understand the seating arrangement.
+= Không ai hiểu nổi cách sắp xếp chỗ ngồi.
+The arranged flowers didn't look like those we chose from the catalog.
+= Hoa được cắm không giống loại chúng tôi chọn trong catalogue.
+Membership in a trade or professional association provides business contacts and mutual support.
+= Làm thành viên một hiệp hội thương mại hay nghề nghiệp giúp có thêm quan hệ kinh doanh và sự hỗ trợ lẫn nhau.
+Local telephone companies formed an association to serve common goals, meet their common needs, and improve efficiency.
+= Các công ty điện thoại địa phương lập một hiệp hội để phục vụ mục tiêu chung, đáp ứng nhu cầu chung và nâng cao hiệu quả.
+Do you think customers will associate the failed upstart with ours?
+= Bạn có nghĩ khách hàng sẽ liên tưởng công ty mới nổi thất bại kia với công ty mình không?
+Any association with the former company will put us in a negative light.
+= Bất kỳ mối liên hệ nào với công ty cũ cũng sẽ khiến chúng ta bị nhìn nhận tiêu cực.
+The associated costs will put this project out of our reach.
+= Các chi phí liên quan sẽ khiến dự án này vượt quá khả năng của chúng ta.
+We expect more than 100 members to attend the annual meeting.
+= Chúng tôi dự kiến hơn 100 thành viên sẽ dự cuộc họp thường niên.
+The hotel manager attended to all our needs promptly.
+= Quản lý khách sạn đã nhanh chóng đáp ứng mọi nhu cầu của chúng tôi.
+Gillian attended the reception for visiting ambassadors.
+= Gillian đã dự buổi tiếp đón các đại sứ đến thăm.
+More than 500 attendees packed the ballroom.
+= Hơn 500 người tham dự chật kín phòng khiêu vũ.
+Attendance was low for this year's annual meeting.
+= Số người tham dự cuộc họp thường niên năm nay thấp.
+As soon as we arrive at the hotel, we will get in touch with the manager about the unexpected guests.
+= Ngay khi đến khách sạn, chúng tôi sẽ liên hệ với quản lý về những vị khách ngoài dự kiến.
+The registration desk is a good central location for people to get in touch with each other.
+= Quầy đăng ký là vị trí trung tâm thuận tiện để mọi người liên lạc với nhau.
+This meeting room holds at least 80 people comfortably.
+= Phòng họp này chứa thoải mái ít nhất 80 người.
+She holds an annual seminar that is very popular.
+= Cô ấy tổ chức một buổi hội thảo thường niên rất được ưa chuộng.
+The location of the meeting was changed from the Red Room to the Green Room.
+= Địa điểm cuộc họp được đổi từ Phòng Đỏ sang Phòng Xanh.
+Disney World was the perfect location for the annual meeting since many members could bring their families.
+= Disney World là địa điểm lý tưởng cho cuộc họp thường niên vì nhiều thành viên có thể đưa gia đình theo.
+As soon as the guests entered the dining room for dinner, Sue Lin could see that the room would become overcrowded.
+= Ngay khi khách vào phòng ăn dùng bữa tối, Sue Lin thấy rằng căn phòng sẽ bị quá tải.
+To avoid being overcrowded, we limited the number of guests that members could bring.
+= Để tránh quá đông, chúng tôi giới hạn số khách mà mỗi thành viên được dẫn theo.
+According to the register, more than 250 people attended the afternoon seminar.
+= Theo sổ đăng ký, hơn 250 người đã dự hội thảo buổi chiều.
+Hotels ask all guests to register and give a home address.
+= Khách sạn yêu cầu mọi khách đăng ký và cung cấp địa chỉ nhà.
+He registered for his classes via the Internet.
+= Anh ấy đăng ký các lớp học qua Internet.
+Registration is a detail-oriented and crucial part of running any meeting.
+= Đăng ký là khâu đòi hỏi tỉ mỉ và rất quan trọng khi tổ chức bất kỳ cuộc họp nào.
+The conference participant selected the marketing seminar from the various offerings.
+= Người tham dự hội nghị đã chọn buổi hội thảo tiếp thị trong số nhiều lựa chọn.
+The winners were a select group.
+= Những người thắng cuộc là một nhóm tinh hoa.
+Since there are overlapping workshops, participants will have to select which one most appeals to them.
+= Vì có các buổi hội thảo trùng giờ, người tham dự phải chọn buổi hấp dẫn mình nhất.
+His dinner selection of stuffed quail sounded better on the menu than it looked on the plate.
+= Món chim cút nhồi anh ấy chọn cho bữa tối nghe hấp dẫn trên thực đơn hơn là khi bày ra đĩa.
+The planning committee was very selective about who received invitations.
+= Ban tổ chức chọn lọc rất kỹ những người được mời.
+The morning sessions tend to fill up first, so sign up early.
+= Các buổi sáng thường kín chỗ trước, nên hãy đăng ký sớm.
+Due to the popularity of this course, we will offer two sessions.
+= Vì khóa học này rất được ưa chuộng, chúng tôi sẽ mở hai buổi.
+The format for the session is very informal, which makes it easier for people to take part in the discussion.
+= Hình thức buổi học rất thoải mái, giúp mọi người dễ tham gia thảo luận hơn.
+We could not get enough people to take part in the meeting, so we canceled it.
+= Chúng tôi không tập hợp đủ người tham gia cuộc họp nên đã hủy.

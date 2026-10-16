@@ -1,0 +1,6 @@
+# Dữ liệu tự sinh (tools/build_data.py) — giữ dạng gọn
+js/data.js
+js/exercises.js
+data/
+*.pdf
+vocanetwork_*.html

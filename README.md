@@ -1,7 +1,7 @@
 # VocaNetwork — 600 Essential Words for the TOEIC
 
 Web học từ vựng theo **chủ đề** và **trường từ** (tiền tố + gốc + hậu tố, biến đổi từ loại, đồng nghĩa / trái nghĩa),
-dữ liệu lấy từ sách *600 Essential Words for the TOEIC Test*.
+dữ liệu lấy từ sách _600 Essential Words for the TOEIC Test_.
 
 ## Chạy
 
@@ -10,22 +10,56 @@ Mở `index.html` bằng trình duyệt là xong — không cần cài đặt.
 
 ## Chức năng
 
-| Tab | Nội dung |
-|---|---|
-| Tổng quan | Trang chính theo hồ sơ: mục tiêu hôm nay, chuỗi ngày học, lộ trình theo điểm TOEIC mục tiêu, lịch hoạt động 12 tuần, tiến độ 10 phần, từ hay làm sai, bài tập gần đây |
-| Chủ đề | Mục lục 10 phần × 5 bài theo sách, tiến độ từng bài, ô “Học tiếp” gợi ý bài đang học dở |
-| Trường từ | Sơ đồ mỗi từ: phiên âm IPA, cấu tạo tiền tố/gốc/hậu tố, họ từ theo 4 từ loại (kèm câu ví dụ *Word Families* trong sách), đồng nghĩa / trái nghĩa. Lọc theo trạng thái, từ loại, phụ tố; sắp xếp |
-| Flashcard 3D | Lật thẻ, tự đánh giá Chưa nhớ / Đang học / Đã thuộc (phím `Space`, `1` `2` `3`, `←` `→`) |
-| Bài tập | **Bài tập trong sách**: Words in Context (50 đoạn), Part 5 (300 câu), Part 6 (50 đoạn), Word Review (10 bài × 19 câu) — chấm điểm, giải thích, lưu điểm cao nhất. **Tự luyện**: biến đổi từ loại, đồng nghĩa, nghĩa, ghép từ |
-| Tiền tố · Hậu tố | 92 phụ tố, bấm vào để xem mọi từ dùng phụ tố đó |
+| Tab              | Nội dung                                                                                                                                                                                                                     |
+| ---------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Tổng quan        | Trang chính theo hồ sơ: mục tiêu hôm nay, chuỗi ngày học, lộ trình theo điểm TOEIC mục tiêu, lịch hoạt động 12 tuần, tiến độ 10 phần, từ hay làm sai, bài tập gần đây                                                        |
+| Chủ đề           | Mục lục 10 phần × 5 bài theo sách, tiến độ từng bài, ô “Học tiếp” gợi ý bài đang học dở                                                                                                                                      |
+| Trường từ        | Sơ đồ mỗi từ: phiên âm IPA, cấu tạo tiền tố/gốc/hậu tố, họ từ theo 4 từ loại (kèm câu ví dụ _Word Families_ trong sách), đồng nghĩa / trái nghĩa. Lọc theo trạng thái, từ loại, phụ tố; sắp xếp                              |
+| Flashcard 3D     | Lật thẻ, tự đánh giá Chưa nhớ / Đang học / Đã thuộc (phím `Space`, `1` `2` `3`, `←` `→`)                                                                                                                                     |
+| Bài tập          | **Bài tập trong sách**: Words in Context (50 đoạn), Part 5 (300 câu), Part 6 (50 đoạn), Word Review (10 bài × 19 câu) — chấm điểm, giải thích, lưu điểm cao nhất. **Tự luyện**: biến đổi từ loại, đồng nghĩa, nghĩa, ghép từ |
+| Tiền tố · Hậu tố | 92 phụ tố, bấm vào để xem mọi từ dùng phụ tố đó                                                                                                                                                                              |
 
 Ô tìm kiếm trên thanh tiêu đề (phím `/`) tìm được từ gốc, họ từ, đồng nghĩa và nghĩa tiếng Việt (gõ không dấu cũng được).
 **Hồ sơ học tập** (nút avatar góc phải): mỗi người một hồ sơ với tên, mục tiêu điểm TOEIC (450 / 600 / 750 / 900+) và số câu mỗi ngày;
 tiến độ, điểm bài tập, từ tự thêm được tách riêng theo hồ sơ. Menu hồ sơ có: chuyển / thêm / sửa hồ sơ, giao diện Sáng / Tối / Theo máy,
-*Từ của tôi & sao lưu* (thêm trường từ riêng, xuất / nhập JSON).
+_Từ của tôi & sao lưu_ (thêm trường từ riêng, xuất / nhập JSON).
 
 Hồ sơ lưu trong trình duyệt (localStorage), chưa có máy chủ — dùng **Xuất JSON** để chuyển sang máy khác.
-Muốn đăng nhập thật và đồng bộ đám mây cần thêm backend (vd Firebase / Supabase).
+Có thể bật **đăng nhập Google** để đồng bộ đám mây — xem mục bên dưới.
+
+## Đăng nhập Google (tuỳ chọn)
+
+Mặc định web dùng hồ sơ lưu trên trình duyệt. Bật đăng nhập Google để **lưu tiến độ lên đám mây và học tiếp trên mọi thiết bị**
+(dữ liệu từ nhiều máy được gộp lại, không ghi đè mất tiến độ). Cần một dự án Firebase miễn phí:
+
+1. Vào <https://console.firebase.google.com> → **Add project** (tắt Google Analytics cũng được).
+2. **Project settings → General → Your apps → biểu tượng `</>` (Web)** → đặt tên → **Register app** →
+   chép đối tượng `firebaseConfig` và dán vào `js/firebase-config.js` (thay cho `null`).
+3. **Authentication → Get started → Sign-in method → Google → Enable**.
+   **Authentication → Settings → Authorized domains** → thêm `sou1406-ver.github.io` (`localhost` có sẵn).
+4. **Firestore Database → Create database** (production mode) → tab **Rules** → dán rồi **Publish**:
+
+   ```
+   rules_version = '2';
+   service cloud.firestore {
+     match /databases/{database}/documents {
+       match /users/{uid} {
+         allow read, write: if request.auth != null && request.auth.uid == uid;
+       }
+     }
+   }
+   ```
+
+5. Đăng nhập Google **không chạy khi mở file trực tiếp** (`file://`). Mở qua GitHub Pages, hoặc chạy máy chủ cục bộ:
+
+   ```
+   python -m http.server 8000
+   ```
+
+   rồi vào <http://localhost:8000>.
+
+Các khoá trong `firebase-config.js` là khoá công khai phía trình duyệt — an toàn khi đưa lên GitHub; bảo mật nằm ở Rules (mỗi người chỉ đọc/ghi được dữ liệu của chính mình).
+Đăng xuất sẽ xoá bản lưu tạm của tài khoản trên máy (an toàn cho máy dùng chung); dữ liệu vẫn còn trên tài khoản Google.
 
 ## Cấu trúc dữ liệu
 

@@ -149,16 +149,69 @@ OCR_FIX = {"ac�ssed": "accessed", "re'n�ts": "reports", "r�sum�": "résu
            "unne�ssary": "unnecessary", "as�rtain": "ascertain", "l�ation": "location", "spi�s": "spices",
            "on� a year": "once a year", "Acustomer": "A customer", "departrnent": "department", "concemed": "concerned",
            "conditionat": "conditional"}
+# Lỗi OCR trong câu ví dụ (ký tự � = chữ OCR không đọc được)
+OCR_FIX.update({
+    "ac�ssed": "accessed", "as�rtain": "ascertain", "caf�s": "cafés", "caf�": "café",
+    "entr�e": "entrée", "l�ation": "location", "per�nt": "percent", "re'n�ts": "reports",
+    "r�sum�": "résumé", "spi�s": "spices", "total�I": "total — I",
+    "Intemet": "Internet", "govemment": "government", "retum": "return", "altemative": "alternative",
+    "aftemoon": "afternoon", " wili ": " will ", " wilt ": " will ", " abte ": " able ", " atl ": " all ",
+    "ionger": "longer", "Technicatly": "Technically", " feit ": " felt ", "cx)nfident": "confident",
+    "suweed": "succeed", "mk up to as as": "look up to as much as", "goa:i": "good", "companyrs": "company's",
+    "disptay": "display", "tildget": "budget", "comers of the shelves": "corners of the shelves",
+    "wouid": "would", "we self it": "we sell it", "tie flavor": "the flavor", "tt is ": "It is ",
+    "it took him over": "It took him over", "I'm tying": "I'm trying", "won't heat": "won't heal",
+    "acmunt": "account", "wuorkers": "workers", "Dont ": "Don't ", " cant ": " can't ", " arent.": " aren't.",
+    "couldnt": "couldn't", "con- sultation": "consultation", "com- mensurate": "commensurate",
+    "time- consuming": "time-consuming", "expendi- ture": "expenditure", "prepa- ration": "preparation",
+    "cus- tomers": "customers", "satis- faction": "satisfaction", "responsibili- ties": "responsibilities",
+    "co- payments": "co-payments", "do-it- yourself": "do-it-yourself", "\"heat- resistant'": "\"heat-resistant\"",
+    "f can provide": "I can provide", "If you file your taxes late": "If you file your taxes late",
+    "creaning": "cleaning", "den- tist": "dentist", "prob- lems": "problems",
+})
 
 
 def fix(s):
+    s = re.sub("[æ•]", "�", s)  # OCR trang Word Families đọc chữ hỏng thành æ / •
     for a, b in OCR_FIX.items():
         s = s.replace(a, b)
+    s = s.split(" Words in Context")[0]  # OCR dính cả đoạn bài tập vào câu ví dụ
     return re.sub(r"\s+", " ", s).strip()
 
 
 def norm(w):
     return re.sub(r"[^a-z\- ]", "", w.lower()).strip()
+
+
+# ---------- Bản dịch câu ví dụ (data/translations/*.txt) ----------
+def tkey(s):
+    """Khóa so khớp câu: chỉ giữ chữ thường + số, bỏ qua dấu câu và ký tự OCR lỗi."""
+    return re.sub(r"[^a-z0-9]", "", fix(s).lower())
+
+
+TRANS = {}
+for path in sorted(glob.glob(os.path.join(ROOT, "data/translations/*.txt"))):
+    en = None
+    for ln, line in enumerate(open(path, encoding="utf-8"), 1):
+        line = line.rstrip("\n")
+        if not line.strip() or line.startswith("#"):
+            continue
+        if line.startswith("= "):
+            if en is None:
+                sys.exit(f"{path}:{ln} bản dịch không có câu tiếng Anh phía trên")
+            TRANS[tkey(en)] = line[2:].strip()
+            en = None
+        else:
+            en = line
+used_trans = set()
+
+
+def vi_of(sentence):
+    k = tkey(sentence)
+    if k in TRANS:
+        used_trans.add(k)
+        return TRANS[k]
+    return None
 
 
 # ---------- Đọc file bổ sung ----------
@@ -232,6 +285,9 @@ for l in book:
             ex = book_example(f["w"])
             if ex:
                 f = {**f, "ex": ex}
+                vi = vi_of(ex)
+                if vi:
+                    f["exVi"] = vi
             ipa = ipa_of(f["w"], f["pos"])
             if ipa:
                 f = {**f, "ipa": ipa}
@@ -239,7 +295,7 @@ for l in book:
         self_fam = next((f for f in family if norm(f["w"]) == norm(h["word"])), None)
         out_words.append({
             "id": wid, "lesson": n, "word": h["word"], "pos": pos, "ipa": ipa_of(h["word"], pos) or "", "def": definition,
-            "ex": [fix(x) for x in e["ex"]], "vi": h["vi"], "syn": h["syn"], "ant": h["ant"],
+            "ex": [fix(x) for x in e["ex"]], "exVi": [vi_of(x) or "" for x in e["ex"]], "vi": h["vi"], "syn": h["syn"], "ant": h["ant"],
             "parts": self_fam["parts"] if self_fam else [h["word"]],
             "family": family,
         })
@@ -262,6 +318,10 @@ open(os.path.join(ROOT, "js/data.js"), "w", encoding="utf-8").write(js)
 fam_total = sum(len(w["family"]) for w in out_words)
 print(f"{len(out_lessons)} bài, {len(out_words)} từ gốc, {fam_total} từ trong họ từ, "
       f"{sum(1 for w in out_words for f in w['family'] if 'ex' in f)} câu ví dụ họ từ từ sách")
+missing = [x for w in out_words for x, v in zip(w["ex"], w["exVi"]) if not v]
+missing += [f["ex"] for w in out_words for f in w["family"] if f.get("ex") and not f.get("exVi")]
+print(f"Bản dịch câu ví dụ: dùng {len(used_trans)}/{len(TRANS)}, còn {len(missing)} câu chưa dịch")
+problems += [f"Chưa dịch: {x}" for x in missing[:20]]
 if problems:
     print("\n".join(problems))
 

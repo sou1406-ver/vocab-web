@@ -1,0 +1,389 @@
+# 6
+You can't gain access to the files unless you know the password.
+= Bạn không thể truy cập các tệp nếu không biết mật khẩu.
+We accessed the information on the company's web site.
+= Chúng tôi đã truy cập thông tin trên trang web của công ty.
+To gain access to the computer lab, alt users must have a valid ID. access Internet cafés allow you to access your web-based e-mail account.
+= Để vào phòng máy tính, mọi người dùng phải có thẻ hợp lệ. Quán cà phê Internet cho phép bạn truy cập tài khoản email trên web.
+The staff assistant always keeps the door to her office open to show she is accessible.
+= Cô trợ lý luôn để cửa phòng mở để cho thấy mình sẵn sàng tiếp mọi người.
+The office manager did not allocate enough money to purchase software.
+= Quản lý văn phòng không phân bổ đủ tiền để mua phần mềm.
+The software architect did not allocate enough memory for the sound card to work in your computer.
+= Kiến trúc sư phần mềm không cấp đủ bộ nhớ để card âm thanh hoạt động trên máy tính của bạn.
+Marla didn't allocate enough time to train the new hires on our computer systems.
+= Marla không dành đủ thời gian để đào tạo nhân viên mới sử dụng hệ thống máy tính.
+A different allocation of resources could certainly strengthen the R&D department.
+= Một cách phân bổ nguồn lực khác chắc chắn có thể củng cố phòng nghiên cứu và phát triển.
+The allocated money was never spent on new monitors. duplicate If we work hard, we can duplicate last year's sales records for computers. duplicate Don't worry, I have a duplicate on my hard drive.
+= Số tiền được phân bổ chưa bao giờ được dùng để mua màn hình mới. Nếu làm việc chăm chỉ, chúng ta có thể lặp lại kỷ lục doanh số máy tính năm ngoái. Đừng lo, tôi có một bản sao trong ổ cứng.
+This operating system is not compatible with this model computer.
+= Hệ điều hành này không tương thích với mẫu máy tính này.
+Users of software applications want new versions to be compatible with current versions.
+= Người dùng phần mềm muốn phiên bản mới tương thích với phiên bản hiện tại.
+The technicians deleted all the data on the disk accidentally.
+= Các kỹ thuật viên đã vô tình xóa toàn bộ dữ liệu trên đĩa.
+This button on the keyboard deletes the characters from the screen.
+= Phím này trên bàn phím xóa các ký tự khỏi màn hình.
+The light on the LCD display is too weak.
+= Đèn của màn hình LCD quá yếu.
+The accounting program displays a current balance when opened.
+= Chương trình kế toán hiển thị số dư hiện tại khi được mở.
+I think the new word processing program will duplicate the success of the one introduced last year.
+= Tôi nghĩ chương trình soạn thảo văn bản mới sẽ lặp lại thành công của chương trình ra mắt năm ngoái.
+Before you leave, please duplicate that file by making a copy on the CD-ROM.
+= Trước khi về, vui lòng sao lưu tệp đó bằng cách chép một bản vào đĩa CD-ROM.
+His success at our company was based on the duplication of management techniques he had used elsewhere in his career.
+= Thành công của anh ấy ở công ty chúng tôi dựa trên việc áp dụng lại những kỹ thuật quản lý anh từng dùng ở nơi khác.
+Your failure to inform us about the changed password cost the company a day's work.
+= Việc bạn không báo cho chúng tôi về mật khẩu đã đổi khiến công ty mất một ngày làm việc.
+The repeated failure of her printer baffled the technician.
+= Máy in của cô ấy hỏng liên tục khiến kỹ thuật viên bối rối.
+We failed to tell you that your records were deleted.
+= Chúng tôi đã không báo cho bạn biết hồ sơ của bạn bị xóa.
+The power failure caused the system to shut down.
+= Sự cố mất điện khiến hệ thống bị tắt.
+Everyone can make a mistake. Even a computer is fallible.
+= Ai cũng có thể mắc lỗi. Ngay cả máy tính cũng có thể sai.
+By examining all of the errors, the technicians figured out how to fix the problem.
+= Bằng cách xem xét tất cả các lỗi, kỹ thuật viên đã tìm ra cách khắc phục sự cố.
+We figured out that it would take us at least ten minutes to download the file.
+= Chúng tôi tính ra rằng phải mất ít nhất mười phút để tải tệp xuống.
+When the director is working at the computer, she ignores everything around her.
+= Khi làm việc trên máy tính, bà giám đốc không để ý đến mọi thứ xung quanh.
+Don't ignore the technician's advice when connecting cables.
+= Đừng phớt lờ lời khuyên của kỹ thuật viên khi nối dây cáp.
+Unfortunately, she ignored the warning about the virus. ignorance His ignorance of this word processing program surprised everyone. ignored The ignored computer glitch caused the database to function improperly.
+= Thật không may, cô ấy đã phớt lờ cảnh báo về virus. Việc anh ta không biết gì về chương trình soạn thảo này khiến mọi người ngạc nhiên. Lỗi máy tính bị bỏ qua đã khiến cơ sở dữ liệu hoạt động sai.
+Our search of the database produced very little information.
+= Việc tìm kiếm trong cơ sở dữ liệu cho ra rất ít thông tin.
+The computer searched for all names that began with W.
+= Máy tính tìm tất cả các tên bắt đầu bằng chữ W.
+Please shut down the computer before you leave.
+= Vui lòng tắt máy tính trước khi về.
+We always shut down the air conditioning system on the weekend.
+= Chúng tôi luôn tắt hệ thống điều hòa vào cuối tuần.
+The red flashing light gives a warning to users that the battery is low.
+= Đèn đỏ nhấp nháy cảnh báo người dùng rằng pin sắp hết.
+Flashing images on a web page are warnings to attract users' attention.
+= Hình ảnh nhấp nháy trên trang web là tín hiệu cảnh báo để thu hút sự chú ý của người dùng.
+We were warned that our e-mail was not private.
+= Chúng tôi đã được cảnh báo rằng email của mình không được bảo mật.
+The warning was written on the box.
+= Lời cảnh báo được in trên hộp.
+
+# 7
+The company's first priority was to find an affordable phone system.
+= Ưu tiên hàng đầu của công ty là tìm một hệ thống điện thoại có giá phải chăng.
+Obviously, the computer systems that are affordable for a Fortune 500 company will not be affordable for a small company.
+= Hiển nhiên, hệ thống máy tính mà một công ty trong Fortune 500 chi trả được thì công ty nhỏ không kham nổi.
+Lucinda has taken so much leave this year that she can't afford to miss another day's work.
+= Năm nay Lucinda đã nghỉ phép quá nhiều nên không thể nghỉ thêm ngày nào nữa.
+Broad-band access to the Internet became more affordable at the beginning of the millennium.
+= Truy cập Internet băng thông rộng trở nên rẻ hơn vào đầu thiên niên kỷ.
+We looked into the affordability of placing a scanner at each designer's desk. The company will initiate its new products at the beginning of the year. initiate initiative The manager, knowing how concerned his employees were, took the initiative to provide training for them on the new equipment.
+= Chúng tôi đã xem xét khả năng chi trả cho việc đặt máy quét ở bàn mỗi nhà thiết kế. Công ty sẽ tung ra sản phẩm mới vào đầu năm. Biết nhân viên lo lắng thế nào, người quản lý đã chủ động tổ chức đào tạo về thiết bị mới cho họ.
+The courier service did not come every day, only as needed.
+= Dịch vụ chuyển phát không đến hằng ngày, chỉ đến khi cần.
+The service contract states that repairs will be made on an as-needed basis.
+= Hợp đồng dịch vụ ghi rằng việc sửa chữa sẽ được thực hiện khi có nhu cầu.
+He appointed someone to be in charge of maintaining a supply of paper in the fax machine.
+= Anh ấy chỉ định một người phụ trách việc luôn có giấy trong máy fax.
+Your computer should not be in charge of you, rather you should be in charge of your computer.
+= Đừng để máy tính điều khiển bạn, mà bạn phải làm chủ máy tính của mình.
+The new conference room is much larger and has a capacity of one hundred people.
+= Phòng hội nghị mới rộng hơn nhiều và có sức chứa một trăm người.
+The memory requirements of this software application exceed the capacity of our computers.
+= Yêu cầu bộ nhớ của phần mềm này vượt quá dung lượng máy tính của chúng ta.
+This printer is so durable that, with a little care, it will last another five years.
+= Máy in này rất bền, chỉ cần giữ gìn một chút là dùng được thêm năm năm nữa.
+These chairs are more durable than the first ones we looked at.
+= Những chiếc ghế này bền hơn những chiếc chúng ta xem lúc đầu.
+Employees are encouraged to take the initiative and share their ideas with management.
+= Nhân viên được khuyến khích chủ động chia sẻ ý tưởng với ban quản lý.
+Our technology initiative involves an exciting new database system and will help us revolutionize our customer service.
+= Sáng kiến công nghệ của chúng tôi gồm một hệ thống cơ sở dữ liệu mới đầy hứa hẹn và sẽ giúp cách mạng hóa dịch vụ khách hàng.
+As an initiation into the sales field, Mr. Jenkins was given the most problematic customer's account. physically The vagrant had to be physically removed from the building.
+= Để làm quen với lĩnh vực bán hàng, ông Jenkins được giao phụ trách khách hàng khó nhằn nhất. Người vô gia cư phải bị đưa ra khỏi tòa nhà.
+The computer screen is making her physically sick.
+= Màn hình máy tính khiến cô ấy thấy khó chịu trong người.
+Physically moving your screen from one place on the desk to another can help reduce same-position-strain syndrome.
+= Di chuyển màn hình sang chỗ khác trên bàn có thể giúp giảm hội chứng mỏi do giữ một tư thế.
+The physical presence of a computer engineer is vastly superior to telephone tech support.
+= Có kỹ sư máy tính trực tiếp có mặt tốt hơn nhiều so với hỗ trợ kỹ thuật qua điện thoại.
+We need a model with a proportional physique.
+= Chúng tôi cần một người mẫu có vóc dáng cân đối.
+The department was extremely pleased with the service they received from the phone provider.
+= Phòng ban rất hài lòng với dịch vụ của nhà cung cấp điện thoại.
+As your health service provider, we want to make sure you are happy and satisfied with the service you are receiving.
+= Là đơn vị cung cấp dịch vụ y tế cho bạn, chúng tôi muốn chắc chắn bạn hài lòng với dịch vụ đang nhận.
+The company provides a five-year warranty on its products.
+= Công ty bảo hành năm năm cho sản phẩm của mình.
+As your provider of network services, I promise to give you the best prices and service.
+= Là nhà cung cấp dịch vụ mạng của bạn, tôi cam kết mang đến giá và dịch vụ tốt nhất.
+Our provisions of supplies should last to the end of the quarter.
+= Lượng vật tư dự trữ của chúng ta đủ dùng đến cuối quý.
+The subject of decreasing sales recurs in each meeting, sometimes several times.
+= Chủ đề doanh số giảm lặp lại ở mỗi cuộc họp, có khi vài lần.
+The managers did not want that particular error to recur.
+= Các nhà quản lý không muốn lỗi đó tái diễn.
+We don't want that problem to recur every month.
+= Chúng tôi không muốn vấn đề đó lặp lại hằng tháng.
+Every recurrence of the same problem costs us money.
+= Mỗi lần cùng một vấn đề tái diễn là chúng ta lại tốn tiền.
+Recurring problems waste time and money. reduce Buying in bulk can help to reduce costs.
+= Những vấn đề lặp đi lặp lại gây lãng phí thời gian và tiền bạc. Mua số lượng lớn có thể giúp giảm chi phí.
+The outlet store gave a 20 percent reduction in the price of the shelves and bookcases.
+= Cửa hàng giảm 20% giá kệ và tủ sách.
+The reduction in office staff has made it necessary to automate more job functions.
+= Việc cắt giảm nhân viên văn phòng buộc phải tự động hóa thêm nhiều công việc.
+The introduction of the fax machine created a noticeable increase in phone bills.
+= Việc đưa máy fax vào sử dụng làm hóa đơn điện thoại tăng rõ rệt.
+Although our system is working at capacity, the amount of information being processed is not reducible.
+= Dù hệ thống đang chạy hết công suất, lượng thông tin cần xử lý vẫn không thể giảm.
+In order to stay on top of her employees' progress, she arranged weekly breakfast meetings.
+= Để nắm sát tiến độ của nhân viên, cô ấy tổ chức các buổi họp ăn sáng hằng tuần.
+In this industry, you must stay on top of current developments.
+= Trong ngành này, bạn phải luôn cập nhật những diễn biến mới nhất.
+The employees stocked the shelves on a weekly basis.
+= Nhân viên chất hàng lên kệ hằng tuần.
+The office's stock of toner for the fax machine was quickly running out.
+= Lượng mực dự trữ cho máy fax của văn phòng đang nhanh chóng cạn.
+
+# 8
+In appreciation of your hard work on the Castcon project, the department will hold a casual lunch party on November third.
+= Để ghi nhận sự nỗ lực của các bạn trong dự án Castcon, phòng sẽ tổ chức một bữa trưa thân mật vào ngày 3 tháng 11.
+Your appreciation of my efforts inspired me through the final stages of the construction.
+= Sự ghi nhận của anh đối với nỗ lực của tôi đã tiếp thêm động lực cho tôi suốt giai đoạn cuối của công trình.
+We appreciate the time that you have put into this project, but we need to see more positive results.
+= Chúng tôi trân trọng thời gian bạn bỏ vào dự án này, nhưng chúng tôi cần thấy kết quả khả quan hơn.
+In appreciation for your hard work, we are giving you a top-priority project.
+= Để ghi nhận sự chăm chỉ của bạn, chúng tôi giao cho bạn một dự án ưu tiên hàng đầu.
+The intern feit appreciated, like a member of the team.
+= Thực tập sinh cảm thấy được trân trọng như một thành viên của nhóm.
+This job will really test what you are made of.
+= Công việc này sẽ thực sự thử thách bản lĩnh của bạn.
+People say that the negotiator has nerves made of steel.
+= Người ta nói nhà đàm phán đó có thần kinh thép.
+The company president wanted to bring on an efficiency consultant.
+= Chủ tịch công ty muốn thuê một chuyên gia tư vấn hiệu suất.
+The company brought in a new team of project planners.
+= Công ty đã tuyển một nhóm lập kế hoạch dự án mới.
+On Fridays, most employees dress casually.
+= Vào thứ Sáu, hầu hết nhân viên ăn mặc thoải mái.
+Martin spoke casually, as if he were chatting with friends.
+= Martin nói chuyện thoải mái như đang tán gẫu với bạn bè.
+The new employees observed the unwritten code of conduct in their first week on the job.
+= Nhân viên mới tuân thủ các quy tắc ứng xử bất thành văn trong tuần làm việc đầu tiên.
+Even the most traditional companies are changing their dress code to something less formal.
+= Ngay cả những công ty truyền thống nhất cũng đang nới lỏng quy định trang phục.
+The programmer spent three days searching for the bug in his code.
+= Lập trình viên mất ba ngày tìm lỗi trong mã của mình.
+Their web page contained a coded message for insiders.
+= Trang web của họ có một thông điệp mã hóa dành cho người trong cuộc.
+Mergers require that employees be exposed to different business practices.
+= Các vụ sáp nhập đòi hỏi nhân viên phải tiếp xúc với những cách làm kinh doanh khác nhau.
+The new hires' week in each department exposed them to the various functions in the company.
+= Một tuần ở mỗi phòng ban giúp nhân viên mới làm quen với các chức năng khác nhau trong công ty.
+As a matter of company policy, we try to expose all managers to the challenging work of telephone sales through hands-on experience.
+= Theo chính sách công ty, chúng tôi cố gắng cho mọi quản lý trực tiếp trải nghiệm công việc đầy thử thách là bán hàng qua điện thoại.
+Exposure to the elements will corrode the container for the sensor.
+= Tiếp xúc với mưa gió sẽ làm ăn mòn vỏ hộp của cảm biến.
+Mr. Lee was exposed to Chinese business practices during his three-year assignment as a manager in Beijing.
+= Ông Lee đã được tiếp xúc với cách làm kinh doanh của Trung Quốc trong ba năm làm quản lý ở Bắc Kinh.
+The secretary caught a glimpse of her new boss as she was leaving the office.
+= Cô thư ký thoáng thấy sếp mới khi đang rời văn phòng.
+After one year with the company, he still felt as though he had only a glimpse of the overall operations.
+= Sau một năm làm ở công ty, anh ấy vẫn cảm thấy mình mới chỉ hiểu sơ qua hoạt động chung.
+Orders should be placed before you run out of the supplies.
+= Nên đặt hàng trước khi hết vật tư.
+The presenter ran out of time before he reached his conclusion.
+= Người thuyết trình đã hết giờ trước khi đi đến phần kết luận.
+The purpose of the seminar is to have employees identify outdated methods and procedures.
+= Mục đích của buổi hội thảo là để nhân viên nhận ra các phương pháp và quy trình lỗi thời.
+Before you do a mailing, make sure that none of the addresses is outdated.
+= Trước khi gửi thư hàng loạt, hãy bảo đảm không có địa chỉ nào đã cũ.
+The manager had started her practice of weekly breakfast meetings more than twenty years ago.
+= Bà quản lý bắt đầu thói quen họp ăn sáng hằng tuần từ hơn hai mươi năm trước.
+Bill practiced answering the telephone until he was satisfied.
+= Bill tập trả lời điện thoại cho đến khi thấy hài lòng.
+He was surprised at the difference in office practices from one local office to another. practice All managers are expected to practice caution in their spending until the end of the year.
+= Anh ấy ngạc nhiên vì cách làm việc khác nhau giữa các văn phòng địa phương. Mọi quản lý được yêu cầu chi tiêu thận trọng cho đến cuối năm.
+We need a practical solution to this common problem.
+= Chúng ta cần một giải pháp thiết thực cho vấn đề phổ biến này.
+The financial officer's unconventional method of analyzing data was reinforced by the business journal article.
+= Phương pháp phân tích dữ liệu khác thường của giám đốc tài chính được củng cố bởi bài báo trên tạp chí kinh doanh.
+Employees reinforced their learning with practice in the workplace.
+= Nhân viên củng cố kiến thức đã học bằng thực hành tại nơi làm việc.
+The practical training reinforced the theoretical studies.
+= Phần đào tạo thực hành đã củng cố cho phần học lý thuyết.
+If reinforcement is needed, you have the support of the executive committee. reinforcing Reinforcing the preferred way of selling the product was one of their job requirements. verbally No employees should be verbally reprimanded in front of their peers.
+= Nếu cần tăng cường, bạn có sự hỗ trợ của ban điều hành. Củng cố cách bán sản phẩm được ưu tiên là một trong những yêu cầu công việc của họ. Không nhân viên nào nên bị khiển trách bằng lời trước mặt đồng nghiệp.
+She verbally reprimanded the new hire in front of his entire team.
+= Cô ấy khiển trách nhân viên mới bằng lời ngay trước cả nhóm của anh ta.
+The guarantee was made only verbally.
+= Lời bảo đảm chỉ được đưa ra bằng miệng.
+The company operated on a practice of verbal and not written contracts.
+= Công ty hoạt động theo lối hợp đồng miệng chứ không phải hợp đồng văn bản.
+Well-established procedures are often difficult to verbalize.
+= Những quy trình đã thành nếp thường khó diễn đạt thành lời.
+
+# 9
+The head of the optical disk reader was dirty.
+= Đầu đọc của ổ đĩa quang bị bẩn.
+Rewritable compact discs are more expensive than read-only CDs.
+= Đĩa CD ghi lại được đắt hơn đĩa CD chỉ đọc.
+The computer program facilitated the scheduling of appointments.
+= Chương trình máy tính giúp việc lên lịch hẹn dễ dàng hơn.
+The director tried to facilitate the transition to the new policy by meeting with all staff who would be affected.
+= Giám đốc cố gắng tạo thuận lợi cho việc chuyển sang chính sách mới bằng cách gặp gỡ mọi nhân viên chịu ảnh hưởng.
+The recent graduate networked with her mother's coworkers.
+= Cô sinh viên mới tốt nghiệp đã kết nối quan hệ với đồng nghiệp của mẹ.
+We set up a new network in my office to share files.
+= Chúng tôi lắp đặt một mạng mới trong văn phòng để chia sẻ tệp.
+After the new commercials began running, the popularity of the batteries increased significantly.
+= Sau khi quảng cáo mới bắt đầu phát sóng, loại pin này trở nên phổ biến hơn hẳn.
+This brand of computers is extremely popular among college students.
+= Thương hiệu máy tính này cực kỳ được sinh viên đại học ưa chuộng.
+The new computer program was extremely popular, and people asked for it at all the stores.
+= Chương trình máy tính mới cực kỳ được ưa chuộng, cửa hàng nào cũng có người hỏi mua.
+The popularity of the product was extremely short-lived, and it soon disappeared from the store shelves.
+= Sản phẩm chỉ nổi được một thời gian rất ngắn rồi sớm biến mất khỏi kệ hàng.
+The Intemet has popularized last-minute travel.
+= Internet đã làm cho việc đặt chuyến đi vào phút chót trở nên phổ biến.
+I've processed the data I collected and have gotten some interesting results.
+= Tôi đã xử lý dữ liệu thu thập được và có một số kết quả thú vị.
+There is a process for determining why your computer is malfunctioning.
+= Có một quy trình để xác định vì sao máy tính của bạn trục trặc.
+I've replaced the hard drive that was malfunctioning.
+= Tôi đã thay ổ cứng bị trục trặc.
+We have been looking for three months and we've found no one who can replace our former administrator.
+= Chúng tôi đã tìm suốt ba tháng mà chưa có ai thay được người quản trị cũ.
+I replaced your music CDs that I borrowed from your desk last week.
+= Tôi đã trả lại mấy đĩa nhạc mượn trên bàn bạn tuần trước.
+A replacement for this damaged computer will not be cheap.
+= Thay chiếc máy tính hỏng này sẽ không rẻ.
+That hard disk is not easily replaceable.
+= Ổ cứng đó không dễ thay thế.
+We see a revolution in the computer field almost every day.
+= Gần như ngày nào lĩnh vực máy tính cũng có một cuộc cách mạng.
+My CD player is broken; the disk cannot make a complete revolution around the magnet.
+= Đầu CD của tôi bị hỏng; đĩa không thể quay trọn một vòng quanh nam châm.
+Using diamond has revolutionized the pressure sensor industry during the last decade.
+= Việc sử dụng kim cương đã cách mạng hóa ngành cảm biến áp suất trong thập kỷ qua.
+The revolution in electronics technology has allowed products such as phones to get smaller and more portable.
+= Cuộc cách mạng công nghệ điện tử đã giúp những sản phẩm như điện thoại ngày càng nhỏ gọn và dễ mang theo.
+The Internet is revolutionary in how it has changed the way we communicate.
+= Internet mang tính cách mạng ở chỗ nó đã thay đổi cách chúng ta giao tiếp.
+There was a sharp decline in calls to the help desk after we upgraded each employee's computer.
+= Số cuộc gọi đến bộ phận hỗ trợ giảm mạnh sau khi chúng tôi nâng cấp máy tính cho từng nhân viên.
+The new employee proved how sharp she was when she mastered the new program in a few days.
+= Nhân viên mới chứng tỏ mình sắc sảo khi thành thạo chương trình mới chỉ trong vài ngày.
+The software developer has excellent technical skills and would be an asset to our software programming team.
+= Lập trình viên này có kỹ năng chuyên môn xuất sắc và sẽ là tài sản quý cho nhóm lập trình của chúng tôi.
+Salman's job as designer of electronic tools makes good use of his manual dexterity skills.
+= Công việc thiết kế dụng cụ điện tử tận dụng tốt sự khéo tay của Salman.
+Her marketing skills inspired Jason to return to school for his MBA.
+= Kỹ năng tiếp thị của cô ấy đã truyền cảm hứng để Jason quay lại trường học MBA.
+Our carpenters are skilled in everything from cabinetry to furniture making.
+= Thợ mộc của chúng tôi lành nghề mọi việc, từ đóng tủ đến làm đồ nội thất.
+He negotiates so skillfully that both parties end up feeling that they've gotten what they wanted.
+= Anh ấy đàm phán khéo léo đến mức cả hai bên đều thấy mình đạt được điều mong muốn.
+This software allows me to integrate tables and spreadsheets into my reports.
+= Phần mềm này cho phép tôi đưa bảng và bảng tính vào các báo cáo của mình.
+Many computers come pre-loaded with software.
+= Nhiều máy tính được cài sẵn phần mềm.
+You can store more data on a zip drive.
+= Bạn có thể lưu nhiều dữ liệu hơn trên ổ zip.
+We store the master disks in the fireproof safe.
+= Chúng tôi cất đĩa gốc trong két chống cháy.
+He stored too much information on the hard drive, making the computer sluggish.
+= Anh ấy lưu quá nhiều thông tin trong ổ cứng khiến máy tính chạy ì ạch.
+The storage closet is where you will find all our office supplies.
+= Tủ kho là nơi để toàn bộ văn phòng phẩm.
+Technicatly speaking, the virus infected only script files.
+= Nói theo khía cạnh kỹ thuật, virus chỉ lây nhiễm các tệp script.
+The office was finally up-to-speed technically.
+= Cuối cùng văn phòng cũng bắt kịp về mặt công nghệ.
+The computer can only be repaired by someone with technical knowledge.
+= Chỉ người có kiến thức kỹ thuật mới sửa được máy tính này.
+Technically, she was fired from her job.
+= Về mặt hình thức, cô ấy đã bị sa thải.
+After we go over these minor technicalities, the agreement will be set.
+= Sau khi rà soát mấy chi tiết kỹ thuật nhỏ này, thỏa thuận sẽ được chốt.
+
+# 10
+Her assistant copied and assembled the documents.
+= Trợ lý của cô ấy đã sao chép và tập hợp các tài liệu.
+The mail room clerk read the directions before assembling the parts to the new postage printer.
+= Nhân viên phòng thư đọc hướng dẫn trước khi lắp ráp các bộ phận của máy in tem bưu phí mới.
+To speed up the mailing, we should prepare the labels beforehand.
+= Để gửi thư nhanh hơn, chúng ta nên chuẩn bị nhãn trước.
+The goods could have been shipped today had they faxed the order beforehand.
+= Lẽ ra hàng đã được gửi hôm nay nếu họ fax đơn đặt hàng trước.
+She will have to spend two more days in the hospital due to complications during the surgery.
+= Cô ấy phải nằm viện thêm hai ngày do biến chứng trong ca phẫu thuật.
+Complications always arise when we try to cover too many topics in one letter.
+= Rắc rối luôn phát sinh khi chúng ta cố đề cập quá nhiều vấn đề trong một lá thư.
+Dont try to complicate things by making two-sided copies; single-sided will do.
+= Đừng làm mọi thứ phức tạp bằng cách in hai mặt; in một mặt là được.
+There are a few complications with your layout, but they can be easily solved.
+= Bố cục của bạn có vài chỗ rắc rối, nhưng có thể dễ dàng xử lý.
+The revisions in the document made it more complicated, rather than simpler.
+= Những chỉnh sửa khiến tài liệu phức tạp hơn chứ không đơn giản hơn.
+We hired a courier to deliver the package.
+= Chúng tôi thuê một người chuyển phát để giao gói hàng.
+The courier service will clear the goods through customs.
+= Dịch vụ chuyển phát sẽ làm thủ tục hải quan cho hàng hóa.
+It's important that this document be there tomorrow, so please send it express mail.
+= Tài liệu này phải đến nơi vào ngày mai, nên vui lòng gửi chuyển phát nhanh.
+Express mail costs more than regular mail service, but it is more efficient.
+= Chuyển phát nhanh đắt hơn gửi thường, nhưng hiệu quả hơn.
+Fold the letter into three parts before stuffing it into the envelope.
+= Gấp lá thư làm ba trước khi cho vào phong bì.
+Don't fold the document if it doesn't fit the envelope.
+= Đừng gấp tài liệu nếu nó không vừa phong bì.
+We had to change the layout when we changed the size of the paper.
+= Chúng tôi phải đổi bố cục khi đổi khổ giấy.
+The layout for the new brochure was submitted by the designer.
+= Nhà thiết kế đã nộp bố cục cho tập quảng cáo mới.
+There was no mention of the cost in the proposal.
+= Bản đề xuất không hề nhắc đến chi phí.
+You should mention in the letter that we can arrange for mailing the brochures as well as printing them.
+= Bạn nên nói trong thư rằng chúng ta có thể lo cả việc in lẫn gửi tờ quảng cáo.
+The mention of layoffs made us worry.
+= Việc nhắc đến chuyện cắt giảm nhân sự khiến chúng tôi lo lắng.
+No one considered the mediocre design a mentionable achievement.
+= Không ai coi thiết kế tầm thường đó là thành tích đáng nhắc tới.
+The petition was photocopied and distributed to workers who will collect the necessary signatures.
+= Đơn kiến nghị được photo và phát cho các nhân viên sẽ đi thu thập chữ ký cần thiết.
+We petitioned the postal officials to start delivering mail twice a day in business areas.
+= Chúng tôi kiến nghị cơ quan bưu chính phát thư hai lần mỗi ngày ở khu kinh doanh.
+In order to be valid, the contents of the petition need to be printed at the top of each page that will contain signatures.
+= Để hợp lệ, nội dung đơn kiến nghị phải được in ở đầu mỗi trang có chữ ký.
+The petitioners spent the night outside of the
+= Những người kiến nghị đã qua đêm bên ngoài…
+This letter was not proofed very carefully; it is full of typing mistakes.
+= Lá thư này không được soát kỹ; đầy lỗi đánh máy.
+In order to get the rebate, you must send in proof of purchase.
+= Để được hoàn tiền, bạn phải gửi bằng chứng mua hàng.
+It is your responsibility to proof your own work before sending it out.
+= Bạn có trách nhiệm tự soát lại bài của mình trước khi gửi đi.
+The proofreader did not find the errors. proofing Proofing a document is best done by starting at the end and reading backward. register Register this letter and bring back the receipt.
+= Người soát bản in đã không phát hiện ra lỗi. Cách soát tài liệu tốt nhất là bắt đầu từ cuối và đọc ngược lên. Hãy gửi bảo đảm lá thư này và mang biên nhận về.
+You can register this mail for an additional $2.20.
+= Bạn có thể gửi bảo đảm thư này với phụ phí 2,20 đô la.
+Everybody needs to sign the register before entering the mail room.
+= Mọi người phải ký sổ trước khi vào phòng thư.
+Always get a receipt for registered mail. revise After you revise the document, give it a new name so that we wili still have access to both drafts.
+= Luôn lấy biên nhận khi gửi thư bảo đảm. Sau khi sửa tài liệu, hãy đặt tên mới để chúng ta vẫn giữ được cả hai bản nháp.
+Registration for the seminar can be done by fax.
+= Có thể đăng ký hội thảo qua fax.
+The brochure was revised several times before it was sent to the printer.
+= Tập quảng cáo được sửa nhiều lần trước khi gửi đi in.
+We will need to revise the form letter since our address has changed.
+= Chúng ta cần sửa lại mẫu thư vì địa chỉ đã thay đổi.
+His revised memo was easier to read.
+= Bản ghi nhớ đã sửa của anh ấy dễ đọc hơn.
+You may have to do three or four full revisions to this document before it is acceptable.
+= Có thể bạn phải sửa toàn bộ tài liệu này ba bốn lần mới đạt yêu cầu.
