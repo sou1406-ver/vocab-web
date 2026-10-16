@@ -229,3 +229,28 @@ test("thanh tiêu đề không bị cắt tab ở mọi bề ngang 1024–1920px
   }
   expect(bad).toEqual([]);
 });
+
+test("thanh điều hướng dưới đáy (điện thoại): 6 mục trên một hàng, icon trên chữ dưới", async ({ page, isMobile }) => {
+  test.skip(!isMobile, "chỉ có trên điện thoại");
+  await page.goto("#/");
+  const items = page.locator(".bottom-nav a");
+  await expect(items).toHaveCount(6);
+  const boxes = await items.evaluateAll((els) =>
+    els.map((e) => {
+      const r = e.getBoundingClientRect();
+      const icon = e.querySelector("svg")!.getBoundingClientRect();
+      const label = e.querySelector("span")!.getBoundingClientRect();
+      return { top: Math.round(r.top), h: r.height, iconAbove: icon.bottom <= label.top + 1 };
+    }),
+  );
+  expect(new Set(boxes.map((b) => b.top)).size).toBe(1);
+  for (const b of boxes) {
+    expect(b.h).toBeLessThan(72);
+    expect(b.iconAbove).toBe(true);
+  }
+  // số đếm ở ô "ngày liên tiếp" không bị thu nhỏ theo chữ bên cạnh
+  const size = await page
+    .locator(".d-streak b")
+    .evaluate((b) => parseFloat(getComputedStyle(b.querySelector("span") ?? b).fontSize));
+  expect(size).toBeGreaterThan(18);
+});

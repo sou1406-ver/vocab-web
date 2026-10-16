@@ -316,7 +316,7 @@ p {
     border-top: 1px solid var(--border);
     padding: 4px 4px calc(4px + env(safe-area-inset-bottom));
   }
-  .bottom-nav button {
+  .bottom-nav :is(button, a) {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -331,7 +331,7 @@ p {
     min-height: 48px;
     border-radius: 10px;
   }
-  .bottom-nav button.active {
+  .bottom-nav :is(button, a).active {
     color: var(--indigo);
   }
   main.container {
@@ -693,7 +693,7 @@ label.field > span {
   border-color: var(--emerald-line);
 }
 a.morph:hover,
-button.morph:hover {
+:is(button, a).morph:hover {
   filter: brightness(0.97);
 }
 .chip {
@@ -2433,7 +2433,7 @@ input[type="search"]::-webkit-search-cancel-button {
   .lesson-grid {
     grid-template-columns: minmax(0, 1fr);
   }
-  .bottom-nav button {
+  .bottom-nav :is(button, a) {
     min-width: 0;
     flex: 1;
     font-size: 0.66rem;
@@ -3247,7 +3247,7 @@ input[type="search"]::-webkit-search-cancel-button {
   color: var(--text);
   line-height: 1;
 }
-.d-streak span {
+.d-streak > span {
   font-size: 0.84rem;
 }
 .d-streak.on {
@@ -3476,7 +3476,7 @@ input[type="search"]::-webkit-search-cancel-button {
   font-size: 1.45rem;
   line-height: 1.15;
 }
-.d-stat span {
+.d-stat > span {
   font-size: 0.84rem;
   color: var(--text-2);
 }
@@ -3625,11 +3625,11 @@ input[type="search"]::-webkit-search-cancel-button {
 }
 /* Thanh điều hướng dưới đáy: nhãn một dòng */
 @media (max-width: 1023px) {
-  .bottom-nav button span {
+  .bottom-nav :is(button, a) span {
     white-space: nowrap;
     font-size: 0.66rem;
   }
-  .bottom-nav button {
+  .bottom-nav :is(button, a) {
     flex: 1;
     min-width: 0;
     padding: 0 2px;

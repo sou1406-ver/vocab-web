@@ -430,3 +430,11 @@ select option:disabled {
     width: 220px;
   }
 }
+
+/* Thanh điều hướng dưới đáy (điện thoại): mục là <a> (NavLink) */
+.bottom-nav a {
+  text-decoration: none;
+}
+.bottom-nav :is(button, a) span {
+  line-height: 1.2;
+}
