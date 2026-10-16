@@ -23,6 +23,11 @@ const store = {
 
 // ---------------------------------------------------------------- icons (nét vẽ theo bộ Lucide)
 const ICONS = {
+  home: '<path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V20a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1V9.5"/>',
+  flame: '<path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.07-2.14-.22-4.05 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.15.43-2.29 1-3a2.5 2.5 0 0 0 2.5 2.5z"/>',
+  target: '<circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/>',
+  user: '<circle cx="12" cy="8" r="4"/><path d="M4 21v-1a6 6 0 0 1 6-6h4a6 6 0 0 1 6 6v1"/>',
+  logout: '<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/>',
   network: '<circle cx="12" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><circle cx="18" cy="6" r="3"/><path d="M18 9v2c0 .6-.4 1-1 1H7c-.6 0-1-.4-1-1V9"/><path d="M12 12v3"/>',
   grid: '<rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/>',
   layers: '<path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/>',
@@ -78,12 +83,12 @@ const STATUS = {
   mastered: { label: "Đã thuộc", emoji: "🟢" },
 };
 const TAB_DEFS = [
-  { id: "topics", label: "Chủ đề", short: "Chủ đề", icon: "grid", href: "#/" },
+  { id: "dash", label: "Tổng quan", short: "Tổng quan", icon: "home", href: "#/" },
+  { id: "topics", label: "Chủ đề", short: "Chủ đề", icon: "grid", href: "#/topics" },
   { id: "network", label: "Trường từ", short: "Trường từ", icon: "network", href: "#/network" },
   { id: "flashcards", label: "Flashcard 3D", short: "Flashcard", icon: "layers", href: "#/flashcards" },
   { id: "quiz", label: "Bài tập", short: "Bài tập", icon: "pencil", href: "#/quiz" },
   { id: "affixes", label: "Tiền tố · Hậu tố", short: "Phụ tố", icon: "puzzle", href: "#/affixes" },
-  { id: "manage", label: "Tự thêm", short: "Tự thêm", icon: "folder", href: "#/manage" },
 ];
 const QUIZ_TYPES = {
   formation: { label: "Biến đổi từ loại", icon: "branch", desc: "Câu ví dụ trong sách, điền dạng đúng của từ" },
@@ -96,10 +101,59 @@ const QUIZ_LEN = 10;
 const AFFIX_GROUPS = [["-ion", "-tion", "-sion", "-ation", "-ition", "-ison"], ["-able", "-ible"], ["-er", "-or", "-itor"], ["-ance", "-ence", "-ancy", "-ency"], ["-ant", "-ent"], ["-al", "-ial", "-ual"], ["-ive", "-ative", "-itive"], ["-ic", "-ical", "-atic", "-tic"], ["-ory", "-atory", "-ary"], ["-ure", "-ture", "-ature"]];
 const RARE_AFFIXES = new Set(["-ison", "-ele", "-s", "-is", "-se", "-ety", "-ise", "-ior", "-ite", "-n", "-ice", "-th", "-dom", "-ology", "ac-", "sur-", "a-", "mal-"]);
 
+// ---------------------------------------------------------------- hồ sơ học tập (tài khoản cục bộ)
+// Mỗi hồ sơ có dữ liệu riêng: khoá lưu dạng "vn-status@<id hồ sơ>".
+const PROFILE_KEYS = ["vn-custom", "vn-status", "vn-stats", "vn-book", "vn-log"];
+const PROFILE_COLORS = ["#2f4b8f", "#a8442f", "#2f7a55", "#8a5a1f", "#6b3f87", "#2b6f7d"];
+let PROFILES = store.get("vn-profiles", []);
+let CURRENT = store.get("vn-current", null);
+const pstore = {
+  get: (k, d) => store.get(`${k}@${CURRENT}`, d),
+  set: (k, v) => store.set(`${k}@${CURRENT}`, v),
+};
+const newProfileId = () => "p" + Date.now().toString(36) + Math.random().toString(36).slice(2, 5);
+function ensureProfile() {
+  if (!PROFILES.length) {
+    const p = { id: newProfileId(), name: "Bạn", color: PROFILE_COLORS[0], goal: 20, target: 600, created: Date.now(), setup: false };
+    PROFILES = [p];
+    // dữ liệu từ phiên bản trước (chưa có hồ sơ) chuyển sang hồ sơ đầu tiên
+    for (const k of PROFILE_KEYS) { const v = store.get(k, null); if (v != null) store.set(`${k}@${p.id}`, v); }
+  }
+  if (!PROFILES.some((p) => p.id === CURRENT)) CURRENT = PROFILES[0].id;
+  store.set("vn-profiles", PROFILES);
+  store.set("vn-current", CURRENT);
+}
+const profile = () => PROFILES.find((p) => p.id === CURRENT);
+function saveProfiles() { store.set("vn-profiles", PROFILES); store.set("vn-current", CURRENT); }
+
 // ---------------------------------------------------------------- data & persistence
-let CUSTOM = store.get("vn-custom", []);
-let STATUS_MAP = store.get("vn-status", {});
-let STATS = store.get("vn-stats", {});
+let CUSTOM = [];
+let STATUS_MAP = {};
+let STATS = {};
+let LOG = {};          // nhật ký theo ngày: { "2026-10-16": { a: câu đã làm, c: câu đúng, f: thẻ đã ôn, m: từ mới thuộc } }
+function loadProfileData() {
+  CUSTOM = pstore.get("vn-custom", []);
+  STATUS_MAP = pstore.get("vn-status", {});
+  STATS = pstore.get("vn-stats", {});
+  LOG = pstore.get("vn-log", {});
+  if (typeof BOOK_SCORES !== "undefined") BOOK_SCORES = pstore.get("vn-book", {});
+}
+const dayKey = (d = new Date()) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+function logActivity(kind, ok) {
+  const k = dayKey();
+  const e = LOG[k] || (LOG[k] = { a: 0, c: 0, f: 0, m: 0 });
+  if (kind === "answer") { e.a++; if (ok) e.c++; } else if (kind === "card") e.f++; else if (kind === "mastered") e.m++;
+  pstore.set("vn-log", LOG);
+}
+// chuỗi ngày học liên tiếp (tính đến hôm nay, hoặc hôm qua nếu hôm nay chưa học)
+function streak() {
+  const active = (d) => { const e = LOG[dayKey(d)]; return e && e.a + e.f > 0; };
+  const d = new Date();
+  if (!active(d)) d.setDate(d.getDate() - 1);
+  let n = 0;
+  while (active(d)) { n++; d.setDate(d.getDate() - 1); }
+  return n;
+}
 const CUSTOM_TOPIC = { id: "custom", name: "Tự thêm", en: "My word networks", icon: "folder", lessons: [] };
 let ALL = [], BY_ID = {}, LESSON_BY_N = {}, TOPIC_BY_ID = {}, FORM_INDEX = {};
 
@@ -117,14 +171,16 @@ const unitOf = (w) => (w.lesson ? LESSON_BY_N[w.lesson].unit : "custom");
 const topicsWithCustom = () => (CUSTOM.length ? [...TOPICS, CUSTOM_TOPIC] : TOPICS);
 const statusOf = (id) => STATUS_MAP[id] || "new";
 function setStatus(id, s) {
+  if (s === "mastered" && STATUS_MAP[id] !== "mastered") logActivity("mastered");
   if (s === "new") delete STATUS_MAP[id]; else STATUS_MAP[id] = s;
-  store.set("vn-status", STATUS_MAP);
+  pstore.set("vn-status", STATUS_MAP);
 }
 function recordAnswer(id, ok) {
   const st = STATS[id] || { c: 0, w: 0 };
   ok ? st.c++ : st.w++;
   STATS[id] = st;
-  store.set("vn-stats", STATS);
+  pstore.set("vn-stats", STATS);
+  logActivity("answer", ok);
   if (!ok && statusOf(id) === "new") setStatus(id, "learning");
 }
 // Họ từ đầy đủ, luôn chứa chính từ gốc
@@ -184,6 +240,7 @@ function applyTheme(pref) {
 }
 function renderThemeSeg() {
   const pref = themePref();
+  if (!$("#theme-seg")) return;
   $("#theme-seg").innerHTML = THEMES.map(([k, ic, label]) =>
     `<button role="radio" aria-checked="${pref === k}" class="${pref === k ? "active" : ""}" data-act="setTheme" data-theme="${k}" title="${label}">${icon(ic, "sm")}<span>${label}</span></button>`).join("");
 }
@@ -281,7 +338,8 @@ function scopeSelects(st, prefix) {
 
 // ---------------------------------------------------------------- app state
 const S = {
-  tab: "topics",
+  tab: "dash",
+  menuOpen: false,
   net: { unit: "all", lesson: "all", q: "", id: null, focus: null, status: "all", pos: "all", affix: "all", sort: "book" },
   fc: { unit: "all", lesson: "1", status: "all", deck: [], i: 0, flipped: false },
   quiz: { type: "formation", unit: "all", lesson: "1", style: "choice", qs: [], i: 0, right: 0, wrong: 0, answered: false, picked: [], last: null },
@@ -755,6 +813,7 @@ function fcMove(d) {
 function fcRate(s) {
   const id = S.fc.deck[S.fc.i];
   if (!id) return;
+  logActivity("card");
   setStatus(id, s);
   toast(`${BY_ID[id].word}: ${STATUS[s].label}`);
   fcMove(1);
@@ -979,7 +1038,7 @@ function quizNext() {
 }
 
 // ---------------------------------------------------------------- BÀI TẬP TRONG SÁCH
-const BOOK_SCORES = store.get("vn-book", {});
+let BOOK_SCORES = {};
 const BOOK = { unit: "business", lesson: "1", fills: {}, checked: {}, active: null };
 const hasBook = typeof EXERCISES !== "undefined";
 const unitIndex = (unit) => TOPICS.findIndex((t) => t.id === unit);
@@ -1161,7 +1220,7 @@ function saveBookScore(sec, right, total) {
   const k = bookKey(sec);
   const prev = BOOK_SCORES[k];
   if (!prev || right / total >= prev.right / prev.total) BOOK_SCORES[k] = { right, total, at: Date.now() };
-  store.set("vn-book", BOOK_SCORES);
+  pstore.set("vn-book", BOOK_SCORES);
 }
 function bookCheck(sec) {
   const fills = BOOK.fills[sec] || {};
@@ -1340,7 +1399,7 @@ function saveWord(form) {
     syn: list("syn"), ant: list("ant"), parts: self ? self.parts : [v("word")], family };
   const i = CUSTOM.findIndex((x) => x.id === id);
   if (i >= 0) CUSTOM[i] = w; else CUSTOM.push(w);
-  store.set("vn-custom", CUSTOM);
+  pstore.set("vn-custom", CUSTOM);
   rebuildIndex();
   $("#modal-root").innerHTML = "";
   toast(`Đã lưu trường từ “${w.word}”`);
@@ -1348,10 +1407,10 @@ function saveWord(form) {
   render();
 }
 function exportJSON() {
-  const blob = new Blob([JSON.stringify({ app: "VocaNetwork-600", version: 1, custom: CUSTOM, status: STATUS_MAP, stats: STATS }, null, 2)], { type: "application/json" });
+  const blob = new Blob([JSON.stringify({ app: "VocaNetwork-600", version: 2, profile: profile(), custom: CUSTOM, status: STATUS_MAP, stats: STATS, book: BOOK_SCORES, log: LOG }, null, 2)], { type: "application/json" });
   const a = document.createElement("a");
   a.href = URL.createObjectURL(blob);
-  a.download = "vocanetwork-backup.json";
+  a.download = `vocanetwork-${lower(profile().name).replace(/[^a-z0-9]+/g, "-") || "ho-so"}-${dayKey()}.json`;
   a.click();
   setTimeout(() => URL.revokeObjectURL(a.href), 1000);
 }
@@ -1360,9 +1419,12 @@ function importJSON(input) {
   if (!file) return;
   file.text().then((t) => {
     const d = JSON.parse(t);
-    if (Array.isArray(d.custom)) { for (const w of d.custom) { const i = CUSTOM.findIndex((x) => x.id === w.id); i >= 0 ? (CUSTOM[i] = w) : CUSTOM.push(w); } store.set("vn-custom", CUSTOM); }
-    if (d.status) { Object.assign(STATUS_MAP, d.status); store.set("vn-status", STATUS_MAP); }
-    if (d.stats) { Object.assign(STATS, d.stats); store.set("vn-stats", STATS); }
+    if (Array.isArray(d.custom)) { for (const w of d.custom) { const i = CUSTOM.findIndex((x) => x.id === w.id); i >= 0 ? (CUSTOM[i] = w) : CUSTOM.push(w); } pstore.set("vn-custom", CUSTOM); }
+    if (d.status) { Object.assign(STATUS_MAP, d.status); pstore.set("vn-status", STATUS_MAP); }
+    if (d.stats) { Object.assign(STATS, d.stats); pstore.set("vn-stats", STATS); }
+    if (d.book) { Object.assign(BOOK_SCORES, d.book); pstore.set("vn-book", BOOK_SCORES); }
+    if (d.log) { for (const [k, v] of Object.entries(d.log)) LOG[k] = LOG[k] || v; pstore.set("vn-log", LOG); }
+    if (d.profile && profile() && !profile().setup) { Object.assign(profile(), { ...d.profile, id: CURRENT }); saveProfiles(); }
     rebuildIndex();
     render();
     toast("Đã nhập dữ liệu thành công");
@@ -1370,13 +1432,261 @@ function importJSON(input) {
 }
 
 // =====================================================================
+// TỔNG QUAN (DASHBOARD) — cá nhân hoá theo hồ sơ
+// =====================================================================
+// Lộ trình gợi ý: mục tiêu điểm TOEIC → số từ nên thuộc
+const TARGETS = [[450, 300, "Nền tảng"], [600, 420, "Trung cấp"], [750, 540, "Khá"], [900, 600, "Giỏi"]];
+const targetInfo = (score) => TARGETS.find((t) => t[0] === +score) || TARGETS[1];
+const initials = (name) => (name || "?").trim().split(/\s+/).slice(-1)[0].slice(0, 1).toUpperCase();
+function greeting() {
+  const h = new Date().getHours();
+  return h < 11 ? "Chào buổi sáng" : h < 14 ? "Chào buổi trưa" : h < 18 ? "Chào buổi chiều" : "Chào buổi tối";
+}
+function lastDays(n) {
+  const out = [];
+  const d = new Date();
+  for (let i = 0; i < n; i++) { out.push(LOG[dayKey(d)] || { a: 0, c: 0, f: 0, m: 0 }); d.setDate(d.getDate() - 1); }
+  return out;
+}
+function ringHTML(pct, label, sub) {
+  const r = 52, c = 2 * Math.PI * r;
+  return `<div class="ring" role="img" aria-label="${label} ${sub}">
+    <svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="${r}" class="ring-bg"/><circle cx="60" cy="60" r="${r}" class="ring-fg ${pct >= 100 ? "done" : ""}" style="stroke-dasharray:${c};stroke-dashoffset:${c * (1 - Math.min(pct, 100) / 100)}"/></svg>
+    <div class="ring-text"><b>${label}</b><span>${sub}</span></div></div>`;
+}
+function heatmapHTML() {
+  // 12 tuần gần nhất, mỗi cột là một tuần (Thứ 2 → Chủ nhật)
+  const weeks = 12;
+  const end = new Date();
+  const start = new Date(end);
+  start.setDate(end.getDate() - (weeks * 7 - 1) - ((end.getDay() + 6) % 7 ? 0 : 0));
+  start.setDate(start.getDate() - ((start.getDay() + 6) % 7)); // lùi về Thứ 2
+  const cells = [];
+  const d = new Date(start);
+  while (d <= end) {
+    const e = LOG[dayKey(d)];
+    const n = e ? e.a + e.f : 0;
+    const lv = n === 0 ? 0 : n < 5 ? 1 : n < 15 ? 2 : n < 30 ? 3 : 4;
+    cells.push(`<i class="hm l${lv}" title="${d.getDate()}/${d.getMonth() + 1}: ${n ? `${e.a} câu, ${e.f} thẻ` : "chưa học"}"></i>`);
+    d.setDate(d.getDate() + 1);
+  }
+  const active = Object.values(LOG).filter((e) => e.a + e.f > 0).length;
+  return `<div class="heatmap" style="--weeks:${Math.ceil(cells.length / 7)}">${cells.join("")}</div>
+    <div class="hm-legend"><span>${active} ngày đã học</span><span class="hm-scale">Ít <i class="hm l1"></i><i class="hm l2"></i><i class="hm l3"></i><i class="hm l4"></i> Nhiều</span></div>`;
+}
+
+function viewDash() {
+  const p = profile();
+  const today = LOG[dayKey()] || { a: 0, c: 0, f: 0, m: 0 };
+  const done = today.a + today.f;
+  const goal = p.goal || 20;
+  const pct = Math.round((done / goal) * 100);
+  const st = streak();
+  const mastered = WORDS.filter((w) => statusOf(w.id) === "mastered").length;
+  const learning = WORDS.filter((w) => statusOf(w.id) === "learning").length;
+  const week = lastDays(7);
+  const a7 = week.reduce((s, e) => s + e.a, 0), c7 = week.reduce((s, e) => s + e.c, 0);
+  const acc = a7 ? Math.round((c7 / a7) * 100) : null;
+  const [tScore, tWords, tLevel] = targetInfo(p.target);
+  const bookDone = hasBook ? LESSONS.filter((l) => lessonBookDone(l.n)).length : 0;
+  const next = resumeLesson();
+  const np = lessonProgress(next.n);
+  const weak = Object.entries(STATS).filter(([id, s]) => BY_ID[id] && s.w > 0 && statusOf(id) !== "mastered")
+    .sort((a, b) => b[1].w - a[1].w || a[1].c - b[1].c).slice(0, 8);
+  const recent = Object.entries(BOOK_SCORES).sort((a, b) => b[1].at - a[1].at).slice(0, 5);
+  const secName = { wic: "Words in Context", p5: "Part 5", p6: "Part 6", r5: "Word Review 1–10", r6: "Word Review 11–19" };
+  const recentLabel = (k) => {
+    const [where, sec] = k.split(":");
+    return where[0] === "L" ? `Bài ${where.slice(1)} · ${secName[sec] || sec}` : `Ôn tập phần ${where.slice(1)} · ${secName[sec] || sec}`;
+  };
+  const stat = (num, label, sub, cls = "") => `<div class="d-stat ${cls}"><b>${num}</b><span>${label}</span>${sub ? `<small>${sub}</small>` : ""}</div>`;
+
+  return `<div class="dash">
+    <section class="d-hero">
+      <div class="d-hello">
+        <div class="avatar lg" style="background:${p.color}">${esc(initials(p.name))}</div>
+        <div><p class="kicker">${greeting()}</p><h1>${esc(p.name)}</h1>
+          <p class="muted">Mục tiêu TOEIC <b>${tScore}+</b> · ${tLevel} · ${goal} câu/thẻ mỗi ngày
+          <button class="text-link" data-act="editProfile">Sửa</button></p></div>
+      </div>
+      <div class="d-streak ${st ? "on" : ""}" title="Số ngày học liên tiếp">${icon("flame")}<b>${st}</b><span>ngày liên tiếp</span></div>
+    </section>
+
+    ${p.setup ? "" : `<section class="card d-setup">
+      <div><h3>Cá nhân hoá lộ trình của bạn</h3><p class="muted">Đặt tên, mục tiêu điểm TOEIC và số câu mỗi ngày — trang này sẽ gợi ý bài học và theo dõi tiến độ theo mục tiêu đó.</p></div>
+      <button class="btn primary" data-act="editProfile">${icon("target", "sm")} Thiết lập mục tiêu</button>
+    </section>`}
+
+    <div class="d-grid">
+      <section class="card d-today">
+        <div class="d-card-head"><h3>Hôm nay</h3><span class="muted">${new Date().toLocaleDateString("vi-VN", { weekday: "long", day: "numeric", month: "numeric" })}</span></div>
+        <div class="d-today-body">
+          ${ringHTML(pct, `${done}/${goal}`, pct >= 100 ? "✓ Đạt mục tiêu" : "câu & thẻ")}
+          <ul class="d-today-list">
+            <li><b>${today.a}</b> câu bài tập${today.a ? ` · đúng ${Math.round((today.c / today.a) * 100)}%` : ""}</li>
+            <li><b>${today.f}</b> thẻ flashcard</li>
+            <li><b>${today.m}</b> từ mới thuộc</li>
+          </ul>
+        </div>
+        <div class="d-next">
+          <div class="eyebrow">${np.started ? "Học tiếp" : "Bắt đầu"}</div>
+          <div class="d-next-title">Bài ${next.n} · ${esc(next.title)} <span class="muted">${esc(next.vi)}</span></div>
+          <div class="row">
+            <button class="btn primary" data-act="openLesson" data-n="${next.n}">Trường từ ${icon("right", "sm")}</button>
+            <button class="btn" data-act="openLessonFlash" data-n="${next.n}">Flashcard</button>
+            ${hasBook ? `<button class="btn" data-act="openLessonBook" data-n="${next.n}">Bài tập sách</button>` : ""}
+          </div>
+        </div>
+      </section>
+
+      <section class="card d-path">
+        <div class="d-card-head"><h3>Lộ trình ${tScore}+</h3><span class="muted">${mastered}/${tWords} từ</span></div>
+        <div class="progress big"><span style="width:${Math.min(100, (mastered / tWords) * 100)}%"></span></div>
+        <p class="muted d-path-note">${mastered >= tWords ? "Bạn đã đủ vốn từ cho mục tiêu này — thử nâng mục tiêu nhé!" : `Còn <b>${tWords - mastered}</b> từ nữa. Với ${goal} câu/ngày, khoảng <b>${Math.max(1, Math.ceil(((tWords - mastered) * 3) / goal))}</b> ngày.`}</p>
+        <div class="d-stats">
+          ${stat(mastered, "đã thuộc", `/ ${WORDS.length} từ`)}
+          ${stat(learning, "đang học")}
+          ${stat(acc == null ? "—" : acc + "%", "chính xác", "7 ngày qua")}
+          ${hasBook ? stat(bookDone, "bài tập sách", `/ ${LESSONS.length} bài`) : ""}
+        </div>
+      </section>
+
+      <section class="card d-activity">
+        <div class="d-card-head"><h3>Hoạt động 12 tuần</h3></div>
+        ${heatmapHTML()}
+      </section>
+
+      <section class="card d-units">
+        <div class="d-card-head"><h3>Tiến độ theo phần</h3><button class="text-link" data-act="nav" data-href="#/topics">Mục lục ${icon("right", "sm")}</button></div>
+        <ul class="d-unit-list">${TOPICS.map((tp, i) => {
+          const ws = WORDS.filter((w) => unitOf(w) === tp.id);
+          const m = ws.filter((w) => statusOf(w.id) === "mastered").length;
+          return `<li><button class="d-unit" data-act="openUnit" data-unit="${tp.id}" data-to="network">
+            <span class="d-unit-n">${i + 1}</span><span class="d-unit-t">${esc(tp.name)}</span>
+            <span class="progress"><span style="width:${(m / ws.length) * 100}%"></span></span><span class="d-unit-v">${m}/${ws.length}</span></button></li>`;
+        }).join("")}</ul>
+      </section>
+
+      <section class="card d-weak">
+        <div class="d-card-head"><h3>Từ hay làm sai</h3>${weak.length ? `<button class="text-link" data-act="reviewWeak">Ôn bằng flashcard ${icon("right", "sm")}</button>` : ""}</div>
+        ${weak.length ? `<ul class="d-weak-list">${weak.map(([id, s]) => {
+          const w = BY_ID[id];
+          return `<li><a href="#/network/${id}"><b>${esc(w.word)}</b><span class="muted">${esc(w.vi)}</span></a><span class="badge b-rose">sai ${s.w}</span></li>`;
+        }).join("")}</ul>` : `<p class="muted d-empty">Chưa có từ nào bị làm sai. Làm vài bài tập để trang này gợi ý từ cần ôn.</p>`}
+      </section>
+
+      <section class="card d-recent">
+        <div class="d-card-head"><h3>Bài tập gần đây</h3></div>
+        ${recent.length ? `<ul class="d-recent-list">${recent.map(([k, v]) => {
+          const pc = Math.round((v.right / v.total) * 100);
+          return `<li><span>${recentLabel(k)}</span><span class="badge ${pc === 100 ? "b-emerald" : pc >= 60 ? "b-amber" : "b-rose"}">${v.right}/${v.total}</span></li>`;
+        }).join("")}</ul>` : `<p class="muted d-empty">Chưa làm bài tập trong sách nào.</p>`}
+        ${hasBook ? `<button class="btn sm" style="margin-top:12px" data-act="openLessonBook" data-n="${next.n}">${icon("book", "sm")} Làm bài tập bài ${next.n}</button>` : ""}
+      </section>
+    </div>
+  </div>`;
+}
+
+// =====================================================================
+// MENU & BIỂU MẪU HỒ SƠ
+// =====================================================================
+function renderProfileChrome() {
+  const p = profile();
+  const btn = $("#avatar-btn");
+  btn.innerHTML = `<span class="avatar" style="background:${p.color}">${esc(initials(p.name))}</span><span class="avatar-name">${esc(p.name)}</span>`;
+  btn.setAttribute("aria-expanded", String(S.menuOpen));
+  const menu = $("#profile-menu");
+  menu.hidden = !S.menuOpen;
+  if (!S.menuOpen) return;
+  const pref = themePref();
+  const others = PROFILES.filter((x) => x.id !== CURRENT);
+  menu.innerHTML = `
+    <div class="pm-head"><span class="avatar lg" style="background:${p.color}">${esc(initials(p.name))}</span>
+      <div><b>${esc(p.name)}</b><span class="muted">Mục tiêu ${targetInfo(p.target)[0]}+ · ${p.goal} câu/ngày</span></div></div>
+    <button class="pm-item" role="menuitem" data-act="editProfile">${icon("user", "sm")} Sửa hồ sơ &amp; mục tiêu</button>
+    <button class="pm-item" role="menuitem" data-act="nav" data-href="#/manage">${icon("folder", "sm")} Từ của tôi &amp; sao lưu</button>
+    ${others.length ? `<div class="pm-label">Chuyển hồ sơ</div>${others.map((o) => `<button class="pm-item" role="menuitem" data-act="switchProfile" data-id="${o.id}"><span class="avatar sm" style="background:${o.color}">${esc(initials(o.name))}</span> ${esc(o.name)}</button>`).join("")}` : ""}
+    <button class="pm-item" role="menuitem" data-act="newProfile">${icon("plus", "sm")} Thêm hồ sơ mới</button>
+    <div class="pm-label">Giao diện</div>
+    <div class="pm-theme" role="radiogroup">${THEMES.map(([k, ic, label]) => `<button role="radio" aria-checked="${pref === k}" class="${pref === k ? "active" : ""}" data-act="setTheme" data-theme="${k}">${icon(ic, "sm")} ${label}</button>`).join("")}</div>
+    <p class="pm-note">Hồ sơ lưu trên trình duyệt này. Dùng “Sao lưu” để chuyển sang máy khác.</p>`;
+}
+function closeMenu() {
+  if (!S.menuOpen) return;
+  S.menuOpen = false;
+  renderProfileChrome();
+}
+
+function openProfileModal(isNew) {
+  const p = isNew ? { name: "", color: PROFILE_COLORS[PROFILES.length % PROFILE_COLORS.length], goal: 20, target: 600 } : profile();
+  closeMenu();
+  $("#modal-root").innerHTML = `
+  <div class="modal-backdrop" data-act="closeModal">
+    <form class="modal" data-submit="saveProfile" data-new="${isNew ? 1 : 0}" style="width:min(560px,100%)">
+      <div class="row between"><h3 style="font-size:1.25rem">${isNew ? "Thêm hồ sơ học" : "Hồ sơ & mục tiêu"}</h3><button type="button" class="icon-btn" data-act="closeModal" aria-label="Đóng">${icon("x")}</button></div>
+      <label class="field" style="margin-top:16px"><span>Tên hiển thị</span><input class="input" name="name" required maxlength="40" value="${esc(p.name === "Bạn" && !p.setup ? "" : p.name)}" placeholder="vd: Minh Anh"></label>
+      <div class="field" style="margin-top:14px"><span>Màu hồ sơ</span>
+        <div class="color-pick">${PROFILE_COLORS.map((c) => `<label><input type="radio" name="color" value="${c}" ${c === p.color ? "checked" : ""}><i style="background:${c}"></i></label>`).join("")}</div></div>
+      <div class="field" style="margin-top:14px"><span>Mục tiêu điểm TOEIC</span>
+        <div class="choice-row">${TARGETS.map(([s, w, lv]) => `<label><input type="radio" name="target" value="${s}" ${+p.target === s ? "checked" : ""}><span><b>${s}+</b><small>${lv} · ${w} từ</small></span></label>`).join("")}</div></div>
+      <div class="field" style="margin-top:14px"><span>Mỗi ngày học</span>
+        <div class="choice-row">${[[10, "Nhẹ nhàng"], [20, "Đều đặn"], [40, "Tăng tốc"], [60, "Cấp tốc"]].map(([g, lv]) => `<label><input type="radio" name="goal" value="${g}" ${+p.goal === g ? "checked" : ""}><span><b>${g}</b><small>${lv}</small></span></label>`).join("")}</div>
+        <p class="muted" style="font-size:.8rem;margin-top:6px">Tính cả câu bài tập và thẻ flashcard.</p></div>
+      <div class="row between" style="margin-top:22px">
+        ${!isNew && PROFILES.length > 1 ? `<button type="button" class="btn ghost danger" data-act="deleteProfile">${icon("trash", "sm")} Xoá hồ sơ</button>` : "<span></span>"}
+        <div class="row"><button type="button" class="btn" data-act="closeModal">Huỷ</button><button class="btn primary">${icon("check", "sm")} ${isNew ? "Tạo hồ sơ" : "Lưu"}</button></div>
+      </div>
+    </form>
+  </div>`;
+  $(".modal input[name=name]").focus();
+}
+function saveProfileForm(form) {
+  const fd = new FormData(form);
+  const data = { name: String(fd.get("name") || "").trim() || "Bạn", color: fd.get("color") || PROFILE_COLORS[0], target: +fd.get("target") || 600, goal: +fd.get("goal") || 20, setup: true };
+  if (form.dataset.new === "1") {
+    const p = { id: newProfileId(), created: Date.now(), ...data };
+    PROFILES.push(p);
+    switchProfile(p.id, true);
+    toast(`Đã tạo hồ sơ “${p.name}”`);
+  } else {
+    Object.assign(profile(), data);
+    saveProfiles();
+    toast("Đã lưu hồ sơ");
+  }
+  $("#modal-root").innerHTML = "";
+  render();
+}
+function switchProfile(id, silent) {
+  CURRENT = id;
+  saveProfiles();
+  loadProfileData();
+  rebuildIndex();
+  if (typeof resetBook === "function") resetBook();
+  BOOK.touched = false;
+  S.fc.deck = [];
+  S.quiz.qs = []; S.quiz.i = 0;
+  S.menuOpen = false;
+  if (!silent) toast(`Đang dùng hồ sơ “${profile().name}”`);
+  if (location.hash !== "#/") location.hash = "#/"; else route();
+}
+function deleteProfile() {
+  const p = profile();
+  if (PROFILES.length < 2 || !confirm(`Xoá hồ sơ “${p.name}” cùng toàn bộ tiến độ của hồ sơ này? Không thể hoàn tác.`)) return;
+  for (const k of PROFILE_KEYS) { try { localStorage.removeItem(`${k}@${p.id}`); } catch (e) { /* bỏ qua */ } }
+  PROFILES = PROFILES.filter((x) => x.id !== p.id);
+  $("#modal-root").innerHTML = "";
+  switchProfile(PROFILES[0].id);
+}
+
+// =====================================================================
 // ROUTER, RENDER, EVENTS
 // =====================================================================
 function renderChrome() {
   $("#brand-logo").innerHTML = icon("network");
-  $("#tabs").innerHTML = TAB_DEFS.map((t) => `<button class="tab ${S.tab === t.id ? "active" : ""}" data-act="nav" data-href="${t.href}">${icon(t.icon, "sm")} ${t.label}</button>`).join("");
+  $("#tabs").innerHTML = TAB_DEFS.map((t) => `<button class="tab ${S.tab === t.id ? "active" : ""}" data-act="nav" data-href="${t.href}" ${S.tab === t.id ? 'aria-current="page"' : ""}>${icon(t.icon, "sm")}<span class="tl">${t.label}</span><span class="ts">${t.short}</span></button>`).join("");
   $("#bottom-nav").innerHTML = TAB_DEFS.map((t) => `<button class="${S.tab === t.id ? "active" : ""}" data-act="nav" data-href="${t.href}">${icon(t.icon)}<span>${t.short}</span></button>`).join("");
   renderThemeSeg();
+  renderProfileChrome();
   $("#gsearch-btn").innerHTML = icon("search");
 }
 let renderedTab = null;
@@ -1386,7 +1696,7 @@ function render() {
   const keepY = renderedTab === S.tab ? window.scrollY : 0;
   if (keepY) app.style.minHeight = app.offsetHeight + "px";
   renderChrome();
-  const views = { topics: viewTopics, network: viewNetwork, flashcards: viewFlashcards, quiz: viewQuiz, affixes: viewAffixes, manage: viewManage };
+  const views = { dash: viewDash, topics: viewTopics, network: viewNetwork, flashcards: viewFlashcards, quiz: viewQuiz, affixes: viewAffixes, manage: viewManage };
   app.innerHTML = views[S.tab]();
   if (renderedTab !== S.tab) {
     // Hiệu ứng chuyển trang chỉ chạy khi đổi tab
@@ -1403,9 +1713,10 @@ function render() {
 const prefersReducedMotion = () => window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
 const smooth = () => (prefersReducedMotion() ? "auto" : "smooth");
 function route() {
+  S.menuOpen = false;
   const [tab, a, b] = (location.hash.replace(/^#\/?/, "") || "").split("/").map(decodeURIComponent);
   const prevTab = renderedTab;
-  S.tab = TAB_DEFS.some((t) => t.id === tab) ? tab : "topics";
+  S.tab = TAB_DEFS.some((t) => t.id === tab) || tab === "manage" ? tab : "dash";
   let filtersReset = false;
   if (S.tab === "network" && a && BY_ID[a]) {
     if (!networkList().some((w) => w.id === a)) { Object.assign(S.net, { unit: "all", lesson: "all", q: "", status: "all", pos: "all", affix: "all" }); filtersReset = true; }
@@ -1437,7 +1748,7 @@ function route() {
 const ACTIONS = {
   nav: (el) => { const h = el.dataset.href; if (location.hash === h) route(); else location.hash = h; },
   speak: (el) => speak(el.dataset.text),
-  setTheme: (el) => { applyTheme(el.dataset.theme); toast(`Giao diện: ${THEMES.find((x) => x[0] === el.dataset.theme)[2]}`); },
+  setTheme: (el) => { applyTheme(el.dataset.theme); renderProfileChrome(); toast(`Giao diện: ${THEMES.find((x) => x[0] === el.dataset.theme)[2]}`); },
   openSearch: () => { document.querySelector(".header").classList.toggle("search-open"); $("#gsearch-input").focus(); },
   gsGo: (el) => { closeSearch(true); ACTIONS.nav(el); },
   openLesson: (el) => {
@@ -1462,6 +1773,17 @@ const ACTIONS = {
     if (nav && nav.getBoundingClientRect().top < 60) window.scrollTo({ top: window.scrollY + nav.getBoundingClientRect().top - 76, behavior: smooth() });
     const active = $(".lesson-steps .step.active");
     if (active) active.scrollIntoView({ block: "nearest", inline: "center" });
+  },
+  profileMenu: () => { S.menuOpen = !S.menuOpen; renderProfileChrome(); },
+  editProfile: () => openProfileModal(false),
+  newProfile: () => openProfileModal(true),
+  switchProfile: (el) => switchProfile(el.dataset.id),
+  deleteProfile: () => deleteProfile(),
+  reviewWeak: () => {
+    // thẻ flashcard gồm các từ hay sai nhất
+    const ids = Object.entries(STATS).filter(([id, s]) => BY_ID[id] && s.w > 0 && statusOf(id) !== "mastered").sort((a, b) => b[1].w - a[1].w).map(([id]) => id).slice(0, 20);
+    Object.assign(S.fc, { unit: "all", lesson: "all", status: "all", deck: ids, i: 0, flipped: false });
+    location.hash = "#/flashcards";
   },
   quizMode: (el) => { S.quiz.mode = el.dataset.mode; render(); },
   openLessonBook: (el) => {
@@ -1552,7 +1874,7 @@ const ACTIONS = {
     const w = BY_ID[el.dataset.id];
     if (!w || !confirm(`Xoá trường từ “${w.word}”?`)) return;
     CUSTOM = CUSTOM.filter((x) => x.id !== w.id);
-    store.set("vn-custom", CUSTOM);
+    pstore.set("vn-custom", CUSTOM);
     rebuildIndex();
     render();
     toast("Đã xoá");
@@ -1561,7 +1883,8 @@ const ACTIONS = {
   resetProgress: () => {
     if (!confirm("Xoá toàn bộ trạng thái học và thống kê bài tập? (Trường từ tự thêm vẫn giữ nguyên)")) return;
     STATUS_MAP = {}; STATS = {};
-    store.set("vn-status", STATUS_MAP); store.set("vn-stats", STATS);
+    BOOK_SCORES = {}; LOG = {};
+    pstore.set("vn-status", STATUS_MAP); pstore.set("vn-stats", STATS); pstore.set("vn-book", BOOK_SCORES); pstore.set("vn-log", LOG);
     render();
     toast("Đã xoá tiến độ");
   },
@@ -1616,6 +1939,7 @@ const SUBMITS = {
     quizAnswer(v === lower(q.m.text) || v === lower(q.f.w));
   },
   saveWord: (form) => saveWord(form),
+  saveProfile: (form) => saveProfileForm(form),
 };
 
 document.addEventListener("click", (e) => {
@@ -1632,6 +1956,7 @@ document.addEventListener("input", (e) => { const el = e.target.closest("[data-i
 document.addEventListener("submit", (e) => { const el = e.target.closest("[data-submit]"); if (el && SUBMITS[el.dataset.submit]) { e.preventDefault(); SUBMITS[el.dataset.submit](el); } });
 document.addEventListener("keydown", (e) => {
   if ($("#modal-root").innerHTML) { if (e.key === "Escape") $("#modal-root").innerHTML = ""; return; }
+  if (e.key === "Escape" && S.menuOpen) { closeMenu(); $("#avatar-btn").focus(); return; }
   const tag = (e.target.tagName || "").toLowerCase();
   if (tag === "input" || tag === "textarea" || tag === "select") return;
   if (e.key === "/" && !e.ctrlKey && !e.metaKey) { e.preventDefault(); ACTIONS.openSearch(); return; }
@@ -1659,8 +1984,13 @@ $("#gsearch-input").addEventListener("keydown", (e) => {
   else if (e.key === "Escape") { closeSearch(true); }
 });
 $("#gsearch-input").addEventListener("focus", () => { if ($("#gsearch-input").value.trim()) renderSearch(); });
-document.addEventListener("pointerdown", (e) => { if (!e.target.closest("#gsearch, #gsearch-btn")) closeSearch(false); });
+document.addEventListener("pointerdown", (e) => {
+  if (!e.target.closest("#gsearch, #gsearch-btn")) closeSearch(false);
+  if (!e.target.closest(".profile-wrap")) closeMenu();
+});
 window.addEventListener("hashchange", route);
 
+ensureProfile();
+loadProfileData();
 rebuildIndex();
 route();

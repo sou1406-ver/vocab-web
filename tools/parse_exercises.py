@@ -260,7 +260,9 @@ def parse_wic(pno):
     left = sorted(r["x0"] for r in passage)[len(passage) // 4] if passage else 0
     paras, cur = [], []
     for r in passage:
-        if cur and r["x0"] > left + 15 and not r["items"][0].get("blank"):
+        # sang đoạn mới: dòng thụt vào rõ ràng VÀ dòng trước kết thúc câu
+        prev_end = cur[-1]["items"][-1]["t"] if cur else ""
+        if cur and r["x0"] > left + 25 and not r["items"][0].get("blank") and re.search(r"[.!?:\"')]$", prev_end):
             paras.append(cur); cur = []
         cur.append(r)
     if cur:
