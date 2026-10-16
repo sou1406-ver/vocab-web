@@ -24,7 +24,17 @@ npm run preview    # xem bản build
 | `npm run e2e`                           | Test giao diện (Playwright, 3 cỡ màn hình) — lần đầu: `npx playwright install chromium`; dùng Edge của máy: `PW_CHANNEL=msedge` |
 | `npm run data`                          | Dựng lại `src/data/*.json` từ `data/`                                                                                           |
 
-Đẩy lên nhánh `main` thì GitHub Actions (`.github/workflows/deploy.yml`) tự kiểm tra, build và đưa lên GitHub Pages
+### Deploy (Firebase Hosting)
+
+Web chạy tại **<https://vocab-web-a0d13.web.app>**.
+
+```
+npx firebase login      # một lần trên mỗi máy
+npm run deploy          # build + đưa lên Firebase Hosting
+npm run deploy:rules    # cập nhật Firestore Rules (firestore.rules)
+```
+
+Ngoài ra, đẩy lên nhánh `main` thì GitHub Actions (`.github/workflows/deploy.yml`) tự kiểm tra, build và đưa lên GitHub Pages
 (cần bật một lần: **Settings → Pages → Source: GitHub Actions**).
 
 ### Cấu trúc mã
