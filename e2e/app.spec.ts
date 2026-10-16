@@ -146,3 +146,14 @@ test("đồng nghĩa: có nghĩa, từ phổ biến xếp trước và được 
   await expect(page).toHaveURL(/#\/network\/(?!abide-by-1)/);
   await expect(page.locator(".rel-card").first()).toBeVisible();
 });
+
+test("bấm từ đồng nghĩa ngoài sách (program) mở trang riêng, từ đó sang trường từ", async ({ page }) => {
+  await page.goto("#/network/agenda-27");
+  await page.locator(".rel-card", { hasText: "program" }).first().click();
+  await expect(page).toHaveURL(/#\/term\/program/);
+  await expect(page.locator(".root-banner h2")).toHaveText("program");
+  await expect(page.locator(".root-banner .vi")).toHaveText("chương trình");
+  await expect(page.locator(".term-root")).toHaveCount(3);
+  await page.locator(".term-root-word", { hasText: "software" }).click();
+  await expect(page.locator(".root-banner h2")).toHaveText("software");
+});

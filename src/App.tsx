@@ -6,6 +6,7 @@ import { FlashcardsPage } from "./pages/Flashcards";
 import { ManagePage } from "./pages/Manage";
 import { NetworkPage } from "./pages/Network";
 import { QuizPage } from "./pages/Quiz";
+import { TermPage } from "./pages/Term";
 import { TopicsPage } from "./pages/Topics";
 
 // Hash router: giữ nguyên dạng link của bản cũ (#/network/agreement-1/agree) và chạy được trên GitHub Pages
@@ -17,6 +18,7 @@ const router = createHashRouter([
       { index: true, element: <Dashboard /> },
       { path: "topics", element: <TopicsPage /> },
       { path: "network/:id?/:form?", element: <NetworkPage /> },
+      { path: "term/:term", element: <TermPage /> },
       { path: "flashcards", element: <FlashcardsPage /> },
       { path: "quiz", element: <QuizPage /> },
       { path: "affixes/:affix?", element: <AffixesPage /> },

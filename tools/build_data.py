@@ -487,6 +487,9 @@ for w in out_words:
         if not vi:
             rel_missing.append(t)
         terms[k] = {"vi": vi or "", "z": FREQ.get(k, 0)}
+        ipa = ipa_of(k.split(";")[0].strip(), "")
+        if ipa:
+            terms[k]["ipa"] = ipa
 for w in out_words:  # độ phổ biến của chính từ gốc (hiện cạnh tiêu đề)
     terms.setdefault(w["word"].lower(), {"vi": w["vi"], "z": FREQ.get(w["word"].lower(), 0)})
 write_json("terms", dict(sorted(terms.items())))

@@ -14,7 +14,7 @@ export const TOPICS = topicsJson as Topic[];
 export const AFFIXES = affixesJson as unknown as Record<string, Affix>;
 export const EXERCISES = exercisesJson as unknown as Exercises;
 /** Nghĩa + độ phổ biến (thang Zipf) của từ đồng nghĩa / trái nghĩa */
-export const TERMS = termsJson as Record<string, { vi: string; z: number }>;
+export const TERMS = termsJson as Record<string, { vi: string; z: number; ipa?: string }>;
 
 /** Mức phổ biến theo thang Zipf (tần suất trong tiếng Anh nói chung) */
 export function freqLevel(z: number): { level: 0 | 1 | 2 | 3; label: string } {
@@ -23,7 +23,7 @@ export function freqLevel(z: number): { level: 0 | 1 | 2 | 3; label: string } {
   if (z >= 3.4) return { level: 1, label: "Ít gặp hơn" };
   return { level: 0, label: "Hiếm gặp" };
 }
-export const termInfo = (t: string) => TERMS[lower(t)] ?? { vi: "", z: 0 };
+export const termInfo = (t: string): { vi: string; z: number; ipa?: string } => TERMS[lower(t)] ?? { vi: "", z: 0 };
 
 export const LESSON_BY_N: Record<number, Lesson> = Object.fromEntries(LESSONS.map((l) => [l.n, l]));
 export const CUSTOM_TOPIC: Topic = {

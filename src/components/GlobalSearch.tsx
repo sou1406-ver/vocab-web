@@ -54,7 +54,8 @@ export function GlobalSearch() {
     setOpen(false);
     setMobileOpen(false);
     inputRef.current?.blur();
-    navigate(netHref(e.root.id, e.form));
+    // từ đồng nghĩa ngoài sách → trang riêng của từ đó
+    navigate(e.kind === "syn" ? `/term/${encodeURIComponent(e.form)}` : netHref(e.root.id, e.form));
   };
 
   const show = open && !!q.trim();

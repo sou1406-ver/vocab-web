@@ -56,7 +56,14 @@ export function Layout() {
           </button>
           <nav className="tabs" aria-label="Các trang">
             {TABS.map((t) => (
-              <NavLink key={t.to} to={t.to} end={t.end} className={({ isActive }) => `tab${isActive ? " active" : ""}`}>
+              <NavLink
+                key={t.to}
+                to={t.to}
+                end={t.end}
+                className={({ isActive }) =>
+                  `tab${isActive || (t.to === "/network" && pathname.startsWith("/term/")) ? " active" : ""}`
+                }
+              >
                 <Icon name={t.icon} size="sm" />
                 <span className="tl">{t.label}</span>
                 <span className="ts">{t.short}</span>
@@ -76,7 +83,14 @@ export function Layout() {
 
       <nav className="bottom-nav" aria-label="Các trang">
         {TABS.map((t) => (
-          <NavLink key={t.to} to={t.to} end={t.end} className={({ isActive }) => (isActive ? "active" : "")}>
+          <NavLink
+            key={t.to}
+            to={t.to}
+            end={t.end}
+            className={({ isActive }) =>
+              isActive || (t.to === "/network" && pathname.startsWith("/term/")) ? "active" : ""
+            }
+          >
             <Icon name={t.icon} />
             <span>{t.short}</span>
           </NavLink>

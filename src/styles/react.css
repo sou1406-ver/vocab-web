@@ -221,3 +221,113 @@ a.btn.primary {
   margin-left: 6px;
   color: var(--text-2);
 }
+
+/* Cả thẻ đồng nghĩa / trái nghĩa bấm được (link "kéo giãn" phủ toàn thẻ) */
+.rel-card {
+  position: relative;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
+}
+.rel-card a.rel-word::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+}
+.rel-card .speak-btn,
+.rel-card .rel-also a {
+  position: relative;
+  z-index: 1;
+}
+.rel-card:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
+}
+.rel-card:has(a.rel-word:focus-visible) {
+  outline: 2px solid var(--indigo);
+  outline-offset: 2px;
+}
+.rel-card a.rel-word:focus-visible {
+  outline: none;
+}
+.rel-ipa {
+  font-size: 0.78rem;
+}
+@media (prefers-reduced-motion: reduce) {
+  .rel-card,
+  .rel-card:hover {
+    transition: none;
+    transform: none;
+  }
+}
+
+/* Trang từ liên quan (/term/...) */
+.term-roots {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr));
+  gap: 12px;
+}
+.term-root {
+  border-radius: var(--r);
+  padding: 14px;
+  background: var(--surface-2);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.term-root.syn {
+  border-left: 3px solid var(--teal);
+}
+.term-root.ant {
+  border-left: 3px solid var(--rose);
+}
+.term-root-word {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.15rem;
+  color: var(--text);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.term-root-word:hover {
+  color: var(--indigo);
+  text-decoration: underline;
+}
+.term-root-vi {
+  color: var(--text-2);
+}
+.term-root-meta {
+  font-size: 0.76rem;
+  color: var(--muted);
+}
+.term-siblings {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+  margin-top: 8px;
+  font-size: 0.78rem;
+}
+.term-siblings a.tag {
+  text-decoration: none;
+}
+.term-siblings a.tag:hover {
+  text-decoration: underline;
+}
+.term-siblings .tag {
+  padding: 2px 10px;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 0.8rem;
+}
+.term-siblings .tag.syn {
+  background: var(--teal-soft);
+  color: var(--teal-text);
+}
+.term-siblings .tag.ant {
+  background: var(--rose-soft);
+  color: var(--rose-text);
+}

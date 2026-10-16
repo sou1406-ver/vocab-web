@@ -236,6 +236,12 @@ def main():
                 words[(c[0], c[1])] = None
             elif raw.strip() and not raw.startswith("#") and "|" in raw:
                 words.setdefault((raw.split("|")[0].strip(), ""), None)
+    # từ đồng nghĩa / trái nghĩa ngoài sách (data/relations.txt) — mục ghép "a; b" lấy phần đầu
+    rel = os.path.join(ROOT, "data/relations.txt")
+    if os.path.exists(rel):
+        for raw in open(rel, encoding="utf-8"):
+            if " | " in raw and not raw.startswith("#"):
+                words.setdefault((raw.split(" | ")[0].split(";")[0].strip(), ""), None)
     ipa, missing = {}, []
     for w, pos in sorted(words):
         r = ipa_for(w, pos, cmu)

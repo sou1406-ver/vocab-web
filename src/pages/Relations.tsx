@@ -1,9 +1,15 @@
 import { Link } from "react-router-dom";
-import { netHref, SpeakBtn } from "@/components/bits";
+import { Ipa, netHref, SpeakBtn } from "@/components/bits";
 import { Icon } from "@/components/Icon";
 import { freqLevel, termInfo, type Catalog } from "@/lib/data";
 import type { Word } from "@/lib/types";
 import { cx, lower } from "@/lib/util";
+
+/** Link của một từ đồng nghĩa / trái nghĩa: có trong sách → trường từ của nó, không thì → trang riêng của từ */
+export function termHref(cat: Catalog, term: string) {
+  const id = cat.rootIdFor(term);
+  return id ? netHref(id, term) : `/term/${encodeURIComponent(term)}`;
+}
 
 /** Vạch đo độ phổ biến 3 nấc */
 export function FreqMeter({ z }: { z: number }) {
@@ -30,14 +36,19 @@ function RelCard({ term, kind, root, cat }: { term: string; kind: "syn" | "ant";
       <div className="rel-main">
         <div className="rel-top">
           <FreqMeter z={info.z} />
-          {linked ? (
-            <Link className="rel-word" to={netHref(target, term)} title={`Mở trường từ “${cat.byId[target].word}”`}>
-              {term}
-              <Icon name="right" size="sm" />
-            </Link>
-          ) : (
-            <b className="rel-word">{term}</b>
-          )}
+          <Link
+            className="rel-word"
+            to={linked ? netHref(target, term) : termHref(cat, term)}
+            title={
+              linked
+                ? `Mở trường từ “${cat.byId[target].word}”`
+                : `Xem “${term}”: nghĩa, phát âm và các trường từ liên quan`
+            }
+          >
+            {term}
+            <Icon name="right" size="sm" />
+          </Link>
+          <Ipa ipa={info.ipa} className="rel-ipa" />
           {level >= 2 && <span className={cx("freq-tag", level === 3 && "top")}>{label}</span>}
         </div>
         {info.vi && <div className="rel-vi">{info.vi}</div>}
