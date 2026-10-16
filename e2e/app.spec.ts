@@ -1,3 +1,4 @@
+import AxeBuilder from "@axe-core/playwright";
 import { expect, test, type Page } from "@playwright/test";
 
 /** Ghi lại lỗi JS / console.error để mỗi test tự kiểm tra trang không lỗi */
@@ -171,3 +172,34 @@ test("mở từ ngoài danh sách đang lọc: giữ nguyên bộ lọc, có nú
   await expect(page.locator(".outside-note")).toHaveCount(0);
   await expect(page.locator(".root-item.active")).toContainText("agreement");
 });
+
+// Kiểm tra truy cập tự động (axe · WCAG 2 AA): tương phản màu, nhãn, vai trò ARIA — cả giao diện sáng và tối
+for (const theme of ["light", "dark"])
+  test(`không có lỗi truy cập WCAG AA (${theme})`, async ({ page }) => {
+    test.setTimeout(90_000);
+    const pages = [
+      "#/",
+      "#/topics",
+      "#/network/agreement-1",
+      "#/flashcards",
+      "#/quiz",
+      "#/affixes/-ment",
+      "#/term/program",
+    ];
+    const found: string[] = [];
+    for (const p of pages) {
+      await page.goto(p);
+      await page.evaluate((t) => document.documentElement.setAttribute("data-theme", t), theme);
+      // đợi hiệu ứng chữ (BlurText) chạy xong — chữ đang mờ dần không phải trạng thái cuối
+      await page.waitForTimeout(1500);
+      const r = await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa"]).analyze();
+      for (const v of r.violations)
+        found.push(
+          `${p} ${v.id}: ${v.nodes
+            .map((n) => n.target.join(" "))
+            .slice(0, 3)
+            .join(" | ")}`,
+        );
+    }
+    expect(found).toEqual([]);
+  });

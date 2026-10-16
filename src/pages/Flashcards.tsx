@@ -140,9 +140,7 @@ export function FlashcardsPage() {
           <div
             className={cx("fc-card", fc.flipped && "flipped")}
             id="fc-card"
-            role="button"
-            tabIndex={0}
-            aria-label={fc.flipped ? "Mặt sau thẻ — bấm để lật lại" : "Mặt trước thẻ — bấm để lật"}
+            title={fc.flipped ? "Bấm để lật lại" : "Bấm để lật thẻ"}
             onClick={(e) => {
               if ((e.target as HTMLElement).closest("button, a")) return;
               flip();
@@ -249,7 +247,7 @@ export function FlashcardsPage() {
             <Icon name="undo" size="sm" /> Chưa nhớ<small>Học lại (phím 1)</small>
           </button>
           <button className="rate-btn r2" onClick={() => rate("learning")}>
-            Đang học<small>Nhớ một phần (phím 2)</small>
+            <Icon name="target" size="sm" /> Đang học<small>Nhớ một phần (phím 2)</small>
           </button>
           <button className="rate-btn r3" onClick={() => rate("mastered")}>
             <Icon name="check" size="sm" /> Đã thuộc<small>Thuộc cả họ từ (phím 3)</small>

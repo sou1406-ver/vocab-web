@@ -366,3 +366,56 @@ select option:checked {
 select option:disabled {
   color: var(--faint);
 }
+
+/* Ô lọc dạng viên thuốc: vòng focus vẽ ở cả viên (.filter-sel:focus-within), bỏ viền focus riêng của <select> bên trong
+   để không bị hai viền chồng nhau */
+.filter-sel select:focus,
+.filter-sel select:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+
+/* Thiết bị cảm ứng: vùng chạm tối thiểu ~44px (better-web-ui · touch targets). Máy tính giữ nguyên kích thước. */
+@media (pointer: coarse) {
+  .btn.sm,
+  .mode-switch button,
+  .d-unit,
+  .status-select,
+  .filter-sel,
+  .bank-chip,
+  .morph,
+  .term-siblings .tag {
+    min-height: 44px;
+  }
+  .filter-sel select {
+    min-height: 42px;
+  }
+  .btn.sm {
+    min-width: 44px;
+  }
+  .text-link,
+  .aw,
+  .term-root-word,
+  .rel-also a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
+  .term-siblings .tag,
+  .bank-chip,
+  .morph {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  /* ô trống nằm trong dòng chữ của bài đọc: cao vừa đủ để chạm mà không phá nhịp dòng */
+  .gap {
+    min-height: 34px;
+    min-width: 56px;
+  }
+}
+
+/* Flashcard: tách thanh tiến độ khỏi thẻ */
+.fc-stage {
+  margin-top: 14px;
+}

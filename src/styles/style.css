@@ -989,7 +989,7 @@ button.morph:hover {
 .root-item .rc {
   font-size: 0.76rem;
   font-weight: 600;
-  color: var(--faint);
+  color: var(--muted);
   flex: none;
   padding-top: 2px;
 }
@@ -1683,7 +1683,7 @@ button.morph:hover {
 }
 .affix-card .ac {
   font-size: 0.8rem;
-  color: var(--faint);
+  color: var(--muted);
   font-weight: 600;
 }
 .affix-words {

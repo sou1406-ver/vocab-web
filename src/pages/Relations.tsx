@@ -15,7 +15,7 @@ export function termHref(cat: Catalog, term: string) {
 export function FreqMeter({ z }: { z: number }) {
   const { level, label } = freqLevel(z);
   return (
-    <span className={`freq freq-${level}`} title={`${label} (Zipf ${z || "—"})`} aria-label={label}>
+    <span className={`freq freq-${level}`} role="img" title={`${label} (Zipf ${z || "—"})`} aria-label={label}>
       <i />
       <i />
       <i />

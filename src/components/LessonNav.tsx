@@ -38,7 +38,8 @@ export function LessonNav({ unit, lesson, where }: { unit: string; lesson: strin
       <button
         className="btn sm ghost nav-edge"
         disabled={!prev}
-        title={prev ? `Bài ${prev.n}: ${prev.title}` : ""}
+        aria-label="Bài trước"
+        title={prev ? `Bài ${prev.n}: ${prev.title}` : undefined}
         onClick={() => prev && go(String(prev.n))}
       >
         <Icon name="left" size="sm" />
@@ -71,7 +72,8 @@ export function LessonNav({ unit, lesson, where }: { unit: string; lesson: strin
       <button
         className="btn sm ghost nav-edge"
         disabled={!next}
-        title={next ? `Bài ${next.n}: ${next.title}` : ""}
+        aria-label="Bài sau"
+        title={next ? `Bài ${next.n}: ${next.title}` : undefined}
         onClick={() => next && go(String(next.n))}
       >
         <span>Bài sau</span>
