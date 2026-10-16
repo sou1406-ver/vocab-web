@@ -1,5 +1,5 @@
 {
-  "name": "vocanetwork",
+  "name": "vocab-learn",
   "private": true,
   "version": "2.0.0",
   "description": "Học 600 Essential Words for the TOEIC theo trường từ: tiền tố, hậu tố, họ từ, đồng nghĩa, trái nghĩa.",
@@ -17,7 +17,8 @@
     "e2e": "playwright test",
     "format:py": "python -m ruff format tools",
     "deploy": "npm run build && firebase deploy --only hosting",
-    "deploy:rules": "firebase deploy --only firestore:rules"
+    "deploy:rules": "firebase deploy --only firestore:rules",
+    "lint:py": "python -m ruff check tools"
   },
   "dependencies": {
     "firebase": "^10.14.1",

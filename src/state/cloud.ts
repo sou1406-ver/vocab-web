@@ -49,6 +49,9 @@ let fb: {
 } | null = null;
 let unsub: (() => void) | null = null;
 let timer: ReturnType<typeof setTimeout> | null = null;
+/** true khi người dùng vừa bấm "Đăng nhập" (không phải phiên cũ tự khôi phục lúc tải trang) */
+let userInitiated = false;
+const REDIRECT_FLAG = "vn-signin-redirect";
 
 const cloudPid = (uid: string) => "g_" + uid;
 const setCloud = (p: Partial<CloudState>) => useCloud.setState(p);
@@ -105,6 +108,7 @@ export async function signIn() {
   }
   const provider = new fb.auth.GoogleAuthProvider();
   provider.setCustomParameters({ prompt: "select_account" });
+  userInitiated = true;
   try {
     await fb.auth.signInWithPopup(auth, provider);
   } catch (e) {
@@ -116,8 +120,12 @@ export async function signIn() {
         "auth/cancelled-popup-request",
       ].includes(code)
     ) {
+      sessionStorage.setItem(REDIRECT_FLAG, "1");
       await fb.auth.signInWithRedirect(auth, provider);
-    } else if (code !== "auth/popup-closed-by-user") fail(e);
+    } else {
+      userInitiated = false;
+      if (code !== "auth/popup-closed-by-user") fail(e);
+    }
   }
 }
 
@@ -137,6 +145,16 @@ function switchTo(pid: string) {
 
 async function attach(u: User) {
   const pid = cloudPid(u.uid);
+  // vừa đăng nhập (popup hoặc quay về từ trang đăng nhập) → chuyển sang hồ sơ Google + báo;
+  // phiên cũ tự khôi phục khi tải trang → giữ nguyên hồ sơ đang dùng, không báo
+  let explicit = userInitiated;
+  try {
+    explicit ||= sessionStorage.getItem(REDIRECT_FLAG) === "1";
+    sessionStorage.removeItem(REDIRECT_FLAG);
+  } catch {
+    /* bỏ qua */
+  }
+  userInitiated = false;
   setCloud({
     user: { uid: u.uid, email: u.email ?? "", name: u.displayName ?? "", photo: u.photoURL ?? "" },
     status: "syncing",
@@ -187,11 +205,11 @@ async function attach(u: User) {
     withoutSync(() => {
       writeProfileData(pid, merged);
       useProfile.getState().setProfiles(profiles);
-      switchTo(pid);
+      if (explicit || useProfile.getState().current === pid) switchTo(pid);
     });
     if (!remote || !sameData(merged, remote.data ?? {})) await push();
     setCloud({ status: "synced", lastSync: new Date() });
-    toast(`Đã đăng nhập: ${u.displayName || u.email}`);
+    if (explicit) toast(`Đã đăng nhập: ${u.displayName || u.email}`);
 
     // theo dõi thay đổi từ máy khác
     unsub?.();

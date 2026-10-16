@@ -24,7 +24,7 @@ export interface ClickSparkProps {
   ring?: boolean;
   layer?: 'front' | 'back';
   disabled?: boolean;
-  /** VocaNetwork: false = không tự bắn tia khi bấm, chỉ bắn khi gọi ref.spark() */
+  /** Vocab Learn: false = không tự bắn tia khi bấm, chỉ bắn khi gọi ref.spark() */
   auto?: boolean;
   className?: string;
   style?: CSSProperties;

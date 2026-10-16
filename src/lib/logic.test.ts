@@ -18,7 +18,7 @@ describe("dữ liệu", () => {
 });
 
 describe("mergeData", () => {
-  const base = { custom: [], status: {}, stats: {}, book: {}, log: {} };
+  const base = { meta: {}, custom: [], status: {}, stats: {}, book: {}, log: {} };
   it("giữ trạng thái tiến bộ hơn và điểm cao hơn", () => {
     const a = {
       ...base,
@@ -35,6 +35,21 @@ describe("mergeData", () => {
     expect(m.status.x).toBe("mastered");
     expect(m.stats.x).toEqual({ c: 3, w: 4 });
     expect(m.book["L1:p5"].right).toBe(5);
+  });
+  it("xoá toàn bộ tiến độ ở máy này không bị máy khác hồi lại", () => {
+    const old = { ...base, status: { x: "mastered" as const }, stats: { x: { c: 5, w: 0 } } };
+    const wiped = { ...base, meta: { resetAt: 1000 } };
+    expect(mergeData(old, wiped).status).toEqual({});
+    expect(mergeData(wiped, old).status).toEqual({});
+    expect(mergeData(wiped, old).meta.resetAt).toBe(1000);
+  });
+  it("trường từ tự thêm: bản sửa mới hơn thắng, từ đã xoá không quay lại", () => {
+    const w = (id: string, vi: string, updated: number) => ({ ...WORDS[0], id, vi, lesson: 0, updated });
+    const here = { ...base, custom: [w("c-a", "cũ", 1)], meta: { deleted: ["c-b"] } };
+    const there = { ...base, custom: [w("c-a", "mới", 2), w("c-b", "đã xoá", 1), w("c-c", "khác", 1)] };
+    const m = mergeData(here, there);
+    expect(m.custom.map((x) => x.id)).toEqual(["c-a", "c-c"]);
+    expect(m.custom[0].vi).toBe("mới");
   });
   it("không hạ trạng thái đã thuộc", () => {
     expect(mergeData({ ...base, status: { x: "mastered" } }, { status: { x: "learning" } }).status.x).toBe("mastered");

@@ -1,7 +1,5 @@
 // Kiểu dữ liệu sinh ra bởi tools/build_data.py (src/data/*.json)
 
-export type PartOfSpeech = "n" | "v" | "adj" | "adv" | "phr" | "prep" | "conj";
-
 /** Một dạng trong họ từ, ví dụ agreement = agree + -ment */
 export interface FamilyEntry {
   w: string;
@@ -29,6 +27,8 @@ export interface Word {
   ant: string[];
   parts: string[];
   family: FamilyEntry[];
+  /** thời điểm sửa gần nhất (chỉ từ tự thêm) — để gộp khi đồng bộ nhiều máy */
+  updated?: number;
 }
 
 export interface Lesson {
@@ -111,7 +111,16 @@ export interface BookScore {
   at: number;
 }
 
+/** Thông tin phục vụ đồng bộ: thao tác xoá phải "thắng" khi gộp dữ liệu nhiều máy */
+export interface SyncMeta {
+  /** lần cuối bấm "Xoá toàn bộ tiến độ" */
+  resetAt?: number;
+  /** id các trường từ tự thêm đã xoá */
+  deleted?: string[];
+}
+
 export interface ProfileData {
+  meta: SyncMeta;
   custom: Word[];
   status: Record<string, Status>;
   stats: Record<string, WordStat>;

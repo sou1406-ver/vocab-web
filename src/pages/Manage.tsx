@@ -21,7 +21,7 @@ export function ManagePage() {
   const exportJSON = () => {
     const p = prof.profile();
     const data = {
-      app: "VocaNetwork-600",
+      app: "VocabLearn-600",
       version: 2,
       profile: p,
       custom: prof.custom,
@@ -32,7 +32,7 @@ export function ManagePage() {
     };
     const a = document.createElement("a");
     a.href = URL.createObjectURL(new Blob([JSON.stringify(data, null, 2)], { type: "application/json" }));
-    a.download = `vocanetwork-${lower(p.name).replace(/[^a-z0-9]+/g, "-") || "ho-so"}-${dayKey()}.json`;
+    a.download = `vocab-learn-${lower(p.name).replace(/[^a-z0-9]+/g, "-") || "ho-so"}-${dayKey()}.json`;
     a.click();
     setTimeout(() => URL.revokeObjectURL(a.href), 1000);
   };

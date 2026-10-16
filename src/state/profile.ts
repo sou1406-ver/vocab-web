@@ -6,7 +6,7 @@ import { dayKey, storage } from "@/lib/util";
 /* Hồ sơ học tập (nhiều người dùng chung một máy) + dữ liệu của hồ sơ đang mở.
    Khoá localStorage giữ nguyên như bản HTML cũ: "vn-status@<id hồ sơ>"… → nâng cấp không mất tiến độ. */
 
-export const PROFILE_KEYS = ["vn-custom", "vn-status", "vn-stats", "vn-book", "vn-log"] as const;
+export const PROFILE_KEYS = ["vn-custom", "vn-status", "vn-stats", "vn-book", "vn-log", "vn-meta"] as const;
 export const PROFILE_COLORS = ["#2f4b8f", "#a8442f", "#2f7a55", "#8a5a1f", "#6b3f87", "#2b6f7d"];
 const FIELD: Record<(typeof PROFILE_KEYS)[number], keyof ProfileData> = {
   "vn-custom": "custom",
@@ -14,9 +14,10 @@ const FIELD: Record<(typeof PROFILE_KEYS)[number], keyof ProfileData> = {
   "vn-stats": "stats",
   "vn-book": "book",
   "vn-log": "log",
+  "vn-meta": "meta",
 };
 
-export const emptyData = (): ProfileData => ({ custom: [], status: {}, stats: {}, book: {}, log: {} });
+export const emptyData = (): ProfileData => ({ meta: {}, custom: [], status: {}, stats: {}, book: {}, log: {} });
 
 export function readProfileData(pid: string): ProfileData {
   const d = emptyData();
@@ -186,15 +187,24 @@ export const useProfile = create<ProfileState>()((set, get) => {
       if (!prev || right / total >= prev.right / prev.total) book[key] = { right, total, at: Date.now() };
       save({ book });
     },
-    saveCustomWord: (w) => {
+    saveCustomWord: (word) => {
+      const w = { ...word, updated: Date.now() };
       const custom = get().custom.slice();
       const i = custom.findIndex((x) => x.id === w.id);
       if (i >= 0) custom[i] = w;
       else custom.push(w);
       save({ custom });
     },
-    deleteCustomWord: (id) => save({ custom: get().custom.filter((x) => x.id !== id) }),
-    resetProgress: () => save({ status: {}, stats: {}, book: {}, log: {} }),
+    deleteCustomWord: (id) => {
+      const meta = get().meta;
+      save({
+        custom: get().custom.filter((x) => x.id !== id),
+        // dấu "đã xoá" để máy khác không gộp từ này trở lại khi đồng bộ
+        meta: { ...meta, deleted: [...new Set([...(meta.deleted ?? []), id])] },
+      });
+    },
+    resetProgress: () =>
+      save({ status: {}, stats: {}, book: {}, log: {}, meta: { ...get().meta, resetAt: Date.now() } }),
     importData: (d) => {
       const cur = get();
       const custom = cur.custom.slice();
