@@ -347,3 +347,22 @@ a.btn.primary {
 .outside-note span {
   flex: 1 1 260px;
 }
+
+/* Danh sách xổ xuống của <select>: ô chọn có nền trong suốt nên Chrome/Edge (Windows) vẽ popup nền trắng
+   trong khi chữ thừa hưởng màu sáng ở giao diện tối → đặt màu rõ ràng cho từng lựa chọn */
+select option,
+select optgroup {
+  background-color: var(--surface);
+  color: var(--text);
+}
+select optgroup {
+  color: var(--muted);
+  font-weight: 700;
+}
+select option:checked {
+  background-color: var(--indigo-soft);
+  color: var(--indigo-text);
+}
+select option:disabled {
+  color: var(--faint);
+}
