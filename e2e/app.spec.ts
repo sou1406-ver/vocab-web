@@ -133,3 +133,16 @@ test("thêm trường từ tự tạo rồi mở sơ đồ của nó", async ({ 
   await expect(page.locator(".root-banner h2")).toHaveText("predict");
   await expect(page.locator(".formula")).toHaveCount(1);
 });
+
+test("đồng nghĩa: có nghĩa, từ phổ biến xếp trước và được đánh dấu, bấm liên kết sang trường từ khác", async ({
+  page,
+}) => {
+  await page.goto("#/network/abide-by-1");
+  const first = page.locator(".rel-card.syn").first();
+  await expect(first.locator(".rel-word")).toHaveText("follow");
+  await expect(first.locator(".freq-tag")).toHaveText("Rất phổ biến");
+  await expect(first.locator(".rel-vi")).toContainText("tuân theo");
+  await first.locator(".rel-also a").first().click();
+  await expect(page).toHaveURL(/#\/network\/(?!abide-by-1)/);
+  await expect(page.locator(".rel-card").first()).toBeVisible();
+});

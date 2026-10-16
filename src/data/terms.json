@@ -1,0 +1,8914 @@
+{
+ "abandon": {
+  "vi": "từ bỏ, bỏ rơi",
+  "z": 4.02
+ },
+ "abide by": {
+  "vi": "tuân thủ, chấp hành",
+  "z": 3.59
+ },
+ "ability": {
+  "vi": "khả năng, năng lực",
+  "z": 4.96
+ },
+ "abolish": {
+  "vi": "bãi bỏ, huỷ bỏ",
+  "z": 3.48
+ },
+ "abounding": {
+  "vi": "dồi dào, đầy rẫy",
+  "z": 2.48
+ },
+ "absolutely": {
+  "vi": "tuyệt đối, hoàn toàn",
+  "z": 4.98
+ },
+ "abstain from": {
+  "vi": "kiêng, không tham gia",
+  "z": 3.07
+ },
+ "abundant": {
+  "vi": "dồi dào, phong phú",
+  "z": 3.77
+ },
+ "accentuate": {
+  "vi": "làm nổi bật, nhấn mạnh",
+  "z": 2.76
+ },
+ "accept": {
+  "vi": "chấp nhận",
+  "z": 4.85
+ },
+ "accept; confess": {
+  "vi": "chấp nhận; thú nhận",
+  "z": 4.85
+ },
+ "acceptance": {
+  "vi": "sự chấp nhận",
+  "z": 4.16
+ },
+ "access": {
+  "vi": "truy cập; quyền tiếp cận",
+  "z": 5.05
+ },
+ "accessible": {
+  "vi": "có thể tiếp cận",
+  "z": 4.18
+ },
+ "accommodate": {
+  "vi": "đáp ứng; cung cấp chỗ ở; có sức chứa",
+  "z": 4.02
+ },
+ "accompany": {
+  "vi": "đi cùng, hộ tống",
+  "z": 3.81
+ },
+ "accomplishment": {
+  "vi": "thành tựu, thành tích",
+  "z": 3.69
+ },
+ "accord": {
+  "vi": "hiệp định, sự đồng thuận",
+  "z": 3.81
+ },
+ "account": {
+  "vi": "tài khoản",
+  "z": 5.21
+ },
+ "accountability": {
+  "vi": "trách nhiệm giải trình",
+  "z": 3.91
+ },
+ "accounting": {
+  "vi": "kế toán",
+  "z": 4.29
+ },
+ "accumulate": {
+  "vi": "tích luỹ",
+  "z": 3.48
+ },
+ "accumulation": {
+  "vi": "sự tích luỹ",
+  "z": 3.59
+ },
+ "accurate": {
+  "vi": "chính xác",
+  "z": 4.57
+ },
+ "accurately": {
+  "vi": "chính xác",
+  "z": 3.99
+ },
+ "accustom to": {
+  "vi": "làm quen với",
+  "z": 2.06
+ },
+ "accustomed": {
+  "vi": "quen thuộc, đã quen",
+  "z": 3.64
+ },
+ "achievable": {
+  "vi": "có thể đạt được",
+  "z": 3.21
+ },
+ "achievement": {
+  "vi": "thành tựu",
+  "z": 4.36
+ },
+ "acknowledgement": {
+  "vi": "sự ghi nhận, công nhận",
+  "z": 3.32
+ },
+ "acquire": {
+  "vi": "thu được, mua lại",
+  "z": 4.13
+ },
+ "act": {
+  "vi": "hành động; diễn",
+  "z": 5.3
+ },
+ "action": {
+  "vi": "hành động; diễn biến (phim, kịch)",
+  "z": 5.25
+ },
+ "actions": {
+  "vi": "hành động, cách cư xử",
+  "z": 4.82
+ },
+ "activity": {
+  "vi": "hoạt động",
+  "z": 4.86
+ },
+ "adapt to": {
+  "vi": "thích nghi với",
+  "z": 3.98
+ },
+ "adaptably": {
+  "vi": "một cách linh hoạt",
+  "z": 0.0
+ },
+ "add": {
+  "vi": "thêm vào, cộng",
+  "z": 5.09
+ },
+ "address": {
+  "vi": "giải quyết (vấn đề); phát biểu; địa chỉ",
+  "z": 4.91
+ },
+ "adequately": {
+  "vi": "đầy đủ, thoả đáng",
+  "z": 3.64
+ },
+ "adhere to": {
+  "vi": "tuân thủ, tôn trọng",
+  "z": 3.57
+ },
+ "adjacent": {
+  "vi": "liền kề",
+  "z": 4.12
+ },
+ "adjoining": {
+  "vi": "sát bên, liền kề",
+  "z": 3.5
+ },
+ "adjust": {
+  "vi": "điều chỉnh",
+  "z": 4.07
+ },
+ "adjust to": {
+  "vi": "điều chỉnh cho quen với",
+  "z": 4.07
+ },
+ "adjustably": {
+  "vi": "có thể điều chỉnh",
+  "z": 1.02
+ },
+ "adjustment": {
+  "vi": "sự điều chỉnh",
+  "z": 3.88
+ },
+ "admire": {
+  "vi": "ngưỡng mộ",
+  "z": 3.97
+ },
+ "admission": {
+  "vi": "sự nhập học/nhập viện",
+  "z": 4.15
+ },
+ "admit": {
+  "vi": "cho nhập viện; thừa nhận",
+  "z": 4.58
+ },
+ "advance": {
+  "vi": "tiến lên; ứng trước",
+  "z": 4.65
+ },
+ "advance time": {
+  "vi": "thời gian chuẩn bị trước",
+  "z": 4.64
+ },
+ "advanced": {
+  "vi": "tiên tiến; nâng cao",
+  "z": 4.71
+ },
+ "advantage": {
+  "vi": "lợi thế, lợi ích",
+  "z": 4.78
+ },
+ "advantageously": {
+  "vi": "có lợi",
+  "z": 2.19
+ },
+ "adventurously": {
+  "vi": "một cách mạo hiểm",
+  "z": 1.46
+ },
+ "advertise": {
+  "vi": "quảng cáo",
+  "z": 3.66
+ },
+ "advice": {
+  "vi": "lời khuyên",
+  "z": 4.88
+ },
+ "advise": {
+  "vi": "thông báo; khuyên",
+  "z": 4.09
+ },
+ "adviser": {
+  "vi": "cố vấn",
+  "z": 3.94
+ },
+ "affect": {
+  "vi": "ảnh hưởng, tác động",
+  "z": 4.59
+ },
+ "affirm": {
+  "vi": "khẳng định, xác nhận",
+  "z": 3.2
+ },
+ "affordable": {
+  "vi": "giá cả phải chăng",
+  "z": 4.22
+ },
+ "afterward": {
+  "vi": "sau đó",
+  "z": 3.83
+ },
+ "agenda": {
+  "vi": "chương trình nghị sự",
+  "z": 4.3
+ },
+ "agent": {
+  "vi": "đại lý, người đại diện",
+  "z": 4.81
+ },
+ "aggravate": {
+  "vi": "làm bực mình; làm trầm trọng",
+  "z": 2.8
+ },
+ "aggressively": {
+  "vi": "mạnh mẽ, quyết liệt",
+  "z": 3.63
+ },
+ "agree to": {
+  "vi": "đồng ý với",
+  "z": 4.97
+ },
+ "agreement": {
+  "vi": "sự thoả thuận; bản hợp đồng",
+  "z": 4.88
+ },
+ "ahead of time": {
+  "vi": "trước thời hạn, sớm",
+  "z": 4.99
+ },
+ "aid": {
+  "vi": "giúp đỡ, hỗ trợ",
+  "z": 4.75
+ },
+ "aim": {
+  "vi": "mục tiêu; nhắm tới",
+  "z": 4.51
+ },
+ "alert": {
+  "vi": "cảnh báo; báo động",
+  "z": 4.33
+ },
+ "alike": {
+  "vi": "giống nhau",
+  "z": 4.13
+ },
+ "all the time": {
+  "vi": "lúc nào cũng, liên tục",
+  "z": 6.08
+ },
+ "alliance": {
+  "vi": "liên minh",
+  "z": 4.4
+ },
+ "allocate": {
+  "vi": "phân bổ",
+  "z": 3.31
+ },
+ "allot": {
+  "vi": "phân bổ, chia phần",
+  "z": 2.79
+ },
+ "allow": {
+  "vi": "cho phép",
+  "z": 5.01
+ },
+ "allowance": {
+  "vi": "trợ cấp; khoản cho phép",
+  "z": 3.85
+ },
+ "allure; attract": {
+  "vi": "sức quyến rũ; thu hút",
+  "z": 3.15
+ },
+ "alter": {
+  "vi": "thay đổi, sửa đổi",
+  "z": 4.05
+ },
+ "alteration": {
+  "vi": "sự thay đổi, chỉnh sửa",
+  "z": 3.33
+ },
+ "alternative": {
+  "vi": "sự lựa chọn thay thế; (adj) thay thế",
+  "z": 4.71
+ },
+ "always": {
+  "vi": "luôn luôn",
+  "z": 5.76
+ },
+ "amass": {
+  "vi": "tích luỹ, gom góp",
+  "z": 2.77
+ },
+ "amateur": {
+  "vi": "nghiệp dư",
+  "z": 4.22
+ },
+ "amend": {
+  "vi": "sửa đổi, bổ sung",
+  "z": 3.55
+ },
+ "ample": {
+  "vi": "dư dả, rộng rãi",
+  "z": 3.71
+ },
+ "amusement": {
+  "vi": "sự giải trí, thú vui",
+  "z": 3.74
+ },
+ "analysis": {
+  "vi": "sự phân tích",
+  "z": 4.91
+ },
+ "analyze": {
+  "vi": "phân tích",
+  "z": 3.84
+ },
+ "angle": {
+  "vi": "góc nhìn, khía cạnh",
+  "z": 4.38
+ },
+ "announcement": {
+  "vi": "thông báo",
+  "z": 4.31
+ },
+ "annoy": {
+  "vi": "làm phiền, làm bực",
+  "z": 3.46
+ },
+ "annually": {
+  "vi": "hằng năm",
+  "z": 4.16
+ },
+ "annulment": {
+  "vi": "sự huỷ bỏ, bãi bỏ",
+  "z": 2.85
+ },
+ "answer": {
+  "vi": "trả lời",
+  "z": 5.17
+ },
+ "anticipate": {
+  "vi": "dự đoán, mong đợi",
+  "z": 3.73
+ },
+ "anxiety": {
+  "vi": "sự lo âu",
+  "z": 4.45
+ },
+ "anxious": {
+  "vi": "lo lắng; háo hức",
+  "z": 4.09
+ },
+ "anxiously": {
+  "vi": "lo lắng",
+  "z": 3.09
+ },
+ "apart": {
+  "vi": "riêng ra, tách rời",
+  "z": 4.78
+ },
+ "apparatus": {
+  "vi": "thiết bị, dụng cụ",
+  "z": 3.78
+ },
+ "apparel": {
+  "vi": "quần áo, trang phục",
+  "z": 3.72
+ },
+ "apparent": {
+  "vi": "rõ ràng, hiển nhiên",
+  "z": 4.32
+ },
+ "apparently": {
+  "vi": "rõ ràng là, có vẻ như",
+  "z": 4.8
+ },
+ "appeal": {
+  "vi": "sức hấp dẫn; (v) thu hút; kêu gọi",
+  "z": 4.67
+ },
+ "appeal to": {
+  "vi": "hấp dẫn, lôi cuốn",
+  "z": 4.67
+ },
+ "applicable": {
+  "vi": "có thể áp dụng",
+  "z": 4.13
+ },
+ "applicant": {
+  "vi": "người nộp đơn",
+  "z": 3.64
+ },
+ "application": {
+  "vi": "đơn xin; ứng dụng",
+  "z": 4.86
+ },
+ "apply": {
+  "vi": "nộp đơn; áp dụng",
+  "z": 4.81
+ },
+ "appoint": {
+  "vi": "bổ nhiệm",
+  "z": 3.7
+ },
+ "appointment": {
+  "vi": "cuộc hẹn; sự bổ nhiệm",
+  "z": 4.49
+ },
+ "appraise": {
+  "vi": "đánh giá, định giá",
+  "z": 2.54
+ },
+ "appreciate": {
+  "vi": "đánh giá cao, cảm kích",
+  "z": 4.74
+ },
+ "appreciation": {
+  "vi": "sự đánh giá cao, cảm kích; sự tăng giá trị",
+  "z": 4.12
+ },
+ "apprehensive": {
+  "vi": "e ngại, lo sợ",
+  "z": 3.03
+ },
+ "apprehensively": {
+  "vi": "lo lắng, e sợ",
+  "z": 1.71
+ },
+ "apprentice": {
+  "vi": "người học việc; (v) học việc",
+  "z": 3.7
+ },
+ "approach": {
+  "vi": "cách tiếp cận; (v) tiếp cận",
+  "z": 4.93
+ },
+ "appropriate": {
+  "vi": "phù hợp, thích đáng",
+  "z": 4.67
+ },
+ "approval": {
+  "vi": "sự chấp thuận",
+  "z": 4.5
+ },
+ "approve": {
+  "vi": "phê duyệt, chấp thuận",
+  "z": 4.08
+ },
+ "approve; kindness": {
+  "vi": "tán thành; lòng tốt",
+  "z": 4.08
+ },
+ "approximate": {
+  "vi": "xấp xỉ, ước chừng",
+  "z": 3.64
+ },
+ "arbitrarily": {
+  "vi": "tuỳ tiện, ngẫu nhiên",
+  "z": 3.22
+ },
+ "arise": {
+  "vi": "phát sinh, xảy ra",
+  "z": 3.93
+ },
+ "arouse": {
+  "vi": "khơi dậy, kích thích",
+  "z": 2.9
+ },
+ "arrange": {
+  "vi": "sắp xếp",
+  "z": 4.0
+ },
+ "arrangement": {
+  "vi": "sự sắp xếp, kế hoạch",
+  "z": 4.25
+ },
+ "arrangement; arrange": {
+  "vi": "sự sắp xếp; sắp xếp",
+  "z": 4.25
+ },
+ "array": {
+  "vi": "dãy, loạt (nhiều thứ)",
+  "z": 4.1
+ },
+ "arrears": {
+  "vi": "khoản nợ quá hạn",
+  "z": 3.05
+ },
+ "arrive": {
+  "vi": "đến nơi",
+  "z": 4.38
+ },
+ "article": {
+  "vi": "món hàng, mặt hàng",
+  "z": 5.09
+ },
+ "as a result of": {
+  "vi": "do, vì",
+  "z": 5.16
+ },
+ "as needed": {
+  "vi": "khi cần",
+  "z": 5.17
+ },
+ "as required": {
+  "vi": "khi được yêu cầu",
+  "z": 5.01
+ },
+ "ascertain": {
+  "vi": "xác định, tìm ra",
+  "z": 3.29
+ },
+ "ask": {
+  "vi": "hỏi, hỏi ý kiến",
+  "z": 5.34
+ },
+ "aspect": {
+  "vi": "khía cạnh",
+  "z": 4.41
+ },
+ "aspiration": {
+  "vi": "khát vọng",
+  "z": 3.3
+ },
+ "assemble": {
+  "vi": "tập hợp; lắp ráp",
+  "z": 3.64
+ },
+ "assertively": {
+  "vi": "quả quyết, quyết đoán",
+  "z": 2.0
+ },
+ "assess": {
+  "vi": "đánh giá",
+  "z": 4.07
+ },
+ "assessment; examine": {
+  "vi": "sự đánh giá; xem xét",
+  "z": 4.46
+ },
+ "asset": {
+  "vi": "tài sản",
+  "z": 4.23
+ },
+ "assign": {
+  "vi": "giao (việc)",
+  "z": 3.66
+ },
+ "assignment": {
+  "vi": "nhiệm vụ, bài tập được giao",
+  "z": 4.18
+ },
+ "assist": {
+  "vi": "hỗ trợ, giúp đỡ",
+  "z": 4.42
+ },
+ "assistance": {
+  "vi": "sự hỗ trợ",
+  "z": 4.59
+ },
+ "association": {
+  "vi": "hiệp hội; sự liên kết",
+  "z": 5.01
+ },
+ "assortment": {
+  "vi": "sự đa dạng, bộ sưu tập",
+  "z": 3.26
+ },
+ "assume": {
+  "vi": "cho rằng; đảm nhận",
+  "z": 4.57
+ },
+ "assurance": {
+  "vi": "sự đảm bảo, lời cam kết; sự tự tin",
+  "z": 3.81
+ },
+ "assure": {
+  "vi": "đảm bảo, cam đoan",
+  "z": 4.06
+ },
+ "astute": {
+  "vi": "sắc sảo, tinh ý",
+  "z": 3.1
+ },
+ "at hand": {
+  "vi": "có sẵn, trong tầm tay",
+  "z": 5.39
+ },
+ "at intervals": {
+  "vi": "định kỳ, cách quãng",
+  "z": 3.69
+ },
+ "at present": {
+  "vi": "hiện nay",
+  "z": 5.17
+ },
+ "attainment": {
+  "vi": "thành tựu, sự đạt được",
+  "z": 3.15
+ },
+ "attend": {
+  "vi": "tham dự; chăm sóc, phục vụ",
+  "z": 4.55
+ },
+ "attend to": {
+  "vi": "quan tâm, xử lý",
+  "z": 4.55
+ },
+ "attire": {
+  "vi": "trang phục",
+  "z": 3.49
+ },
+ "attitude": {
+  "vi": "thái độ",
+  "z": 4.58
+ },
+ "attract": {
+  "vi": "thu hút, hấp dẫn",
+  "z": 4.2
+ },
+ "attraction": {
+  "vi": "sự thu hút; điểm tham quan",
+  "z": 4.11
+ },
+ "attribute": {
+  "vi": "thuộc tính, đặc điểm",
+  "z": 3.77
+ },
+ "audience": {
+  "vi": "khán giả",
+  "z": 4.73
+ },
+ "audit": {
+  "vi": "kiểm toán; (n) cuộc kiểm toán",
+  "z": 4.04
+ },
+ "auditing": {
+  "vi": "kiểm toán",
+  "z": 3.26
+ },
+ "authority": {
+  "vi": "quyền lực; nhà chức trách",
+  "z": 4.81
+ },
+ "authorization": {
+  "vi": "sự uỷ quyền",
+  "z": 3.74
+ },
+ "authorize": {
+  "vi": "uỷ quyền, cho phép",
+  "z": 3.38
+ },
+ "autograph": {
+  "vi": "chữ ký (người nổi tiếng)",
+  "z": 3.49
+ },
+ "automatically": {
+  "vi": "tự động",
+  "z": 4.52
+ },
+ "available": {
+  "vi": "sẵn có",
+  "z": 5.28
+ },
+ "aversion": {
+  "vi": "sự ác cảm, không thích",
+  "z": 3.25
+ },
+ "avert": {
+  "vi": "ngăn chặn, tránh",
+  "z": 3.14
+ },
+ "avoid": {
+  "vi": "tránh, né",
+  "z": 4.87
+ },
+ "await": {
+  "vi": "chờ đợi",
+  "z": 3.63
+ },
+ "aware": {
+  "vi": "nhận thức được",
+  "z": 4.78
+ },
+ "awareness": {
+  "vi": "sự nhận thức",
+  "z": 4.44
+ },
+ "back": {
+  "vi": "ủng hộ, hỗ trợ",
+  "z": 6.04
+ },
+ "back out of": {
+  "vi": "rút lui khỏi",
+  "z": 5.86
+ },
+ "background": {
+  "vi": "lý lịch, nền tảng (học vấn, kinh nghiệm)",
+  "z": 4.77
+ },
+ "balance": {
+  "vi": "số dư; sự cân bằng; (v) cân đối",
+  "z": 4.76
+ },
+ "ban": {
+  "vi": "cấm",
+  "z": 4.55
+ },
+ "bank on": {
+  "vi": "trông cậy vào",
+  "z": 5.15
+ },
+ "bar": {
+  "vi": "cấm, ngăn cản",
+  "z": 4.94
+ },
+ "bargain": {
+  "vi": "món hời; (v) mặc cả",
+  "z": 3.95
+ },
+ "base": {
+  "vi": "dựa vào",
+  "z": 5.05
+ },
+ "basic": {
+  "vi": "cơ bản",
+  "z": 4.89
+ },
+ "basically": {
+  "vi": "về cơ bản",
+  "z": 4.63
+ },
+ "basis": {
+  "vi": "nền tảng, cơ sở",
+  "z": 4.81
+ },
+ "be appropriate": {
+  "vi": "phù hợp",
+  "z": 4.67
+ },
+ "be assigned to": {
+  "vi": "được giao cho",
+  "z": 4.39
+ },
+ "be aware of": {
+  "vi": "nhận thức được, biết",
+  "z": 4.77
+ },
+ "be composed of": {
+  "vi": "được tạo thành từ",
+  "z": 4.27
+ },
+ "be conscious of": {
+  "vi": "ý thức được",
+  "z": 4.18
+ },
+ "be formed of": {
+  "vi": "được tạo thành từ",
+  "z": 4.68
+ },
+ "be in charge of": {
+  "vi": "phụ trách",
+  "z": 5.01
+ },
+ "be in debt": {
+  "vi": "mắc nợ",
+  "z": 4.69
+ },
+ "be indebted": {
+  "vi": "mắc nợ, mang ơn",
+  "z": 3.21
+ },
+ "be made of": {
+  "vi": "được làm từ",
+  "z": 5.85
+ },
+ "be prepared for": {
+  "vi": "sẵn sàng cho",
+  "z": 4.73
+ },
+ "be present at": {
+  "vi": "có mặt tại, tham dự",
+  "z": 5.16
+ },
+ "be ready for": {
+  "vi": "sẵn sàng cho",
+  "z": 5.26
+ },
+ "be responsible for": {
+  "vi": "chịu trách nhiệm về",
+  "z": 4.87
+ },
+ "be set for": {
+  "vi": "sẵn sàng cho",
+  "z": 5.55
+ },
+ "be sold out": {
+  "vi": "bán hết",
+  "z": 4.95
+ },
+ "be unaware of": {
+  "vi": "không biết, không nhận ra",
+  "z": 3.87
+ },
+ "be unprepared for": {
+  "vi": "chưa sẵn sàng cho",
+  "z": 3.27
+ },
+ "bear": {
+  "vi": "chịu đựng; mang",
+  "z": 4.71
+ },
+ "because of": {
+  "vi": "bởi vì, do",
+  "z": 6.01
+ },
+ "become the duty of": {
+  "vi": "trở thành nhiệm vụ của",
+  "z": 4.63
+ },
+ "beforehand": {
+  "vi": "trước, sẵn",
+  "z": 3.62
+ },
+ "begin": {
+  "vi": "bắt đầu",
+  "z": 4.84
+ },
+ "beginner": {
+  "vi": "người mới bắt đầu",
+  "z": 3.52
+ },
+ "behavior": {
+  "vi": "hành vi, cách cư xử",
+  "z": 4.69
+ },
+ "behind": {
+  "vi": "chậm, trễ (tiến độ)",
+  "z": 5.29
+ },
+ "belief": {
+  "vi": "niềm tin",
+  "z": 4.46
+ },
+ "bend": {
+  "vi": "uốn cong, gập",
+  "z": 4.13
+ },
+ "beneficial": {
+  "vi": "có lợi",
+  "z": 4.08
+ },
+ "benefit": {
+  "vi": "phúc lợi; lợi ích; (v) có lợi",
+  "z": 4.82
+ },
+ "beverage": {
+  "vi": "đồ uống",
+  "z": 3.69
+ },
+ "bewilderment": {
+  "vi": "sự bối rối",
+  "z": 2.63
+ },
+ "biased": {
+  "vi": "thiên vị, thiên lệch",
+  "z": 3.76
+ },
+ "bill": {
+  "vi": "hoá đơn",
+  "z": 5.15
+ },
+ "bind": {
+  "vi": "ràng buộc",
+  "z": 3.75
+ },
+ "bind to": {
+  "vi": "ràng buộc vào",
+  "z": 3.75
+ },
+ "blanket": {
+  "vi": "chăn; (v) phủ kín; (adj) chung, toàn bộ",
+  "z": 4.07
+ },
+ "blend": {
+  "vi": "trộn, pha trộn",
+  "z": 3.95
+ },
+ "bluntly": {
+  "vi": "thẳng thừng",
+  "z": 3.07
+ },
+ "blurry": {
+  "vi": "mờ, nhoè",
+  "z": 3.27
+ },
+ "board": {
+  "vi": "lên (tàu, xe, máy bay)",
+  "z": 5.24
+ },
+ "boarding": {
+  "vi": "việc lên máy bay",
+  "z": 3.96
+ },
+ "bodily": {
+  "vi": "về thể xác",
+  "z": 3.78
+ },
+ "boldly": {
+  "vi": "táo bạo, mạnh dạn",
+  "z": 3.28
+ },
+ "bolster": {
+  "vi": "củng cố, ủng hộ",
+  "z": 3.31
+ },
+ "booking": {
+  "vi": "sự đặt chỗ",
+  "z": 3.86
+ },
+ "booking; nomination": {
+  "vi": "đặt chỗ; sự bổ nhiệm",
+  "z": 3.86
+ },
+ "bookkeeping": {
+  "vi": "sổ sách kế toán",
+  "z": 2.99
+ },
+ "boost": {
+  "vi": "thúc đẩy, tăng cường",
+  "z": 4.41
+ },
+ "bordering": {
+  "vi": "giáp ranh, kế bên",
+  "z": 3.39
+ },
+ "bore": {
+  "vi": "làm chán",
+  "z": 3.93
+ },
+ "boredom": {
+  "vi": "sự buồn chán",
+  "z": 3.46
+ },
+ "boring": {
+  "vi": "nhàm chán",
+  "z": 4.43
+ },
+ "borrow": {
+  "vi": "vay, mượn",
+  "z": 4.0
+ },
+ "boss": {
+  "vi": "sếp, cấp trên",
+  "z": 4.76
+ },
+ "bother": {
+  "vi": "làm phiền",
+  "z": 4.39
+ },
+ "branch out": {
+  "vi": "mở rộng (kinh doanh)",
+  "z": 4.57
+ },
+ "brand": {
+  "vi": "nhãn hiệu, thương hiệu",
+  "z": 4.83
+ },
+ "break": {
+  "vi": "vi phạm; làm vỡ",
+  "z": 5.18
+ },
+ "breakdown": {
+  "vi": "sự hỏng hóc, đổ vỡ",
+  "z": 4.1
+ },
+ "brief": {
+  "vi": "ngắn gọn",
+  "z": 4.52
+ },
+ "brighten; clarify": {
+  "vi": "làm sáng; làm rõ",
+  "z": 3.25
+ },
+ "bring in": {
+  "vi": "mời đến, tuyển vào; mang lại (thu nhập)",
+  "z": 5.27
+ },
+ "bring together": {
+  "vi": "tập hợp, gắn kết",
+  "z": 5.05
+ },
+ "bring up": {
+  "vi": "nêu ra, đề cập",
+  "z": 5.24
+ },
+ "broad": {
+  "vi": "rộng",
+  "z": 4.53
+ },
+ "broadcast": {
+  "vi": "phát sóng, loan truyền",
+  "z": 4.39
+ },
+ "broaden": {
+  "vi": "mở rộng",
+  "z": 3.3
+ },
+ "broker": {
+  "vi": "người môi giới",
+  "z": 3.89
+ },
+ "budget": {
+  "vi": "ngân sách; (v) lập ngân sách",
+  "z": 4.82
+ },
+ "build": {
+  "vi": "xây dựng, lắp ráp",
+  "z": 5.04
+ },
+ "build up": {
+  "vi": "tăng dần, tích tụ",
+  "z": 5.02
+ },
+ "bulk": {
+  "vi": "phần lớn",
+  "z": 4.19
+ },
+ "burden": {
+  "vi": "gánh nặng; (v) đè nặng",
+  "z": 4.23
+ },
+ "business": {
+  "vi": "công việc kinh doanh; doanh nghiệp",
+  "z": 5.56
+ },
+ "busy": {
+  "vi": "bận rộn; đông đúc",
+  "z": 4.75
+ },
+ "buyer": {
+  "vi": "người mua",
+  "z": 4.03
+ },
+ "by chance": {
+  "vi": "tình cờ, ngẫu nhiên",
+  "z": 5.24
+ },
+ "by itself": {
+  "vi": "tự nó, tự động",
+  "z": 5.09
+ },
+ "by mouth": {
+  "vi": "bằng miệng",
+  "z": 4.82
+ },
+ "calculate": {
+  "vi": "tính toán",
+  "z": 3.87
+ },
+ "calculation": {
+  "vi": "sự tính toán",
+  "z": 3.76
+ },
+ "caliber": {
+  "vi": "tầm cỡ, phẩm chất",
+  "z": 3.65
+ },
+ "call for": {
+  "vi": "đòi hỏi, cần",
+  "z": 5.5
+ },
+ "call in": {
+  "vi": "mời đến, triệu tập",
+  "z": 5.5
+ },
+ "calm": {
+  "vi": "bình tĩnh",
+  "z": 4.54
+ },
+ "calmly": {
+  "vi": "một cách bình tĩnh",
+  "z": 3.56
+ },
+ "cancel": {
+  "vi": "huỷ bỏ",
+  "z": 4.18
+ },
+ "cancellation": {
+  "vi": "sự huỷ bỏ",
+  "z": 3.76
+ },
+ "candidate": {
+  "vi": "ứng viên",
+  "z": 4.66
+ },
+ "cap; restrict": {
+  "vi": "giới hạn trần; hạn chế",
+  "z": 4.51
+ },
+ "capability": {
+  "vi": "năng lực, khả năng",
+  "z": 4.07
+ },
+ "capability; possible": {
+  "vi": "khả năng; có thể",
+  "z": 4.07
+ },
+ "capacity": {
+  "vi": "sức chứa, công suất; năng lực",
+  "z": 4.71
+ },
+ "capital": {
+  "vi": "vốn, tiền vốn",
+  "z": 5.01
+ },
+ "career": {
+  "vi": "sự nghiệp, nghề nghiệp",
+  "z": 5.07
+ },
+ "careful": {
+  "vi": "cẩn thận, thận trọng",
+  "z": 4.59
+ },
+ "carefully": {
+  "vi": "cẩn thận",
+  "z": 4.46
+ },
+ "careless": {
+  "vi": "cẩu thả, bất cẩn",
+  "z": 3.6
+ },
+ "carelessly": {
+  "vi": "một cách bất cẩn",
+  "z": 2.9
+ },
+ "carrier": {
+  "vi": "hãng vận chuyển; người mang",
+  "z": 4.29
+ },
+ "carry": {
+  "vi": "mang, vận chuyển",
+  "z": 4.89
+ },
+ "carry on": {
+  "vi": "tiếp tục",
+  "z": 4.89
+ },
+ "carry out": {
+  "vi": "thực hiện, tiến hành",
+  "z": 4.88
+ },
+ "case": {
+  "vi": "trường hợp",
+  "z": 5.55
+ },
+ "cash register": {
+  "vi": "máy tính tiền, quầy thu ngân",
+  "z": 4.42
+ },
+ "casually": {
+  "vi": "thoải mái, bình thường, không trang trọng",
+  "z": 3.66
+ },
+ "catalog": {
+  "vi": "danh mục, catalog; (v) lập danh mục",
+  "z": 3.91
+ },
+ "catch up": {
+  "vi": "bắt kịp",
+  "z": 4.86
+ },
+ "category": {
+  "vi": "loại, hạng mục",
+  "z": 4.57
+ },
+ "cause": {
+  "vi": "nguyên nhân; gây ra",
+  "z": 5.35
+ },
+ "caution": {
+  "vi": "sự thận trọng; (v) cảnh báo",
+  "z": 3.97
+ },
+ "cautious": {
+  "vi": "thận trọng",
+  "z": 3.79
+ },
+ "cautiously": {
+  "vi": "thận trọng",
+  "z": 3.32
+ },
+ "cease": {
+  "vi": "ngừng, chấm dứt",
+  "z": 4.03
+ },
+ "center": {
+  "vi": "trung tâm; tập trung",
+  "z": 5.19
+ },
+ "certainty": {
+  "vi": "sự chắc chắn",
+  "z": 3.82
+ },
+ "certificate": {
+  "vi": "chứng chỉ, giấy chứng nhận",
+  "z": 4.29
+ },
+ "chain": {
+  "vi": "chuỗi (cửa hàng, khách sạn)",
+  "z": 4.65
+ },
+ "change": {
+  "vi": "thay đổi",
+  "z": 5.54
+ },
+ "chaos": {
+  "vi": "sự hỗn loạn",
+  "z": 4.27
+ },
+ "characteristic": {
+  "vi": "đặc điểm, đặc trưng; (adj) đặc trưng",
+  "z": 3.97
+ },
+ "characteristically": {
+  "vi": "một cách đặc trưng",
+  "z": 2.85
+ },
+ "charge": {
+  "vi": "tính phí; (n) phí",
+  "z": 5.02
+ },
+ "charm": {
+  "vi": "sức hấp dẫn, sự quyến rũ",
+  "z": 4.12
+ },
+ "cheap": {
+  "vi": "rẻ",
+  "z": 4.71
+ },
+ "check": {
+  "vi": "kiểm tra",
+  "z": 5.31
+ },
+ "check in": {
+  "vi": "làm thủ tục nhận phòng/lên máy bay",
+  "z": 5.31
+ },
+ "check on": {
+  "vi": "kiểm tra lại, theo dõi",
+  "z": 5.3
+ },
+ "check out": {
+  "vi": "trả phòng; thanh toán",
+  "z": 5.27
+ },
+ "checkout": {
+  "vi": "quầy thanh toán; việc thanh toán",
+  "z": 3.64
+ },
+ "chiefly": {
+  "vi": "chủ yếu",
+  "z": 3.42
+ },
+ "choice": {
+  "vi": "sự lựa chọn",
+  "z": 5.08
+ },
+ "choose": {
+  "vi": "lựa chọn",
+  "z": 4.91
+ },
+ "circulate": {
+  "vi": "lưu hành, lan truyền",
+  "z": 3.17
+ },
+ "circumstance": {
+  "vi": "hoàn cảnh, tình huống",
+  "z": 3.66
+ },
+ "cite": {
+  "vi": "trích dẫn, nêu ra",
+  "z": 3.67
+ },
+ "claim": {
+  "vi": "yêu cầu nhận lại; (v) đòi; khẳng định",
+  "z": 4.95
+ },
+ "clarity": {
+  "vi": "sự rõ ràng",
+  "z": 3.9
+ },
+ "class": {
+  "vi": "loại, hạng",
+  "z": 5.36
+ },
+ "classic": {
+  "vi": "cổ điển, kinh điển",
+  "z": 4.72
+ },
+ "clause": {
+  "vi": "điều khoản",
+  "z": 3.99
+ },
+ "cleaner": {
+  "vi": "người dọn dẹp",
+  "z": 3.9
+ },
+ "clear": {
+  "vi": "rõ ràng, sắc nét",
+  "z": 5.25
+ },
+ "clearly": {
+  "vi": "rõ ràng",
+  "z": 4.92
+ },
+ "client": {
+  "vi": "khách hàng (dịch vụ)",
+  "z": 4.54
+ },
+ "close": {
+  "vi": "đóng; kết thúc; gần",
+  "z": 5.36
+ },
+ "closed to": {
+  "vi": "khép kín, không đón nhận",
+  "z": 4.9
+ },
+ "closeness": {
+  "vi": "sự gần gũi",
+  "z": 3.14
+ },
+ "clothing": {
+  "vi": "quần áo",
+  "z": 4.47
+ },
+ "coach": {
+  "vi": "huấn luyện viên; kèm cặp",
+  "z": 4.96
+ },
+ "coaching": {
+  "vi": "sự huấn luyện",
+  "z": 4.29
+ },
+ "coating": {
+  "vi": "lớp phủ",
+  "z": 3.71
+ },
+ "code": {
+  "vi": "quy tắc, bộ quy định; mã",
+  "z": 5.08
+ },
+ "coherent": {
+  "vi": "mạch lạc",
+  "z": 3.63
+ },
+ "coincide": {
+  "vi": "trùng khớp, xảy ra đồng thời",
+  "z": 3.49
+ },
+ "collaboration": {
+  "vi": "sự hợp tác",
+  "z": 4.28
+ },
+ "collapse": {
+  "vi": "sự sụp đổ",
+  "z": 4.18
+ },
+ "collect": {
+  "vi": "sưu tầm, thu thập",
+  "z": 4.37
+ },
+ "collection": {
+  "vi": "bộ sưu tập",
+  "z": 4.96
+ },
+ "collective": {
+  "vi": "tập thể",
+  "z": 4.3
+ },
+ "combine": {
+  "vi": "kết hợp",
+  "z": 4.13
+ },
+ "combined": {
+  "vi": "tổng hợp",
+  "z": 4.68
+ },
+ "come": {
+  "vi": "đến",
+  "z": 5.78
+ },
+ "come about": {
+  "vi": "xảy ra",
+  "z": 5.69
+ },
+ "come up with": {
+  "vi": "nghĩ ra, đề xuất",
+  "z": 5.66
+ },
+ "comfort": {
+  "vi": "sự thoải mái; (v) an ủi",
+  "z": 4.41
+ },
+ "commensurate": {
+  "vi": "tương xứng",
+  "z": 2.83
+ },
+ "commit": {
+  "vi": "cam kết; dành (tiền, thời gian)",
+  "z": 4.33
+ },
+ "commit to": {
+  "vi": "cam kết với",
+  "z": 4.33
+ },
+ "commitment": {
+  "vi": "sự cam kết",
+  "z": 4.43
+ },
+ "commodities": {
+  "vi": "hàng hoá",
+  "z": 3.73
+ },
+ "common": {
+  "vi": "phổ biến; chung",
+  "z": 5.2
+ },
+ "commonly": {
+  "vi": "thường, phổ biến",
+  "z": 4.38
+ },
+ "communicate": {
+  "vi": "giao tiếp, truyền đạt",
+  "z": 4.2
+ },
+ "communicate with": {
+  "vi": "liên lạc với",
+  "z": 4.2
+ },
+ "communication": {
+  "vi": "sự giao tiếp, liên lạc",
+  "z": 4.68
+ },
+ "company": {
+  "vi": "công ty",
+  "z": 5.6
+ },
+ "comparable": {
+  "vi": "có thể so sánh, tương đương",
+  "z": 4.08
+ },
+ "comparatively": {
+  "vi": "tương đối",
+  "z": 3.51
+ },
+ "compare": {
+  "vi": "so sánh",
+  "z": 4.45
+ },
+ "compatible": {
+  "vi": "tương thích",
+  "z": 3.97
+ },
+ "compel": {
+  "vi": "bắt buộc, ép",
+  "z": 3.28
+ },
+ "compensate": {
+  "vi": "bồi thường; trả lương",
+  "z": 3.78
+ },
+ "compensate for": {
+  "vi": "bù đắp cho",
+  "z": 3.78
+ },
+ "competence": {
+  "vi": "năng lực",
+  "z": 3.58
+ },
+ "competent": {
+  "vi": "có năng lực, giỏi",
+  "z": 3.92
+ },
+ "competition": {
+  "vi": "sự cạnh tranh; cuộc thi",
+  "z": 4.91
+ },
+ "compile": {
+  "vi": "biên soạn, tập hợp",
+  "z": 3.38
+ },
+ "complete": {
+  "vi": "hoàn thành; (adj) đầy đủ",
+  "z": 5.1
+ },
+ "complex": {
+  "vi": "phức tạp",
+  "z": 4.86
+ },
+ "complexity": {
+  "vi": "sự phức tạp",
+  "z": 4.02
+ },
+ "complication": {
+  "vi": "sự phức tạp, biến chứng",
+  "z": 3.31
+ },
+ "comply": {
+  "vi": "tuân thủ",
+  "z": 4.04
+ },
+ "comply with": {
+  "vi": "tuân thủ, chấp hành",
+  "z": 4.04
+ },
+ "component": {
+  "vi": "thành phần",
+  "z": 4.32
+ },
+ "compose": {
+  "vi": "soạn, tạo thành",
+  "z": 3.46
+ },
+ "comprehensive": {
+  "vi": "toàn diện, bao quát",
+  "z": 4.36
+ },
+ "compromise": {
+  "vi": "sự thoả hiệp; (v) thoả hiệp",
+  "z": 4.15
+ },
+ "compulsory": {
+  "vi": "bắt buộc",
+  "z": 3.7
+ },
+ "computation": {
+  "vi": "sự tính toán",
+  "z": 3.35
+ },
+ "conceal": {
+  "vi": "che giấu",
+  "z": 3.52
+ },
+ "conceive": {
+  "vi": "hình dung, nghĩ ra",
+  "z": 3.4
+ },
+ "concentrate": {
+  "vi": "tập trung",
+  "z": 4.07
+ },
+ "concentrate on": {
+  "vi": "tập trung vào",
+  "z": 4.07
+ },
+ "concentration": {
+  "vi": "sự tập trung",
+  "z": 4.27
+ },
+ "concept": {
+  "vi": "khái niệm, ý tưởng",
+  "z": 4.77
+ },
+ "concern": {
+  "vi": "mối quan tâm, lo lắng; (v) liên quan",
+  "z": 4.66
+ },
+ "concession": {
+  "vi": "sự nhượng bộ",
+  "z": 3.57
+ },
+ "conclude": {
+  "vi": "kết luận; kết thúc",
+  "z": 3.9
+ },
+ "conclude; whole": {
+  "vi": "kết thúc; toàn bộ",
+  "z": 3.9
+ },
+ "conclusion": {
+  "vi": "sự kết luận",
+  "z": 4.4
+ },
+ "concur": {
+  "vi": "trùng hợp; đồng tình",
+  "z": 3.18
+ },
+ "condition": {
+  "vi": "điều kiện; tình trạng",
+  "z": 4.86
+ },
+ "conditional on": {
+  "vi": "phụ thuộc vào điều kiện",
+  "z": 3.59
+ },
+ "conditions": {
+  "vi": "điều kiện, điều khoản",
+  "z": 4.98
+ },
+ "conducive": {
+  "vi": "có lợi, thuận lợi cho",
+  "z": 3.24
+ },
+ "conduct": {
+  "vi": "tiến hành, thực hiện; (n) hạnh kiểm",
+  "z": 4.52
+ },
+ "confer with": {
+  "vi": "bàn bạc với",
+  "z": 3.19
+ },
+ "confidence": {
+  "vi": "sự tự tin; sự tin tưởng",
+  "z": 4.65
+ },
+ "confident": {
+  "vi": "tự tin",
+  "z": 4.43
+ },
+ "confined": {
+  "vi": "bị hạn chế, giới hạn",
+  "z": 3.82
+ },
+ "confirm": {
+  "vi": "xác nhận",
+  "z": 4.4
+ },
+ "confirmation": {
+  "vi": "sự xác nhận",
+  "z": 4.08
+ },
+ "conform": {
+  "vi": "tuân theo, phù hợp với",
+  "z": 3.53
+ },
+ "conform to": {
+  "vi": "tuân theo",
+  "z": 3.53
+ },
+ "confront": {
+  "vi": "đối mặt",
+  "z": 3.8
+ },
+ "confuse": {
+  "vi": "làm bối rối",
+  "z": 3.67
+ },
+ "confusion": {
+  "vi": "sự nhầm lẫn, bối rối",
+  "z": 4.19
+ },
+ "congested": {
+  "vi": "tắc nghẽn, đông đúc",
+  "z": 3.17
+ },
+ "connect": {
+  "vi": "kết nối",
+  "z": 4.38
+ },
+ "connection": {
+  "vi": "mối liên hệ",
+  "z": 4.76
+ },
+ "conscious": {
+  "vi": "có ý thức, nhận thức",
+  "z": 4.18
+ },
+ "consecutive": {
+  "vi": "liên tiếp",
+  "z": 4.18
+ },
+ "consequence": {
+  "vi": "hậu quả, kết quả",
+  "z": 4.07
+ },
+ "consequence; affect": {
+  "vi": "hậu quả; ảnh hưởng",
+  "z": 4.07
+ },
+ "conservative": {
+  "vi": "thận trọng, bảo thủ",
+  "z": 4.61
+ },
+ "conserve": {
+  "vi": "bảo tồn",
+  "z": 3.37
+ },
+ "consider": {
+  "vi": "xem xét, cân nhắc; coi là",
+  "z": 4.99
+ },
+ "considerable": {
+  "vi": "đáng kể",
+  "z": 4.25
+ },
+ "considerably": {
+  "vi": "đáng kể",
+  "z": 4.0
+ },
+ "considerately": {
+  "vi": "chu đáo, ân cần",
+  "z": 1.66
+ },
+ "consideration": {
+  "vi": "sự cân nhắc; sự chu đáo",
+  "z": 4.28
+ },
+ "consist of": {
+  "vi": "bao gồm",
+  "z": 3.94
+ },
+ "consistency": {
+  "vi": "sự nhất quán",
+  "z": 3.99
+ },
+ "consistent": {
+  "vi": "nhất quán, tương thích",
+  "z": 4.48
+ },
+ "consistently": {
+  "vi": "đều đặn, nhất quán",
+  "z": 4.24
+ },
+ "constantly": {
+  "vi": "liên tục, luôn luôn",
+  "z": 4.53
+ },
+ "constituent": {
+  "vi": "thành phần",
+  "z": 3.58
+ },
+ "constitute": {
+  "vi": "cấu thành, tạo thành",
+  "z": 3.85
+ },
+ "consult": {
+  "vi": "tham khảo ý kiến",
+  "z": 3.87
+ },
+ "consume": {
+  "vi": "tiêu thụ, tiêu dùng",
+  "z": 3.88
+ },
+ "consumer": {
+  "vi": "người tiêu dùng",
+  "z": 4.56
+ },
+ "contact": {
+  "vi": "liên lạc; (n) người liên hệ",
+  "z": 4.99
+ },
+ "contain": {
+  "vi": "chứa đựng",
+  "z": 4.5
+ },
+ "contemplate": {
+  "vi": "suy ngẫm, cân nhắc",
+  "z": 3.41
+ },
+ "contender": {
+  "vi": "đối thủ, ứng viên",
+  "z": 3.6
+ },
+ "contention": {
+  "vi": "sự tranh giành",
+  "z": 3.73
+ },
+ "contentment": {
+  "vi": "sự mãn nguyện",
+  "z": 3.05
+ },
+ "contest": {
+  "vi": "cuộc thi",
+  "z": 4.53
+ },
+ "context": {
+  "vi": "bối cảnh",
+  "z": 4.63
+ },
+ "continually": {
+  "vi": "liên tục",
+  "z": 3.91
+ },
+ "continuation": {
+  "vi": "sự tiếp tục",
+  "z": 3.71
+ },
+ "continue": {
+  "vi": "tiếp tục",
+  "z": 5.08
+ },
+ "continuity": {
+  "vi": "sự liên tục",
+  "z": 3.77
+ },
+ "continuously": {
+  "vi": "liên tục, không ngừng",
+  "z": 3.97
+ },
+ "contract": {
+  "vi": "hợp đồng; thu hẹp",
+  "z": 4.94
+ },
+ "contract; rent": {
+  "vi": "hợp đồng; thuê",
+  "z": 4.94
+ },
+ "contrast": {
+  "vi": "đối chiếu, tương phản",
+  "z": 4.46
+ },
+ "contribute": {
+  "vi": "đóng góp",
+  "z": 4.34
+ },
+ "contributory": {
+  "vi": "góp phần",
+  "z": 2.69
+ },
+ "control": {
+  "vi": "kiểm soát; (n) sự kiểm soát",
+  "z": 5.4
+ },
+ "controlled": {
+  "vi": "được kiểm soát",
+  "z": 4.59
+ },
+ "convenience; console": {
+  "vi": "sự tiện lợi; an ủi",
+  "z": 4.02
+ },
+ "convenient": {
+  "vi": "thuận tiện",
+  "z": 4.15
+ },
+ "conversation": {
+  "vi": "cuộc trò chuyện",
+  "z": 4.75
+ },
+ "conversion": {
+  "vi": "sự chuyển đổi",
+  "z": 4.24
+ },
+ "convey": {
+  "vi": "truyền đạt",
+  "z": 3.83
+ },
+ "conveyor": {
+  "vi": "người/vật chuyên chở",
+  "z": 3.28
+ },
+ "conviction": {
+  "vi": "niềm tin chắc; sự thuyết phục",
+  "z": 4.14
+ },
+ "convince": {
+  "vi": "thuyết phục",
+  "z": 4.26
+ },
+ "cooking": {
+  "vi": "nấu nướng",
+  "z": 4.45
+ },
+ "cooperation": {
+  "vi": "sự hợp tác",
+  "z": 4.3
+ },
+ "coordinate": {
+  "vi": "điều phối, phối hợp",
+  "z": 3.82
+ },
+ "cope": {
+  "vi": "đối phó, xoay xở",
+  "z": 4.04
+ },
+ "cope with": {
+  "vi": "đối phó với",
+  "z": 4.04
+ },
+ "copious": {
+  "vi": "dồi dào",
+  "z": 3.1
+ },
+ "copy": {
+  "vi": "bản sao; sao chép",
+  "z": 4.77
+ },
+ "correct": {
+  "vi": "đúng; sửa",
+  "z": 4.79
+ },
+ "correction": {
+  "vi": "sự sửa chữa",
+  "z": 3.95
+ },
+ "correctly": {
+  "vi": "chính xác",
+  "z": 4.21
+ },
+ "correspond": {
+  "vi": "tương ứng, khớp",
+  "z": 3.5
+ },
+ "corresponding": {
+  "vi": "tương ứng",
+  "z": 4.13
+ },
+ "cost": {
+  "vi": "chi phí",
+  "z": 5.24
+ },
+ "costly": {
+  "vi": "đắt đỏ",
+  "z": 3.93
+ },
+ "counselor": {
+  "vi": "người tư vấn",
+  "z": 3.79
+ },
+ "count on": {
+  "vi": "trông cậy vào",
+  "z": 4.83
+ },
+ "counter": {
+  "vi": "quầy",
+  "z": 4.56
+ },
+ "counterbalance": {
+  "vi": "đối trọng, bù lại",
+  "z": 2.74
+ },
+ "courier": {
+  "vi": "người đưa thư, dịch vụ chuyển phát",
+  "z": 3.68
+ },
+ "cover": {
+  "vi": "bao gồm, chi trả (bảo hiểm); che phủ",
+  "z": 5.08
+ },
+ "craze": {
+  "vi": "cơn sốt, mốt",
+  "z": 3.35
+ },
+ "crease": {
+  "vi": "nếp gấp",
+  "z": 3.31
+ },
+ "create": {
+  "vi": "tạo ra",
+  "z": 5.02
+ },
+ "creative": {
+  "vi": "sáng tạo",
+  "z": 4.6
+ },
+ "credentials": {
+  "vi": "bằng cấp, chứng chỉ",
+  "z": 3.74
+ },
+ "credit": {
+  "vi": "sự ghi nhận; tín dụng, khoản có",
+  "z": 5.0
+ },
+ "crinkle": {
+  "vi": "nếp nhăn",
+  "z": 2.32
+ },
+ "critical": {
+  "vi": "phê phán; then chốt",
+  "z": 4.83
+ },
+ "critical; earnest": {
+  "vi": "nghiêm trọng; nghiêm túc",
+  "z": 4.83
+ },
+ "criticism": {
+  "vi": "sự phê bình, chỉ trích",
+  "z": 4.49
+ },
+ "critique": {
+  "vi": "bài phê bình",
+  "z": 3.83
+ },
+ "crowd": {
+  "vi": "đám đông",
+  "z": 4.7
+ },
+ "crowded": {
+  "vi": "đông đúc",
+  "z": 3.98
+ },
+ "crucial": {
+  "vi": "cực kỳ quan trọng, quyết định",
+  "z": 4.28
+ },
+ "crudely": {
+  "vi": "thô thiển, sống sượng",
+  "z": 2.72
+ },
+ "culinary": {
+  "vi": "thuộc về nấu nướng, ẩm thực",
+  "z": 3.56
+ },
+ "currently": {
+  "vi": "hiện tại, hiện nay",
+  "z": 5.08
+ },
+ "custom": {
+  "vi": "phong tục, thói quen",
+  "z": 4.43
+ },
+ "customer": {
+  "vi": "khách hàng",
+  "z": 4.61
+ },
+ "cut": {
+  "vi": "sự cắt giảm; cắt giảm",
+  "z": 5.24
+ },
+ "cut back": {
+  "vi": "cắt giảm chi tiêu",
+  "z": 5.18
+ },
+ "cutoff": {
+  "vi": "hạn chót",
+  "z": 3.21
+ },
+ "daily": {
+  "vi": "hằng ngày",
+  "z": 5.07
+ },
+ "damage": {
+  "vi": "làm hư hại",
+  "z": 4.9
+ },
+ "danger": {
+  "vi": "sự nguy hiểm",
+  "z": 4.59
+ },
+ "daringly": {
+  "vi": "táo bạo",
+  "z": 2.06
+ },
+ "darken": {
+  "vi": "làm tối",
+  "z": 2.88
+ },
+ "deadline": {
+  "vi": "hạn chót",
+  "z": 4.12
+ },
+ "deal": {
+  "vi": "thoả thuận; giao dịch",
+  "z": 5.32
+ },
+ "deal with": {
+  "vi": "giải quyết, xử lý",
+  "z": 5.31
+ },
+ "deal with; run": {
+  "vi": "xử lý; điều hành",
+  "z": 5.31
+ },
+ "debt": {
+  "vi": "khoản nợ",
+  "z": 4.69
+ },
+ "decade": {
+  "vi": "thập kỷ",
+  "z": 4.52
+ },
+ "decide": {
+  "vi": "quyết định",
+  "z": 4.78
+ },
+ "decide on": {
+  "vi": "quyết định chọn",
+  "z": 4.78
+ },
+ "decision": {
+  "vi": "quyết định",
+  "z": 5.09
+ },
+ "decisive": {
+  "vi": "quyết đoán",
+  "z": 3.8
+ },
+ "declaration": {
+  "vi": "lời tuyên bố",
+  "z": 4.1
+ },
+ "declare": {
+  "vi": "tuyên bố",
+  "z": 4.05
+ },
+ "decline": {
+  "vi": "sự sụt giảm; từ chối",
+  "z": 4.4
+ },
+ "decrease": {
+  "vi": "sự giảm; giảm",
+  "z": 4.17
+ },
+ "dedicate": {
+  "vi": "cống hiến",
+  "z": 3.51
+ },
+ "dedicated": {
+  "vi": "tận tâm",
+  "z": 4.58
+ },
+ "dedication": {
+  "vi": "sự cống hiến, tận tâm",
+  "z": 3.96
+ },
+ "deduct": {
+  "vi": "khấu trừ",
+  "z": 3.09
+ },
+ "deduction": {
+  "vi": "khoản khấu trừ",
+  "z": 3.46
+ },
+ "deed": {
+  "vi": "hành động, việc làm",
+  "z": 3.75
+ },
+ "defect": {
+  "vi": "khuyết tật, lỗi",
+  "z": 3.68
+ },
+ "defend": {
+  "vi": "bảo vệ",
+  "z": 4.47
+ },
+ "deficiency": {
+  "vi": "sự thiếu sót, khuyết tật",
+  "z": 3.64
+ },
+ "definite": {
+  "vi": "rõ ràng, xác định",
+  "z": 3.78
+ },
+ "degree": {
+  "vi": "mức độ",
+  "z": 4.94
+ },
+ "delay": {
+  "vi": "sự trì hoãn; (v) hoãn",
+  "z": 4.4
+ },
+ "delete": {
+  "vi": "xoá",
+  "z": 4.22
+ },
+ "delicately": {
+  "vi": "một cách tế nhị, khéo léo",
+  "z": 3.05
+ },
+ "deliver": {
+  "vi": "giao hàng",
+  "z": 4.55
+ },
+ "delivery": {
+  "vi": "sự giao hàng",
+  "z": 4.59
+ },
+ "delivery service": {
+  "vi": "dịch vụ giao hàng",
+  "z": 4.54
+ },
+ "deluxe": {
+  "vi": "sang trọng, cao cấp",
+  "z": 3.72
+ },
+ "demand": {
+  "vi": "nhu cầu; (v) yêu cầu",
+  "z": 4.84
+ },
+ "demonstrate": {
+  "vi": "chứng minh; trình diễn, minh hoạ",
+  "z": 4.2
+ },
+ "demote": {
+  "vi": "giáng chức",
+  "z": 2.29
+ },
+ "deny": {
+  "vi": "phủ nhận",
+  "z": 4.34
+ },
+ "depart": {
+  "vi": "khởi hành, rời đi",
+  "z": 3.67
+ },
+ "departure": {
+  "vi": "sự khởi hành",
+  "z": 4.22
+ },
+ "depend": {
+  "vi": "phụ thuộc, dựa vào",
+  "z": 4.2
+ },
+ "depend on": {
+  "vi": "dựa vào",
+  "z": 4.2
+ },
+ "dependent on": {
+  "vi": "phụ thuộc vào",
+  "z": 4.28
+ },
+ "depiction": {
+  "vi": "sự miêu tả",
+  "z": 3.45
+ },
+ "deplete": {
+  "vi": "làm cạn kiệt",
+  "z": 2.65
+ },
+ "deposit": {
+  "vi": "tiền đặt cọc; gửi tiền",
+  "z": 4.24
+ },
+ "depreciation": {
+  "vi": "sự mất giá; coi thường",
+  "z": 3.37
+ },
+ "deregulate": {
+  "vi": "bãi bỏ quy định",
+  "z": 2.21
+ },
+ "description": {
+  "vi": "sự mô tả",
+  "z": 4.73
+ },
+ "deserted": {
+  "vi": "vắng vẻ, hoang vắng",
+  "z": 3.64
+ },
+ "design": {
+  "vi": "thiết kế",
+  "z": 5.17
+ },
+ "designate": {
+  "vi": "chỉ định",
+  "z": 3.37
+ },
+ "desire": {
+  "vi": "mong muốn; (v) khao khát",
+  "z": 4.61
+ },
+ "despise": {
+  "vi": "coi thường, khinh",
+  "z": 3.5
+ },
+ "despite": {
+  "vi": "mặc dù",
+  "z": 5.0
+ },
+ "destination": {
+  "vi": "điểm đến",
+  "z": 4.24
+ },
+ "destroy": {
+  "vi": "phá huỷ",
+  "z": 4.52
+ },
+ "detail": {
+  "vi": "chi tiết; (v) trình bày chi tiết",
+  "z": 4.57
+ },
+ "detailed": {
+  "vi": "chi tiết",
+  "z": 4.51
+ },
+ "detect": {
+  "vi": "phát hiện",
+  "z": 4.05
+ },
+ "deter": {
+  "vi": "ngăn cản, làm nản lòng",
+  "z": 3.48
+ },
+ "determine": {
+  "vi": "xác định, tìm ra; quyết định",
+  "z": 4.63
+ },
+ "detrimental": {
+  "vi": "có hại",
+  "z": 3.55
+ },
+ "develop": {
+  "vi": "phát triển, xây dựng",
+  "z": 4.75
+ },
+ "development": {
+  "vi": "sự phát triển",
+  "z": 5.31
+ },
+ "deviate": {
+  "vi": "đi chệch, lệch khỏi",
+  "z": 3.06
+ },
+ "device": {
+  "vi": "thiết bị",
+  "z": 4.67
+ },
+ "devise": {
+  "vi": "nghĩ ra, sáng chế",
+  "z": 3.19
+ },
+ "devote": {
+  "vi": "cống hiến, dành cho",
+  "z": 3.53
+ },
+ "devoted": {
+  "vi": "tận tâm, trung thành",
+  "z": 4.18
+ },
+ "devotion": {
+  "vi": "sự tận tâm",
+  "z": 3.73
+ },
+ "diagnose": {
+  "vi": "chẩn đoán",
+  "z": 3.41
+ },
+ "dialogue": {
+  "vi": "lời thoại, cuộc đối thoại",
+  "z": 4.29
+ },
+ "differ": {
+  "vi": "khác biệt",
+  "z": 4.03
+ },
+ "difference": {
+  "vi": "sự khác biệt",
+  "z": 5.01
+ },
+ "different": {
+  "vi": "khác nhau",
+  "z": 5.59
+ },
+ "differentiate": {
+  "vi": "phân biệt",
+  "z": 3.62
+ },
+ "difficult": {
+  "vi": "khó khăn",
+  "z": 5.07
+ },
+ "difficulty": {
+  "vi": "khó khăn",
+  "z": 4.33
+ },
+ "diligence": {
+  "vi": "sự siêng năng",
+  "z": 3.51
+ },
+ "dimension": {
+  "vi": "kích thước; khía cạnh",
+  "z": 4.02
+ },
+ "diminish": {
+  "vi": "làm giảm",
+  "z": 3.46
+ },
+ "direct": {
+  "vi": "chỉ đường; điều khiển",
+  "z": 4.91
+ },
+ "directory": {
+  "vi": "danh bạ, bảng chỉ dẫn",
+  "z": 3.93
+ },
+ "disadvantage": {
+  "vi": "bất lợi",
+  "z": 3.71
+ },
+ "disagreement": {
+  "vi": "sự bất đồng",
+  "z": 3.66
+ },
+ "disappoint": {
+  "vi": "làm thất vọng",
+  "z": 3.67
+ },
+ "disapproval": {
+  "vi": "sự phản đối, chê trách",
+  "z": 3.28
+ },
+ "disc": {
+  "vi": "đĩa",
+  "z": 4.13
+ },
+ "discard": {
+  "vi": "vứt bỏ",
+  "z": 3.37
+ },
+ "discharge": {
+  "vi": "cho xuất viện; thải ra",
+  "z": 3.93
+ },
+ "discomfort": {
+  "vi": "sự khó chịu",
+  "z": 3.65
+ },
+ "discount": {
+  "vi": "giảm giá; (v) giảm giá",
+  "z": 4.35
+ },
+ "discourage": {
+  "vi": "làm nản lòng",
+  "z": 3.57
+ },
+ "discouragement": {
+  "vi": "sự nản lòng",
+  "z": 2.53
+ },
+ "discover": {
+  "vi": "khám phá, phát hiện",
+  "z": 4.39
+ },
+ "discrepancy": {
+  "vi": "sự khác biệt, chênh lệch",
+  "z": 3.29
+ },
+ "discretionary": {
+  "vi": "tuỳ ý, tự quyết",
+  "z": 3.26
+ },
+ "discriminate": {
+  "vi": "phân biệt",
+  "z": 3.51
+ },
+ "discuss": {
+  "vi": "thảo luận",
+  "z": 4.66
+ },
+ "discussion": {
+  "vi": "cuộc thảo luận",
+  "z": 4.71
+ },
+ "disembark": {
+  "vi": "xuống tàu",
+  "z": 2.68
+ },
+ "disembarkation": {
+  "vi": "sự xuống tàu/máy bay",
+  "z": 1.98
+ },
+ "disengage": {
+  "vi": "rút ra, tách ra",
+  "z": 2.9
+ },
+ "disk": {
+  "vi": "đĩa (lưu trữ)",
+  "z": 4.01
+ },
+ "disloyal": {
+  "vi": "không trung thành",
+  "z": 2.84
+ },
+ "dismantle": {
+  "vi": "tháo dỡ",
+  "z": 3.24
+ },
+ "dismiss": {
+  "vi": "sa thải; gạt bỏ",
+  "z": 3.85
+ },
+ "disobey": {
+  "vi": "không tuân theo, bất tuân",
+  "z": 2.83
+ },
+ "disorder": {
+  "vi": "sự hỗn loạn",
+  "z": 4.31
+ },
+ "disorganize": {
+  "vi": "làm rối loạn",
+  "z": 1.45
+ },
+ "disparate": {
+  "vi": "khác biệt, khác hẳn",
+  "z": 3.26
+ },
+ "dispatch": {
+  "vi": "gửi đi, điều phối",
+  "z": 3.76
+ },
+ "disperse": {
+  "vi": "phân tán, giải tán",
+  "z": 3.3
+ },
+ "display": {
+  "vi": "hiển thị, trưng bày",
+  "z": 4.63
+ },
+ "dispose of": {
+  "vi": "vứt bỏ, xử lý",
+  "z": 3.53
+ },
+ "disproportionate": {
+  "vi": "không cân xứng",
+  "z": 3.34
+ },
+ "disprove": {
+  "vi": "bác bỏ",
+  "z": 2.93
+ },
+ "dispute": {
+  "vi": "tranh chấp",
+  "z": 4.27
+ },
+ "disqualify": {
+  "vi": "loại, truất quyền",
+  "z": 2.94
+ },
+ "disregard": {
+  "vi": "phớt lờ, coi thường",
+  "z": 3.66
+ },
+ "disrepute": {
+  "vi": "tiếng xấu",
+  "z": 2.53
+ },
+ "disrupt": {
+  "vi": "làm gián đoạn",
+  "z": 3.59
+ },
+ "disruption": {
+  "vi": "sự gián đoạn",
+  "z": 3.71
+ },
+ "dissatisfaction": {
+  "vi": "sự không hài lòng",
+  "z": 3.32
+ },
+ "dissatisfy": {
+  "vi": "làm không hài lòng",
+  "z": 0.0
+ },
+ "disseminate": {
+  "vi": "phổ biến, lan truyền",
+  "z": 3.03
+ },
+ "dissimilar": {
+  "vi": "không giống nhau",
+  "z": 3.01
+ },
+ "dissipate": {
+  "vi": "tan biến, xua tan",
+  "z": 2.95
+ },
+ "dissolve": {
+  "vi": "giải thể, hoà tan",
+  "z": 3.49
+ },
+ "dissuade": {
+  "vi": "can ngăn",
+  "z": 3.01
+ },
+ "dissuasion": {
+  "vi": "sự can ngăn",
+  "z": 1.44
+ },
+ "distance": {
+  "vi": "khoảng cách",
+  "z": 4.85
+ },
+ "distant": {
+  "vi": "xa xôi",
+  "z": 4.19
+ },
+ "distinct": {
+  "vi": "rõ rệt; khác biệt",
+  "z": 4.29
+ },
+ "distinguish": {
+  "vi": "phân biệt",
+  "z": 3.87
+ },
+ "distraction": {
+  "vi": "sự xao nhãng",
+  "z": 3.78
+ },
+ "distribute": {
+  "vi": "phân phối, phân phát",
+  "z": 3.79
+ },
+ "distribution": {
+  "vi": "sự phân phối",
+  "z": 4.64
+ },
+ "disturb": {
+  "vi": "làm phiền, quấy rầy",
+  "z": 3.56
+ },
+ "disturbance": {
+  "vi": "sự xáo trộn",
+  "z": 3.61
+ },
+ "diverse": {
+  "vi": "đa dạng",
+  "z": 4.24
+ },
+ "diversify": {
+  "vi": "đa dạng hoá",
+  "z": 3.16
+ },
+ "diversion": {
+  "vi": "sự giải trí; làm xao nhãng",
+  "z": 3.51
+ },
+ "diversity": {
+  "vi": "sự đa dạng",
+  "z": 4.32
+ },
+ "divest": {
+  "vi": "thoái vốn, rút vốn",
+  "z": 2.88
+ },
+ "divide": {
+  "vi": "phân chia",
+  "z": 4.12
+ },
+ "dividend": {
+  "vi": "cổ tức",
+  "z": 3.82
+ },
+ "document": {
+  "vi": "tài liệu; ghi lại",
+  "z": 4.5
+ },
+ "dodge": {
+  "vi": "né tránh",
+  "z": 3.93
+ },
+ "donate": {
+  "vi": "quyên góp",
+  "z": 4.04
+ },
+ "double over": {
+  "vi": "gập đôi",
+  "z": 4.97
+ },
+ "doubt": {
+  "vi": "sự nghi ngờ",
+  "z": 4.9
+ },
+ "doubtfully": {
+  "vi": "nghi ngờ, ngờ vực",
+  "z": 1.84
+ },
+ "down payment": {
+  "vi": "khoản trả trước, tiền đặt cọc",
+  "z": 4.63
+ },
+ "downplay": {
+  "vi": "xem nhẹ, giảm nhẹ",
+  "z": 2.91
+ },
+ "draft": {
+  "vi": "bản nháp",
+  "z": 4.61
+ },
+ "draw": {
+  "vi": "thu hút",
+  "z": 4.81
+ },
+ "draw level": {
+  "vi": "bắt kịp, ngang bằng",
+  "z": 4.71
+ },
+ "drawback": {
+  "vi": "nhược điểm",
+  "z": 3.21
+ },
+ "dread": {
+  "vi": "sợ hãi, ngại",
+  "z": 3.64
+ },
+ "drill": {
+  "vi": "luyện tập",
+  "z": 4.09
+ },
+ "drink": {
+  "vi": "đồ uống",
+  "z": 4.9
+ },
+ "drive": {
+  "vi": "động lực; ổ đĩa",
+  "z": 5.13
+ },
+ "drop": {
+  "vi": "bỏ qua, gác lại",
+  "z": 4.99
+ },
+ "drop off": {
+  "vi": "thả xuống, giao",
+  "z": 4.94
+ },
+ "due date": {
+  "vi": "ngày đến hạn",
+  "z": 4.98
+ },
+ "due to": {
+  "vi": "do, bởi vì",
+  "z": 5.35
+ },
+ "due; excellent": {
+  "vi": "đến hạn chưa trả; xuất sắc",
+  "z": 5.35
+ },
+ "dull": {
+  "vi": "buồn tẻ",
+  "z": 3.94
+ },
+ "duplicate": {
+  "vi": "sao chép; (n) bản sao",
+  "z": 3.59
+ },
+ "durable": {
+  "vi": "bền",
+  "z": 3.68
+ },
+ "duration": {
+  "vi": "khoảng thời gian",
+  "z": 4.14
+ },
+ "duty": {
+  "vi": "nhiệm vụ, bổn phận",
+  "z": 4.71
+ },
+ "eager": {
+  "vi": "háo hức",
+  "z": 4.03
+ },
+ "earlier": {
+  "vi": "trước đó, sớm hơn",
+  "z": 4.98
+ },
+ "earn": {
+  "vi": "kiếm được",
+  "z": 4.48
+ },
+ "earnings": {
+  "vi": "thu nhập",
+  "z": 4.27
+ },
+ "ease": {
+  "vi": "làm dễ dàng; sự thoải mái",
+  "z": 4.34
+ },
+ "easy": {
+  "vi": "dễ dàng",
+  "z": 5.29
+ },
+ "economical": {
+  "vi": "tiết kiệm",
+  "z": 3.59
+ },
+ "economize": {
+  "vi": "tiết kiệm",
+  "z": 2.0
+ },
+ "edit": {
+  "vi": "chỉnh sửa, biên tập",
+  "z": 4.3
+ },
+ "education": {
+  "vi": "giáo dục, đào tạo",
+  "z": 5.28
+ },
+ "effect": {
+  "vi": "tác động",
+  "z": 5.02
+ },
+ "effect; lead to": {
+  "vi": "kết quả; dẫn đến",
+  "z": 5.02
+ },
+ "effective": {
+  "vi": "hiệu quả; có hiệu lực",
+  "z": 4.89
+ },
+ "efficient": {
+  "vi": "hiệu quả, năng suất",
+  "z": 4.42
+ },
+ "effortless": {
+  "vi": "dễ dàng, không tốn sức",
+  "z": 3.14
+ },
+ "elective": {
+  "vi": "tự chọn",
+  "z": 3.32
+ },
+ "elegance": {
+  "vi": "sự thanh lịch",
+  "z": 3.42
+ },
+ "elegant": {
+  "vi": "thanh lịch",
+  "z": 3.95
+ },
+ "element": {
+  "vi": "yếu tố, thành phần",
+  "z": 4.46
+ },
+ "elementary": {
+  "vi": "cơ bản",
+  "z": 4.33
+ },
+ "elevate": {
+  "vi": "nâng lên, đề bạt",
+  "z": 3.38
+ },
+ "eligible": {
+  "vi": "đủ điều kiện, đủ tư cách",
+  "z": 4.29
+ },
+ "embark": {
+  "vi": "lên tàu; bắt tay vào",
+  "z": 3.4
+ },
+ "embarkation": {
+  "vi": "sự lên tàu/máy bay",
+  "z": 2.49
+ },
+ "emphasize": {
+  "vi": "nhấn mạnh",
+  "z": 3.69
+ },
+ "employ": {
+  "vi": "sử dụng; thuê người",
+  "z": 3.96
+ },
+ "employees": {
+  "vi": "nhân viên",
+  "z": 4.81
+ },
+ "empty": {
+  "vi": "trống rỗng",
+  "z": 4.59
+ },
+ "enable": {
+  "vi": "giúp cho có thể",
+  "z": 4.3
+ },
+ "encouragement": {
+  "vi": "sự khích lệ",
+  "z": 3.79
+ },
+ "end": {
+  "vi": "kết thúc",
+  "z": 5.68
+ },
+ "end point": {
+  "vi": "điểm cuối",
+  "z": 5.3
+ },
+ "endanger": {
+  "vi": "gây nguy hiểm",
+  "z": 3.23
+ },
+ "endorsement": {
+  "vi": "sự xác nhận; sự tán thành",
+  "z": 3.75
+ },
+ "endure": {
+  "vi": "chịu đựng",
+  "z": 3.82
+ },
+ "enduring": {
+  "vi": "lâu dài, bền bỉ",
+  "z": 3.67
+ },
+ "enforce": {
+  "vi": "thi hành, ép buộc",
+  "z": 3.96
+ },
+ "engage": {
+  "vi": "tham gia; thu hút, lôi cuốn",
+  "z": 4.36
+ },
+ "engage in": {
+  "vi": "tham gia vào",
+  "z": 4.36
+ },
+ "engaged": {
+  "vi": "bận",
+  "z": 4.52
+ },
+ "engagement": {
+  "vi": "sự tham gia; cuộc hẹn; lễ đính hôn",
+  "z": 4.31
+ },
+ "enhance": {
+  "vi": "nâng cao, cải thiện",
+  "z": 4.04
+ },
+ "enjoyment": {
+  "vi": "sự thích thú",
+  "z": 3.81
+ },
+ "enlarge": {
+  "vi": "mở rộng, phóng to",
+  "z": 3.2
+ },
+ "enlist": {
+  "vi": "tuyển; đăng ký",
+  "z": 3.37
+ },
+ "enough": {
+  "vi": "đủ",
+  "z": 5.54
+ },
+ "enroll": {
+  "vi": "ghi danh, đăng ký",
+  "z": 3.45
+ },
+ "enter": {
+  "vi": "đi vào, lên (tàu, xe)",
+  "z": 4.81
+ },
+ "enterprise": {
+  "vi": "doanh nghiệp; dự án táo bạo",
+  "z": 4.38
+ },
+ "entertainment": {
+  "vi": "sự giải trí",
+  "z": 4.6
+ },
+ "entice": {
+  "vi": "lôi kéo, dụ dỗ",
+  "z": 3.15
+ },
+ "entire": {
+  "vi": "toàn bộ",
+  "z": 5.09
+ },
+ "entitle": {
+  "vi": "cho quyền, cho phép",
+  "z": 2.71
+ },
+ "entitled": {
+  "vi": "có quyền, đủ tư cách",
+  "z": 4.51
+ },
+ "entrance hall": {
+  "vi": "sảnh vào",
+  "z": 4.27
+ },
+ "entry": {
+  "vi": "lối vào; quyền vào",
+  "z": 4.67
+ },
+ "enumerate": {
+  "vi": "liệt kê",
+  "z": 2.4
+ },
+ "equal": {
+  "vi": "bằng nhau, ngang nhau",
+  "z": 4.65
+ },
+ "equally": {
+  "vi": "như nhau",
+  "z": 4.39
+ },
+ "equilibrium; reconcile": {
+  "vi": "sự cân bằng; hoà giải",
+  "z": 3.6
+ },
+ "equivalent": {
+  "vi": "tương đương",
+  "z": 4.5
+ },
+ "erase": {
+  "vi": "xoá",
+  "z": 3.66
+ },
+ "error": {
+  "vi": "lỗi",
+  "z": 4.55
+ },
+ "escape": {
+  "vi": "thoát khỏi",
+  "z": 4.64
+ },
+ "escort": {
+  "vi": "hộ tống; (n) người hộ tống",
+  "z": 4.0
+ },
+ "essential": {
+  "vi": "thiết yếu",
+  "z": 4.61
+ },
+ "essentially": {
+  "vi": "về cơ bản, về bản chất",
+  "z": 4.42
+ },
+ "establish": {
+  "vi": "thành lập; thiết lập, xác lập",
+  "z": 4.46
+ },
+ "established": {
+  "vi": "lâu đời, có uy tín",
+  "z": 4.9
+ },
+ "esteem": {
+  "vi": "quý trọng, kính trọng",
+  "z": 3.9
+ },
+ "estimate": {
+  "vi": "ước tính; (n) bản dự toán",
+  "z": 4.29
+ },
+ "estimate; plan": {
+  "vi": "ước tính; kế hoạch",
+  "z": 4.29
+ },
+ "evade": {
+  "vi": "trốn tránh",
+  "z": 3.39
+ },
+ "evaluate": {
+  "vi": "đánh giá",
+  "z": 4.01
+ },
+ "evaluation": {
+  "vi": "sự đánh giá",
+  "z": 4.21
+ },
+ "evenly": {
+  "vi": "đồng đều",
+  "z": 3.65
+ },
+ "event": {
+  "vi": "sự kiện",
+  "z": 5.18
+ },
+ "everyday": {
+  "vi": "hằng ngày, thông thường",
+  "z": 4.47
+ },
+ "evidence": {
+  "vi": "bằng chứng",
+  "z": 5.14
+ },
+ "evident": {
+  "vi": "rõ ràng, hiển nhiên",
+  "z": 3.99
+ },
+ "evidently": {
+  "vi": "rõ ràng là",
+  "z": 3.6
+ },
+ "exact": {
+  "vi": "chính xác",
+  "z": 4.51
+ },
+ "exactly": {
+  "vi": "chính xác",
+  "z": 5.15
+ },
+ "examination": {
+  "vi": "sự kiểm tra; kỳ thi",
+  "z": 4.26
+ },
+ "examine": {
+  "vi": "kiểm tra, xem xét",
+  "z": 4.18
+ },
+ "example": {
+  "vi": "ví dụ, mẫu",
+  "z": 5.27
+ },
+ "excellence; deserve": {
+  "vi": "sự xuất sắc; xứng đáng",
+  "z": 4.07
+ },
+ "exchange": {
+  "vi": "trao đổi",
+  "z": 4.85
+ },
+ "excite": {
+  "vi": "kích thích, làm hào hứng",
+  "z": 3.29
+ },
+ "excitement": {
+  "vi": "sự hào hứng",
+  "z": 4.19
+ },
+ "exciting": {
+  "vi": "thú vị (gây ra)",
+  "z": 4.54
+ },
+ "exclude": {
+  "vi": "loại trừ",
+  "z": 3.78
+ },
+ "exclusive": {
+  "vi": "độc quyền, cao cấp",
+  "z": 4.56
+ },
+ "excursion": {
+  "vi": "chuyến du ngoạn",
+  "z": 3.33
+ },
+ "execute": {
+  "vi": "thực hiện",
+  "z": 3.95
+ },
+ "exempt": {
+  "vi": "được miễn",
+  "z": 3.78
+ },
+ "exempt from": {
+  "vi": "được miễn khỏi",
+  "z": 3.78
+ },
+ "exhaust": {
+  "vi": "dùng hết, làm cạn",
+  "z": 3.81
+ },
+ "exhaustive": {
+  "vi": "toàn diện, thấu đáo",
+  "z": 3.3
+ },
+ "exhibit": {
+  "vi": "trưng bày",
+  "z": 4.16
+ },
+ "exit": {
+  "vi": "lối ra; rút lui",
+  "z": 4.35
+ },
+ "exodus": {
+  "vi": "cuộc rời đi hàng loạt",
+  "z": 3.69
+ },
+ "expand": {
+  "vi": "mở rộng",
+  "z": 4.35
+ },
+ "expect": {
+  "vi": "mong đợi, kỳ vọng",
+  "z": 5.01
+ },
+ "expedition": {
+  "vi": "chuyến đi, cuộc thám hiểm",
+  "z": 3.99
+ },
+ "expenditure": {
+  "vi": "khoản chi tiêu",
+  "z": 3.74
+ },
+ "expense": {
+  "vi": "chi phí",
+  "z": 4.23
+ },
+ "expensive": {
+  "vi": "đắt",
+  "z": 4.69
+ },
+ "experience": {
+  "vi": "kinh nghiệm; (v) trải qua",
+  "z": 5.27
+ },
+ "experiment": {
+  "vi": "thí nghiệm; (v) thử nghiệm",
+  "z": 4.38
+ },
+ "expert": {
+  "vi": "chuyên gia; (adj) thành thạo",
+  "z": 4.56
+ },
+ "expertise": {
+  "vi": "chuyên môn",
+  "z": 4.06
+ },
+ "expiration": {
+  "vi": "sự hết hạn",
+  "z": 3.48
+ },
+ "expired": {
+  "vi": "đã hết hạn",
+  "z": 3.81
+ },
+ "expiry": {
+  "vi": "sự hết hạn",
+  "z": 3.0
+ },
+ "explain": {
+  "vi": "giải thích",
+  "z": 4.89
+ },
+ "explanation": {
+  "vi": "lời giải thích",
+  "z": 4.44
+ },
+ "explore": {
+  "vi": "khám phá, tìm hiểu",
+  "z": 4.31
+ },
+ "expose": {
+  "vi": "phơi bày; cho tiếp xúc",
+  "z": 3.98
+ },
+ "express": {
+  "vi": "chuyển phát nhanh; (v) bày tỏ",
+  "z": 4.68
+ },
+ "extend": {
+  "vi": "gia hạn, mở rộng",
+  "z": 4.34
+ },
+ "extended": {
+  "vi": "kéo dài, mở rộng",
+  "z": 4.64
+ },
+ "extensive": {
+  "vi": "rộng rãi",
+  "z": 4.49
+ },
+ "extent": {
+  "vi": "mức độ",
+  "z": 4.47
+ },
+ "face": {
+  "vi": "đối mặt",
+  "z": 5.45
+ },
+ "facet": {
+  "vi": "khía cạnh",
+  "z": 3.18
+ },
+ "facilitate": {
+  "vi": "tạo điều kiện, làm dễ dàng",
+  "z": 3.99
+ },
+ "factor": {
+  "vi": "yếu tố",
+  "z": 4.67
+ },
+ "fad": {
+  "vi": "mốt nhất thời, trào lưu ngắn hạn",
+  "z": 3.26
+ },
+ "fail": {
+  "vi": "thất bại; hỏng",
+  "z": 4.61
+ },
+ "failure": {
+  "vi": "sự thất bại; sự hỏng hóc",
+  "z": 4.72
+ },
+ "faintly": {
+  "vi": "mờ nhạt, yếu ớt",
+  "z": 3.03
+ },
+ "fairly": {
+  "vi": "khá, tương đối",
+  "z": 4.5
+ },
+ "faith": {
+  "vi": "niềm tin",
+  "z": 4.82
+ },
+ "faithful": {
+  "vi": "trung thành",
+  "z": 4.1
+ },
+ "faithfully": {
+  "vi": "trung thực, chính xác",
+  "z": 3.27
+ },
+ "fall behind": {
+  "vi": "tụt lại phía sau",
+  "z": 4.9
+ },
+ "fall to": {
+  "vi": "thuộc về trách nhiệm của",
+  "z": 5.13
+ },
+ "fame": {
+  "vi": "danh tiếng",
+  "z": 4.34
+ },
+ "familiar": {
+  "vi": "quen thuộc",
+  "z": 4.61
+ },
+ "faraway": {
+  "vi": "xa xôi",
+  "z": 2.99
+ },
+ "fare": {
+  "vi": "giá vé",
+  "z": 3.94
+ },
+ "fashion": {
+  "vi": "thời trang; cách thức",
+  "z": 4.82
+ },
+ "fast": {
+  "vi": "nhanh",
+  "z": 5.13
+ },
+ "fault": {
+  "vi": "lỗi, khuyết điểm",
+  "z": 4.64
+ },
+ "favor": {
+  "vi": "ưu ái, ủng hộ; (n) sự ủng hộ",
+  "z": 4.58
+ },
+ "favorable": {
+  "vi": "thuận lợi",
+  "z": 3.85
+ },
+ "fearlessly": {
+  "vi": "không sợ hãi",
+  "z": 2.68
+ },
+ "feasible": {
+  "vi": "khả thi",
+  "z": 3.72
+ },
+ "feat": {
+  "vi": "kỳ công, thành tích",
+  "z": 3.99
+ },
+ "feature": {
+  "vi": "đặc điểm, tính năng",
+  "z": 4.82
+ },
+ "fee": {
+  "vi": "phí",
+  "z": 4.51
+ },
+ "feebly": {
+  "vi": "yếu ớt",
+  "z": 2.14
+ },
+ "feeling": {
+  "vi": "cảm giác, linh cảm",
+  "z": 5.13
+ },
+ "fend off": {
+  "vi": "chống đỡ, đẩy lùi",
+  "z": 3.21
+ },
+ "fetch": {
+  "vi": "đi lấy, đón",
+  "z": 3.65
+ },
+ "figure out": {
+  "vi": "tìm ra, hiểu ra",
+  "z": 5.05
+ },
+ "file": {
+  "vi": "nộp (hồ sơ); (n) hồ sơ, tập tin",
+  "z": 4.75
+ },
+ "fill": {
+  "vi": "lấp đầy; chiếm chỗ",
+  "z": 4.64
+ },
+ "fill in": {
+  "vi": "điền vào",
+  "z": 4.64
+ },
+ "fill out": {
+  "vi": "điền (mẫu đơn)",
+  "z": 4.63
+ },
+ "finance": {
+  "vi": "tài trợ; tài chính",
+  "z": 4.65
+ },
+ "financial plan": {
+  "vi": "kế hoạch tài chính",
+  "z": 4.87
+ },
+ "financial reporting": {
+  "vi": "báo cáo tài chính",
+  "z": 4.43
+ },
+ "find": {
+  "vi": "tìm thấy, phát hiện",
+  "z": 5.76
+ },
+ "find out": {
+  "vi": "tìm ra, xác định",
+  "z": 5.67
+ },
+ "fine": {
+  "vi": "tiền phạt",
+  "z": 5.23
+ },
+ "finish": {
+  "vi": "hoàn thành, kết thúc",
+  "z": 4.91
+ },
+ "fire": {
+  "vi": "sa thải",
+  "z": 5.3
+ },
+ "firm": {
+  "vi": "vững chắc; công ty",
+  "z": 4.79
+ },
+ "firmly": {
+  "vi": "chắc chắn, nghiêm",
+  "z": 4.0
+ },
+ "first concern": {
+  "vi": "ưu tiên hàng đầu",
+  "z": 4.64
+ },
+ "fit": {
+  "vi": "vừa, khớp; đủ điều kiện",
+  "z": 4.95
+ },
+ "fix": {
+  "vi": "sửa, khắc phục",
+  "z": 4.75
+ },
+ "flavor": {
+  "vi": "hương vị; (v) tạo hương vị",
+  "z": 4.04
+ },
+ "flaw": {
+  "vi": "khuyết điểm",
+  "z": 3.6
+ },
+ "flexibly": {
+  "vi": "linh hoạt",
+  "z": 2.47
+ },
+ "flimsy": {
+  "vi": "mỏng manh, kém bền",
+  "z": 3.1
+ },
+ "flood": {
+  "vi": "dòng ồ ạt",
+  "z": 4.34
+ },
+ "fluctuate": {
+  "vi": "dao động, biến động",
+  "z": 2.99
+ },
+ "focus": {
+  "vi": "tập trung; tiêu điểm",
+  "z": 5.0
+ },
+ "focus on": {
+  "vi": "tập trung vào",
+  "z": 4.99
+ },
+ "fold": {
+  "vi": "gấp, gập",
+  "z": 4.08
+ },
+ "follow": {
+  "vi": "làm theo, tuân theo",
+  "z": 5.14
+ },
+ "follow up": {
+  "vi": "theo dõi tiếp, liên hệ lại",
+  "z": 5.12
+ },
+ "following": {
+  "vi": "tiếp theo",
+  "z": 5.46
+ },
+ "foolishly": {
+  "vi": "dại dột",
+  "z": 2.96
+ },
+ "forbid": {
+  "vi": "cấm",
+  "z": 3.66
+ },
+ "forcefully": {
+  "vi": "mạnh mẽ, quyết liệt",
+  "z": 3.26
+ },
+ "forecast": {
+  "vi": "dự báo",
+  "z": 4.09
+ },
+ "foresee": {
+  "vi": "thấy trước, dự đoán",
+  "z": 3.18
+ },
+ "forget": {
+  "vi": "quên",
+  "z": 5.06
+ },
+ "form": {
+  "vi": "hình thành, tạo nên",
+  "z": 5.31
+ },
+ "formally": {
+  "vi": "trang trọng",
+  "z": 4.01
+ },
+ "format": {
+  "vi": "định dạng, bố cục",
+  "z": 4.47
+ },
+ "formerly": {
+  "vi": "trước đây",
+  "z": 4.24
+ },
+ "found": {
+  "vi": "thành lập",
+  "z": 5.68
+ },
+ "foundation": {
+  "vi": "nền tảng",
+  "z": 4.81
+ },
+ "foyer": {
+  "vi": "tiền sảnh",
+  "z": 3.09
+ },
+ "fragile": {
+  "vi": "dễ vỡ",
+  "z": 3.86
+ },
+ "free": {
+  "vi": "tự do; rảnh; giải phóng",
+  "z": 5.63
+ },
+ "free time": {
+  "vi": "thời gian rảnh",
+  "z": 5.54
+ },
+ "freely": {
+  "vi": "tự do, linh hoạt",
+  "z": 4.07
+ },
+ "frequently": {
+  "vi": "thường xuyên",
+  "z": 4.56
+ },
+ "from time to time": {
+  "vi": "thỉnh thoảng",
+  "z": 5.89
+ },
+ "fruitful": {
+  "vi": "hiệu quả, có kết quả",
+  "z": 3.3
+ },
+ "fulfill": {
+  "vi": "thực hiện, hoàn thành, đáp ứng",
+  "z": 3.86
+ },
+ "fulfillment": {
+  "vi": "sự hoàn thành",
+  "z": 3.44
+ },
+ "full": {
+  "vi": "đầy đủ, toàn diện",
+  "z": 5.54
+ },
+ "fun": {
+  "vi": "niềm vui, sự vui vẻ",
+  "z": 5.3
+ },
+ "function": {
+  "vi": "hoạt động, vận hành; (n) chức năng",
+  "z": 4.78
+ },
+ "fund": {
+  "vi": "quỹ; (v) tài trợ",
+  "z": 4.82
+ },
+ "fundamental": {
+  "vi": "cơ bản, thiết yếu",
+  "z": 4.33
+ },
+ "fundamentally": {
+  "vi": "về cơ bản",
+  "z": 3.77
+ },
+ "funds": {
+  "vi": "quỹ, ngân sách",
+  "z": 4.74
+ },
+ "furnish": {
+  "vi": "cung cấp; trang bị",
+  "z": 3.14
+ },
+ "future": {
+  "vi": "tương lai",
+  "z": 5.33
+ },
+ "gain": {
+  "vi": "lợi ích; giành được",
+  "z": 4.81
+ },
+ "gain; give back": {
+  "vi": "lợi nhuận; trả lại",
+  "z": 4.81
+ },
+ "gainfully": {
+  "vi": "có lợi, sinh lời",
+  "z": 2.24
+ },
+ "gamble": {
+  "vi": "canh bạc, rủi ro",
+  "z": 3.79
+ },
+ "gap": {
+  "vi": "khoảng chênh lệch",
+  "z": 4.47
+ },
+ "garment": {
+  "vi": "quần áo, trang phục",
+  "z": 3.59
+ },
+ "gastronomic": {
+  "vi": "thuộc ẩm thực",
+  "z": 2.47
+ },
+ "gather": {
+  "vi": "tập hợp, thu thập; suy ra",
+  "z": 4.24
+ },
+ "gaze": {
+  "vi": "nhìn chằm chằm",
+  "z": 3.7
+ },
+ "general": {
+  "vi": "chung, tổng quát",
+  "z": 5.47
+ },
+ "generalize": {
+  "vi": "khái quát hoá",
+  "z": 2.91
+ },
+ "generally": {
+  "vi": "nói chung",
+  "z": 4.95
+ },
+ "generate": {
+  "vi": "tạo ra, phát sinh",
+  "z": 4.22
+ },
+ "gently": {
+  "vi": "nhẹ nhàng",
+  "z": 4.08
+ },
+ "get": {
+  "vi": "lấy, có được",
+  "z": 6.28
+ },
+ "get in touch": {
+  "vi": "liên lạc",
+  "z": 4.89
+ },
+ "get in touch with": {
+  "vi": "liên lạc với",
+  "z": 4.89
+ },
+ "get off": {
+  "vi": "xuống (xe, tàu)",
+  "z": 5.77
+ },
+ "get on": {
+  "vi": "lên (xe, tàu)",
+  "z": 6.19
+ },
+ "get out of": {
+  "vi": "thoát khỏi, tránh khỏi",
+  "z": 6.01
+ },
+ "get promoted": {
+  "vi": "được thăng chức",
+  "z": 4.15
+ },
+ "get to": {
+  "vi": "đến nơi",
+  "z": 6.25
+ },
+ "get used to": {
+  "vi": "quen với",
+  "z": 5.67
+ },
+ "get; safe": {
+  "vi": "giành được; an toàn",
+  "z": 6.28
+ },
+ "give": {
+  "vi": "đưa, tặng, góp",
+  "z": 5.71
+ },
+ "give up": {
+  "vi": "từ bỏ",
+  "z": 5.63
+ },
+ "glance": {
+  "vi": "cái liếc nhìn",
+  "z": 3.91
+ },
+ "glimpse": {
+  "vi": "cái nhìn thoáng qua",
+  "z": 3.81
+ },
+ "go ahead": {
+  "vi": "tiến hành; (n) sự cho phép",
+  "z": 4.97
+ },
+ "go away": {
+  "vi": "rời đi",
+  "z": 5.48
+ },
+ "go for": {
+  "vi": "chọn",
+  "z": 5.99
+ },
+ "go on": {
+  "vi": "tiếp tục",
+  "z": 5.98
+ },
+ "go to": {
+  "vi": "tham dự, đi đến",
+  "z": 6.01
+ },
+ "goal": {
+  "vi": "mục tiêu",
+  "z": 5.06
+ },
+ "good buy": {
+  "vi": "món hời",
+  "z": 5.26
+ },
+ "goods": {
+  "vi": "hàng hoá",
+  "z": 4.6
+ },
+ "govern": {
+  "vi": "quản lý, điều hành",
+  "z": 3.67
+ },
+ "grace": {
+  "vi": "sự duyên dáng",
+  "z": 4.56
+ },
+ "grade": {
+  "vi": "hạng, cấp",
+  "z": 4.8
+ },
+ "gradual": {
+  "vi": "dần dần",
+  "z": 3.67
+ },
+ "gratitude": {
+  "vi": "lòng biết ơn",
+  "z": 3.92
+ },
+ "grave": {
+  "vi": "nghiêm trọng",
+  "z": 4.31
+ },
+ "greater part": {
+  "vi": "phần lớn",
+  "z": 4.85
+ },
+ "greatly": {
+  "vi": "rất nhiều",
+  "z": 4.33
+ },
+ "grid": {
+  "vi": "mạng lưới",
+  "z": 4.18
+ },
+ "grounds": {
+  "vi": "căn cứ, lý do",
+  "z": 4.43
+ },
+ "group": {
+  "vi": "nhóm",
+  "z": 5.57
+ },
+ "grow": {
+  "vi": "phát triển, tăng",
+  "z": 4.9
+ },
+ "guarantee": {
+  "vi": "sự bảo đảm; bảo đảm",
+  "z": 4.44
+ },
+ "guaranteed": {
+  "vi": "được bảo đảm",
+  "z": 4.29
+ },
+ "guard": {
+  "vi": "bảo vệ",
+  "z": 4.73
+ },
+ "guest": {
+  "vi": "khách",
+  "z": 4.58
+ },
+ "guide": {
+  "vi": "người hướng dẫn; sách hướng dẫn; (v) dẫn dắt",
+  "z": 4.75
+ },
+ "guideline": {
+  "vi": "hướng dẫn, chính sách",
+  "z": 3.25
+ },
+ "guidelines": {
+  "vi": "bộ quy tắc",
+  "z": 4.25
+ },
+ "habit": {
+  "vi": "thói quen",
+  "z": 4.24
+ },
+ "half-heartedly": {
+  "vi": "nửa vời, miễn cưỡng",
+  "z": 2.75
+ },
+ "halt": {
+  "vi": "dừng lại",
+  "z": 3.93
+ },
+ "hamper": {
+  "vi": "cản trở",
+  "z": 3.26
+ },
+ "hand in": {
+  "vi": "nộp",
+  "z": 5.4
+ },
+ "handle": {
+  "vi": "xử lý",
+  "z": 4.79
+ },
+ "handy": {
+  "vi": "tiện dụng",
+  "z": 3.97
+ },
+ "haphazardly": {
+  "vi": "lung tung, tuỳ tiện",
+  "z": 2.54
+ },
+ "happen": {
+  "vi": "xảy ra",
+  "z": 5.19
+ },
+ "hardware": {
+  "vi": "phần cứng",
+  "z": 4.3
+ },
+ "harmonious": {
+  "vi": "hài hoà",
+  "z": 3.15
+ },
+ "harmonize": {
+  "vi": "hài hoà, phối hợp",
+  "z": 2.67
+ },
+ "hazard": {
+  "vi": "mối nguy",
+  "z": 3.98
+ },
+ "hectic": {
+  "vi": "bận rộn",
+  "z": 3.33
+ },
+ "help": {
+  "vi": "giúp đỡ",
+  "z": 5.75
+ },
+ "help; maintain": {
+  "vi": "giúp đỡ; bảo trì",
+  "z": 5.75
+ },
+ "helpful": {
+  "vi": "có ích",
+  "z": 4.43
+ },
+ "hesitant": {
+  "vi": "do dự, ngập ngừng",
+  "z": 3.41
+ },
+ "hidden": {
+  "vi": "ẩn, bị giấu",
+  "z": 4.53
+ },
+ "hide": {
+  "vi": "che giấu",
+  "z": 4.54
+ },
+ "higher": {
+  "vi": "cao hơn",
+  "z": 5.18
+ },
+ "highlight": {
+  "vi": "làm nổi bật",
+  "z": 4.21
+ },
+ "hike": {
+  "vi": "sự tăng (giá, lương)",
+  "z": 3.95
+ },
+ "hinder": {
+  "vi": "cản trở",
+  "z": 3.39
+ },
+ "hint": {
+  "vi": "gợi ý, ám chỉ",
+  "z": 4.07
+ },
+ "hire": {
+  "vi": "thuê, tuyển dụng",
+  "z": 4.4
+ },
+ "history": {
+  "vi": "lịch sử, quá trình",
+  "z": 5.39
+ },
+ "hold": {
+  "vi": "tổ chức (sự kiện); chứa; cầm",
+  "z": 5.19
+ },
+ "hold back": {
+  "vi": "giữ lại, kìm lại",
+  "z": 5.13
+ },
+ "hold-up; postpone": {
+  "vi": "sự chậm trễ; hoãn lại",
+  "z": 5.16
+ },
+ "holding": {
+  "vi": "tài sản sở hữu",
+  "z": 4.89
+ },
+ "holdings": {
+  "vi": "cổ phần, tài sản nắm giữ",
+  "z": 4.0
+ },
+ "home loan": {
+  "vi": "khoản vay mua nhà",
+  "z": 4.65
+ },
+ "honor": {
+  "vi": "vinh dự, sự tôn vinh",
+  "z": 4.69
+ },
+ "host": {
+  "vi": "tổ chức; chủ nhà",
+  "z": 4.77
+ },
+ "house": {
+  "vi": "cung cấp chỗ ở",
+  "z": 5.71
+ },
+ "housekeeper": {
+  "vi": "nhân viên dọn phòng",
+  "z": 3.29
+ },
+ "housekeeping staff": {
+  "vi": "nhân viên buồng phòng",
+  "z": 3.23
+ },
+ "human resources": {
+  "vi": "nhân sự",
+  "z": 4.78
+ },
+ "hunt": {
+  "vi": "săn tìm",
+  "z": 4.49
+ },
+ "husband": {
+  "vi": "chồng",
+  "z": 5.0
+ },
+ "idea": {
+  "vi": "ý tưởng, ý kiến",
+  "z": 5.36
+ },
+ "idealistic": {
+  "vi": "duy tâm, lý tưởng hoá",
+  "z": 3.14
+ },
+ "ideally": {
+  "vi": "lý tưởng nhất là",
+  "z": 3.75
+ },
+ "identify": {
+  "vi": "xác định, nhận dạng",
+  "z": 4.56
+ },
+ "idle": {
+  "vi": "rảnh rỗi, nhàn rỗi",
+  "z": 3.7
+ },
+ "ignorant": {
+  "vi": "thiếu hiểu biết",
+  "z": 4.05
+ },
+ "ignore": {
+  "vi": "phớt lờ, bỏ qua",
+  "z": 4.48
+ },
+ "illogical": {
+  "vi": "phi lý",
+  "z": 3.09
+ },
+ "illuminate": {
+  "vi": "chiếu sáng; làm sáng tỏ",
+  "z": 3.3
+ },
+ "illustrate": {
+  "vi": "minh hoạ",
+  "z": 3.71
+ },
+ "image": {
+  "vi": "hình ảnh",
+  "z": 4.94
+ },
+ "imaginative": {
+  "vi": "giàu trí tưởng tượng",
+  "z": 3.45
+ },
+ "imbalance": {
+  "vi": "sự mất cân bằng",
+  "z": 3.46
+ },
+ "immediately": {
+  "vi": "ngay lập tức",
+  "z": 4.98
+ },
+ "impact": {
+  "vi": "tác động; (v) ảnh hưởng",
+  "z": 4.92
+ },
+ "impact; affect": {
+  "vi": "tác động; ảnh hưởng",
+  "z": 4.92
+ },
+ "impede": {
+  "vi": "cản trở",
+  "z": 3.14
+ },
+ "imperfection": {
+  "vi": "khiếm khuyết",
+  "z": 2.81
+ },
+ "implement": {
+  "vi": "công cụ",
+  "z": 4.2
+ },
+ "imply": {
+  "vi": "ngụ ý, ám chỉ",
+  "z": 3.83
+ },
+ "importance; appreciate": {
+  "vi": "tầm quan trọng; trân trọng",
+  "z": 4.56
+ },
+ "important": {
+  "vi": "quan trọng",
+  "z": 5.44
+ },
+ "impose": {
+  "vi": "áp đặt (thuế, luật)",
+  "z": 3.92
+ },
+ "impress": {
+  "vi": "gây ấn tượng",
+  "z": 3.93
+ },
+ "impression; perceive": {
+  "vi": "ấn tượng; nhận thấy",
+  "z": 4.35
+ },
+ "improve": {
+  "vi": "cải thiện",
+  "z": 4.79
+ },
+ "improvement": {
+  "vi": "sự cải thiện",
+  "z": 4.49
+ },
+ "impulse": {
+  "vi": "sự thôi thúc",
+  "z": 3.72
+ },
+ "impulse; encourage": {
+  "vi": "sự thôi thúc; khuyến khích",
+  "z": 3.72
+ },
+ "in advance": {
+  "vi": "trước",
+  "z": 4.65
+ },
+ "in essence": {
+  "vi": "về bản chất",
+  "z": 4.03
+ },
+ "in person": {
+  "vi": "trực tiếp",
+  "z": 5.54
+ },
+ "in stock": {
+  "vi": "còn hàng",
+  "z": 4.93
+ },
+ "in theory": {
+  "vi": "trên lý thuyết",
+  "z": 4.88
+ },
+ "in words": {
+  "vi": "bằng lời",
+  "z": 5.25
+ },
+ "in writing": {
+  "vi": "bằng văn bản",
+  "z": 5.07
+ },
+ "in-depth": {
+  "vi": "chuyên sâu, kỹ lưỡng",
+  "z": 4.55
+ },
+ "inability": {
+  "vi": "sự không có khả năng",
+  "z": 3.93
+ },
+ "inaccurately": {
+  "vi": "không chính xác",
+  "z": 2.57
+ },
+ "inaction": {
+  "vi": "sự không hành động",
+  "z": 3.13
+ },
+ "incapacity": {
+  "vi": "sự bất lực, không đủ khả năng",
+  "z": 2.79
+ },
+ "include": {
+  "vi": "bao gồm",
+  "z": 5.21
+ },
+ "income": {
+  "vi": "thu nhập",
+  "z": 4.97
+ },
+ "incompatible": {
+  "vi": "không tương thích",
+  "z": 3.48
+ },
+ "incompetence": {
+  "vi": "sự kém năng lực",
+  "z": 3.43
+ },
+ "incomplete": {
+  "vi": "chưa hoàn thành",
+  "z": 3.85
+ },
+ "inconsiderately": {
+  "vi": "thiếu chu đáo, thiếu tôn trọng",
+  "z": 1.55
+ },
+ "inconsistency": {
+  "vi": "sự không nhất quán",
+  "z": 3.23
+ },
+ "inconvenient": {
+  "vi": "bất tiện",
+  "z": 3.47
+ },
+ "incorporate": {
+  "vi": "kết hợp, sáp nhập",
+  "z": 3.85
+ },
+ "increase": {
+  "vi": "sự tăng; tăng",
+  "z": 5.08
+ },
+ "incur": {
+  "vi": "gánh chịu (chi phí, nợ)",
+  "z": 3.3
+ },
+ "indecision": {
+  "vi": "sự do dự",
+  "z": 2.77
+ },
+ "independently": {
+  "vi": "độc lập",
+  "z": 4.06
+ },
+ "index": {
+  "vi": "chỉ số; mục lục",
+  "z": 4.57
+ },
+ "indicate": {
+  "vi": "chỉ ra",
+  "z": 4.35
+ },
+ "indication": {
+  "vi": "dấu hiệu",
+  "z": 4.06
+ },
+ "indicator": {
+  "vi": "chỉ số, dấu hiệu",
+  "z": 3.92
+ },
+ "indifference": {
+  "vi": "sự thờ ơ",
+  "z": 3.34
+ },
+ "individual": {
+  "vi": "cá nhân; (adj) riêng lẻ",
+  "z": 5.0
+ },
+ "individually": {
+  "vi": "riêng lẻ",
+  "z": 3.9
+ },
+ "inducement": {
+  "vi": "sự khích lệ, lời dụ",
+  "z": 2.53
+ },
+ "ineffective": {
+  "vi": "không hiệu quả",
+  "z": 3.66
+ },
+ "inefficient": {
+  "vi": "kém hiệu quả",
+  "z": 3.46
+ },
+ "inelegance": {
+  "vi": "sự thiếu thanh lịch",
+  "z": 1.12
+ },
+ "ineligible": {
+  "vi": "không đủ điều kiện",
+  "z": 3.29
+ },
+ "inexpensive": {
+  "vi": "rẻ",
+  "z": 3.57
+ },
+ "inexperience": {
+  "vi": "sự thiếu kinh nghiệm",
+  "z": 2.97
+ },
+ "infer": {
+  "vi": "suy ra",
+  "z": 3.16
+ },
+ "inflame": {
+  "vi": "làm khó chịu, kích động",
+  "z": 2.58
+ },
+ "inflict": {
+  "vi": "gây ra, áp đặt",
+  "z": 3.34
+ },
+ "inflow": {
+  "vi": "dòng chảy vào",
+  "z": 2.89
+ },
+ "influence": {
+  "vi": "sự ảnh hưởng; (v) gây ảnh hưởng",
+  "z": 4.78
+ },
+ "influx": {
+  "vi": "sự tràn vào, dòng người/vốn đổ vào",
+  "z": 3.58
+ },
+ "inform": {
+  "vi": "thông báo",
+  "z": 4.15
+ },
+ "informally": {
+  "vi": "thân mật, không trang trọng",
+  "z": 3.12
+ },
+ "informed": {
+  "vi": "có hiểu biết, nắm tin",
+  "z": 4.45
+ },
+ "ingratitude": {
+  "vi": "sự vô ơn",
+  "z": 2.29
+ },
+ "ingredient": {
+  "vi": "thành phần, nguyên liệu",
+  "z": 3.74
+ },
+ "inhabit": {
+  "vi": "cư trú, chiếm giữ",
+  "z": 3.33
+ },
+ "initial payment": {
+  "vi": "khoản trả trước",
+  "z": 4.39
+ },
+ "initiative": {
+  "vi": "sáng kiến; tính chủ động",
+  "z": 4.36
+ },
+ "innovative": {
+  "vi": "sáng tạo, đổi mới",
+  "z": 4.1
+ },
+ "inquire": {
+  "vi": "hỏi, điều tra",
+  "z": 3.38
+ },
+ "inquiry": {
+  "vi": "sự điều tra, câu hỏi",
+  "z": 4.25
+ },
+ "insecurity": {
+  "vi": "sự bất an",
+  "z": 3.56
+ },
+ "insert": {
+  "vi": "chèn vào",
+  "z": 4.01
+ },
+ "insightful": {
+  "vi": "sâu sắc",
+  "z": 3.41
+ },
+ "insignificant": {
+  "vi": "không đáng kể",
+  "z": 3.53
+ },
+ "insinuate": {
+  "vi": "ám chỉ",
+  "z": 2.59
+ },
+ "inspect": {
+  "vi": "kiểm tra, thanh tra",
+  "z": 3.63
+ },
+ "inspection": {
+  "vi": "sự kiểm tra",
+  "z": 4.14
+ },
+ "inspiration": {
+  "vi": "nguồn cảm hứng",
+  "z": 4.41
+ },
+ "inspire": {
+  "vi": "truyền cảm hứng",
+  "z": 4.0
+ },
+ "install": {
+  "vi": "lắp đặt, cài đặt",
+  "z": 4.14
+ },
+ "instinct": {
+  "vi": "bản năng",
+  "z": 3.86
+ },
+ "institute": {
+  "vi": "thành lập",
+  "z": 4.8
+ },
+ "instruction": {
+  "vi": "sự hướng dẫn, đào tạo",
+  "z": 4.14
+ },
+ "instrument": {
+  "vi": "dụng cụ, công cụ",
+  "z": 4.26
+ },
+ "insufficiently": {
+  "vi": "không đủ",
+  "z": 2.76
+ },
+ "insurance contract": {
+  "vi": "hợp đồng bảo hiểm",
+  "z": 4.64
+ },
+ "insure": {
+  "vi": "bảo hiểm",
+  "z": 3.4
+ },
+ "integral": {
+  "vi": "không thể thiếu, thiết yếu",
+  "z": 3.96
+ },
+ "integrate": {
+  "vi": "tích hợp",
+  "z": 3.72
+ },
+ "intend": {
+  "vi": "dự định, có ý định",
+  "z": 4.09
+ },
+ "interaction": {
+  "vi": "sự tương tác",
+  "z": 4.29
+ },
+ "interesting": {
+  "vi": "thú vị",
+  "z": 5.0
+ },
+ "interference": {
+  "vi": "sự can thiệp, gây nhiễu",
+  "z": 3.99
+ },
+ "intermediary": {
+  "vi": "người trung gian",
+  "z": 3.18
+ },
+ "intermittent": {
+  "vi": "gián đoạn, lúc có lúc không",
+  "z": 3.39
+ },
+ "interplay": {
+  "vi": "sự tương tác",
+  "z": 3.15
+ },
+ "interpretation": {
+  "vi": "sự diễn giải, phiên dịch",
+  "z": 4.22
+ },
+ "interrupt": {
+  "vi": "làm gián đoạn",
+  "z": 3.61
+ },
+ "interruption": {
+  "vi": "sự gián đoạn",
+  "z": 3.36
+ },
+ "introduce": {
+  "vi": "giới thiệu, đưa vào",
+  "z": 4.37
+ },
+ "intuition": {
+  "vi": "trực giác",
+  "z": 3.54
+ },
+ "invalid": {
+  "vi": "không hợp lệ",
+  "z": 3.78
+ },
+ "inventive": {
+  "vi": "sáng tạo",
+  "z": 3.26
+ },
+ "inventory": {
+  "vi": "hàng tồn kho; sự kiểm kê",
+  "z": 4.14
+ },
+ "invest": {
+  "vi": "đầu tư",
+  "z": 4.32
+ },
+ "investigate": {
+  "vi": "điều tra, nghiên cứu",
+  "z": 4.31
+ },
+ "investigation": {
+  "vi": "cuộc điều tra",
+  "z": 4.75
+ },
+ "investments": {
+  "vi": "các khoản đầu tư",
+  "z": 4.27
+ },
+ "invite": {
+  "vi": "mời",
+  "z": 4.3
+ },
+ "involuntarily": {
+  "vi": "vô thức, tự động",
+  "z": 2.91
+ },
+ "involve": {
+  "vi": "liên quan; lôi cuốn",
+  "z": 4.28
+ },
+ "irregularly": {
+  "vi": "không đều đặn",
+  "z": 2.86
+ },
+ "irrelevant": {
+  "vi": "không liên quan",
+  "z": 3.98
+ },
+ "irrespective": {
+  "vi": "bất kể",
+  "z": 3.41
+ },
+ "irritate": {
+  "vi": "gây kích ứng; làm bực mình",
+  "z": 3.08
+ },
+ "isolated": {
+  "vi": "biệt lập, hẻo lánh",
+  "z": 4.24
+ },
+ "issue": {
+  "vi": "vấn đề; phát hành",
+  "z": 5.23
+ },
+ "issue; involve": {
+  "vi": "vấn đề; liên quan",
+  "z": 5.23
+ },
+ "item": {
+  "vi": "món hàng, mục",
+  "z": 4.57
+ },
+ "itinerary": {
+  "vi": "lịch trình",
+  "z": 3.23
+ },
+ "jammed": {
+  "vi": "chật cứng",
+  "z": 3.34
+ },
+ "job": {
+  "vi": "công việc",
+  "z": 5.5
+ },
+ "jog one's memory": {
+  "vi": "gợi nhớ",
+  "z": 3.25
+ },
+ "join": {
+  "vi": "tham gia; kết hợp",
+  "z": 5.0
+ },
+ "joint": {
+  "vi": "chung",
+  "z": 4.71
+ },
+ "jointly": {
+  "vi": "cùng nhau",
+  "z": 3.78
+ },
+ "judge": {
+  "vi": "đánh giá; (n) giám khảo, thẩm phán",
+  "z": 4.95
+ },
+ "judgment": {
+  "vi": "sự đánh giá",
+  "z": 4.28
+ },
+ "judiciously": {
+  "vi": "sáng suốt",
+  "z": 2.42
+ },
+ "keep": {
+  "vi": "giữ, lưu trữ",
+  "z": 5.66
+ },
+ "keep away": {
+  "vi": "tránh xa, đẩy lùi",
+  "z": 5.34
+ },
+ "keep back": {
+  "vi": "giữ lại",
+  "z": 5.51
+ },
+ "keep in mind": {
+  "vi": "ghi nhớ",
+  "z": 5.21
+ },
+ "keep pace with": {
+  "vi": "theo kịp",
+  "z": 4.36
+ },
+ "keep track of": {
+  "vi": "theo dõi",
+  "z": 4.93
+ },
+ "keep up": {
+  "vi": "theo kịp",
+  "z": 5.59
+ },
+ "keep up with": {
+  "vi": "theo kịp",
+  "z": 5.56
+ },
+ "key": {
+  "vi": "then chốt",
+  "z": 5.12
+ },
+ "kick; excite": {
+  "vi": "cảm giác thích thú; kích thích",
+  "z": 4.72
+ },
+ "kind": {
+  "vi": "loại",
+  "z": 5.45
+ },
+ "kitchen": {
+  "vi": "nhà bếp",
+  "z": 4.65
+ },
+ "know": {
+  "vi": "biết",
+  "z": 6.1
+ },
+ "knowledge": {
+  "vi": "kiến thức",
+  "z": 4.96
+ },
+ "knowledgeable": {
+  "vi": "am hiểu",
+  "z": 3.53
+ },
+ "label": {
+  "vi": "nhãn hiệu",
+  "z": 4.43
+ },
+ "lacking": {
+  "vi": "thiếu",
+  "z": 4.08
+ },
+ "largely": {
+  "vi": "phần lớn",
+  "z": 4.61
+ },
+ "lasting": {
+  "vi": "lâu dài",
+  "z": 4.11
+ },
+ "late": {
+  "vi": "muộn, trễ",
+  "z": 5.34
+ },
+ "later": {
+  "vi": "sau này, sau đó",
+  "z": 5.49
+ },
+ "launch": {
+  "vi": "ra mắt, tung ra",
+  "z": 4.69
+ },
+ "layer": {
+  "vi": "tầng, lớp",
+  "z": 4.4
+ },
+ "layout": {
+  "vi": "bố cục, cách trình bày",
+  "z": 4.08
+ },
+ "lead": {
+  "vi": "dẫn dắt",
+  "z": 5.2
+ },
+ "lead time": {
+  "vi": "thời gian chuẩn bị, thời gian chờ",
+  "z": 5.17
+ },
+ "learner": {
+  "vi": "người học",
+  "z": 3.35
+ },
+ "lease": {
+  "vi": "hợp đồng thuê; (v) cho thuê",
+  "z": 4.17
+ },
+ "leave": {
+  "vi": "rời đi",
+  "z": 5.34
+ },
+ "legal": {
+  "vi": "hợp pháp",
+  "z": 5.08
+ },
+ "legitimate": {
+  "vi": "hợp lệ, chính đáng",
+  "z": 4.22
+ },
+ "leisure": {
+  "vi": "thời gian rảnh, giải trí",
+  "z": 3.92
+ },
+ "lend": {
+  "vi": "cho vay, cho mượn",
+  "z": 3.92
+ },
+ "length": {
+  "vi": "độ dài",
+  "z": 4.77
+ },
+ "lengthen": {
+  "vi": "kéo dài",
+  "z": 2.81
+ },
+ "lengthy": {
+  "vi": "dài dòng, kéo dài",
+  "z": 3.85
+ },
+ "leniently": {
+  "vi": "khoan dung, dễ dãi",
+  "z": 1.92
+ },
+ "lessen": {
+  "vi": "làm giảm",
+  "z": 3.37
+ },
+ "let": {
+  "vi": "để, cho phép",
+  "z": 5.6
+ },
+ "let down": {
+  "vi": "làm thất vọng",
+  "z": 5.42
+ },
+ "let in": {
+  "vi": "cho vào",
+  "z": 5.59
+ },
+ "let; license": {
+  "vi": "cho phép; giấy phép",
+  "z": 5.6
+ },
+ "level": {
+  "vi": "mức độ, cấp độ",
+  "z": 5.41
+ },
+ "levy": {
+  "vi": "đánh (thuế, phí)",
+  "z": 3.85
+ },
+ "liability": {
+  "vi": "trách nhiệm pháp lý; khoản nợ",
+  "z": 4.16
+ },
+ "liable to": {
+  "vi": "có thể bị, chịu",
+  "z": 3.89
+ },
+ "liberal": {
+  "vi": "phóng khoáng, cấp tiến",
+  "z": 4.66
+ },
+ "license": {
+  "vi": "giấy phép, bằng lái",
+  "z": 4.52
+ },
+ "lien": {
+  "vi": "quyền giữ tài sản thế chấp",
+  "z": 3.2
+ },
+ "lift": {
+  "vi": "dỡ bỏ (lệnh cấm)",
+  "z": 4.5
+ },
+ "light up": {
+  "vi": "thắp sáng",
+  "z": 5.29
+ },
+ "likely": {
+  "vi": "có khả năng",
+  "z": 5.2
+ },
+ "likeness": {
+  "vi": "sự giống; chân dung",
+  "z": 3.34
+ },
+ "liking": {
+  "vi": "sở thích",
+  "z": 3.99
+ },
+ "limit": {
+  "vi": "giới hạn; (v) hạn chế",
+  "z": 4.7
+ },
+ "limited": {
+  "vi": "hạn chế",
+  "z": 5.02
+ },
+ "line": {
+  "vi": "nếp nhăn; đường kẻ",
+  "z": 5.49
+ },
+ "link": {
+  "vi": "liên kết; (v) kết nối",
+  "z": 4.99
+ },
+ "list": {
+  "vi": "danh sách; (v) liệt kê",
+  "z": 5.28
+ },
+ "listeners": {
+  "vi": "người nghe",
+  "z": 3.71
+ },
+ "live in": {
+  "vi": "sống ở, cư ngụ",
+  "z": 5.53
+ },
+ "load": {
+  "vi": "gánh nặng",
+  "z": 4.58
+ },
+ "loan": {
+  "vi": "khoản vay",
+  "z": 4.68
+ },
+ "lobby": {
+  "vi": "sảnh; (v) vận động hành lang",
+  "z": 4.03
+ },
+ "location": {
+  "vi": "địa điểm, vị trí",
+  "z": 4.86
+ },
+ "lock into": {
+  "vi": "ràng buộc (vào hợp đồng, cam kết)",
+  "z": 4.5
+ },
+ "lodge": {
+  "vi": "nộp (đơn khiếu nại)",
+  "z": 4.08
+ },
+ "log": {
+  "vi": "ghi chép; sổ ghi",
+  "z": 4.37
+ },
+ "logic": {
+  "vi": "lô-gic",
+  "z": 4.36
+ },
+ "logical": {
+  "vi": "hợp lý, logic",
+  "z": 4.14
+ },
+ "logically": {
+  "vi": "hợp lý",
+  "z": 3.43
+ },
+ "long": {
+  "vi": "dài",
+  "z": 5.81
+ },
+ "long-lasting": {
+  "vi": "bền lâu",
+  "z": 4.1
+ },
+ "long-term": {
+  "vi": "dài hạn",
+  "z": 5.13
+ },
+ "longing": {
+  "vi": "khao khát",
+  "z": 3.5
+ },
+ "look": {
+  "vi": "cái nhìn",
+  "z": 5.81
+ },
+ "look down on": {
+  "vi": "coi thường",
+  "z": 5.52
+ },
+ "look for": {
+  "vi": "tìm kiếm",
+  "z": 5.78
+ },
+ "look forward to": {
+  "vi": "mong đợi",
+  "z": 5.04
+ },
+ "look into": {
+  "vi": "xem xét, điều tra",
+  "z": 5.63
+ },
+ "look over": {
+  "vi": "xem qua",
+  "z": 5.62
+ },
+ "look to": {
+  "vi": "trông cậy vào; hướng tới",
+  "z": 5.8
+ },
+ "look up to": {
+  "vi": "ngưỡng mộ, kính trọng",
+  "z": 5.7
+ },
+ "loosely": {
+  "vi": "lỏng lẻo",
+  "z": 3.62
+ },
+ "lose": {
+  "vi": "mất, đánh mất",
+  "z": 5.08
+ },
+ "lose touch": {
+  "vi": "mất liên lạc",
+  "z": 4.69
+ },
+ "lose; insecure": {
+  "vi": "mất; bất an",
+  "z": 5.08
+ },
+ "loss": {
+  "vi": "sự thua lỗ, mất mát",
+  "z": 5.07
+ },
+ "loyal": {
+  "vi": "trung thành",
+  "z": 4.2
+ },
+ "loyalty": {
+  "vi": "lòng trung thành",
+  "z": 4.17
+ },
+ "lucratively": {
+  "vi": "sinh lời nhiều",
+  "z": 1.18
+ },
+ "lure": {
+  "vi": "lôi kéo, dụ",
+  "z": 3.67
+ },
+ "luxurious": {
+  "vi": "sang trọng",
+  "z": 3.55
+ },
+ "luxury": {
+  "vi": "xa xỉ, cao cấp",
+  "z": 4.35
+ },
+ "maid": {
+  "vi": "người giúp việc",
+  "z": 3.86
+ },
+ "mainly": {
+  "vi": "chủ yếu",
+  "z": 4.6
+ },
+ "maintain": {
+  "vi": "duy trì; bảo trì",
+  "z": 4.65
+ },
+ "major": {
+  "vi": "chính, lớn",
+  "z": 5.3
+ },
+ "major in": {
+  "vi": "học chuyên ngành",
+  "z": 5.3
+ },
+ "majority": {
+  "vi": "phần lớn, đa số",
+  "z": 4.94
+ },
+ "make": {
+  "vi": "nhãn hiệu (xe, máy)",
+  "z": 6.08
+ },
+ "make up": {
+  "vi": "tạo thành",
+  "z": 5.91
+ },
+ "make up for": {
+  "vi": "bù đắp cho",
+  "z": 5.87
+ },
+ "malfunction": {
+  "vi": "sự trục trặc",
+  "z": 3.29
+ },
+ "manage": {
+  "vi": "xoay xở; quản lý",
+  "z": 4.54
+ },
+ "manager": {
+  "vi": "quản lý",
+  "z": 4.97
+ },
+ "mandatory": {
+  "vi": "bắt buộc",
+  "z": 4.13
+ },
+ "manner": {
+  "vi": "cách cư xử",
+  "z": 4.55
+ },
+ "manually": {
+  "vi": "bằng tay, thủ công",
+  "z": 3.7
+ },
+ "many": {
+  "vi": "nhiều",
+  "z": 5.91
+ },
+ "markdown": {
+  "vi": "sự giảm giá",
+  "z": 2.4
+ },
+ "market": {
+  "vi": "thị trường; (v) tiếp thị, quảng bá",
+  "z": 5.29
+ },
+ "markup": {
+  "vi": "sự nâng giá",
+  "z": 3.09
+ },
+ "master": {
+  "vi": "bậc thầy",
+  "z": 4.93
+ },
+ "match": {
+  "vi": "sự phù hợp; (v) khớp, phù hợp",
+  "z": 5.13
+ },
+ "materially": {
+  "vi": "về vật chất",
+  "z": 3.36
+ },
+ "matter": {
+  "vi": "vấn đề; (v) có ý nghĩa",
+  "z": 5.38
+ },
+ "maximize": {
+  "vi": "tối đa hoá",
+  "z": 3.63
+ },
+ "maximum": {
+  "vi": "mức tối đa",
+  "z": 4.6
+ },
+ "mean": {
+  "vi": "có ý định; nghĩa là",
+  "z": 5.53
+ },
+ "means": {
+  "vi": "phương tiện, nguồn lực",
+  "z": 5.44
+ },
+ "measure": {
+  "vi": "thước đo",
+  "z": 4.65
+ },
+ "measure against": {
+  "vi": "so sánh với",
+  "z": 4.61
+ },
+ "measurement": {
+  "vi": "số đo, kích thước",
+  "z": 4.05
+ },
+ "mechanically": {
+  "vi": "một cách máy móc",
+  "z": 3.35
+ },
+ "mediate": {
+  "vi": "hoà giải, làm trung gian",
+  "z": 3.13
+ },
+ "meet": {
+  "vi": "đáp ứng",
+  "z": 5.27
+ },
+ "meeting": {
+  "vi": "cuộc họp; cuộc hẹn",
+  "z": 5.15
+ },
+ "mentally": {
+  "vi": "về tinh thần",
+  "z": 4.2
+ },
+ "mention": {
+  "vi": "đề cập, nhắc đến",
+  "z": 4.73
+ },
+ "mentor": {
+  "vi": "người cố vấn, người hướng dẫn",
+  "z": 3.93
+ },
+ "merchandise": {
+  "vi": "hàng hoá",
+  "z": 3.93
+ },
+ "merge": {
+  "vi": "hợp nhất, trộn",
+  "z": 3.75
+ },
+ "merit": {
+  "vi": "công lao, giá trị; (v) xứng đáng",
+  "z": 4.08
+ },
+ "messenger": {
+  "vi": "người đưa tin",
+  "z": 3.95
+ },
+ "method": {
+  "vi": "phương pháp",
+  "z": 4.8
+ },
+ "methodically": {
+  "vi": "có phương pháp",
+  "z": 2.77
+ },
+ "meticulous": {
+  "vi": "tỉ mỉ",
+  "z": 3.24
+ },
+ "middle ground": {
+  "vi": "điểm thoả hiệp",
+  "z": 4.86
+ },
+ "mindful": {
+  "vi": "lưu tâm",
+  "z": 3.49
+ },
+ "mingle": {
+  "vi": "trộn lẫn; giao lưu",
+  "z": 3.21
+ },
+ "minimize": {
+  "vi": "giảm thiểu",
+  "z": 3.8
+ },
+ "minor": {
+  "vi": "nhỏ, không quan trọng",
+  "z": 4.62
+ },
+ "minority": {
+  "vi": "thiểu số",
+  "z": 4.41
+ },
+ "mislead": {
+  "vi": "đánh lừa, dẫn sai",
+  "z": 3.22
+ },
+ "mismatch": {
+  "vi": "sự không khớp",
+  "z": 3.1
+ },
+ "miss": {
+  "vi": "vắng mặt; bỏ sót",
+  "z": 5.22
+ },
+ "mission": {
+  "vi": "nhiệm vụ, sứ mệnh",
+  "z": 4.87
+ },
+ "mistake": {
+  "vi": "lỗi, sai lầm",
+  "z": 4.67
+ },
+ "misuse; garbage": {
+  "vi": "lạm dụng; rác",
+  "z": 3.54
+ },
+ "mix": {
+  "vi": "trộn, pha trộn; (n) sự pha trộn",
+  "z": 4.71
+ },
+ "mix-up": {
+  "vi": "sự nhầm lẫn",
+  "z": 4.7
+ },
+ "moderate": {
+  "vi": "vừa phải, ôn hoà",
+  "z": 4.27
+ },
+ "modern": {
+  "vi": "hiện đại",
+  "z": 5.07
+ },
+ "modernize": {
+  "vi": "hiện đại hoá",
+  "z": 3.03
+ },
+ "modification": {
+  "vi": "sự điều chỉnh",
+  "z": 3.77
+ },
+ "modify": {
+  "vi": "sửa đổi",
+  "z": 3.79
+ },
+ "money; sponsor": {
+  "vi": "tiền; tài trợ",
+  "z": 5.64
+ },
+ "monitor": {
+  "vi": "theo dõi, giám sát",
+  "z": 4.37
+ },
+ "monologue": {
+  "vi": "độc thoại",
+  "z": 3.27
+ },
+ "monotonous": {
+  "vi": "đơn điệu",
+  "z": 2.95
+ },
+ "mortgage": {
+  "vi": "khoản vay thế chấp; (v) thế chấp",
+  "z": 4.39
+ },
+ "most": {
+  "vi": "phần lớn",
+  "z": 6.0
+ },
+ "mostly": {
+  "vi": "phần lớn, chủ yếu",
+  "z": 4.83
+ },
+ "motif": {
+  "vi": "chủ đề, mô-típ",
+  "z": 3.4
+ },
+ "motivation": {
+  "vi": "động lực",
+  "z": 4.22
+ },
+ "motive": {
+  "vi": "động cơ, lý do",
+  "z": 3.94
+ },
+ "move": {
+  "vi": "làm cảm động",
+  "z": 5.35
+ },
+ "move down": {
+  "vi": "bị giáng xuống",
+  "z": 5.24
+ },
+ "move up": {
+  "vi": "thăng tiến, chuyển lên",
+  "z": 5.31
+ },
+ "movement": {
+  "vi": "phong trào; chuyển động",
+  "z": 4.97
+ },
+ "muddle": {
+  "vi": "sự lộn xộn",
+  "z": 2.79
+ },
+ "multiple": {
+  "vi": "nhiều, đa",
+  "z": 4.92
+ },
+ "mutual": {
+  "vi": "chung, lẫn nhau",
+  "z": 4.26
+ },
+ "name": {
+  "vi": "tên tuổi; chỉ định",
+  "z": 5.61
+ },
+ "narrow": {
+  "vi": "thu hẹp; (adj) hẹp",
+  "z": 4.39
+ },
+ "near": {
+  "vi": "gần",
+  "z": 5.29
+ },
+ "nearness": {
+  "vi": "sự gần gũi",
+  "z": 2.24
+ },
+ "necessary": {
+  "vi": "cần thiết",
+  "z": 4.91
+ },
+ "necessitate": {
+  "vi": "đòi hỏi",
+  "z": 2.84
+ },
+ "necessity": {
+  "vi": "điều cần thiết",
+  "z": 3.91
+ },
+ "need": {
+  "vi": "cần",
+  "z": 5.97
+ },
+ "neglect": {
+  "vi": "bỏ bê, sao nhãng",
+  "z": 3.79
+ },
+ "negotiate": {
+  "vi": "đàm phán, thương lượng",
+  "z": 3.99
+ },
+ "neighboring": {
+  "vi": "lân cận",
+  "z": 3.87
+ },
+ "nervous": {
+  "vi": "lo lắng",
+  "z": 4.42
+ },
+ "nervously": {
+  "vi": "một cách lo lắng",
+  "z": 3.27
+ },
+ "network": {
+  "vi": "mạng lưới; (v) kết nối, giao lưu",
+  "z": 5.02
+ },
+ "next to": {
+  "vi": "bên cạnh",
+  "z": 5.69
+ },
+ "nominate": {
+  "vi": "đề cử, chỉ định",
+  "z": 3.57
+ },
+ "nominee": {
+  "vi": "người được đề cử",
+  "z": 3.96
+ },
+ "nonstop": {
+  "vi": "liên tục",
+  "z": 3.37
+ },
+ "nonverbally": {
+  "vi": "không bằng lời",
+  "z": 1.36
+ },
+ "normally": {
+  "vi": "thông thường",
+  "z": 4.57
+ },
+ "notable": {
+  "vi": "đáng chú ý",
+  "z": 4.07
+ },
+ "note": {
+  "vi": "ghi chú; lưu ý",
+  "z": 5.04
+ },
+ "notice": {
+  "vi": "thông báo; để ý",
+  "z": 4.9
+ },
+ "notify": {
+  "vi": "thông báo",
+  "z": 3.73
+ },
+ "notwithstanding": {
+  "vi": "bất chấp",
+  "z": 3.48
+ },
+ "novice": {
+  "vi": "người mới vào nghề",
+  "z": 3.41
+ },
+ "now": {
+  "vi": "bây giờ",
+  "z": 6.18
+ },
+ "numerous": {
+  "vi": "nhiều",
+  "z": 4.65
+ },
+ "obey": {
+  "vi": "tuân theo, vâng lời",
+  "z": 3.83
+ },
+ "object": {
+  "vi": "đồ vật",
+  "z": 4.56
+ },
+ "objective": {
+  "vi": "mục tiêu; khách quan",
+  "z": 4.36
+ },
+ "obligate": {
+  "vi": "bắt buộc, ràng buộc (pháp lý, đạo đức)",
+  "z": 2.57
+ },
+ "obligation": {
+  "vi": "nghĩa vụ, bổn phận",
+  "z": 4.07
+ },
+ "obligatory": {
+  "vi": "bắt buộc",
+  "z": 3.39
+ },
+ "oblige": {
+  "vi": "bắt buộc",
+  "z": 3.1
+ },
+ "obscure": {
+  "vi": "che khuất; mơ hồ",
+  "z": 3.85
+ },
+ "observant": {
+  "vi": "tinh ý",
+  "z": 3.05
+ },
+ "observe": {
+  "vi": "quan sát, theo dõi",
+  "z": 4.06
+ },
+ "obsolete": {
+  "vi": "lỗi thời",
+  "z": 3.65
+ },
+ "obstacle": {
+  "vi": "trở ngại",
+  "z": 3.72
+ },
+ "obstruct": {
+  "vi": "cản trở",
+  "z": 3.09
+ },
+ "obtain": {
+  "vi": "đạt được, có được",
+  "z": 4.4
+ },
+ "obtainable": {
+  "vi": "có thể có được",
+  "z": 3.07
+ },
+ "obtuse": {
+  "vi": "chậm hiểu",
+  "z": 3.04
+ },
+ "obvious": {
+  "vi": "rõ ràng",
+  "z": 4.63
+ },
+ "obviously": {
+  "vi": "rõ ràng, hiển nhiên",
+  "z": 4.8
+ },
+ "occasionally": {
+  "vi": "thỉnh thoảng",
+  "z": 4.39
+ },
+ "occupation": {
+  "vi": "nghề nghiệp",
+  "z": 4.2
+ },
+ "occupied": {
+  "vi": "có người",
+  "z": 4.32
+ },
+ "occupy": {
+  "vi": "chiếm giữ, sử dụng (nơi ở)",
+  "z": 3.93
+ },
+ "occur": {
+  "vi": "xảy ra",
+  "z": 4.47
+ },
+ "off track": {
+  "vi": "chệch hướng",
+  "z": 4.97
+ },
+ "offer": {
+  "vi": "đề nghị, cung cấp; (n) lời đề nghị",
+  "z": 5.05
+ },
+ "office supplies": {
+  "vi": "văn phòng phẩm",
+  "z": 4.43
+ },
+ "officially": {
+  "vi": "chính thức",
+  "z": 4.53
+ },
+ "offset": {
+  "vi": "bù đắp",
+  "z": 3.99
+ },
+ "often": {
+  "vi": "thường xuyên",
+  "z": 5.41
+ },
+ "old-fashioned": {
+  "vi": "lỗi thời",
+  "z": 3.93
+ },
+ "omit": {
+  "vi": "bỏ sót, bỏ qua",
+  "z": 3.07
+ },
+ "on course": {
+  "vi": "đúng hướng",
+  "z": 5.43
+ },
+ "on hand": {
+  "vi": "có sẵn",
+  "z": 5.4
+ },
+ "on schedule": {
+  "vi": "đúng tiến độ",
+  "z": 4.67
+ },
+ "on target": {
+  "vi": "đúng mục tiêu",
+  "z": 4.82
+ },
+ "on time": {
+  "vi": "đúng giờ",
+  "z": 6.2
+ },
+ "on track": {
+  "vi": "đúng hướng, đúng tiến độ",
+  "z": 5.01
+ },
+ "once a year": {
+  "vi": "mỗi năm một lần",
+  "z": 5.39
+ },
+ "one by one": {
+  "vi": "lần lượt từng cái",
+  "z": 6.05
+ },
+ "open to": {
+  "vi": "sẵn sàng tiếp nhận; dễ bị",
+  "z": 5.48
+ },
+ "operate": {
+  "vi": "vận hành, hoạt động",
+  "z": 4.5
+ },
+ "operation": {
+  "vi": "sự vận hành; ca phẫu thuật",
+  "z": 4.92
+ },
+ "oppose": {
+  "vi": "phản đối",
+  "z": 3.94
+ },
+ "opt": {
+  "vi": "lựa chọn",
+  "z": 3.9
+ },
+ "opt for": {
+  "vi": "chọn",
+  "z": 3.9
+ },
+ "option": {
+  "vi": "sự lựa chọn",
+  "z": 4.8
+ },
+ "optional": {
+  "vi": "tuỳ chọn",
+  "z": 3.91
+ },
+ "orally": {
+  "vi": "bằng miệng",
+  "z": 3.12
+ },
+ "order": {
+  "vi": "đơn đặt hàng; (v) đặt hàng",
+  "z": 5.49
+ },
+ "orderly": {
+  "vi": "ngăn nắp, có trật tự",
+  "z": 3.44
+ },
+ "ordinary": {
+  "vi": "bình thường",
+  "z": 4.42
+ },
+ "organization": {
+  "vi": "tổ chức",
+  "z": 4.92
+ },
+ "organize": {
+  "vi": "tổ chức, sắp xếp",
+  "z": 3.98
+ },
+ "origin": {
+  "vi": "nguồn gốc; nơi xuất phát",
+  "z": 4.55
+ },
+ "original": {
+  "vi": "độc đáo, nguyên bản",
+  "z": 5.16
+ },
+ "other": {
+  "vi": "khác",
+  "z": 6.16
+ },
+ "out of": {
+  "vi": "hết, không còn",
+  "z": 6.34
+ },
+ "out of date": {
+  "vi": "lỗi thời",
+  "z": 5.19
+ },
+ "outcome": {
+  "vi": "kết quả",
+  "z": 4.35
+ },
+ "outdated": {
+  "vi": "lỗi thời",
+  "z": 3.66
+ },
+ "outfit": {
+  "vi": "bộ trang phục",
+  "z": 4.22
+ },
+ "outflow": {
+  "vi": "dòng chảy ra",
+  "z": 3.01
+ },
+ "outing": {
+  "vi": "chuyến đi chơi",
+  "z": 3.5
+ },
+ "outlaw": {
+  "vi": "cấm",
+  "z": 3.51
+ },
+ "outlay": {
+  "vi": "khoản chi",
+  "z": 2.83
+ },
+ "outlet": {
+  "vi": "cửa hàng bán lẻ; lối thoát",
+  "z": 4.0
+ },
+ "outline": {
+  "vi": "phác thảo, đề cương",
+  "z": 3.92
+ },
+ "outlook": {
+  "vi": "quan điểm; triển vọng",
+  "z": 4.07
+ },
+ "outstanding": {
+  "vi": "chưa thanh toán; nổi bật",
+  "z": 4.5
+ },
+ "overall": {
+  "vi": "tổng thể, nhìn chung",
+  "z": 4.9
+ },
+ "overcrowded": {
+  "vi": "quá đông đúc",
+  "z": 3.09
+ },
+ "overlap": {
+  "vi": "trùng nhau",
+  "z": 3.7
+ },
+ "overlook": {
+  "vi": "bỏ qua, xem nhẹ",
+  "z": 3.53
+ },
+ "oversee": {
+  "vi": "giám sát",
+  "z": 3.51
+ },
+ "overseer": {
+  "vi": "người giám sát",
+  "z": 2.93
+ },
+ "oversight": {
+  "vi": "sự sơ suất",
+  "z": 3.83
+ },
+ "overview": {
+  "vi": "sự tổng quan",
+  "z": 4.11
+ },
+ "owe": {
+  "vi": "nợ",
+  "z": 4.13
+ },
+ "owing": {
+  "vi": "còn nợ",
+  "z": 3.73
+ },
+ "owing to": {
+  "vi": "do, vì",
+  "z": 3.73
+ },
+ "packed": {
+  "vi": "chật kín",
+  "z": 4.31
+ },
+ "paid": {
+  "vi": "đã thanh toán",
+  "z": 5.12
+ },
+ "pair": {
+  "vi": "cặp; ghép đôi",
+  "z": 4.72
+ },
+ "palate": {
+  "vi": "khẩu vị",
+  "z": 3.35
+ },
+ "paper": {
+  "vi": "giấy",
+  "z": 5.07
+ },
+ "part": {
+  "vi": "phần",
+  "z": 5.78
+ },
+ "partial": {
+  "vi": "một phần",
+  "z": 4.17
+ },
+ "participant": {
+  "vi": "người tham gia",
+  "z": 3.78
+ },
+ "participate": {
+  "vi": "tham gia",
+  "z": 4.42
+ },
+ "participate in": {
+  "vi": "tham gia vào",
+  "z": 4.42
+ },
+ "particular": {
+  "vi": "cụ thể, riêng biệt",
+  "z": 5.0
+ },
+ "partition": {
+  "vi": "chia ra",
+  "z": 3.67
+ },
+ "partner": {
+  "vi": "bạn đời; đối tác",
+  "z": 4.84
+ },
+ "partnership": {
+  "vi": "quan hệ đối tác",
+  "z": 4.48
+ },
+ "party": {
+  "vi": "bên (tham gia hợp đồng, vụ kiện)",
+  "z": 5.49
+ },
+ "pass on; mention": {
+  "vi": "chuyển lời; đề cập",
+  "z": 5.04
+ },
+ "passively": {
+  "vi": "thụ động",
+  "z": 3.01
+ },
+ "patron": {
+  "vi": "khách hàng quen; nhà bảo trợ",
+  "z": 3.73
+ },
+ "pattern": {
+  "vi": "xu hướng, kiểu mẫu",
+  "z": 4.56
+ },
+ "pay": {
+  "vi": "trả tiền; tiền lương",
+  "z": 5.4
+ },
+ "pay attention": {
+  "vi": "chú ý",
+  "z": 4.93
+ },
+ "pay for": {
+  "vi": "trả tiền cho, chi trả",
+  "z": 5.39
+ },
+ "payment point": {
+  "vi": "quầy thanh toán",
+  "z": 4.61
+ },
+ "payout": {
+  "vi": "khoản chi trả",
+  "z": 3.36
+ },
+ "peek": {
+  "vi": "nhìn lén, liếc",
+  "z": 3.7
+ },
+ "penalty": {
+  "vi": "tiền phạt, hình phạt",
+  "z": 4.45
+ },
+ "per year": {
+  "vi": "mỗi năm",
+  "z": 5.33
+ },
+ "perceptive": {
+  "vi": "nhạy bén, sâu sắc",
+  "z": 2.99
+ },
+ "perfectly": {
+  "vi": "hoàn hảo",
+  "z": 4.61
+ },
+ "perform": {
+  "vi": "biểu diễn; thực hiện",
+  "z": 4.66
+ },
+ "period": {
+  "vi": "giai đoạn",
+  "z": 5.21
+ },
+ "periodically": {
+  "vi": "định kỳ",
+  "z": 3.59
+ },
+ "peripheral": {
+  "vi": "ngoại vi, thứ yếu",
+  "z": 3.66
+ },
+ "perk": {
+  "vi": "phúc lợi thêm",
+  "z": 3.19
+ },
+ "permit": {
+  "vi": "cho phép; (n) giấy phép",
+  "z": 4.22
+ },
+ "perpetually": {
+  "vi": "mãi mãi, liên miên",
+  "z": 3.16
+ },
+ "persist": {
+  "vi": "kiên trì; tiếp tục",
+  "z": 3.53
+ },
+ "person": {
+  "vi": "người",
+  "z": 5.55
+ },
+ "personal": {
+  "vi": "cá nhân",
+  "z": 5.2
+ },
+ "personnel": {
+  "vi": "nhân sự",
+  "z": 4.56
+ },
+ "perspective": {
+  "vi": "quan điểm, góc nhìn",
+  "z": 4.56
+ },
+ "persuade": {
+  "vi": "thuyết phục",
+  "z": 3.82
+ },
+ "persuasion": {
+  "vi": "sự thuyết phục; niềm tin",
+  "z": 3.33
+ },
+ "pertinent": {
+  "vi": "thích hợp, liên quan",
+  "z": 3.36
+ },
+ "petition": {
+  "vi": "đơn kiến nghị; (v) kiến nghị",
+  "z": 4.3
+ },
+ "phase": {
+  "vi": "giai đoạn",
+  "z": 4.64
+ },
+ "physically": {
+  "vi": "về mặt thể chất; trực tiếp",
+  "z": 4.3
+ },
+ "pick": {
+  "vi": "chọn",
+  "z": 5.08
+ },
+ "pick up": {
+  "vi": "lấy, đón",
+  "z": 5.06
+ },
+ "pinpoint": {
+  "vi": "xác định chính xác",
+  "z": 3.35
+ },
+ "place": {
+  "vi": "nơi, chỗ",
+  "z": 5.71
+ },
+ "plain": {
+  "vi": "rõ ràng",
+  "z": 4.43
+ },
+ "plainly": {
+  "vi": "rõ ràng",
+  "z": 3.38
+ },
+ "plan": {
+  "vi": "kế hoạch; (v) lập kế hoạch",
+  "z": 5.29
+ },
+ "plan; rule": {
+  "vi": "kế hoạch; quy định",
+  "z": 5.29
+ },
+ "planning": {
+  "vi": "sự lập kế hoạch",
+  "z": 4.9
+ },
+ "platform": {
+  "vi": "sân khấu, bục",
+  "z": 4.67
+ },
+ "plea": {
+  "vi": "lời thỉnh cầu",
+  "z": 3.95
+ },
+ "please": {
+  "vi": "làm hài lòng",
+  "z": 5.66
+ },
+ "pleasure": {
+  "vi": "niềm vui, sự hài lòng",
+  "z": 4.57
+ },
+ "pledge": {
+  "vi": "lời cam kết; cam kết",
+  "z": 4.0
+ },
+ "plentiful": {
+  "vi": "dồi dào",
+  "z": 3.36
+ },
+ "policy": {
+  "vi": "hợp đồng bảo hiểm; chính sách",
+  "z": 5.17
+ },
+ "polished": {
+  "vi": "trau chuốt, trơn tru",
+  "z": 3.76
+ },
+ "popularity": {
+  "vi": "sự phổ biến, được ưa chuộng",
+  "z": 4.24
+ },
+ "portfolio": {
+  "vi": "danh mục đầu tư; hồ sơ năng lực",
+  "z": 4.15
+ },
+ "portion": {
+  "vi": "phần",
+  "z": 4.53
+ },
+ "portrait": {
+  "vi": "chân dung",
+  "z": 4.22
+ },
+ "portrayal": {
+  "vi": "sự khắc hoạ",
+  "z": 3.55
+ },
+ "position": {
+  "vi": "vị trí; tư thế",
+  "z": 5.21
+ },
+ "possibility": {
+  "vi": "khả năng",
+  "z": 4.58
+ },
+ "possible": {
+  "vi": "có thể",
+  "z": 5.36
+ },
+ "post": {
+  "vi": "vị trí, chức vụ",
+  "z": 5.43
+ },
+ "postponement": {
+  "vi": "sự hoãn lại",
+  "z": 3.03
+ },
+ "posture": {
+  "vi": "tư thế",
+  "z": 3.65
+ },
+ "potential": {
+  "vi": "tiềm năng; (adj) tiềm tàng",
+  "z": 5.01
+ },
+ "powerful": {
+  "vi": "mạnh mẽ",
+  "z": 4.85
+ },
+ "practical": {
+  "vi": "thực tế, thiết thực",
+  "z": 4.48
+ },
+ "practice": {
+  "vi": "thói quen, lệ thường; sự luyện tập",
+  "z": 5.06
+ },
+ "practice; undergo": {
+  "vi": "thực hành; trải qua",
+  "z": 5.06
+ },
+ "praise": {
+  "vi": "lời khen",
+  "z": 4.31
+ },
+ "precedence": {
+  "vi": "quyền ưu tiên",
+  "z": 3.33
+ },
+ "precise": {
+  "vi": "chính xác",
+  "z": 4.13
+ },
+ "precisely": {
+  "vi": "chính xác",
+  "z": 4.2
+ },
+ "preclude": {
+  "vi": "ngăn cản, loại trừ",
+  "z": 3.03
+ },
+ "precondition": {
+  "vi": "điều kiện tiên quyết",
+  "z": 2.63
+ },
+ "predict": {
+  "vi": "dự đoán",
+  "z": 4.08
+ },
+ "prediction": {
+  "vi": "lời dự đoán",
+  "z": 3.96
+ },
+ "prefer": {
+  "vi": "thích hơn",
+  "z": 4.57
+ },
+ "preferably": {
+  "vi": "tốt hơn là",
+  "z": 3.71
+ },
+ "preference": {
+  "vi": "sự ưa thích",
+  "z": 4.11
+ },
+ "preparation": {
+  "vi": "sự chuẩn bị",
+  "z": 4.32
+ },
+ "preparation time": {
+  "vi": "thời gian chuẩn bị",
+  "z": 4.32
+ },
+ "prepare": {
+  "vi": "chuẩn bị",
+  "z": 4.55
+ },
+ "prerequisite": {
+  "vi": "điều kiện tiên quyết",
+  "z": 3.24
+ },
+ "present": {
+  "vi": "trình bày, giới thiệu; (adj) có mặt",
+  "z": 5.18
+ },
+ "presently": {
+  "vi": "hiện tại",
+  "z": 3.72
+ },
+ "preserve": {
+  "vi": "giữ gìn, bảo tồn",
+  "z": 4.19
+ },
+ "prestige": {
+  "vi": "uy tín",
+  "z": 3.75
+ },
+ "presume; take on": {
+  "vi": "cho rằng; đảm nhận",
+  "z": 3.62
+ },
+ "prevent": {
+  "vi": "ngăn ngừa",
+  "z": 4.79
+ },
+ "previously": {
+  "vi": "trước đây",
+  "z": 4.83
+ },
+ "price": {
+  "vi": "giá",
+  "z": 5.23
+ },
+ "price; cite": {
+  "vi": "báo giá; trích dẫn",
+  "z": 5.23
+ },
+ "primarily": {
+  "vi": "chủ yếu, trước hết",
+  "z": 4.48
+ },
+ "principally": {
+  "vi": "chủ yếu",
+  "z": 3.4
+ },
+ "principle": {
+  "vi": "nguyên tắc",
+  "z": 4.34
+ },
+ "priority": {
+  "vi": "sự ưu tiên",
+  "z": 4.41
+ },
+ "prize": {
+  "vi": "giải thưởng; quý trọng",
+  "z": 4.59
+ },
+ "problem": {
+  "vi": "vấn đề",
+  "z": 5.4
+ },
+ "procedure": {
+  "vi": "thủ tục, quy trình",
+  "z": 4.44
+ },
+ "proceed": {
+  "vi": "tiến hành",
+  "z": 4.18
+ },
+ "process": {
+  "vi": "xử lý; (n) quá trình",
+  "z": 5.26
+ },
+ "proclamation": {
+  "vi": "lời tuyên bố",
+  "z": 3.44
+ },
+ "produce": {
+  "vi": "sản xuất",
+  "z": 4.78
+ },
+ "product": {
+  "vi": "sản phẩm",
+  "z": 4.95
+ },
+ "productive": {
+  "vi": "có năng suất, hiệu quả",
+  "z": 4.22
+ },
+ "products": {
+  "vi": "sản phẩm",
+  "z": 5.04
+ },
+ "profession": {
+  "vi": "nghề nghiệp",
+  "z": 4.13
+ },
+ "professional": {
+  "vi": "chuyên nghiệp",
+  "z": 5.05
+ },
+ "profile": {
+  "vi": "hồ sơ, mô tả đặc điểm",
+  "z": 4.82
+ },
+ "profit": {
+  "vi": "lợi nhuận; (v) có lợi",
+  "z": 4.7
+ },
+ "profitably": {
+  "vi": "có lợi nhuận",
+  "z": 2.69
+ },
+ "program": {
+  "vi": "chương trình",
+  "z": 5.27
+ },
+ "program; arrange": {
+  "vi": "chương trình; sắp xếp",
+  "z": 5.27
+ },
+ "progress": {
+  "vi": "tiến triển; (n) sự tiến bộ",
+  "z": 4.78
+ },
+ "progressive": {
+  "vi": "tiến bộ, tăng dần",
+  "z": 4.34
+ },
+ "prohibit": {
+  "vi": "cấm",
+  "z": 3.51
+ },
+ "project": {
+  "vi": "dự đoán; (n) dự án",
+  "z": 5.22
+ },
+ "projection": {
+  "vi": "sự dự đoán",
+  "z": 3.79
+ },
+ "prolong": {
+  "vi": "kéo dài",
+  "z": 3.21
+ },
+ "prolonged": {
+  "vi": "kéo dài",
+  "z": 3.81
+ },
+ "promise": {
+  "vi": "lời hứa; (v) hứa hẹn",
+  "z": 4.71
+ },
+ "promote": {
+  "vi": "thăng chức; quảng bá",
+  "z": 4.56
+ },
+ "prompt": {
+  "vi": "nhanh chóng, đúng giờ",
+  "z": 3.86
+ },
+ "promptly": {
+  "vi": "ngay lập tức, đúng giờ",
+  "z": 3.84
+ },
+ "proof": {
+  "vi": "bản in thử; (v) đọc soát lỗi; bằng chứng",
+  "z": 4.7
+ },
+ "proofread": {
+  "vi": "đọc soát lỗi",
+  "z": 2.59
+ },
+ "property": {
+  "vi": "tài sản",
+  "z": 5.11
+ },
+ "proportion": {
+  "vi": "tỷ lệ, kích thước",
+  "z": 4.11
+ },
+ "proportionate": {
+  "vi": "cân xứng",
+  "z": 3.04
+ },
+ "proposal": {
+  "vi": "đề xuất",
+  "z": 4.47
+ },
+ "propose": {
+  "vi": "đề xuất",
+  "z": 3.99
+ },
+ "prospective": {
+  "vi": "tương lai, tiềm năng",
+  "z": 3.87
+ },
+ "protect": {
+  "vi": "bảo vệ",
+  "z": 4.92
+ },
+ "protracted": {
+  "vi": "kéo dài",
+  "z": 3.26
+ },
+ "protégé": {
+  "vi": "người được dìu dắt",
+  "z": 2.7
+ },
+ "prove": {
+  "vi": "chứng minh",
+  "z": 4.77
+ },
+ "provide": {
+  "vi": "cung cấp; quy định",
+  "z": 5.15
+ },
+ "provider": {
+  "vi": "nhà cung cấp",
+  "z": 4.1
+ },
+ "provider; obtain": {
+  "vi": "nhà cung cấp; lấy được",
+  "z": 4.1
+ },
+ "provision": {
+  "vi": "điều khoản; sự cung cấp; sự dự phòng",
+  "z": 4.14
+ },
+ "provisions": {
+  "vi": "điều khoản",
+  "z": 4.12
+ },
+ "proximity": {
+  "vi": "sự gần gũi (khoảng cách)",
+  "z": 3.88
+ },
+ "prudently": {
+  "vi": "thận trọng",
+  "z": 2.33
+ },
+ "publish": {
+  "vi": "xuất bản, công bố",
+  "z": 4.1
+ },
+ "pull": {
+  "vi": "kéo, thu hút",
+  "z": 4.82
+ },
+ "pull out": {
+  "vi": "rút ra, rút lui",
+  "z": 4.81
+ },
+ "punctually": {
+  "vi": "đúng giờ",
+  "z": 2.21
+ },
+ "punishment": {
+  "vi": "hình phạt",
+  "z": 4.34
+ },
+ "purchase": {
+  "vi": "mua",
+  "z": 4.71
+ },
+ "purpose": {
+  "vi": "mục đích",
+  "z": 4.88
+ },
+ "pursue": {
+  "vi": "theo đuổi",
+  "z": 4.26
+ },
+ "push": {
+  "vi": "thúc giục",
+  "z": 4.82
+ },
+ "put forward": {
+  "vi": "đưa ra (ý kiến)",
+  "z": 5.01
+ },
+ "put in": {
+  "vi": "đặt vào, gửi vào",
+  "z": 5.65
+ },
+ "put in for": {
+  "vi": "nộp đơn xin",
+  "z": 5.63
+ },
+ "put money into": {
+  "vi": "bỏ tiền vào, đầu tư",
+  "z": 5.28
+ },
+ "put together": {
+  "vi": "lắp ráp",
+  "z": 5.25
+ },
+ "qualifications": {
+  "vi": "trình độ, năng lực chuyên môn",
+  "z": 3.88
+ },
+ "qualified": {
+  "vi": "đủ tiêu chuẩn",
+  "z": 4.46
+ },
+ "qualify": {
+  "vi": "đủ điều kiện",
+  "z": 4.19
+ },
+ "quality": {
+  "vi": "chất lượng; phẩm chất",
+  "z": 5.11
+ },
+ "quick": {
+  "vi": "nhanh",
+  "z": 4.98
+ },
+ "quickly": {
+  "vi": "nhanh chóng",
+  "z": 5.0
+ },
+ "quiet": {
+  "vi": "yên tĩnh, vắng",
+  "z": 4.65
+ },
+ "quit": {
+  "vi": "bỏ, thôi",
+  "z": 4.54
+ },
+ "quote": {
+  "vi": "báo giá; (v) trích dẫn",
+  "z": 4.51
+ },
+ "rage": {
+  "vi": "cơn sốt, mốt",
+  "z": 4.11
+ },
+ "raise": {
+  "vi": "sự tăng lương; (v) nâng lên",
+  "z": 4.75
+ },
+ "randomly": {
+  "vi": "ngẫu nhiên",
+  "z": 3.97
+ },
+ "range": {
+  "vi": "phạm vi, dải; (v) dao động",
+  "z": 5.12
+ },
+ "rank": {
+  "vi": "cấp bậc",
+  "z": 4.44
+ },
+ "rapid": {
+  "vi": "nhanh",
+  "z": 4.38
+ },
+ "rare": {
+  "vi": "hiếm",
+  "z": 4.77
+ },
+ "rarely": {
+  "vi": "hiếm khi",
+  "z": 4.42
+ },
+ "rate": {
+  "vi": "giá, mức phí; tỷ lệ",
+  "z": 5.14
+ },
+ "rather": {
+  "vi": "khá",
+  "z": 5.32
+ },
+ "ratio": {
+  "vi": "tỷ lệ",
+  "z": 4.37
+ },
+ "rational": {
+  "vi": "hợp lý",
+  "z": 4.06
+ },
+ "reach": {
+  "vi": "liên lạc; đến nơi",
+  "z": 4.94
+ },
+ "react": {
+  "vi": "phản ứng",
+  "z": 4.16
+ },
+ "reaction": {
+  "vi": "phản ứng",
+  "z": 4.73
+ },
+ "readiness": {
+  "vi": "sự sẵn sàng",
+  "z": 3.59
+ },
+ "ready": {
+  "vi": "sẵn sàng, có sẵn",
+  "z": 5.28
+ },
+ "realistic": {
+  "vi": "thực tế",
+  "z": 4.16
+ },
+ "realization": {
+  "vi": "sự thực hiện, đạt được",
+  "z": 3.72
+ },
+ "realize": {
+  "vi": "nhận ra; thực hiện",
+  "z": 4.83
+ },
+ "reappear": {
+  "vi": "xuất hiện lại",
+  "z": 3.01
+ },
+ "reason": {
+  "vi": "lý do; khả năng suy luận",
+  "z": 5.32
+ },
+ "reasonable": {
+  "vi": "hợp lý; giá phải chăng",
+  "z": 4.59
+ },
+ "rebate": {
+  "vi": "tiền hoàn lại, chiết khấu",
+  "z": 3.31
+ },
+ "rebuild": {
+  "vi": "xây dựng lại",
+  "z": 3.9
+ },
+ "recall": {
+  "vi": "nhớ lại",
+  "z": 4.4
+ },
+ "receive": {
+  "vi": "nhận",
+  "z": 4.85
+ },
+ "reception area": {
+  "vi": "khu lễ tân",
+  "z": 4.21
+ },
+ "receptive to": {
+  "vi": "dễ tiếp thu",
+  "z": 3.32
+ },
+ "recklessly": {
+  "vi": "liều lĩnh",
+  "z": 2.99
+ },
+ "reckoning": {
+  "vi": "sự tính toán",
+  "z": 3.28
+ },
+ "recognition": {
+  "vi": "sự công nhận, ghi nhận",
+  "z": 4.47
+ },
+ "recognizable": {
+  "vi": "dễ nhận ra",
+  "z": 3.45
+ },
+ "recognize": {
+  "vi": "công nhận; nhận ra",
+  "z": 4.52
+ },
+ "recollect": {
+  "vi": "nhớ lại",
+  "z": 2.69
+ },
+ "recommendation": {
+  "vi": "lời khuyên, sự giới thiệu",
+  "z": 4.09
+ },
+ "reconcile": {
+  "vi": "đối chiếu, làm khớp; hoà giải",
+  "z": 3.5
+ },
+ "record": {
+  "vi": "hồ sơ; (v) ghi lại",
+  "z": 5.21
+ },
+ "record; document": {
+  "vi": "hồ sơ; tài liệu",
+  "z": 5.21
+ },
+ "recreation": {
+  "vi": "giải trí",
+  "z": 4.04
+ },
+ "recruit": {
+  "vi": "tuyển dụng; (n) người mới tuyển",
+  "z": 3.89
+ },
+ "rectify": {
+  "vi": "sửa chữa, khắc phục",
+  "z": 3.17
+ },
+ "recur": {
+  "vi": "tái diễn, lặp lại",
+  "z": 2.65
+ },
+ "reduce": {
+  "vi": "giảm",
+  "z": 4.73
+ },
+ "reduction": {
+  "vi": "sự giảm bớt",
+  "z": 4.39
+ },
+ "refer": {
+  "vi": "giới thiệu, chuyển đến; đề cập",
+  "z": 4.45
+ },
+ "refer to": {
+  "vi": "đề cập đến; tham khảo",
+  "z": 4.45
+ },
+ "refinement": {
+  "vi": "sự tinh tế",
+  "z": 3.2
+ },
+ "reflection": {
+  "vi": "sự phản ánh; sự suy ngẫm",
+  "z": 4.17
+ },
+ "refresh": {
+  "vi": "làm mới",
+  "z": 3.65
+ },
+ "refreshment": {
+  "vi": "đồ uống, đồ ăn nhẹ",
+  "z": 2.94
+ },
+ "refund": {
+  "vi": "tiền hoàn lại; (v) hoàn tiền",
+  "z": 3.94
+ },
+ "refuse": {
+  "vi": "từ chối",
+  "z": 4.39
+ },
+ "refute": {
+  "vi": "bác bỏ",
+  "z": 3.14
+ },
+ "regard": {
+  "vi": "coi như",
+  "z": 4.36
+ },
+ "regardless": {
+  "vi": "bất kể",
+  "z": 4.48
+ },
+ "register": {
+  "vi": "đăng ký, ghi danh",
+  "z": 4.59
+ },
+ "regress": {
+  "vi": "thụt lùi",
+  "z": 2.63
+ },
+ "regularly": {
+  "vi": "thường xuyên, đều đặn",
+  "z": 4.52
+ },
+ "regulate": {
+  "vi": "điều chỉnh, quy định",
+  "z": 3.87
+ },
+ "regulations": {
+  "vi": "quy định",
+  "z": 4.5
+ },
+ "rehearse": {
+  "vi": "diễn tập",
+  "z": 2.94
+ },
+ "reimburse": {
+  "vi": "hoàn trả",
+  "z": 3.06
+ },
+ "reimbursement": {
+  "vi": "sự hoàn tiền",
+  "z": 3.35
+ },
+ "reinforce": {
+  "vi": "củng cố, tăng cường",
+  "z": 3.68
+ },
+ "reject": {
+  "vi": "từ chối, bác bỏ",
+  "z": 4.03
+ },
+ "related": {
+  "vi": "liên quan",
+  "z": 5.1
+ },
+ "relationship": {
+  "vi": "mối quan hệ",
+  "z": 5.15
+ },
+ "relatively": {
+  "vi": "tương đối",
+  "z": 4.66
+ },
+ "relaxation": {
+  "vi": "sự thư giãn",
+  "z": 3.71
+ },
+ "relaxed": {
+  "vi": "thoải mái",
+  "z": 4.01
+ },
+ "relaxedly": {
+  "vi": "thoải mái",
+  "z": 0.0
+ },
+ "release": {
+  "vi": "phát hành; (v) giải phóng",
+  "z": 5.09
+ },
+ "relevant": {
+  "vi": "liên quan, thích hợp",
+  "z": 4.61
+ },
+ "relief": {
+  "vi": "sự nhẹ nhõm",
+  "z": 4.55
+ },
+ "relinquish": {
+  "vi": "từ bỏ, nhường lại",
+  "z": 3.12
+ },
+ "reluctant": {
+  "vi": "miễn cưỡng",
+  "z": 3.81
+ },
+ "rely": {
+  "vi": "dựa vào, tin cậy",
+  "z": 4.29
+ },
+ "rely on": {
+  "vi": "dựa vào",
+  "z": 4.29
+ },
+ "remainder": {
+  "vi": "phần còn lại",
+  "z": 4.03
+ },
+ "remaining part": {
+  "vi": "phần còn lại",
+  "z": 4.6
+ },
+ "remedy": {
+  "vi": "khắc phục; biện pháp",
+  "z": 3.82
+ },
+ "remember": {
+  "vi": "nhớ",
+  "z": 5.38
+ },
+ "remind": {
+  "vi": "nhắc nhở",
+  "z": 4.37
+ },
+ "remote": {
+  "vi": "xa xôi, hẻo lánh",
+  "z": 4.41
+ },
+ "remoteness": {
+  "vi": "sự xa xôi",
+  "z": 2.57
+ },
+ "remove": {
+  "vi": "gỡ bỏ, xoá",
+  "z": 4.71
+ },
+ "remunerate": {
+  "vi": "trả công",
+  "z": 1.53
+ },
+ "rendering": {
+  "vi": "bản dịch, sự diễn giải",
+  "z": 3.79
+ },
+ "renew": {
+  "vi": "gia hạn, làm mới",
+  "z": 3.73
+ },
+ "renewal": {
+  "vi": "sự gia hạn",
+  "z": 3.84
+ },
+ "rental agreement": {
+  "vi": "hợp đồng thuê",
+  "z": 4.03
+ },
+ "repair": {
+  "vi": "sửa chữa",
+  "z": 4.41
+ },
+ "repayment": {
+  "vi": "sự trả nợ, hoàn tiền",
+  "z": 3.44
+ },
+ "repeat": {
+  "vi": "lặp lại",
+  "z": 4.49
+ },
+ "repeatedly": {
+  "vi": "nhiều lần",
+  "z": 4.21
+ },
+ "repel": {
+  "vi": "đẩy lùi, chống lại",
+  "z": 3.2
+ },
+ "repercussion": {
+  "vi": "hậu quả",
+  "z": 2.25
+ },
+ "replace": {
+  "vi": "thay thế",
+  "z": 4.58
+ },
+ "replacement": {
+  "vi": "sự thay thế",
+  "z": 4.44
+ },
+ "replicate": {
+  "vi": "sao chép",
+  "z": 3.55
+ },
+ "reply": {
+  "vi": "trả lời",
+  "z": 4.5
+ },
+ "report": {
+  "vi": "báo cáo; trình diện",
+  "z": 5.32
+ },
+ "represent": {
+  "vi": "đại diện",
+  "z": 4.58
+ },
+ "representation": {
+  "vi": "sự thể hiện, sự đại diện",
+  "z": 4.34
+ },
+ "representative": {
+  "vi": "người đại diện",
+  "z": 4.57
+ },
+ "reproduce": {
+  "vi": "sao chép, tái tạo",
+  "z": 3.63
+ },
+ "repulse": {
+  "vi": "đẩy lùi",
+  "z": 2.55
+ },
+ "reputation": {
+  "vi": "danh tiếng, uy tín",
+  "z": 4.47
+ },
+ "request": {
+  "vi": "yêu cầu",
+  "z": 4.76
+ },
+ "require": {
+  "vi": "yêu cầu, đòi hỏi",
+  "z": 4.78
+ },
+ "required": {
+  "vi": "bắt buộc",
+  "z": 5.02
+ },
+ "requirement": {
+  "vi": "yêu cầu, điều kiện cần",
+  "z": 4.26
+ },
+ "requirements": {
+  "vi": "yêu cầu, tiêu chuẩn",
+  "z": 4.64
+ },
+ "requisition": {
+  "vi": "phiếu yêu cầu",
+  "z": 2.69
+ },
+ "research": {
+  "vi": "nghiên cứu",
+  "z": 5.39
+ },
+ "reservation": {
+  "vi": "sự đặt chỗ",
+  "z": 3.95
+ },
+ "reserve": {
+  "vi": "đặt trước",
+  "z": 4.6
+ },
+ "residue": {
+  "vi": "phần còn sót lại",
+  "z": 3.53
+ },
+ "resist": {
+  "vi": "chống lại, kháng cự",
+  "z": 4.2
+ },
+ "resolution": {
+  "vi": "sự giải quyết; nghị quyết",
+  "z": 4.59
+ },
+ "resolve": {
+  "vi": "giải quyết; quyết tâm",
+  "z": 4.17
+ },
+ "resource": {
+  "vi": "nguồn lực, tài nguyên",
+  "z": 4.39
+ },
+ "respect": {
+  "vi": "kính trọng",
+  "z": 5.03
+ },
+ "respond": {
+  "vi": "phản hồi, đáp lại",
+  "z": 4.53
+ },
+ "responsibility": {
+  "vi": "trách nhiệm",
+  "z": 4.75
+ },
+ "rest": {
+  "vi": "phần còn lại; sự nghỉ ngơi",
+  "z": 5.23
+ },
+ "restore": {
+  "vi": "phục hồi",
+  "z": 4.18
+ },
+ "restrain": {
+  "vi": "kiềm chế",
+  "z": 3.27
+ },
+ "restrict": {
+  "vi": "hạn chế",
+  "z": 3.8
+ },
+ "restricted": {
+  "vi": "bị hạn chế",
+  "z": 4.19
+ },
+ "restriction": {
+  "vi": "sự hạn chế",
+  "z": 3.76
+ },
+ "result": {
+  "vi": "kết quả; (v) dẫn đến",
+  "z": 5.18
+ },
+ "retailer; channel": {
+  "vi": "nhà bán lẻ; kênh phân phối",
+  "z": 3.75
+ },
+ "retain": {
+  "vi": "giữ lại",
+  "z": 4.16
+ },
+ "retire": {
+  "vi": "nghỉ hưu",
+  "z": 4.05
+ },
+ "retract": {
+  "vi": "rút lại",
+  "z": 3.03
+ },
+ "retreat": {
+  "vi": "rút lui",
+  "z": 4.13
+ },
+ "retrieve": {
+  "vi": "lấy lại, truy xuất",
+  "z": 3.69
+ },
+ "retrieve; assert": {
+  "vi": "lấy lại; khẳng định",
+  "z": 3.69
+ },
+ "return": {
+  "vi": "lợi nhuận; (v) hoàn lại",
+  "z": 5.19
+ },
+ "reveal": {
+  "vi": "tiết lộ",
+  "z": 4.43
+ },
+ "revenue": {
+  "vi": "doanh thu",
+  "z": 4.64
+ },
+ "revere": {
+  "vi": "tôn kính",
+  "z": 3.09
+ },
+ "review": {
+  "vi": "bài phê bình, đánh giá; (v) xem xét lại",
+  "z": 5.12
+ },
+ "revise": {
+  "vi": "sửa đổi, chỉnh sửa",
+  "z": 3.48
+ },
+ "revolution": {
+  "vi": "cuộc cách mạng",
+  "z": 4.56
+ },
+ "reward": {
+  "vi": "phần thưởng",
+  "z": 4.33
+ },
+ "rigidly": {
+  "vi": "cứng nhắc",
+  "z": 2.73
+ },
+ "rip-off": {
+  "vi": "món bị chặt chém, giá cắt cổ",
+  "z": 4.25
+ },
+ "rise": {
+  "vi": "sự tăng; tăng lên",
+  "z": 4.81
+ },
+ "rise and fall": {
+  "vi": "lên xuống, biến động",
+  "z": 4.64
+ },
+ "risk": {
+  "vi": "rủi ro; (v) liều",
+  "z": 5.05
+ },
+ "risky": {
+  "vi": "rủi ro",
+  "z": 3.94
+ },
+ "rivalry": {
+  "vi": "sự cạnh tranh",
+  "z": 3.8
+ },
+ "robust": {
+  "vi": "mạnh mẽ, vững chắc",
+  "z": 3.94
+ },
+ "role": {
+  "vi": "vai trò",
+  "z": 5.16
+ },
+ "roll": {
+  "vi": "danh sách",
+  "z": 4.75
+ },
+ "rough": {
+  "vi": "thô; ước chừng",
+  "z": 4.49
+ },
+ "route": {
+  "vi": "tuyến đường, lộ trình",
+  "z": 4.67
+ },
+ "routine": {
+  "vi": "thói quen, công việc hằng ngày",
+  "z": 4.37
+ },
+ "routinely": {
+  "vi": "thường lệ",
+  "z": 3.71
+ },
+ "rudely": {
+  "vi": "thô lỗ",
+  "z": 2.89
+ },
+ "rule out": {
+  "vi": "loại trừ",
+  "z": 4.92
+ },
+ "rules": {
+  "vi": "quy tắc",
+  "z": 5.06
+ },
+ "run": {
+  "vi": "vận hành; điều hành",
+  "z": 5.49
+ },
+ "run out": {
+  "vi": "hết, cạn",
+  "z": 5.44
+ },
+ "run through": {
+  "vi": "diễn tập, xem lướt",
+  "z": 5.34
+ },
+ "run up": {
+  "vi": "gánh (nợ, chi phí)",
+  "z": 5.44
+ },
+ "run; purpose": {
+  "vi": "vận hành; mục đích",
+  "z": 5.49
+ },
+ "rush": {
+  "vi": "dòng ồ ạt; cảm giác phấn khích",
+  "z": 4.48
+ },
+ "safeguard": {
+  "vi": "bảo vệ",
+  "z": 3.55
+ },
+ "safety": {
+  "vi": "sự an toàn",
+  "z": 4.97
+ },
+ "salary": {
+  "vi": "lương (tháng/năm)",
+  "z": 4.36
+ },
+ "sales; staff change": {
+  "vi": "doanh số; biến động nhân sự",
+  "z": 5.02
+ },
+ "same": {
+  "vi": "giống nhau",
+  "z": 5.8
+ },
+ "sameness": {
+  "vi": "sự giống hệt, đơn điệu",
+  "z": 2.37
+ },
+ "sample": {
+  "vi": "mẫu thử; (v) dùng thử",
+  "z": 4.53
+ },
+ "sanction": {
+  "vi": "hình phạt; phê chuẩn",
+  "z": 3.43
+ },
+ "satisfaction": {
+  "vi": "sự hài lòng",
+  "z": 4.16
+ },
+ "satisfactorily": {
+  "vi": "đạt yêu cầu",
+  "z": 2.83
+ },
+ "satisfy": {
+  "vi": "làm hài lòng; đáp ứng",
+  "z": 3.98
+ },
+ "save": {
+  "vi": "tiết kiệm; lưu giữ",
+  "z": 5.14
+ },
+ "savor": {
+  "vi": "hương vị",
+  "z": 2.98
+ },
+ "scan": {
+  "vi": "quét; xem lướt",
+  "z": 4.07
+ },
+ "scant": {
+  "vi": "ít ỏi",
+  "z": 3.1
+ },
+ "scarce": {
+  "vi": "khan hiếm",
+  "z": 3.61
+ },
+ "scatter": {
+  "vi": "rải rác, phân tán",
+  "z": 3.39
+ },
+ "schedule": {
+  "vi": "lịch trình; (v) lên lịch",
+  "z": 4.67
+ },
+ "scheme": {
+  "vi": "kế hoạch, sáng kiến",
+  "z": 4.57
+ },
+ "scope": {
+  "vi": "phạm vi",
+  "z": 4.26
+ },
+ "script": {
+  "vi": "kịch bản",
+  "z": 4.36
+ },
+ "scrutinize": {
+  "vi": "xem xét kỹ",
+  "z": 2.76
+ },
+ "scrutiny": {
+  "vi": "sự xem xét kỹ lưỡng",
+  "z": 3.74
+ },
+ "seamless": {
+  "vi": "liền mạch",
+  "z": 3.31
+ },
+ "search": {
+  "vi": "tìm kiếm",
+  "z": 4.96
+ },
+ "seasoning": {
+  "vi": "gia vị",
+  "z": 3.28
+ },
+ "secluded": {
+  "vi": "hẻo lánh",
+  "z": 3.24
+ },
+ "secondarily": {
+  "vi": "thứ yếu",
+  "z": 2.4
+ },
+ "section": {
+  "vi": "phần",
+  "z": 5.0
+ },
+ "secure": {
+  "vi": "giành được; đảm bảo; (adj) an toàn",
+  "z": 4.64
+ },
+ "secured": {
+  "vi": "được bảo đảm",
+  "z": 4.23
+ },
+ "seek": {
+  "vi": "tìm kiếm",
+  "z": 4.61
+ },
+ "seek advice from": {
+  "vi": "hỏi ý kiến",
+  "z": 4.42
+ },
+ "segment": {
+  "vi": "phần, phân khúc",
+  "z": 4.26
+ },
+ "seldom": {
+  "vi": "hiếm khi",
+  "z": 3.63
+ },
+ "select": {
+  "vi": "lựa chọn; (adj) chọn lọc",
+  "z": 4.45
+ },
+ "self-assurance": {
+  "vi": "sự tự tin",
+  "z": 3.79
+ },
+ "selfishly": {
+  "vi": "ích kỷ",
+  "z": 2.64
+ },
+ "sell": {
+  "vi": "bán",
+  "z": 4.98
+ },
+ "sell out": {
+  "vi": "bán hết",
+  "z": 4.96
+ },
+ "seller": {
+  "vi": "người bán",
+  "z": 4.01
+ },
+ "seminar": {
+  "vi": "hội thảo",
+  "z": 3.77
+ },
+ "send": {
+  "vi": "gửi",
+  "z": 5.11
+ },
+ "sense": {
+  "vi": "cảm giác; (v) cảm nhận",
+  "z": 5.19
+ },
+ "sensible": {
+  "vi": "hợp lý",
+  "z": 3.98
+ },
+ "sensibly": {
+  "vi": "hợp lý, khôn ngoan",
+  "z": 2.93
+ },
+ "sensitively": {
+  "vi": "tế nhị",
+  "z": 2.48
+ },
+ "separate": {
+  "vi": "riêng biệt; (v) tách ra",
+  "z": 4.83
+ },
+ "separately": {
+  "vi": "riêng rẽ",
+  "z": 4.08
+ },
+ "separation": {
+  "vi": "sự tách rời",
+  "z": 4.13
+ },
+ "sequential": {
+  "vi": "tuần tự",
+  "z": 3.29
+ },
+ "series": {
+  "vi": "chuỗi, loạt",
+  "z": 5.35
+ },
+ "serious": {
+  "vi": "nghiêm trọng; nghiêm túc",
+  "z": 5.1
+ },
+ "serve": {
+  "vi": "phục vụ",
+  "z": 4.85
+ },
+ "service": {
+  "vi": "dịch vụ; (v) bảo dưỡng",
+  "z": 5.49
+ },
+ "session": {
+  "vi": "phiên, buổi (họp, học)",
+  "z": 4.72
+ },
+ "set": {
+  "vi": "bộ",
+  "z": 5.59
+ },
+ "set off": {
+  "vi": "khởi hành",
+  "z": 5.43
+ },
+ "set up": {
+  "vi": "thiết lập, sắp xếp",
+  "z": 5.53
+ },
+ "settle": {
+  "vi": "thanh toán; giải quyết; định cư",
+  "z": 4.37
+ },
+ "settled": {
+  "vi": "đã thanh toán",
+  "z": 4.44
+ },
+ "settlement": {
+  "vi": "sự thanh toán; sự dàn xếp",
+  "z": 4.49
+ },
+ "setup": {
+  "vi": "sự sắp đặt",
+  "z": 4.09
+ },
+ "several": {
+  "vi": "vài, nhiều",
+  "z": 5.39
+ },
+ "severe": {
+  "vi": "nghiêm trọng",
+  "z": 4.56
+ },
+ "share": {
+  "vi": "cổ phần; chia sẻ; phần",
+  "z": 5.2
+ },
+ "shared": {
+  "vi": "chung",
+  "z": 4.68
+ },
+ "sharp": {
+  "vi": "sắc nét; (tăng/giảm) mạnh, đột ngột",
+  "z": 4.48
+ },
+ "sheet": {
+  "vi": "tấm, tờ; ga trải giường",
+  "z": 4.4
+ },
+ "shield": {
+  "vi": "che chắn, bảo vệ",
+  "z": 4.3
+ },
+ "shift": {
+  "vi": "thay đổi, dịch chuyển",
+  "z": 4.57
+ },
+ "ship": {
+  "vi": "vận chuyển, gửi hàng",
+  "z": 4.93
+ },
+ "shipment": {
+  "vi": "lô hàng",
+  "z": 3.76
+ },
+ "shipper": {
+  "vi": "người gửi hàng",
+  "z": 3.01
+ },
+ "shop": {
+  "vi": "cửa hàng",
+  "z": 4.88
+ },
+ "short": {
+  "vi": "ngắn",
+  "z": 5.33
+ },
+ "short of": {
+  "vi": "thiếu",
+  "z": 5.33
+ },
+ "short-term": {
+  "vi": "ngắn hạn",
+  "z": 4.98
+ },
+ "shorten": {
+  "vi": "rút ngắn",
+  "z": 3.38
+ },
+ "show": {
+  "vi": "cho thấy, trưng bày",
+  "z": 5.68
+ },
+ "show up": {
+  "vi": "xuất hiện, đến",
+  "z": 5.6
+ },
+ "shrink": {
+  "vi": "co lại, thu nhỏ",
+  "z": 3.73
+ },
+ "shut down": {
+  "vi": "tắt (máy); đóng cửa",
+  "z": 4.75
+ },
+ "side": {
+  "vi": "bên; khía cạnh",
+  "z": 5.5
+ },
+ "sign": {
+  "vi": "ký",
+  "z": 5.08
+ },
+ "sign in": {
+  "vi": "đăng nhập, ký tên vào",
+  "z": 5.08
+ },
+ "sign up": {
+  "vi": "đăng ký",
+  "z": 5.06
+ },
+ "signal": {
+  "vi": "dấu hiệu",
+  "z": 4.62
+ },
+ "signatory": {
+  "vi": "bên ký kết",
+  "z": 2.92
+ },
+ "signature": {
+  "vi": "chữ ký",
+  "z": 4.25
+ },
+ "significant": {
+  "vi": "quan trọng, đáng kể",
+  "z": 4.98
+ },
+ "significantly": {
+  "vi": "đáng kể",
+  "z": 4.54
+ },
+ "similar": {
+  "vi": "tương tự",
+  "z": 5.21
+ },
+ "simple": {
+  "vi": "đơn giản",
+  "z": 5.08
+ },
+ "simplification": {
+  "vi": "sự đơn giản hoá",
+  "z": 2.98
+ },
+ "simplify": {
+  "vi": "đơn giản hoá",
+  "z": 3.46
+ },
+ "single": {
+  "vi": "đơn lẻ",
+  "z": 5.41
+ },
+ "site": {
+  "vi": "địa điểm",
+  "z": 5.22
+ },
+ "sitting": {
+  "vi": "phiên họp",
+  "z": 4.86
+ },
+ "situation": {
+  "vi": "tình huống",
+  "z": 5.09
+ },
+ "size": {
+  "vi": "kích thước",
+  "z": 5.13
+ },
+ "sketch": {
+  "vi": "phác thảo",
+  "z": 4.04
+ },
+ "skill": {
+  "vi": "kỹ năng",
+  "z": 4.42
+ },
+ "skills": {
+  "vi": "kỹ năng",
+  "z": 4.77
+ },
+ "skim": {
+  "vi": "đọc lướt",
+  "z": 3.17
+ },
+ "skip": {
+  "vi": "bỏ qua, vắng mặt",
+  "z": 4.21
+ },
+ "slightly": {
+  "vi": "hơi, một chút",
+  "z": 4.75
+ },
+ "slip": {
+  "vi": "sơ suất",
+  "z": 4.28
+ },
+ "slow": {
+  "vi": "chậm",
+  "z": 4.85
+ },
+ "slowly": {
+  "vi": "chậm rãi",
+  "z": 4.63
+ },
+ "smooth": {
+  "vi": "trơn tru, suôn sẻ; khéo léo",
+  "z": 4.4
+ },
+ "society": {
+  "vi": "hội, hiệp hội",
+  "z": 5.17
+ },
+ "software": {
+  "vi": "phần mềm",
+  "z": 4.77
+ },
+ "solid": {
+  "vi": "vững chắc",
+  "z": 4.73
+ },
+ "solve": {
+  "vi": "giải quyết",
+  "z": 4.42
+ },
+ "somewhat": {
+  "vi": "hơi, phần nào",
+  "z": 4.55
+ },
+ "soothe": {
+  "vi": "làm dịu",
+  "z": 3.18
+ },
+ "sophisticated": {
+  "vi": "tinh vi, hiện đại",
+  "z": 4.05
+ },
+ "sophistication": {
+  "vi": "sự tinh tế",
+  "z": 3.27
+ },
+ "sort out": {
+  "vi": "giải quyết",
+  "z": 4.98
+ },
+ "sound": {
+  "vi": "hợp lý, đúng đắn",
+  "z": 5.15
+ },
+ "source": {
+  "vi": "nguồn; (v) tìm nguồn cung",
+  "z": 5.15
+ },
+ "span": {
+  "vi": "khoảng (thời gian), phạm vi",
+  "z": 4.07
+ },
+ "spare time": {
+  "vi": "thời gian rảnh",
+  "z": 4.28
+ },
+ "speak to": {
+  "vi": "nói với, giải quyết",
+  "z": 5.03
+ },
+ "specialist": {
+  "vi": "chuyên gia",
+  "z": 4.28
+ },
+ "specialize": {
+  "vi": "chuyên về",
+  "z": 3.28
+ },
+ "specific": {
+  "vi": "cụ thể, riêng biệt",
+  "z": 5.03
+ },
+ "specifics; itemize": {
+  "vi": "chi tiết; liệt kê",
+  "z": 3.52
+ },
+ "specimen": {
+  "vi": "mẫu vật",
+  "z": 3.72
+ },
+ "spectators": {
+  "vi": "khán giả",
+  "z": 3.66
+ },
+ "spectrum": {
+  "vi": "phổ, dải, phạm vi",
+  "z": 4.26
+ },
+ "speedy": {
+  "vi": "nhanh chóng",
+  "z": 3.65
+ },
+ "spend": {
+  "vi": "tiêu, dùng",
+  "z": 4.97
+ },
+ "split": {
+  "vi": "chia",
+  "z": 4.65
+ },
+ "sponsor": {
+  "vi": "nhà tài trợ",
+  "z": 4.04
+ },
+ "spouse": {
+  "vi": "vợ/chồng",
+  "z": 3.95
+ },
+ "spread": {
+  "vi": "lan truyền, rải ra",
+  "z": 4.81
+ },
+ "squander": {
+  "vi": "phung phí",
+  "z": 2.74
+ },
+ "stabilize": {
+  "vi": "ổn định",
+  "z": 3.46
+ },
+ "staff": {
+  "vi": "nhân viên",
+  "z": 5.08
+ },
+ "stage": {
+  "vi": "sân khấu; giai đoạn; (v) tổ chức",
+  "z": 5.1
+ },
+ "stance": {
+  "vi": "lập trường",
+  "z": 4.05
+ },
+ "stand": {
+  "vi": "chịu đựng",
+  "z": 5.14
+ },
+ "standard": {
+  "vi": "tiêu chuẩn",
+  "z": 5.03
+ },
+ "standards": {
+  "vi": "tiêu chuẩn, quy tắc",
+  "z": 4.78
+ },
+ "standing": {
+  "vi": "địa vị, danh tiếng",
+  "z": 4.86
+ },
+ "standpoint": {
+  "vi": "quan điểm",
+  "z": 3.65
+ },
+ "stare": {
+  "vi": "nhìn chằm chằm",
+  "z": 3.91
+ },
+ "start": {
+  "vi": "bắt đầu",
+  "z": 5.56
+ },
+ "start up": {
+  "vi": "khởi động",
+  "z": 5.5
+ },
+ "starting point": {
+  "vi": "điểm xuất phát",
+  "z": 4.94
+ },
+ "state": {
+  "vi": "phát biểu, tuyên bố",
+  "z": 5.78
+ },
+ "statement": {
+  "vi": "báo cáo, bản kê; lời tuyên bố",
+  "z": 4.97
+ },
+ "stationery": {
+  "vi": "văn phòng phẩm",
+  "z": 3.29
+ },
+ "status": {
+  "vi": "địa vị",
+  "z": 4.87
+ },
+ "stay abreast of": {
+  "vi": "cập nhật, theo kịp",
+  "z": 2.95
+ },
+ "stay on top of": {
+  "vi": "nắm bắt, cập nhật kịp",
+  "z": 5.12
+ },
+ "steal; haggle": {
+  "vi": "món hời; mặc cả",
+  "z": 4.41
+ },
+ "steep": {
+  "vi": "dốc, mạnh (tăng/giảm)",
+  "z": 3.99
+ },
+ "steer clear of": {
+  "vi": "tránh xa",
+  "z": 3.71
+ },
+ "steer; handbook": {
+  "vi": "dẫn dắt; sổ tay hướng dẫn",
+  "z": 3.72
+ },
+ "step down": {
+  "vi": "từ chức, nghỉ hưu",
+  "z": 5.06
+ },
+ "step forward": {
+  "vi": "xung phong",
+  "z": 4.82
+ },
+ "step; organize": {
+  "vi": "giai đoạn; tổ chức",
+  "z": 5.13
+ },
+ "sternly": {
+  "vi": "nghiêm khắc",
+  "z": 2.59
+ },
+ "stick to": {
+  "vi": "bám sát, tuân theo",
+  "z": 4.76
+ },
+ "stimulate": {
+  "vi": "kích thích",
+  "z": 3.67
+ },
+ "stimulus": {
+  "vi": "sự khích lệ",
+  "z": 3.82
+ },
+ "stipulation": {
+  "vi": "điều khoản quy định",
+  "z": 2.92
+ },
+ "stipulations": {
+  "vi": "các điều khoản",
+  "z": 2.77
+ },
+ "stock": {
+  "vi": "hàng tồn kho; (v) tích trữ",
+  "z": 4.93
+ },
+ "stock; provision": {
+  "vi": "hàng dự trữ; cung cấp",
+  "z": 4.93
+ },
+ "stop": {
+  "vi": "dừng",
+  "z": 5.52
+ },
+ "stop working": {
+  "vi": "nghỉ làm, nghỉ hưu",
+  "z": 5.18
+ },
+ "storage": {
+  "vi": "sự lưu trữ",
+  "z": 4.57
+ },
+ "store": {
+  "vi": "lưu trữ; (n) cửa hàng",
+  "z": 5.02
+ },
+ "strain": {
+  "vi": "áp lực, gánh nặng",
+  "z": 4.15
+ },
+ "strange": {
+  "vi": "lạ",
+  "z": 4.64
+ },
+ "strategy": {
+  "vi": "chiến lược",
+  "z": 4.74
+ },
+ "strengthen": {
+  "vi": "củng cố",
+  "z": 4.04
+ },
+ "stress": {
+  "vi": "căng thẳng; nhấn mạnh",
+  "z": 4.73
+ },
+ "stretch": {
+  "vi": "kéo dài",
+  "z": 4.35
+ },
+ "strictly": {
+  "vi": "một cách nghiêm ngặt, tuyệt đối",
+  "z": 4.16
+ },
+ "strike": {
+  "vi": "gây ấn tượng",
+  "z": 4.66
+ },
+ "strong": {
+  "vi": "mạnh; vững chắc",
+  "z": 5.22
+ },
+ "strongly": {
+  "vi": "mạnh mẽ",
+  "z": 4.47
+ },
+ "structure": {
+  "vi": "cấu trúc",
+  "z": 4.84
+ },
+ "study": {
+  "vi": "nghiên cứu",
+  "z": 5.26
+ },
+ "sturdy": {
+  "vi": "chắc chắn, bền",
+  "z": 3.44
+ },
+ "style": {
+  "vi": "phong cách",
+  "z": 5.11
+ },
+ "subject": {
+  "vi": "chủ đề; chủ thể",
+  "z": 4.96
+ },
+ "subject to": {
+  "vi": "phụ thuộc vào; dễ bị",
+  "z": 4.96
+ },
+ "subjective": {
+  "vi": "chủ quan",
+  "z": 3.79
+ },
+ "submit": {
+  "vi": "nộp, trình",
+  "z": 4.28
+ },
+ "subordinate": {
+  "vi": "cấp dưới",
+  "z": 3.45
+ },
+ "subscribe": {
+  "vi": "đăng ký (dài hạn)",
+  "z": 4.02
+ },
+ "substantially": {
+  "vi": "đáng kể",
+  "z": 3.96
+ },
+ "substitute": {
+  "vi": "thay thế; (n) người/vật thay thế",
+  "z": 4.17
+ },
+ "substitution": {
+  "vi": "sự thay thế",
+  "z": 3.41
+ },
+ "subtract": {
+  "vi": "trừ đi",
+  "z": 3.1
+ },
+ "success": {
+  "vi": "sự thành công",
+  "z": 5.06
+ },
+ "successful": {
+  "vi": "thành công",
+  "z": 4.94
+ },
+ "successive": {
+  "vi": "liên tiếp",
+  "z": 3.85
+ },
+ "sudden": {
+  "vi": "đột ngột",
+  "z": 4.4
+ },
+ "suffer": {
+  "vi": "chịu (thiệt hại)",
+  "z": 4.45
+ },
+ "sufficiently": {
+  "vi": "đầy đủ",
+  "z": 3.8
+ },
+ "suggest": {
+  "vi": "đề xuất",
+  "z": 4.75
+ },
+ "suggestion": {
+  "vi": "lời đề xuất, gợi ý",
+  "z": 4.23
+ },
+ "suit": {
+  "vi": "phù hợp",
+  "z": 4.7
+ },
+ "suitable": {
+  "vi": "phù hợp",
+  "z": 4.38
+ },
+ "summary": {
+  "vi": "bản tóm tắt",
+  "z": 4.37
+ },
+ "summon": {
+  "vi": "triệu tập",
+  "z": 3.55
+ },
+ "superficial": {
+  "vi": "hời hợt",
+  "z": 3.56
+ },
+ "superintendent": {
+  "vi": "người giám sát",
+  "z": 3.97
+ },
+ "supersede": {
+  "vi": "thay thế",
+  "z": 2.68
+ },
+ "supervise": {
+  "vi": "giám sát",
+  "z": 3.32
+ },
+ "supervisor": {
+  "vi": "người giám sát",
+  "z": 3.95
+ },
+ "supplier": {
+  "vi": "nhà cung cấp",
+  "z": 3.84
+ },
+ "supply": {
+  "vi": "nguồn cung; (v) cung cấp",
+  "z": 4.81
+ },
+ "support": {
+  "vi": "ủng hộ, hỗ trợ",
+  "z": 5.53
+ },
+ "suppose": {
+  "vi": "cho rằng",
+  "z": 4.56
+ },
+ "suppress": {
+  "vi": "đàn áp, kìm nén",
+  "z": 3.66
+ },
+ "surge": {
+  "vi": "sự tăng vọt",
+  "z": 3.82
+ },
+ "surrender": {
+  "vi": "từ bỏ, đầu hàng",
+  "z": 4.09
+ },
+ "survey": {
+  "vi": "khảo sát; tổng quan",
+  "z": 4.69
+ },
+ "susceptible to": {
+  "vi": "dễ bị ảnh hưởng",
+  "z": 3.67
+ },
+ "sustain": {
+  "vi": "duy trì; chịu (thiệt hại)",
+  "z": 3.93
+ },
+ "swap": {
+  "vi": "trao đổi, hoán đổi",
+  "z": 3.94
+ },
+ "sway": {
+  "vi": "ảnh hưởng, lay chuyển",
+  "z": 3.65
+ },
+ "synopsis": {
+  "vi": "tóm tắt",
+  "z": 3.38
+ },
+ "system": {
+  "vi": "hệ thống",
+  "z": 5.56
+ },
+ "systematically": {
+  "vi": "có hệ thống",
+  "z": 3.52
+ },
+ "tackle": {
+  "vi": "giải quyết",
+  "z": 4.15
+ },
+ "tactfully": {
+  "vi": "khéo léo",
+  "z": 2.36
+ },
+ "tactic": {
+  "vi": "chiến thuật",
+  "z": 3.71
+ },
+ "take": {
+  "vi": "nhận, lấy",
+  "z": 5.92
+ },
+ "take away": {
+  "vi": "lấy đi, trừ đi",
+  "z": 5.44
+ },
+ "take back": {
+  "vi": "trả lại; rút lại",
+  "z": 5.67
+ },
+ "take off": {
+  "vi": "trừ đi; cất cánh",
+  "z": 5.62
+ },
+ "take on": {
+  "vi": "tuyển; đảm nhận",
+  "z": 5.88
+ },
+ "take on loan": {
+  "vi": "vay",
+  "z": 4.65
+ },
+ "take out": {
+  "vi": "rút (tiền); vay",
+  "z": 5.79
+ },
+ "take out a loan": {
+  "vi": "vay tiền",
+  "z": 4.65
+ },
+ "take part": {
+  "vi": "tham gia",
+  "z": 5.54
+ },
+ "take part in": {
+  "vi": "tham gia",
+  "z": 5.54
+ },
+ "take place": {
+  "vi": "diễn ra",
+  "z": 5.5
+ },
+ "take up": {
+  "vi": "chiếm (chỗ, thời gian)",
+  "z": 5.79
+ },
+ "talent": {
+  "vi": "tài năng",
+  "z": 4.64
+ },
+ "tang": {
+  "vi": "vị hăng",
+  "z": 3.58
+ },
+ "tardily": {
+  "vi": "chậm trễ",
+  "z": 1.26
+ },
+ "target": {
+  "vi": "mục tiêu",
+  "z": 4.82
+ },
+ "task": {
+  "vi": "nhiệm vụ",
+  "z": 4.65
+ },
+ "taste": {
+  "vi": "khẩu vị, gu; (v) nếm",
+  "z": 4.73
+ },
+ "teaching": {
+  "vi": "việc giảng dạy",
+  "z": 4.72
+ },
+ "teamwork": {
+  "vi": "làm việc nhóm",
+  "z": 3.48
+ },
+ "technically": {
+  "vi": "về mặt kỹ thuật; theo đúng lý thuyết",
+  "z": 4.1
+ },
+ "technique": {
+  "vi": "kỹ thuật, phương pháp",
+  "z": 4.47
+ },
+ "technologically": {
+  "vi": "về mặt công nghệ",
+  "z": 3.15
+ },
+ "tedious": {
+  "vi": "tẻ nhạt, chán ngắt",
+  "z": 3.5
+ },
+ "tell": {
+  "vi": "nói, báo cho biết",
+  "z": 5.53
+ },
+ "tell apart": {
+  "vi": "phân biệt",
+  "z": 4.71
+ },
+ "tempt": {
+  "vi": "cám dỗ, lôi kéo",
+  "z": 3.22
+ },
+ "ten years": {
+  "vi": "mười năm",
+  "z": 5.0
+ },
+ "tendency": {
+  "vi": "xu hướng",
+  "z": 3.96
+ },
+ "tension": {
+  "vi": "sự căng thẳng",
+  "z": 4.22
+ },
+ "term": {
+  "vi": "điều khoản; kỳ hạn",
+  "z": 5.23
+ },
+ "termination": {
+  "vi": "sự chấm dứt",
+  "z": 3.73
+ },
+ "terms": {
+  "vi": "điều khoản",
+  "z": 5.1
+ },
+ "test": {
+  "vi": "thử nghiệm",
+  "z": 5.19
+ },
+ "thanks": {
+  "vi": "lời cảm ơn",
+  "z": 5.43
+ },
+ "theme": {
+  "vi": "chủ đề",
+  "z": 4.62
+ },
+ "thing": {
+  "vi": "thứ, đồ vật",
+  "z": 5.72
+ },
+ "think about": {
+  "vi": "nghĩ về, cân nhắc",
+  "z": 5.91
+ },
+ "think of": {
+  "vi": "nghĩ ra",
+  "z": 6.06
+ },
+ "thorough": {
+  "vi": "kỹ lưỡng, toàn diện",
+  "z": 3.97
+ },
+ "thought": {
+  "vi": "suy nghĩ",
+  "z": 5.59
+ },
+ "thoughtlessly": {
+  "vi": "thiếu suy nghĩ",
+  "z": 2.15
+ },
+ "threat": {
+  "vi": "mối đe doạ",
+  "z": 4.6
+ },
+ "thrill": {
+  "vi": "sự hồi hộp, phấn khích; (v) làm phấn khích",
+  "z": 3.72
+ },
+ "throw out": {
+  "vi": "vứt bỏ; bác bỏ",
+  "z": 4.82
+ },
+ "ticket price": {
+  "vi": "giá vé",
+  "z": 4.52
+ },
+ "tie to": {
+  "vi": "gắn vào, ràng buộc",
+  "z": 4.51
+ },
+ "tie; connect": {
+  "vi": "ràng buộc; kết nối",
+  "z": 4.51
+ },
+ "tier": {
+  "vi": "tầng, bậc, cấp",
+  "z": 4.16
+ },
+ "time limit": {
+  "vi": "thời hạn",
+  "z": 4.69
+ },
+ "time-consuming": {
+  "vi": "tốn thời gian",
+  "z": 3.89
+ },
+ "timetable": {
+  "vi": "thời gian biểu",
+  "z": 3.44
+ },
+ "timidly": {
+  "vi": "rụt rè",
+  "z": 2.35
+ },
+ "tiresome": {
+  "vi": "mệt mỏi, chán ngắt",
+  "z": 3.08
+ },
+ "together": {
+  "vi": "cùng nhau",
+  "z": 5.46
+ },
+ "tolerate": {
+  "vi": "chịu đựng",
+  "z": 3.84
+ },
+ "tool": {
+  "vi": "công cụ",
+  "z": 4.56
+ },
+ "topic": {
+  "vi": "chủ đề",
+  "z": 4.49
+ },
+ "topic; count": {
+  "vi": "chủ đề; quan trọng",
+  "z": 4.49
+ },
+ "total": {
+  "vi": "tổng thể",
+  "z": 5.21
+ },
+ "tough": {
+  "vi": "bền, chắc; khó khăn",
+  "z": 4.77
+ },
+ "tour": {
+  "vi": "chuyến tham quan",
+  "z": 4.99
+ },
+ "track": {
+  "vi": "theo dõi",
+  "z": 5.02
+ },
+ "trade": {
+  "vi": "nghề; thương mại",
+  "z": 5.12
+ },
+ "trademark": {
+  "vi": "nhãn hiệu",
+  "z": 3.89
+ },
+ "tradition": {
+  "vi": "truyền thống",
+  "z": 4.5
+ },
+ "traditional": {
+  "vi": "truyền thống",
+  "z": 4.84
+ },
+ "trainee": {
+  "vi": "thực tập sinh, người được đào tạo",
+  "z": 3.43
+ },
+ "training": {
+  "vi": "sự đào tạo",
+  "z": 5.18
+ },
+ "trait": {
+  "vi": "đặc điểm",
+  "z": 3.69
+ },
+ "transaction": {
+  "vi": "giao dịch",
+  "z": 4.21
+ },
+ "transformation": {
+  "vi": "sự biến đổi",
+  "z": 4.21
+ },
+ "translation": {
+  "vi": "sự chuyển đổi, bản dịch",
+  "z": 4.39
+ },
+ "transport": {
+  "vi": "vận chuyển",
+  "z": 4.68
+ },
+ "transportation": {
+  "vi": "sự vận chuyển",
+  "z": 4.57
+ },
+ "transporter": {
+  "vi": "đơn vị vận chuyển",
+  "z": 3.19
+ },
+ "trend": {
+  "vi": "xu hướng",
+  "z": 4.51
+ },
+ "trial": {
+  "vi": "sự thử nghiệm",
+  "z": 4.87
+ },
+ "trial; try": {
+  "vi": "dùng thử; thử",
+  "z": 4.87
+ },
+ "trip": {
+  "vi": "chuyến đi",
+  "z": 4.9
+ },
+ "triumph": {
+  "vi": "chiến thắng, thành công",
+  "z": 3.96
+ },
+ "trivial": {
+  "vi": "tầm thường",
+  "z": 3.66
+ },
+ "true": {
+  "vi": "trung thành; đúng",
+  "z": 5.4
+ },
+ "trust": {
+  "vi": "niềm tin; tin cậy",
+  "z": 5.13
+ },
+ "turn down": {
+  "vi": "từ chối",
+  "z": 5.21
+ },
+ "turn in": {
+  "vi": "nộp",
+  "z": 5.32
+ },
+ "turn off": {
+  "vi": "tắt",
+  "z": 5.22
+ },
+ "turn on": {
+  "vi": "bật",
+  "z": 5.31
+ },
+ "turn to": {
+  "vi": "tìm đến",
+  "z": 5.32
+ },
+ "turnover": {
+  "vi": "doanh thu; tỷ lệ thay thế nhân viên",
+  "z": 3.78
+ },
+ "type": {
+  "vi": "loại",
+  "z": 5.27
+ },
+ "typically": {
+  "vi": "thông thường, điển hình",
+  "z": 4.62
+ },
+ "unavailable": {
+  "vi": "không sẵn có",
+  "z": 3.63
+ },
+ "unaware": {
+  "vi": "không biết",
+  "z": 3.87
+ },
+ "uncertain": {
+  "vi": "không chắc chắn",
+  "z": 3.99
+ },
+ "uncertainty": {
+  "vi": "sự không chắc chắn",
+  "z": 4.03
+ },
+ "unclear": {
+  "vi": "không rõ ràng",
+  "z": 3.93
+ },
+ "uncover": {
+  "vi": "phát hiện, mở ra",
+  "z": 3.48
+ },
+ "underline": {
+  "vi": "nhấn mạnh",
+  "z": 2.98
+ },
+ "undermine": {
+  "vi": "làm suy yếu",
+  "z": 3.65
+ },
+ "understand": {
+  "vi": "hiểu",
+  "z": 5.37
+ },
+ "undertake": {
+  "vi": "đảm nhận",
+  "z": 3.73
+ },
+ "uneasily": {
+  "vi": "bồn chồn, lo lắng",
+  "z": 2.33
+ },
+ "uneasy": {
+  "vi": "bất an",
+  "z": 3.45
+ },
+ "uneasy; eager": {
+  "vi": "lo lắng; háo hức",
+  "z": 3.45
+ },
+ "unfaithful": {
+  "vi": "không trung thành",
+  "z": 3.07
+ },
+ "unfamiliar": {
+  "vi": "xa lạ",
+  "z": 3.62
+ },
+ "unfavorable": {
+  "vi": "bất lợi",
+  "z": 3.21
+ },
+ "unfold": {
+  "vi": "mở ra",
+  "z": 3.45
+ },
+ "uniformity": {
+  "vi": "sự đồng nhất",
+  "z": 3.03
+ },
+ "uniformly": {
+  "vi": "đồng đều, đồng nhất",
+  "z": 3.19
+ },
+ "unimaginative": {
+  "vi": "thiếu sáng tạo",
+  "z": 2.54
+ },
+ "unimportant": {
+  "vi": "không quan trọng",
+  "z": 3.23
+ },
+ "unite": {
+  "vi": "đoàn kết, hợp nhất",
+  "z": 3.9
+ },
+ "universal": {
+  "vi": "phổ quát, chung",
+  "z": 4.49
+ },
+ "unnecessary": {
+  "vi": "không cần thiết",
+  "z": 4.18
+ },
+ "unobservant": {
+  "vi": "thiếu tinh ý",
+  "z": 1.61
+ },
+ "unpaid": {
+  "vi": "chưa thanh toán",
+  "z": 3.73
+ },
+ "unpopularity": {
+  "vi": "sự không được ưa chuộng",
+  "z": 2.62
+ },
+ "unproductive": {
+  "vi": "không hiệu quả",
+  "z": 3.1
+ },
+ "unprofitably": {
+  "vi": "không có lãi",
+  "z": 1.1
+ },
+ "unrealistic": {
+  "vi": "không thực tế",
+  "z": 3.54
+ },
+ "unrestricted": {
+  "vi": "không hạn chế",
+  "z": 3.27
+ },
+ "unsubscribe": {
+  "vi": "huỷ đăng ký",
+  "z": 3.03
+ },
+ "unsure": {
+  "vi": "không chắc",
+  "z": 3.75
+ },
+ "unusual": {
+  "vi": "bất thường",
+  "z": 4.45
+ },
+ "unusually": {
+  "vi": "bất thường",
+  "z": 3.76
+ },
+ "unwisely": {
+  "vi": "thiếu khôn ngoan",
+  "z": 2.39
+ },
+ "up-to-date": {
+  "vi": "cập nhật, hiện đại",
+  "z": 5.19
+ },
+ "upbringing": {
+  "vi": "sự giáo dưỡng",
+  "z": 3.43
+ },
+ "update": {
+  "vi": "cập nhật; (n) bản cập nhật",
+  "z": 4.69
+ },
+ "upgrade": {
+  "vi": "nâng cấp",
+  "z": 4.24
+ },
+ "upheaval": {
+  "vi": "biến động lớn",
+  "z": 3.13
+ },
+ "upset": {
+  "vi": "làm xáo trộn, làm buồn",
+  "z": 4.61
+ },
+ "urge": {
+  "vi": "sự thôi thúc; (v) thúc giục",
+  "z": 4.11
+ },
+ "use": {
+  "vi": "sử dụng",
+  "z": 5.81
+ },
+ "use up": {
+  "vi": "dùng hết",
+  "z": 5.71
+ },
+ "useful; in effect": {
+  "vi": "hữu ích; có hiệu lực",
+  "z": 4.72
+ },
+ "usually": {
+  "vi": "thường thường",
+  "z": 5.15
+ },
+ "vacate": {
+  "vi": "rời khỏi, bỏ trống",
+  "z": 3.14
+ },
+ "vague": {
+  "vi": "mơ hồ",
+  "z": 3.87
+ },
+ "valid": {
+  "vi": "có hiệu lực, hợp lệ",
+  "z": 4.38
+ },
+ "validate": {
+  "vi": "xác nhận hiệu lực",
+  "z": 3.4
+ },
+ "valuable": {
+  "vi": "quý giá",
+  "z": 4.51
+ },
+ "value": {
+  "vi": "giá trị; (v) coi trọng",
+  "z": 5.15
+ },
+ "variably": {
+  "vi": "thay đổi, không đồng đều",
+  "z": 2.26
+ },
+ "variety": {
+  "vi": "sự đa dạng; nhiều loại",
+  "z": 4.75
+ },
+ "various": {
+  "vi": "khác nhau, đa dạng",
+  "z": 5.12
+ },
+ "vary": {
+  "vi": "thay đổi, khác nhau",
+  "z": 4.25
+ },
+ "vendor": {
+  "vi": "nhà cung cấp, người bán",
+  "z": 3.79
+ },
+ "venture": {
+  "vi": "dự án kinh doanh mạo hiểm",
+  "z": 4.26
+ },
+ "venue": {
+  "vi": "địa điểm",
+  "z": 4.25
+ },
+ "verbally": {
+  "vi": "bằng lời nói",
+  "z": 3.41
+ },
+ "verify": {
+  "vi": "xác minh",
+  "z": 3.88
+ },
+ "vested": {
+  "vi": "được bảo đảm, được trao quyền (lương hưu)",
+  "z": 3.45
+ },
+ "vicinity": {
+  "vi": "vùng lân cận",
+  "z": 3.8
+ },
+ "view": {
+  "vi": "cái nhìn",
+  "z": 5.19
+ },
+ "viewers": {
+  "vi": "người xem",
+  "z": 4.22
+ },
+ "viewpoint": {
+  "vi": "quan điểm",
+  "z": 3.64
+ },
+ "vigorously": {
+  "vi": "mạnh mẽ",
+  "z": 3.39
+ },
+ "violate": {
+  "vi": "vi phạm",
+  "z": 3.75
+ },
+ "vital": {
+  "vi": "thiết yếu",
+  "z": 4.38
+ },
+ "vocation": {
+  "vi": "nghề nghiệp",
+  "z": 3.2
+ },
+ "vogue; manner": {
+  "vi": "thời trang; cách thức",
+  "z": 3.71
+ },
+ "voice": {
+  "vi": "bày tỏ",
+  "z": 5.07
+ },
+ "volume": {
+  "vi": "dung tích, khối lượng",
+  "z": 4.76
+ },
+ "voluntary": {
+  "vi": "tự nguyện",
+  "z": 4.01
+ },
+ "volunteer": {
+  "vi": "tình nguyện; (n) tình nguyện viên",
+  "z": 4.28
+ },
+ "vow": {
+  "vi": "lời thề, cam kết",
+  "z": 3.56
+ },
+ "wage": {
+  "vi": "tiền công, tiền lương",
+  "z": 4.44
+ },
+ "want": {
+  "vi": "muốn",
+  "z": 6.04
+ },
+ "warily": {
+  "vi": "thận trọng",
+  "z": 2.39
+ },
+ "warning": {
+  "vi": "lời cảnh báo",
+  "z": 4.59
+ },
+ "waste": {
+  "vi": "lãng phí; (n) rác thải",
+  "z": 4.81
+ },
+ "watch": {
+  "vi": "theo dõi",
+  "z": 5.34
+ },
+ "wavering": {
+  "vi": "dao động, do dự",
+  "z": 2.79
+ },
+ "way": {
+  "vi": "cách",
+  "z": 6.01
+ },
+ "way; come near": {
+  "vi": "cách tiếp cận; đến gần",
+  "z": 6.01
+ },
+ "weak": {
+  "vi": "yếu",
+  "z": 4.66
+ },
+ "weaken": {
+  "vi": "làm yếu",
+  "z": 3.49
+ },
+ "weakly": {
+  "vi": "một cách yếu ớt",
+  "z": 3.17
+ },
+ "web": {
+  "vi": "mạng lưới",
+  "z": 4.74
+ },
+ "weigh": {
+  "vi": "cân nhắc",
+  "z": 3.99
+ },
+ "weight": {
+  "vi": "gánh nặng",
+  "z": 5.02
+ },
+ "well-known": {
+  "vi": "nổi tiếng, quen thuộc",
+  "z": 5.3
+ },
+ "when necessary": {
+  "vi": "khi cần",
+  "z": 4.9
+ },
+ "whole": {
+  "vi": "toàn bộ",
+  "z": 5.46
+ },
+ "widen": {
+  "vi": "mở rộng",
+  "z": 3.25
+ },
+ "wife": {
+  "vi": "vợ",
+  "z": 5.23
+ },
+ "willing to accept": {
+  "vi": "sẵn sàng chấp nhận",
+  "z": 4.48
+ },
+ "wisely": {
+  "vi": "khôn ngoan",
+  "z": 3.62
+ },
+ "wish": {
+  "vi": "mong muốn",
+  "z": 5.18
+ },
+ "withdraw": {
+  "vi": "rút (tiền), rút lui",
+  "z": 4.05
+ },
+ "withdrawal": {
+  "vi": "sự rút lui, huỷ",
+  "z": 4.05
+ },
+ "withhold": {
+  "vi": "khấu trừ; giữ lại",
+  "z": 3.28
+ },
+ "without": {
+  "vi": "không có",
+  "z": 5.69
+ },
+ "work": {
+  "vi": "hoạt động, vận hành",
+  "z": 5.96
+ },
+ "work out": {
+  "vi": "tìm ra, giải quyết",
+  "z": 5.82
+ },
+ "workforce": {
+  "vi": "lực lượng lao động",
+  "z": 3.94
+ },
+ "worried": {
+  "vi": "lo lắng",
+  "z": 4.63
+ },
+ "worry": {
+  "vi": "lo lắng",
+  "z": 4.84
+ },
+ "worth": {
+  "vi": "giá trị",
+  "z": 5.16
+ },
+ "wrinkle": {
+  "vi": "nếp nhăn; (v) làm nhăn",
+  "z": 3.12
+ },
+ "writing materials": {
+  "vi": "đồ dùng viết",
+  "z": 4.6
+ },
+ "yearly": {
+  "vi": "hằng năm",
+  "z": 3.88
+ },
+ "yield": {
+  "vi": "lợi nhuận; (v) mang lại",
+  "z": 4.16
+ }
+}

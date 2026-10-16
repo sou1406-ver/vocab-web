@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { buildCatalog, familyLookup, WORDS } from "./data";
+import { buildCatalog, familyLookup, freqLevel, termInfo, WORDS } from "./data";
 import { mergeData } from "./merge";
 import { buildQs, findForm, formationQs, makeQuiz, QUIZ_LEN } from "./quiz";
 import { searchWords } from "./search";
@@ -66,5 +66,22 @@ describe("tìm kiếm", () => {
   });
   it("familyLookup bỏ trợ động từ", () => {
     expect(familyLookup(cat, "will cancel")?.root.word).toBe("cancellation");
+  });
+});
+
+describe("đồng nghĩa / trái nghĩa", () => {
+  it("mọi từ đồng nghĩa / trái nghĩa đều có nghĩa tiếng Việt và độ phổ biến", () => {
+    for (const w of WORDS)
+      for (const t of [...w.syn, ...w.ant]) {
+        expect(termInfo(t).vi, `${w.word} › ${t}`).not.toBe("");
+        expect(typeof termInfo(t).z).toBe("number");
+      }
+  });
+  it("mức phổ biến theo thang Zipf", () => {
+    expect(freqLevel(termInfo("follow").z).level).toBe(3);
+    expect(freqLevel(termInfo("disobey").z).level).toBeLessThan(2);
+  });
+  it("chỉ mục liên kết ngược: follow là đồng nghĩa của nhiều từ gốc", () => {
+    expect((cat.relIndex["follow"] ?? []).length).toBeGreaterThan(1);
   });
 });

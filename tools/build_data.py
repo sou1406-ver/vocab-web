@@ -459,6 +459,41 @@ write_json("lessons", out_lessons, one_per_line=True)
 write_json("affixes", affixes)
 write_json("words", out_words, one_per_line=True)
 
+# ---------- Từ đồng nghĩa / trái nghĩa: nghĩa + độ phổ biến → src/data/terms.json ----------
+# Nghĩa: lấy từ sách nếu từ đó có trong 600 từ (từ gốc / họ từ), không thì lấy data/relations.txt.
+# Độ phổ biến: thang Zipf từ data/source/freq.json (tools/make_freq.py).
+REL_VI = {}
+for ln, line in enumerate(open(os.path.join(ROOT, "data/relations.txt"), encoding="utf-8"), 1):
+    line = line.strip()
+    if not line or line.startswith("#"):
+        continue
+    if " | " not in line:
+        sys.exit(f"data/relations.txt:{ln} cần dạng 'từ | nghĩa': {line}")
+    t, vi = line.split(" | ", 1)
+    REL_VI[t.strip().lower()] = vi.strip()
+FREQ_PATH = os.path.join(ROOT, "data/source/freq.json")
+FREQ = json.load(open(FREQ_PATH, encoding="utf-8")) if os.path.exists(FREQ_PATH) else {}
+BOOK_VI = {}
+for w in out_words:
+    BOOK_VI.setdefault(w["word"].lower(), w["vi"])
+    for f in w["family"]:
+        BOOK_VI.setdefault(f["w"].lower(), f["vi"])
+terms = {}
+rel_missing = []
+for w in out_words:
+    for t in w["syn"] + w["ant"]:
+        k = t.lower()
+        vi = BOOK_VI.get(k) or REL_VI.get(k)
+        if not vi:
+            rel_missing.append(t)
+        terms[k] = {"vi": vi or "", "z": FREQ.get(k, 0)}
+for w in out_words:  # độ phổ biến của chính từ gốc (hiện cạnh tiêu đề)
+    terms.setdefault(w["word"].lower(), {"vi": w["vi"], "z": FREQ.get(w["word"].lower(), 0)})
+write_json("terms", dict(sorted(terms.items())))
+print(f"Đồng nghĩa / trái nghĩa: {len(terms)} mục, {len(rel_missing)} từ chưa có nghĩa")
+if rel_missing:
+    print("  chưa có nghĩa:", ", ".join(sorted(set(rel_missing))[:30]))
+
 fam_total = sum(len(w["family"]) for w in out_words)
 print(
     f"{len(out_lessons)} bài, {len(out_words)} từ gốc, {fam_total} từ trong họ từ, "

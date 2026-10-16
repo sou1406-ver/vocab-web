@@ -40,14 +40,14 @@ e2e/            test Playwright
 
 ## Chức năng
 
-| Tab              | Nội dung                                                                                                                                                                                                                       |
-| ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Tổng quan        | Trang chính theo hồ sơ: mục tiêu hôm nay, chuỗi ngày học, lộ trình theo điểm TOEIC mục tiêu, lịch hoạt động 12 tuần, tiến độ 10 phần, từ hay làm sai, bài tập gần đây                                                          |
-| Chủ đề           | Mục lục 10 phần × 5 bài theo sách, tiến độ từng bài, ô “Học tiếp” gợi ý bài đang học dở                                                                                                                                        |
-| Trường từ        | Sơ đồ mỗi từ: câu ví dụ có nghĩa tiếng Việt, phiên âm IPA, cấu tạo tiền tố/gốc/hậu tố, họ từ theo 4 từ loại (kèm câu ví dụ _Word Families_ trong sách), đồng nghĩa / trái nghĩa. Lọc theo trạng thái, từ loại, phụ tố; sắp xếp |
-| Flashcard 3D     | Lật thẻ, tự đánh giá Chưa nhớ / Đang học / Đã thuộc (phím `Space`, `1` `2` `3`, `←` `→`)                                                                                                                                       |
-| Bài tập          | **Bài tập trong sách**: Words in Context (50 đoạn), Part 5 (300 câu), Part 6 (50 đoạn), Word Review (10 bài × 19 câu) — chấm điểm, giải thích, lưu điểm cao nhất. **Tự luyện**: biến đổi từ loại, đồng nghĩa, nghĩa, ghép từ   |
-| Tiền tố · Hậu tố | 92 phụ tố, bấm vào để xem mọi từ dùng phụ tố đó                                                                                                                                                                                |
+| Tab              | Nội dung                                                                                                                                                                                                                                                                                                                                 |
+| ---------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Tổng quan        | Trang chính theo hồ sơ: mục tiêu hôm nay, chuỗi ngày học, lộ trình theo điểm TOEIC mục tiêu, lịch hoạt động 12 tuần, tiến độ 10 phần, từ hay làm sai, bài tập gần đây                                                                                                                                                                    |
+| Chủ đề           | Mục lục 10 phần × 5 bài theo sách, tiến độ từng bài, ô “Học tiếp” gợi ý bài đang học dở                                                                                                                                                                                                                                                  |
+| Trường từ        | Sơ đồ mỗi từ: câu ví dụ có nghĩa tiếng Việt, phiên âm IPA, đồng nghĩa / trái nghĩa kèm nghĩa + độ phổ biến (từ phổ biến xếp trước, bấm để sang trường từ liên quan), cấu tạo tiền tố/gốc/hậu tố, họ từ theo 4 từ loại (kèm câu ví dụ _Word Families_ trong sách), đồng nghĩa / trái nghĩa. Lọc theo trạng thái, từ loại, phụ tố; sắp xếp |
+| Flashcard 3D     | Lật thẻ, tự đánh giá Chưa nhớ / Đang học / Đã thuộc (phím `Space`, `1` `2` `3`, `←` `→`)                                                                                                                                                                                                                                                 |
+| Bài tập          | **Bài tập trong sách**: Words in Context (50 đoạn), Part 5 (300 câu), Part 6 (50 đoạn), Word Review (10 bài × 19 câu) — chấm điểm, giải thích, lưu điểm cao nhất. **Tự luyện**: biến đổi từ loại, đồng nghĩa, nghĩa, ghép từ                                                                                                             |
+| Tiền tố · Hậu tố | 92 phụ tố, bấm vào để xem mọi từ dùng phụ tố đó                                                                                                                                                                                                                                                                                          |
 
 Ô tìm kiếm trên thanh tiêu đề (phím `/`) tìm được từ gốc, họ từ, đồng nghĩa và nghĩa tiếng Việt (gõ không dấu cũng được).
 **Hồ sơ học tập** (nút avatar góc phải): mỗi người một hồ sơ với tên, mục tiêu điểm TOEIC (450 / 600 / 750 / 900+) và số câu mỗi ngày;
@@ -94,6 +94,8 @@ data/source/exercises.json            ← bài tập trong sách (tools/parse_ex
 data/source/exercises_overrides.json  ← sửa tay chỗ OCR sai (đã đối chiếu ảnh trang) + bảng sửa chính tả
 data/enrich/*.txt                     ← nghĩa tiếng Việt, đồng nghĩa, trái nghĩa, cấu tạo từ (sửa ở đây)
 data/translations/*.txt               ← nghĩa tiếng Việt của 1900 câu ví dụ
+data/relations.txt                    ← nghĩa tiếng Việt của 1400 từ đồng nghĩa / trái nghĩa ngoài sách
+data/source/freq.json                 ← độ phổ biến (thang Zipf, dữ liệu wordfreq — tools/make_freq.py)
 tools/build_data.py                   ← ghép tất cả thành src/data/*.json
 ```
 

@@ -1,6 +1,6 @@
 import type { CSSProperties, ReactNode } from "react";
 import { Link } from "react-router-dom";
-import { Chips, Ipa, Morph, netHref, PosTag, SpeakBtn } from "@/components/bits";
+import { Chips, Ipa, Morph, PosTag, SpeakBtn } from "@/components/bits";
 import { Icon } from "@/components/Icon";
 import { familyOf, lessonLabel, LESSON_BY_N, POS_COLS, STATUS_INFO, TOPIC_BY_ID, unitOf } from "@/lib/data";
 import type { FamilyEntry, Status, Word } from "@/lib/types";
@@ -8,6 +8,7 @@ import { lower, same } from "@/lib/util";
 import { goLesson, useActions } from "@/state/actions";
 import { useProfile } from "@/state/profile";
 import { toast, useUI } from "@/state/ui";
+import { FreqLegend, RelationList } from "./Relations";
 
 const QUICK_TYPES: [string, string][] = [
   ["synonym", "Đồng nghĩa & Trái nghĩa"],
@@ -71,26 +72,6 @@ export function WordCanvas({ w, prev, next, lesson }: { w: Word; prev?: Word; ne
   const hasRel = w.syn.length > 0 || w.ant.length > 0;
   // Đánh số các mục theo thứ tự thực sự hiển thị (mục trống bị ẩn)
   let no = 0;
-
-  const relCard = (x: string, kind: "syn" | "ant") => {
-    const target = catalog.rootIdFor(x);
-    return (
-      <div className={`rel-card ${kind}`} key={kind + x}>
-        <div>
-          <b>{x}</b>
-          {target && target !== w.id && (
-            <>
-              {" "}
-              <Link to={netHref(target, x)} style={{ fontSize: ".72rem" }}>
-                xem trường từ →
-              </Link>
-            </>
-          )}
-        </div>
-        <SpeakBtn text={x} />
-      </div>
-    );
-  };
 
   return (
     <>
@@ -240,13 +221,18 @@ export function WordCanvas({ w, prev, next, lesson }: { w: Word; prev?: Word; ne
       <div className={hasRel ? "grid grid-2" : "grid"}>
         {hasRel && (
           <section className="card branch">
-            <Head no={++no} title="Đồng nghĩa & trái nghĩa" />
+            <Head
+              no={++no}
+              title="Đồng nghĩa & trái nghĩa"
+              sub="Từ phổ biến xếp trước · bấm từ để mở trường từ của nó"
+              extra={<FreqLegend />}
+            />
             {w.syn.length > 0 && (
               <>
                 <div className="rel-label" style={{ color: "var(--teal-text)" }}>
                   ≈ Đồng nghĩa
                 </div>
-                {w.syn.map((x) => relCard(x, "syn"))}
+                <RelationList w={w} cat={catalog} kind="syn" />
               </>
             )}
             {w.ant.length > 0 && (
@@ -254,7 +240,7 @@ export function WordCanvas({ w, prev, next, lesson }: { w: Word; prev?: Word; ne
                 <div className="rel-label" style={{ color: "var(--rose-text)", marginTop: w.syn.length ? 16 : 0 }}>
                   ≠ Trái nghĩa
                 </div>
-                {w.ant.map((x) => relCard(x, "ant"))}
+                <RelationList w={w} cat={catalog} kind="ant" />
               </>
             )}
           </section>

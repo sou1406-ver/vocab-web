@@ -109,3 +109,115 @@ a.btn.primary {
   /* nét xanh của logo hơi tối trên nền tối: tăng sáng nhẹ */
   filter: brightness(1.35) saturate(1.1);
 }
+
+/* ============ Đồng nghĩa & trái nghĩa: nghĩa, độ phổ biến, liên kết ============ */
+.rel-card {
+  align-items: flex-start;
+  border: 1px solid transparent;
+}
+.rel-main {
+  min-width: 0;
+  flex: 1;
+}
+.rel-top {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.rel-card .rel-word {
+  font-weight: 650;
+  font-size: 1rem;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+.rel-card a.rel-word {
+  text-decoration: underline dotted;
+  text-underline-offset: 4px;
+  text-decoration-thickness: 1.5px;
+}
+.rel-card a.rel-word:hover {
+  text-decoration-style: solid;
+}
+.rel-card a.rel-word .icon {
+  opacity: 0.6;
+}
+.rel-vi {
+  margin-top: 2px;
+  font-size: 0.86rem;
+  color: var(--text-2);
+  line-height: 1.45;
+}
+.rel-also {
+  margin-top: 4px;
+  font-size: 0.76rem;
+  color: var(--muted);
+}
+.rel-also a {
+  font-size: inherit;
+  font-weight: 600;
+}
+/* Từ phổ biến: viền + nền đậm hơn để nổi bật */
+.rel-card.common.syn {
+  border-color: color-mix(in oklch, var(--teal) 45%, transparent);
+}
+.rel-card.common.ant {
+  border-color: color-mix(in oklch, var(--rose) 45%, transparent);
+}
+.freq-tag {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  padding: 1px 8px;
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--text-2);
+  border: 1px solid var(--surface-3);
+}
+.freq-tag.top {
+  background: var(--amber-soft);
+  color: var(--amber-text);
+  border-color: color-mix(in oklch, var(--amber) 50%, transparent);
+}
+/* vạch đo 3 nấc */
+.freq {
+  display: inline-flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 12px;
+  flex: none;
+}
+.freq i {
+  width: 4px;
+  border-radius: 1px;
+  background: currentColor;
+  opacity: 0.22;
+}
+.freq i:nth-child(1) {
+  height: 5px;
+}
+.freq i:nth-child(2) {
+  height: 8px;
+}
+.freq i:nth-child(3) {
+  height: 12px;
+}
+.freq-1 i:nth-child(-n + 1),
+.freq-2 i:nth-child(-n + 2),
+.freq-3 i:nth-child(-n + 3) {
+  opacity: 0.9;
+}
+.freq-legend {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.74rem;
+  color: var(--muted);
+  flex-wrap: wrap;
+}
+.freq-legend .freq {
+  margin-left: 6px;
+  color: var(--text-2);
+}

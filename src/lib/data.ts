@@ -1,6 +1,7 @@
 import affixesJson from "@/data/affixes.json";
 import exercisesJson from "@/data/exercises.json";
 import lessonsJson from "@/data/lessons.json";
+import termsJson from "@/data/terms.json";
 import topicsJson from "@/data/topics.json";
 import wordsJson from "@/data/words.json";
 import type { Affix, Exercises, FamilyEntry, Lesson, Topic, Word } from "./types";
@@ -12,6 +13,17 @@ export const LESSONS = lessonsJson as Lesson[];
 export const TOPICS = topicsJson as Topic[];
 export const AFFIXES = affixesJson as unknown as Record<string, Affix>;
 export const EXERCISES = exercisesJson as unknown as Exercises;
+/** Nghĩa + độ phổ biến (thang Zipf) của từ đồng nghĩa / trái nghĩa */
+export const TERMS = termsJson as Record<string, { vi: string; z: number }>;
+
+/** Mức phổ biến theo thang Zipf (tần suất trong tiếng Anh nói chung) */
+export function freqLevel(z: number): { level: 0 | 1 | 2 | 3; label: string } {
+  if (z >= 5) return { level: 3, label: "Rất phổ biến" };
+  if (z >= 4.3) return { level: 2, label: "Phổ biến" };
+  if (z >= 3.4) return { level: 1, label: "Ít gặp hơn" };
+  return { level: 0, label: "Hiếm gặp" };
+}
+export const termInfo = (t: string) => TERMS[lower(t)] ?? { vi: "", z: 0 };
 
 export const LESSON_BY_N: Record<number, Lesson> = Object.fromEntries(LESSONS.map((l) => [l.n, l]));
 export const CUSTOM_TOPIC: Topic = {
@@ -101,6 +113,8 @@ export interface Catalog {
   rootIdFor: (form: string, prefer?: string) => string | null;
   scope: (unit: string, lesson: string) => Word[];
   topics: Topic[];
+  /** Từ đồng nghĩa / trái nghĩa → các từ gốc có nó trong danh sách */
+  relIndex: Record<string, { id: string; kind: "syn" | "ant" }[]>;
 }
 
 export function buildCatalog(custom: Word[]): Catalog {
@@ -112,9 +126,12 @@ export function buildCatalog(custom: Word[]): Catalog {
     const ids = (formIndex[k] ??= []);
     if (!ids.includes(id)) ids.push(id);
   };
+  const relIndex: Catalog["relIndex"] = {};
   for (const w of all) {
     add(w.word, w.id);
     for (const f of w.family) add(f.w, w.id);
+    for (const t of w.syn) (relIndex[lower(t)] ??= []).push({ id: w.id, kind: "syn" });
+    for (const t of w.ant) (relIndex[lower(t)] ??= []).push({ id: w.id, kind: "ant" });
   }
   return {
     all,
@@ -130,6 +147,7 @@ export function buildCatalog(custom: Word[]): Catalog {
         (w) => (unit === "all" || unitOf(w) === unit) && (lesson === "all" || String(w.lesson) === String(lesson)),
       ),
     topics: custom.length ? [...TOPICS, CUSTOM_TOPIC] : TOPICS,
+    relIndex,
   };
 }
 

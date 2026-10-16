@@ -1,4 +1,4 @@
-import type { Catalog } from "./data";
+import { termInfo, type Catalog } from "./data";
 import type { Word } from "./types";
 import { fold, lower, same } from "./util";
 
@@ -25,7 +25,15 @@ function indexOf(cat: Catalog) {
       if (!same(f.w, w.word))
         idx.push({ form: f.w, pos: f.pos, vi: f.vi, ipa: f.ipa, root: w, kind: "family", ff: "", fv: "" });
     for (const s of w.syn)
-      idx.push({ form: s, pos: "", vi: `đồng nghĩa của “${w.word}”`, root: w, kind: "syn", ff: "", fv: "" });
+      idx.push({
+        form: s,
+        pos: "",
+        vi: [termInfo(s).vi, `≈ ${w.word}`].filter(Boolean).join(" · "),
+        root: w,
+        kind: "syn",
+        ff: "",
+        fv: "",
+      });
   }
   for (const e of idx) {
     e.ff = fold(e.form);
@@ -47,7 +55,7 @@ export function searchWords(cat: Catalog, q: string, limit = 10): SearchHit[] {
     else if (e.ff.startsWith(f)) s = 1;
     else if (e.ff.includes(" " + f) || e.ff.includes("-" + f)) s = 2;
     else if (f.length >= 3 && e.ff.includes(f)) s = 3;
-    else if (f.length >= 2 && e.kind !== "syn" && e.fv.includes(f)) s = 4;
+    else if (f.length >= 2 && e.fv.includes(f)) s = 4;
     if (s >= 0) scored.push([s * 10 + kindRank[e.kind], e]);
   }
   scored.sort((a, b) => a[0] - b[0] || a[1].form.length - b[1].form.length);
