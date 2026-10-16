@@ -1,131 +1,186 @@
-<p align="center"><img src="public/logo-full.png" width="220" alt="Vocab Learn"></p>
+<p align="center"><img src="public/logo-full.png" width="200" alt="Vocab Learn"></p>
 
-# Vocab Learn — 600 Essential Words for the TOEIC
+<h1 align="center">Vocab Learn</h1>
 
-Web học từ vựng theo **chủ đề** và **trường từ** (tiền tố + gốc + hậu tố, biến đổi từ loại, đồng nghĩa / trái nghĩa),
-dữ liệu lấy từ sách _600 Essential Words for the TOEIC Test_.
+<p align="center">
+  Học <b>600 Essential Words for the TOEIC</b> theo trường từ — học một từ, nhớ cả họ từ.<br>
+  <a href="https://vocab-web-a0d13.web.app"><b>vocab-web-a0d13.web.app</b></a>
+</p>
 
-## Chạy
+---
 
-Viết bằng **React 18 + TypeScript + Vite**, hiệu ứng từ [React Bits](https://reactbits.dev) (CountUp, BlurText, SpotlightCard, ClickSpark).
-Cần Node.js 20+.
+Mỗi từ trong sách được tách thành **tiền tố + gốc + hậu tố**, nối với cả họ từ (danh từ, động từ, tính từ, trạng từ),
+từ đồng nghĩa và trái nghĩa — đúng dạng bài điền từ của TOEIC Part 5. Kèm toàn bộ bài tập trong sách có chấm điểm,
+flashcard, và đồng bộ tiến độ qua tài khoản Google.
 
-```
+## Tính năng
+
+**Học**
+
+- **Chủ đề** — mục lục 10 phần × 50 bài theo sách, tiến độ từng bài, gợi ý bài nên học tiếp.
+- **Trường từ** — sơ đồ của mỗi từ:
+  - phiên âm IPA, nghe phát âm, nghĩa tiếng Việt, câu ví dụ trong sách **kèm bản dịch**;
+  - công thức cấu tạo (bấm vào phụ tố để xem mọi từ dùng nó);
+  - họ từ theo từ loại, câu ví dụ _Word Families_ của sách;
+  - đồng nghĩa / trái nghĩa kèm nghĩa và **độ phổ biến** (từ thông dụng xếp trước, có nhãn nổi bật);
+    bấm vào từ nào cũng đi tới đúng từ đó, các trường từ liên kết qua lại;
+  - lọc theo trạng thái, từ loại, phụ tố; sắp xếp; thanh chuyển bài.
+- **Tiền tố · Hậu tố** — 92 phụ tố chia theo chức năng (tạo danh từ, tính từ…), mỗi phụ tố liệt kê các từ dùng nó.
+- **Tìm kiếm** (phím `/`) — tìm từ gốc, họ từ, đồng nghĩa, cả nghĩa tiếng Việt, gõ không dấu cũng được.
+
+**Luyện**
+
+- **Flashcard 3D** — lật thẻ, tự chấm Chưa nhớ / Đang học / Đã thuộc (phím `Space`, `1` `2` `3`, `←` `→`).
+- **Bài tập trong sách** — Words in Context (50 đoạn, 600 chỗ trống), Part 5 (300 câu), Part 6 (50 đoạn, 150 chỗ trống),
+  Word Review (10 bài × 19 câu):
+  chấm điểm, chỉ đáp án đúng, dẫn về trường từ liên quan, lưu điểm cao nhất.
+- **Tự luyện** — biến đổi từ loại (chọn đáp án hoặc tự gõ), đồng nghĩa / trái nghĩa, nghĩa của từ, ghép tiền tố + gốc + hậu tố.
+
+**Cá nhân hoá**
+
+- **Tổng quan** — mục tiêu hôm nay, chuỗi ngày học, lộ trình theo điểm TOEIC mục tiêu (450 / 600 / 750 / 900+),
+  lịch hoạt động 12 tuần, tiến độ theo phần, từ hay làm sai.
+- **Hồ sơ** — nhiều người dùng chung một máy, mỗi người một hồ sơ riêng.
+- **Đăng nhập Google** — tiến độ lưu lên Firestore, học tiếp trên mọi thiết bị (dữ liệu nhiều máy được gộp, không ghi đè).
+- **Từ của tôi & sao lưu** — tự thêm trường từ ngoài sách, xuất / nhập JSON.
+- Giao diện sáng / tối / theo máy, responsive tới điện thoại, đạt kiểm tra truy cập WCAG 2 AA.
+
+## Dữ liệu
+
+| Nội dung                                          | Số lượng |
+| ------------------------------------------------- | -------- |
+| Từ gốc (50 bài)                                   | 600      |
+| Từ trong họ từ                                    | 1 444    |
+| Câu ví dụ có bản dịch tiếng Việt                  | 1 900    |
+| Từ đồng nghĩa / trái nghĩa có nghĩa + độ phổ biến | 1 903    |
+| Tiền tố, hậu tố                                   | 92       |
+| Câu / chỗ trống bài tập trong sách                | 1 240    |
+
+Nội dung từ vựng và bài tập trích từ sách _600 Essential Words for the TOEIC Test_ (Barron's) bằng OCR, dùng cho mục đích học tập.
+File PDF gốc **không** nằm trong repo.
+
+## Công nghệ
+
+- **React 18 + TypeScript + Vite**, router dạng hash (`#/network/agreement-1`), state bằng **zustand**.
+- Hiệu ứng từ [React Bits](https://reactbits.dev): CountUp, BlurText, SpotlightCard, ClickSpark (tự tắt khi máy bật giảm chuyển động).
+- **Firebase**: Hosting (web), Authentication (Google), Firestore (tiến độ). SDK chỉ tải khi cần.
+- Không có máy chủ riêng — toàn bộ xử lý chạy trên trình duyệt.
+- Kiểm thử: **Vitest** (logic), **Playwright** (giao diện, 3 cỡ màn hình) + **axe** (truy cập WCAG 2 AA).
+- Dữ liệu dựng bằng Python (`tools/`).
+
+## Chạy trên máy
+
+Cần **Node.js 20+** (và Python 3.11+ nếu muốn dựng lại dữ liệu).
+
+```bash
 npm install
-npm run dev        # http://localhost:5173 — dùng localhost (không dùng 127.0.0.1) để đăng nhập Google chạy được
-npm run build      # xuất ra dist/
-npm run preview    # xem bản build
+npm run dev          # http://localhost:5173
 ```
 
-| Lệnh                                    | Việc                                                                                                                            |
-| --------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
-| `npm run typecheck` / `lint` / `format` | Kiểm tra kiểu TypeScript, ESLint, Prettier                                                                                      |
-| `npm test`                              | Unit test (Vitest): dữ liệu, gộp đồng bộ, sinh câu hỏi, tìm kiếm                                                                |
-| `npm run e2e`                           | Test giao diện (Playwright, 3 cỡ màn hình) — lần đầu: `npx playwright install chromium`; dùng Edge của máy: `PW_CHANNEL=msedge` |
-| `npm run data`                          | Dựng lại `src/data/*.json` từ `data/`                                                                                           |
+Dùng `localhost`, không dùng `127.0.0.1`, để đăng nhập Google chạy được.
 
-### Deploy (Firebase Hosting)
+| Lệnh                   | Việc                                                            |
+| ---------------------- | --------------------------------------------------------------- |
+| `npm run dev`          | Chạy bản phát triển, tự cập nhật khi sửa code                   |
+| `npm run build`        | Kiểm tra kiểu rồi build ra `dist/`                              |
+| `npm run preview`      | Xem bản build                                                   |
+| `npm run typecheck`    | Kiểm tra kiểu TypeScript                                        |
+| `npm run lint`         | ESLint                                                          |
+| `npm run format`       | Prettier (web) · `npm run format:py` cho Python (ruff)          |
+| `npm test`             | Unit test: dữ liệu, gộp đồng bộ, sinh câu hỏi, tìm kiếm         |
+| `npm run e2e`          | Test giao diện — lần đầu chạy `npx playwright install chromium` |
+| `npm run data`         | Dựng lại `src/data/*.json` từ thư mục `data/`                   |
+| `npm run deploy`       | Build + đưa lên Firebase Hosting                                |
+| `npm run deploy:rules` | Cập nhật Firestore Rules                                        |
 
-Web chạy tại **<https://vocab-web-a0d13.web.app>**.
+Muốn chạy test giao diện bằng Microsoft Edge của máy thay vì Chromium: `PW_CHANNEL=msedge npm run e2e`.
 
-```
-npx firebase login      # một lần trên mỗi máy
-npm run deploy          # build + đưa lên Firebase Hosting
-npm run deploy:rules    # cập nhật Firestore Rules (firestore.rules)
-```
+## Deploy
 
-Ngoài ra, đẩy lên nhánh `main` thì GitHub Actions (`.github/workflows/deploy.yml`) tự kiểm tra, build và đưa lên GitHub Pages
-(cần bật một lần: **Settings → Pages → Source: GitHub Actions**).
+Web chạy trên **Firebase Hosting** (project `vocab-web-a0d13`): HTTPS, CDN, file JS/CSS có hash được cache lâu,
+`index.html` không cache nên deploy xong là người dùng thấy bản mới.
 
-### Cấu trúc mã
-
-```
-src/lib/        dữ liệu + logic thuần (types, data, quiz, search, merge, progress, speech, theme)
-src/state/      store zustand: profile (hồ sơ & tiến độ, lưu localStorage), ui (bộ lọc từng trang), cloud (Firebase), actions
-src/components/ khung trang, tìm kiếm, menu hồ sơ, modal, thanh chuyển bài, components/reactbits (mã React Bits)
-src/pages/      Dashboard, Topics, Network + WordCanvas, Flashcards, Quiz + Book, Affixes, Manage
-src/styles/     style.css (giao diện), react.css (bổ sung cho bản React)
-e2e/            test Playwright
+```bash
+npx firebase login       # một lần trên mỗi máy
+npm run deploy           # build + deploy
+npm run deploy:rules     # khi sửa firestore.rules
 ```
 
-## Chức năng
+Muốn quay lại bản trước: Firebase console → **Hosting → Release history → Rollback**.
 
-| Tab              | Nội dung                                                                                                                                                                                                                                                                                                                                 |
-| ---------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Tổng quan        | Trang chính theo hồ sơ: mục tiêu hôm nay, chuỗi ngày học, lộ trình theo điểm TOEIC mục tiêu, lịch hoạt động 12 tuần, tiến độ 10 phần, từ hay làm sai, bài tập gần đây                                                                                                                                                                    |
-| Chủ đề           | Mục lục 10 phần × 5 bài theo sách, tiến độ từng bài, ô “Học tiếp” gợi ý bài đang học dở                                                                                                                                                                                                                                                  |
-| Trường từ        | Sơ đồ mỗi từ: câu ví dụ có nghĩa tiếng Việt, phiên âm IPA, đồng nghĩa / trái nghĩa kèm nghĩa + độ phổ biến (từ phổ biến xếp trước, bấm để sang trường từ liên quan), cấu tạo tiền tố/gốc/hậu tố, họ từ theo 4 từ loại (kèm câu ví dụ _Word Families_ trong sách), đồng nghĩa / trái nghĩa. Lọc theo trạng thái, từ loại, phụ tố; sắp xếp |
-| Flashcard 3D     | Lật thẻ, tự đánh giá Chưa nhớ / Đang học / Đã thuộc (phím `Space`, `1` `2` `3`, `←` `→`)                                                                                                                                                                                                                                                 |
-| Bài tập          | **Bài tập trong sách**: Words in Context (50 đoạn), Part 5 (300 câu), Part 6 (50 đoạn), Word Review (10 bài × 19 câu) — chấm điểm, giải thích, lưu điểm cao nhất. **Tự luyện**: biến đổi từ loại, đồng nghĩa, nghĩa, ghép từ                                                                                                             |
-| Tiền tố · Hậu tố | 92 phụ tố, bấm vào để xem mọi từ dùng phụ tố đó                                                                                                                                                                                                                                                                                          |
+### Firebase đã cấu hình
 
-Ô tìm kiếm trên thanh tiêu đề (phím `/`) tìm được từ gốc, họ từ, đồng nghĩa và nghĩa tiếng Việt (gõ không dấu cũng được).
-**Hồ sơ học tập** (nút avatar góc phải): mỗi người một hồ sơ với tên, mục tiêu điểm TOEIC (450 / 600 / 750 / 900+) và số câu mỗi ngày;
-tiến độ, điểm bài tập, từ tự thêm được tách riêng theo hồ sơ. Menu hồ sơ có: chuyển / thêm / sửa hồ sơ, giao diện Sáng / Tối / Theo máy,
-_Từ của tôi & sao lưu_ (thêm trường từ riêng, xuất / nhập JSON).
+| Thành phần     | Thiết lập                                                                                |
+| -------------- | ---------------------------------------------------------------------------------------- |
+| Authentication | Google · tên miền được phép: `localhost`, `vocab-web-a0d13.web.app`, `.firebaseapp.com`  |
+| Firestore      | Native mode, `asia-southeast1` (Singapore), mỗi tài khoản một tài liệu `users/<uid>`     |
+| Rules          | [`firestore.rules`](firestore.rules) — chỉ chủ tài khoản đọc / ghi được dữ liệu của mình |
+| Cấu hình web   | [`src/firebase-config.ts`](src/firebase-config.ts)                                       |
 
-Hồ sơ lưu trong trình duyệt (localStorage); **đăng nhập Google** để đồng bộ đám mây, hoặc dùng **Xuất JSON** để chuyển máy.
+Các khoá trong `firebase-config.ts` là khoá công khai phía trình duyệt, an toàn khi đưa lên GitHub — bảo mật nằm ở Rules.
+Đặt `FIREBASE_CONFIG = null` để tắt đăng nhập Google (web vẫn chạy với hồ sơ lưu trên máy).
+Đăng xuất sẽ xoá bản lưu tạm của tài khoản trên máy (an toàn cho máy dùng chung); dữ liệu vẫn còn trên tài khoản.
 
-## Đăng nhập Google (tuỳ chọn)
-
-Mặc định web dùng hồ sơ lưu trên trình duyệt. Bật đăng nhập Google để **lưu tiến độ lên đám mây và học tiếp trên mọi thiết bị**
-(dữ liệu từ nhiều máy được gộp lại, không ghi đè mất tiến độ). Cần một dự án Firebase miễn phí:
-
-1. Vào <https://console.firebase.google.com> → **Add project** (tắt Google Analytics cũng được).
-2. **Project settings → General → Your apps → biểu tượng `</>` (Web)** → đặt tên → **Register app** →
-   chép đối tượng `firebaseConfig` và dán vào `src/firebase-config.ts` (đã cấu hình sẵn cho project `vocab-web-a0d13`).
-3. **Authentication → Get started → Sign-in method → Google → Enable**.
-   **Authentication → Settings → Authorized domains** → thêm `sou1406-ver.github.io` (`localhost` có sẵn).
-4. **Firestore Database → Create database** (production mode) → tab **Rules** → dán rồi **Publish**:
-
-   ```
-   rules_version = '2';
-   service cloud.firestore {
-     match /databases/{database}/documents {
-       match /users/{uid} {
-         allow read, write: if request.auth != null && request.auth.uid == uid;
-       }
-     }
-   }
-   ```
-
-5. Đăng nhập Google chạy trên GitHub Pages hoặc `npm run dev` ở <http://localhost:5173>.
-
-Các khoá trong `src/firebase-config.ts` là khoá công khai phía trình duyệt — an toàn khi đưa lên GitHub; bảo mật nằm ở Rules (mỗi người chỉ đọc/ghi được dữ liệu của chính mình).
-Đăng xuất sẽ xoá bản lưu tạm của tài khoản trên máy (an toàn cho máy dùng chung); dữ liệu vẫn còn trên tài khoản Google.
-
-## Cấu trúc dữ liệu
+## Cấu trúc thư mục
 
 ```
-data/source/book.json                 ← 600 từ, định nghĩa, ví dụ (OCR từ PDF)
-data/source/families.json             ← bảng WORD FAMILIES của từng bài (OCR)
-data/source/ipa.json                  ← phiên âm IPA (tools/make_ipa.py, từ CMU Pronouncing Dictionary)
-data/source/exercises.json            ← bài tập trong sách (tools/parse_exercises.py)
-data/source/exercises_overrides.json  ← sửa tay chỗ OCR sai (đã đối chiếu ảnh trang) + bảng sửa chính tả
-data/enrich/*.txt                     ← nghĩa tiếng Việt, đồng nghĩa, trái nghĩa, cấu tạo từ (sửa ở đây)
-data/translations/*.txt               ← nghĩa tiếng Việt của 1900 câu ví dụ
-data/relations.txt                    ← nghĩa tiếng Việt của 1400 từ đồng nghĩa / trái nghĩa ngoài sách
-data/source/freq.json                 ← độ phổ biến (thang Zipf, dữ liệu wordfreq — tools/make_freq.py)
-tools/build_data.py                   ← ghép tất cả thành src/data/*.json
+src/
+  pages/          Dashboard, Topics, Network + WordCanvas, Relations, Term, Flashcards, Quiz + Book, Affixes, Manage
+  components/     khung trang, tìm kiếm, menu hồ sơ, modal, thanh chuyển bài, reactbits/ (mã React Bits)
+  state/          profile (hồ sơ & tiến độ, localStorage), ui (bộ lọc từng trang), cloud (Firebase), actions
+  lib/            logic thuần: types, data, quiz, search, merge, progress, speech, theme
+  data/           *.json do tools/build_data.py tạo ra — không sửa tay
+  styles/         style.css (giao diện), react.css (bổ sung)
+data/             dữ liệu nguồn (xem bên dưới)
+tools/            script Python dựng dữ liệu
+e2e/              test Playwright
+public/           logo, favicon
 ```
 
-Sửa / bổ sung từ: chỉnh file trong `data/enrich/` (hoặc bản dịch trong `data/translations/`) rồi chạy `npm run data`.
+## Sửa dữ liệu
 
-Định dạng `data/enrich/*.txt`:
+Mọi chỉnh sửa nằm trong `data/`, sau đó chạy `npm run data` để dựng lại `src/data/*.json`.
+
+| File                                   | Nội dung                                                               |
+| -------------------------------------- | ---------------------------------------------------------------------- |
+| `data/enrich/*.txt`                    | Nghĩa tiếng Việt, đồng nghĩa, trái nghĩa, cấu tạo và họ từ — sửa ở đây |
+| `data/translations/*.txt`              | Bản dịch 1 900 câu ví dụ                                               |
+| `data/relations.txt`                   | Nghĩa của từ đồng nghĩa / trái nghĩa không có trong sách               |
+| `data/source/book.json`                | 600 từ, định nghĩa, câu ví dụ (OCR)                                    |
+| `data/source/families.json`            | Bảng _Word Families_ từng bài (OCR)                                    |
+| `data/source/exercises.json`           | Bài tập trong sách (OCR)                                               |
+| `data/source/exercises_overrides.json` | Sửa tay chỗ OCR sai (đã đối chiếu ảnh trang)                           |
+| `data/source/ipa.json`                 | Phiên âm — `python tools/make_ipa.py` (CMU Pronouncing Dictionary)     |
+| `data/source/freq.json`                | Độ phổ biến thang Zipf — `python tools/make_freq.py` (cần `msgpack`)   |
+
+**`data/enrich/*.txt`**
 
 ```
-# 1                                   ← số bài
-agreement | sự thoả thuận | contract, deal | disagreement      ← từ gốc | nghĩa | đồng nghĩa | trái nghĩa
-  agree | v | agree | đồng ý                                    ← (thụt 2 dấu cách) từ | từ loại | cấu tạo | nghĩa | ghi chú
+# 1                                                       ← số bài
+agreement | sự thoả thuận | contract, deal | disagreement  ← từ gốc | nghĩa | đồng nghĩa | trái nghĩa
+  agree | v | agree | đồng ý                                ← (thụt 2 dấu cách) từ | từ loại | cấu tạo | nghĩa | ghi chú
   disagreement | n | dis-+agree+-ment | sự bất đồng
 ```
 
 Tiền tố viết `un-`, hậu tố viết `-ment`; phụ tố mới cần khai báo trong `AFFIXES` ở `tools/build_data.py`.
-Từ mới cần phiên âm: chạy `python tools/make_ipa.py` (lần đầu tải CMU dict) rồi build lại.
 
-## Cách trích bài tập từ sách (PDF scan)
+**`data/translations/*.txt`** — mỗi câu hai dòng: câu tiếng Anh y hệt dữ liệu, dòng sau bắt đầu bằng `= ` là bản dịch.
+
+**`data/relations.txt`** — mỗi dòng `từ | nghĩa`.
+
+Bước build báo ngay câu nào chưa dịch, từ nào chưa có nghĩa hay phụ tố nào chưa khai báo.
+
+## Trích bài tập từ sách (PDF scan)
 
 1. Render trang PDF thành ảnh 200 dpi, OCR bằng Windows OCR có toạ độ từng chữ (`tools/ocr.ps1`).
-2. `tools/parse_exercises.py` dựng lại hàng chữ theo toạ độ, tách 2 cột, **dò đường gạch dưới trên ảnh** để biết vị trí chỗ trống,
-   tự bù chữ OCR bỏ sót ở cuối dòng (cắt dòng, phóng to, OCR lại) và đọc đáp án ở Answer Key.
-3. Những chỗ OCR thiếu phương án / đáp án được sửa tay trong `exercises_overrides.json`.
+2. `tools/parse_exercises.py` dựng lại hàng chữ theo toạ độ, tách 2 cột, **dò đường gạch dưới trên ảnh** để biết vị trí
+   chỗ trống, tự bù chữ OCR bỏ sót ở cuối dòng (cắt dòng, phóng to, OCR lại) và đọc đáp án ở Answer Key.
+3. Chỗ OCR thiếu phương án / đáp án được sửa tay trong `exercises_overrides.json`, lỗi chính tả được dò bằng từ điển CMU.
+
+## Ghi công
+
+- Nội dung từ vựng: _600 Essential Words for the TOEIC Test_ (Barron's).
+- Độ phổ biến từ: [wordfreq](https://github.com/rspeer/wordfreq) (CC BY-SA 4.0).
+- Phiên âm: [CMU Pronouncing Dictionary](https://github.com/cmusphinx/cmudict).
+- Hiệu ứng giao diện: [React Bits](https://reactbits.dev).
+- Icon: nét vẽ theo [Lucide](https://lucide.dev).

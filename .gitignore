@@ -16,3 +16,6 @@ test-results/
 playwright-report/
 *.tsbuildinfo
 .firebase/
+
+# log rác của firebase-tools
+*.log
