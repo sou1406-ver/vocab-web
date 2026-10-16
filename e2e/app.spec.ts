@@ -157,3 +157,17 @@ test("bấm từ đồng nghĩa ngoài sách (program) mở trang riêng, từ �
   await page.locator(".term-root-word", { hasText: "software" }).click();
   await expect(page.locator(".root-banner h2")).toHaveText("software");
 });
+
+test("mở từ ngoài danh sách đang lọc: giữ nguyên bộ lọc, có nút mở đúng bài", async ({ page }) => {
+  await page.goto("#/network");
+  await page.locator(".pill-btn", { hasText: "Văn phòng" }).click();
+  const count = await page.locator("#root-count").innerText();
+  await page.goto("#/network/agreement-1");
+  await expect(page.locator(".root-banner h2")).toHaveText("agreement");
+  await expect(page.locator(".pill-btn.active")).toHaveText("Văn phòng");
+  await expect(page.locator("#root-count")).toHaveText(count);
+  await expect(page.locator(".outside-note")).toBeVisible();
+  await page.locator(".outside-note button").click();
+  await expect(page.locator(".outside-note")).toHaveCount(0);
+  await expect(page.locator(".root-item.active")).toContainText("agreement");
+});

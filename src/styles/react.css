@@ -331,3 +331,19 @@ a.btn.primary {
   background: var(--rose-soft);
   color: var(--rose-text);
 }
+
+/* Từ đang xem nằm ngoài bộ lọc của danh sách bên trái */
+.outside-note {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding: 10px 14px;
+  border-radius: var(--r);
+  background: var(--amber-soft);
+  color: var(--amber-text);
+  font-size: 0.88rem;
+}
+.outside-note span {
+  flex: 1 1 260px;
+}

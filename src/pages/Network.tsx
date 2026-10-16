@@ -3,7 +3,16 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Empty, StatusDot } from "@/components/bits";
 import { Icon } from "@/components/Icon";
 import { LessonNav } from "@/components/LessonNav";
-import { AFFIXES, expandedCount, familyOf, isPhrase, LESSONS, type Catalog } from "@/lib/data";
+import {
+  AFFIXES,
+  expandedCount,
+  familyOf,
+  isPhrase,
+  LESSON_BY_N,
+  LESSONS,
+  lessonLabel,
+  type Catalog,
+} from "@/lib/data";
 import { matchReason } from "@/lib/search";
 import type { Status, Word } from "@/lib/types";
 import { cx, fold, lower, scrollBehavior } from "@/lib/util";
@@ -135,16 +144,21 @@ export function NetworkPage() {
 
   const list = useMemo(() => networkList(catalog, net, status, stats), [catalog, net, status, stats]);
 
-  // Mở link tới một từ không nằm trong bộ lọc hiện tại → bỏ lọc để thấy được từ đó
-  useEffect(() => {
-    if (paramId && catalog.byId[paramId] && !list.some((w) => w.id === paramId)) {
-      setNet({ ...NET_DEFAULT });
-      setQ("");
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [paramId]);
+  // Từ đang mở (theo link) có thể nằm ngoài bộ lọc hiện tại: vẫn hiện từ đó, GIỮ NGUYÊN bộ lọc và danh sách
+  const linked = paramId ? catalog.byId[paramId] : undefined;
+  const cur = linked ?? list[0];
+  const outside = !!cur && !list.some((w) => w.id === cur.id);
 
-  const cur = (paramId && list.find((w) => w.id === paramId)) || list[0];
+  /** Chuyển bộ lọc sang đúng bài của từ đang xem (giữ nguyên từ) */
+  const openOwnLesson = () => {
+    if (!cur) return;
+    setQ("");
+    setNet(
+      cur.lesson
+        ? { ...NET_DEFAULT, unit: LESSON_BY_N[cur.lesson].unit, lesson: String(cur.lesson) }
+        : { ...NET_DEFAULT, unit: "custom" },
+    );
+  };
 
   // Đổi bộ lọc: chọn lại từ đầu danh sách
   const changeNet = (p: Partial<NetState>) => {
@@ -299,7 +313,27 @@ export function NetworkPage() {
         </aside>
         <div className="stack" id="canvas" ref={canvasRef}>
           {cur ? (
-            <WordCanvas key={cur.id} w={cur} prev={list[idx - 1]} next={list[idx + 1]} lesson={net.lesson} />
+            <>
+              {outside && (
+                <div className="outside-note" role="status">
+                  <Icon name="search" size="sm" />
+                  <span>
+                    “<b>{cur.word}</b>” nằm ngoài danh sách đang lọc ({lessonLabel(cur)}). Danh sách bên trái vẫn giữ
+                    nguyên.
+                  </span>
+                  <button className="btn sm soft" onClick={openOwnLesson}>
+                    Mở {cur.lesson ? `bài ${cur.lesson}` : "từ tự thêm"}
+                  </button>
+                </div>
+              )}
+              <WordCanvas
+                key={cur.id}
+                w={cur}
+                prev={outside ? undefined : list[idx - 1]}
+                next={outside ? undefined : list[idx + 1]}
+                lesson={outside ? "all" : net.lesson}
+              />
+            </>
           ) : (
             <Empty title="Không tìm thấy từ nào">
               Thử từ khác, hoặc xem lại toàn bộ 600 từ.
