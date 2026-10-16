@@ -1,0 +1,111 @@
+/* =====================================================================
+   Bổ sung cho bản React — phần lớn giao diện dùng lại style.css
+   ===================================================================== */
+
+/* Logo là <button> (truy cập bằng bàn phím) */
+button.brand {
+  border: 0;
+  background: none;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+}
+
+/* Bọc ô tìm kiếm + nút mở trên màn hẹp: không tạo hộp riêng, giữ bố cục cũ của .header-actions */
+.gsearch-wrap {
+  display: contents;
+}
+
+/* Dành cho trình đọc màn hình */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Thẻ thường là <a> (Link) thay vì <button>: bỏ gạch chân, giữ màu chữ */
+a.lesson-tile,
+a.affix-card,
+a.btn,
+.d-weak-list a {
+  text-decoration: none;
+  color: inherit;
+}
+a.btn.primary {
+  color: var(--on-primary, #fff);
+}
+
+/* React Bits · SpotlightCard dùng làm .card trên trang Tổng quan: theo bo góc / viền của giao diện */
+.spotlight-card.card {
+  border-radius: var(--r-lg);
+  border: 1px solid var(--border);
+  box-shadow: none;
+  overflow: hidden;
+}
+.d-grid > .spotlight-card.card {
+  padding: 20px 22px;
+}
+
+/* React Bits · BlurText: tiêu đề vẫn xuống dòng tự nhiên */
+.home-head h1 > p,
+.home-head h1 > span {
+  display: inline;
+  margin: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spotlight-card__light,
+  .spotlight-card__edge {
+    display: none;
+  }
+}
+
+/* Ô chọn có tuỳ chọn dài (Phụ tố) không được kéo giãn khung lọc trên màn hẹp */
+.net-filter,
+.net-filter > *,
+.filter-sel {
+  min-width: 0;
+  max-width: 100%;
+}
+.filter-sel select {
+  min-width: 0;
+  text-overflow: ellipsis;
+}
+
+/* React Bits · CountUp: số đếm thẳng hàng với chữ bên cạnh */
+.d-streak b > span,
+.d-stat b > span {
+  display: inline-block;
+  vertical-align: baseline;
+}
+
+/* Logo Vocab Learn: biểu tượng sách + bóng đèn, chữ "Learn" màu cam của logo */
+.brand {
+  align-items: center;
+}
+.brand .brand-logo {
+  display: block;
+  width: 36px;
+  height: 36px;
+  flex: none;
+}
+.brand-name::first-letter {
+  color: inherit;
+}
+.brand-name span {
+  color: #c8641a; /* cam của logo, đậm hơn để đủ tương phản trên nền giấy */
+}
+:root[data-theme="dark"] .brand-name span {
+  color: #ee8f3a;
+}
+:root[data-theme="dark"] .brand .brand-logo {
+  /* nét xanh của logo hơi tối trên nền tối: tăng sáng nhẹ */
+  filter: brightness(1.35) saturate(1.1);
+}

@@ -1,31 +1,60 @@
-# VocaNetwork — 600 Essential Words for the TOEIC
+<p align="center"><img src="public/logo-full.png" width="220" alt="Vocab Learn"></p>
+
+# Vocab Learn — 600 Essential Words for the TOEIC
 
 Web học từ vựng theo **chủ đề** và **trường từ** (tiền tố + gốc + hậu tố, biến đổi từ loại, đồng nghĩa / trái nghĩa),
 dữ liệu lấy từ sách _600 Essential Words for the TOEIC Test_.
 
 ## Chạy
 
-Mở `index.html` bằng trình duyệt là xong — không cần cài đặt.
-(Font chữ tải từ Google Fonts; không có mạng thì dùng font hệ thống, mọi chức năng vẫn chạy.)
+Viết bằng **React 18 + TypeScript + Vite**, hiệu ứng từ [React Bits](https://reactbits.dev) (CountUp, BlurText, SpotlightCard, ClickSpark).
+Cần Node.js 20+.
+
+```
+npm install
+npm run dev        # http://localhost:5173 — dùng localhost (không dùng 127.0.0.1) để đăng nhập Google chạy được
+npm run build      # xuất ra dist/
+npm run preview    # xem bản build
+```
+
+| Lệnh                                    | Việc                                                                          |
+| --------------------------------------- | ----------------------------------------------------------------------------- |
+| `npm run typecheck` / `lint` / `format` | Kiểm tra kiểu TypeScript, ESLint, Prettier                                    |
+| `npm test`                              | Unit test (Vitest): dữ liệu, gộp đồng bộ, sinh câu hỏi, tìm kiếm              |
+| `npm run e2e`                           | Test giao diện (Playwright trên Microsoft Edge có sẵn của máy), 3 cỡ màn hình |
+| `npm run data`                          | Dựng lại `src/data/*.json` từ `data/`                                         |
+
+Đẩy lên nhánh `main` thì GitHub Actions (`.github/workflows/deploy.yml`) tự kiểm tra, build và đưa lên GitHub Pages
+(cần bật một lần: **Settings → Pages → Source: GitHub Actions**).
+
+### Cấu trúc mã
+
+```
+src/lib/        dữ liệu + logic thuần (types, data, quiz, search, merge, progress, speech, theme)
+src/state/      store zustand: profile (hồ sơ & tiến độ, lưu localStorage), ui (bộ lọc từng trang), cloud (Firebase), actions
+src/components/ khung trang, tìm kiếm, menu hồ sơ, modal, thanh chuyển bài, components/reactbits (mã React Bits)
+src/pages/      Dashboard, Topics, Network + WordCanvas, Flashcards, Quiz + Book, Affixes, Manage
+src/styles/     style.css (giao diện), react.css (bổ sung cho bản React)
+e2e/            test Playwright
+```
 
 ## Chức năng
 
-| Tab              | Nội dung                                                                                                                                                                                                                     |
-| ---------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Tổng quan        | Trang chính theo hồ sơ: mục tiêu hôm nay, chuỗi ngày học, lộ trình theo điểm TOEIC mục tiêu, lịch hoạt động 12 tuần, tiến độ 10 phần, từ hay làm sai, bài tập gần đây                                                        |
-| Chủ đề           | Mục lục 10 phần × 5 bài theo sách, tiến độ từng bài, ô “Học tiếp” gợi ý bài đang học dở                                                                                                                                      |
-| Trường từ        | Sơ đồ mỗi từ: phiên âm IPA, cấu tạo tiền tố/gốc/hậu tố, họ từ theo 4 từ loại (kèm câu ví dụ _Word Families_ trong sách), đồng nghĩa / trái nghĩa. Lọc theo trạng thái, từ loại, phụ tố; sắp xếp                              |
-| Flashcard 3D     | Lật thẻ, tự đánh giá Chưa nhớ / Đang học / Đã thuộc (phím `Space`, `1` `2` `3`, `←` `→`)                                                                                                                                     |
-| Bài tập          | **Bài tập trong sách**: Words in Context (50 đoạn), Part 5 (300 câu), Part 6 (50 đoạn), Word Review (10 bài × 19 câu) — chấm điểm, giải thích, lưu điểm cao nhất. **Tự luyện**: biến đổi từ loại, đồng nghĩa, nghĩa, ghép từ |
-| Tiền tố · Hậu tố | 92 phụ tố, bấm vào để xem mọi từ dùng phụ tố đó                                                                                                                                                                              |
+| Tab              | Nội dung                                                                                                                                                                                                                       |
+| ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Tổng quan        | Trang chính theo hồ sơ: mục tiêu hôm nay, chuỗi ngày học, lộ trình theo điểm TOEIC mục tiêu, lịch hoạt động 12 tuần, tiến độ 10 phần, từ hay làm sai, bài tập gần đây                                                          |
+| Chủ đề           | Mục lục 10 phần × 5 bài theo sách, tiến độ từng bài, ô “Học tiếp” gợi ý bài đang học dở                                                                                                                                        |
+| Trường từ        | Sơ đồ mỗi từ: câu ví dụ có nghĩa tiếng Việt, phiên âm IPA, cấu tạo tiền tố/gốc/hậu tố, họ từ theo 4 từ loại (kèm câu ví dụ _Word Families_ trong sách), đồng nghĩa / trái nghĩa. Lọc theo trạng thái, từ loại, phụ tố; sắp xếp |
+| Flashcard 3D     | Lật thẻ, tự đánh giá Chưa nhớ / Đang học / Đã thuộc (phím `Space`, `1` `2` `3`, `←` `→`)                                                                                                                                       |
+| Bài tập          | **Bài tập trong sách**: Words in Context (50 đoạn), Part 5 (300 câu), Part 6 (50 đoạn), Word Review (10 bài × 19 câu) — chấm điểm, giải thích, lưu điểm cao nhất. **Tự luyện**: biến đổi từ loại, đồng nghĩa, nghĩa, ghép từ   |
+| Tiền tố · Hậu tố | 92 phụ tố, bấm vào để xem mọi từ dùng phụ tố đó                                                                                                                                                                                |
 
 Ô tìm kiếm trên thanh tiêu đề (phím `/`) tìm được từ gốc, họ từ, đồng nghĩa và nghĩa tiếng Việt (gõ không dấu cũng được).
 **Hồ sơ học tập** (nút avatar góc phải): mỗi người một hồ sơ với tên, mục tiêu điểm TOEIC (450 / 600 / 750 / 900+) và số câu mỗi ngày;
 tiến độ, điểm bài tập, từ tự thêm được tách riêng theo hồ sơ. Menu hồ sơ có: chuyển / thêm / sửa hồ sơ, giao diện Sáng / Tối / Theo máy,
 _Từ của tôi & sao lưu_ (thêm trường từ riêng, xuất / nhập JSON).
 
-Hồ sơ lưu trong trình duyệt (localStorage), chưa có máy chủ — dùng **Xuất JSON** để chuyển sang máy khác.
-Có thể bật **đăng nhập Google** để đồng bộ đám mây — xem mục bên dưới.
+Hồ sơ lưu trong trình duyệt (localStorage); **đăng nhập Google** để đồng bộ đám mây, hoặc dùng **Xuất JSON** để chuyển máy.
 
 ## Đăng nhập Google (tuỳ chọn)
 
@@ -34,7 +63,7 @@ Mặc định web dùng hồ sơ lưu trên trình duyệt. Bật đăng nhập 
 
 1. Vào <https://console.firebase.google.com> → **Add project** (tắt Google Analytics cũng được).
 2. **Project settings → General → Your apps → biểu tượng `</>` (Web)** → đặt tên → **Register app** →
-   chép đối tượng `firebaseConfig` và dán vào `js/firebase-config.js` (thay cho `null`).
+   chép đối tượng `firebaseConfig` và dán vào `src/firebase-config.ts` (đã cấu hình sẵn cho project `vocab-web-a0d13`).
 3. **Authentication → Get started → Sign-in method → Google → Enable**.
    **Authentication → Settings → Authorized domains** → thêm `sou1406-ver.github.io` (`localhost` có sẵn).
 4. **Firestore Database → Create database** (production mode) → tab **Rules** → dán rồi **Publish**:
@@ -50,15 +79,9 @@ Mặc định web dùng hồ sơ lưu trên trình duyệt. Bật đăng nhập 
    }
    ```
 
-5. Đăng nhập Google **không chạy khi mở file trực tiếp** (`file://`). Mở qua GitHub Pages, hoặc chạy máy chủ cục bộ:
+5. Đăng nhập Google chạy trên GitHub Pages hoặc `npm run dev` ở <http://localhost:5173>.
 
-   ```
-   python -m http.server 8000
-   ```
-
-   rồi vào <http://localhost:8000>.
-
-Các khoá trong `firebase-config.js` là khoá công khai phía trình duyệt — an toàn khi đưa lên GitHub; bảo mật nằm ở Rules (mỗi người chỉ đọc/ghi được dữ liệu của chính mình).
+Các khoá trong `src/firebase-config.ts` là khoá công khai phía trình duyệt — an toàn khi đưa lên GitHub; bảo mật nằm ở Rules (mỗi người chỉ đọc/ghi được dữ liệu của chính mình).
 Đăng xuất sẽ xoá bản lưu tạm của tài khoản trên máy (an toàn cho máy dùng chung); dữ liệu vẫn còn trên tài khoản Google.
 
 ## Cấu trúc dữ liệu
@@ -70,10 +93,11 @@ data/source/ipa.json                  ← phiên âm IPA (tools/make_ipa.py, t�
 data/source/exercises.json            ← bài tập trong sách (tools/parse_exercises.py)
 data/source/exercises_overrides.json  ← sửa tay chỗ OCR sai (đã đối chiếu ảnh trang) + bảng sửa chính tả
 data/enrich/*.txt                     ← nghĩa tiếng Việt, đồng nghĩa, trái nghĩa, cấu tạo từ (sửa ở đây)
-tools/build_data.py                   ← ghép tất cả thành js/data.js và js/exercises.js
+data/translations/*.txt               ← nghĩa tiếng Việt của 1900 câu ví dụ
+tools/build_data.py                   ← ghép tất cả thành src/data/*.json
 ```
 
-Sửa / bổ sung từ: chỉnh file trong `data/enrich/` rồi chạy `python tools/build_data.py`.
+Sửa / bổ sung từ: chỉnh file trong `data/enrich/` (hoặc bản dịch trong `data/translations/`) rồi chạy `npm run data`.
 
 Định dạng `data/enrich/*.txt`:
 

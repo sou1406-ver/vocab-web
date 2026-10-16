@@ -1,4 +1,5 @@
 """Manual corrections for OCR/parse errors in book.json -> book_fixed.json"""
+
 import json
 import re
 import sys
@@ -21,7 +22,7 @@ def split_tail(n, w, i, marker, new_word, new_def):
     """ex[i] of word w contains '<end of sentence> <marker>...' -> tail becomes new_word's def; ex after i move to new word."""
     e = ent(n, w)
     head, tail = e["ex"][i].split(marker, 1)
-    moved = e["ex"][i + 1:]
+    moved = e["ex"][i + 1 :]
     e["ex"] = e["ex"][:i] + [head.strip()]
     insert_after(n, w, {"word": new_word, "def": new_def, "ex": moved})
 
@@ -29,7 +30,9 @@ def split_tail(n, w, i, marker, new_word, new_def):
 # L2 persuasion -> productive
 split_tail(2, "persuasion", 1, " adj., constructive", "productive", "adj. constructive; high yield")
 # L7 reduction -> stay on top of
-split_tail(7, "reduction", 1, " stay on top of", "stay on top of", "to know what is going on; to know the latest information")
+split_tail(
+    7, "reduction", 1, " stay on top of", "stay on top of", "to know what is going on; to know the latest information"
+)
 # L9 skill -> software -> store
 e = ent(9, "skill")
 a, b = e["ex"][0].split(" b- ", 1)
@@ -57,9 +60,17 @@ split_tail(22, "profitably", 1, " reconcile", "reconcile", "v. to make consisten
 # L31 appeal: word missing at start of definitions
 es = by_n[31]["entries"]
 arr = ent(31, "arrive")
-es.insert(0, {"word": "appeal", "def": "n. the ability to attract",
-              "ex": ["A restaurant with good food and reasonable prices has a lot of appeal.",
-                     "The pleasing decor and friendly waiters are what give that restaurant its appeal."]})
+es.insert(
+    0,
+    {
+        "word": "appeal",
+        "def": "n. the ability to attract",
+        "ex": [
+            "A restaurant with good food and reasonable prices has a lot of appeal.",
+            "The pleasing decor and friendly waiters are what give that restaurant its appeal.",
+        ],
+    },
+)
 # L37 excursion -> expense
 split_tail(37, "excursion", 1, " n., something requiring payment", "expense", "n. something requiring payment")
 # L39 chain -> check in
@@ -68,9 +79,18 @@ split_tail(39, "chain", 1, " check in", "check in", "v. to register at a hotel; 
 split_tail(46, "diagnose", 1, " adj., producing", "effective", "adj. producing the desired effect; being in effect")
 
 # Spelling fixes of OCR'd headwords
-WFIX = {"custorner": "customer", "distlngulsh": "distinguish", "entltle": "entitle", "dissemlnate": "disseminate",
-        "be made ot": "be made of", "retum": "return", "weste": "waste", "sytematically": "systematically",
-        "fan to": "fall to", "di9arate": "disparate"}
+WFIX = {
+    "custorner": "customer",
+    "distlngulsh": "distinguish",
+    "entltle": "entitle",
+    "dissemlnate": "disseminate",
+    "be made ot": "be made of",
+    "retum": "return",
+    "weste": "waste",
+    "sytematically": "systematically",
+    "fan to": "fall to",
+    "di9arate": "disparate",
+}
 TITLE_FIX = {15: "Promotions, Pensions, and Awards", 27: "Board Meetings and Committees"}
 for l in L:
     for e in l["entries"]:

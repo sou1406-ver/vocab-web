@@ -1,4 +1,5 @@
 """Parse OCR text of '600 Essential Words for the TOEIC Test' into structured JSON."""
+
 import json
 import re
 import sys
@@ -38,7 +39,7 @@ for idx, pno in enumerate(order):
     wordlist = [FIX.get(w, w) for w in wordlist[:-1]]
 
     # Definitions block: after numbers until end of page (may continue on next page)
-    body = lines[i_study + 1:]
+    body = lines[i_study + 1 :]
     body = [l for l in body if not re.fullmatch(r"\d+[.,]?", l)]
     nxt = page_text.get(pno + 1, "")
     if "WORDS IN CONTEXT" not in nxt:  # definitions spill onto next page
@@ -53,7 +54,9 @@ for idx, pno in enumerate(order):
         if re.match(r"^\d+ 600 ESSENTIAL", l) or re.fullmatch(r"\d+", l):
             continue
         m = re.match(r"^([A-Za-z' \-æ]+?)\s+(" + POS_RE + r"(?:/\w+\.)?),?\s*(.*)$", l)
-        is_head = m and not re.match(r"^[ab]\.", l) and len(entries) < 12 and m.group(1).strip().lower() not in ("a", "b")
+        is_head = (
+            m and not re.match(r"^[ab]\.", l) and len(entries) < 12 and m.group(1).strip().lower() not in ("a", "b")
+        )
         if is_head:
             w = FIX.get(m.group(1).strip(), m.group(1).strip())
             cur = {"word": w, "def": m.group(2) + " " + m.group(3), "ex": []}
@@ -88,8 +91,8 @@ for idx, pno in enumerate(order):
                 k += 1
             else:
                 break
-        words = fam[k:k + len(poss)]
-        rest = " ".join(fam[k + len(poss):])
+        words = fam[k : k + len(poss)]
+        rest = " ".join(fam[k + len(poss) :])
         sents = re.findall(r"[^.?!]+[.?!]+[\"']?", rest)
         sents = [s.strip() for s in sents]
         families = {"pos": poss, "words": words, "sentences": sents}

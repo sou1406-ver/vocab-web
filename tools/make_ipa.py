@@ -3,6 +3,7 @@
 Chạy:  python tools/make_ipa.py      (cần mạng lần đầu để tải cmudict)
 Kết quả: data/source/ipa.json  →  tools/build_data.py tự đọc khi build.
 """
+
 import glob
 import json
 import os
@@ -16,17 +17,55 @@ CMU_URL = "https://raw.githubusercontent.com/cmusphinx/cmudict/master/cmudict.di
 CMU_CACHE = os.path.join(ROOT, "tools", ".cache", "cmudict.dict")
 
 ARPA = {
-    "AA": "ɑ", "AE": "æ", "AH": "ʌ", "AO": "ɔ", "AW": "aʊ", "AY": "aɪ", "EH": "ɛ", "ER": "ɝ", "EY": "eɪ",
-    "IH": "ɪ", "IY": "i", "OW": "oʊ", "OY": "ɔɪ", "UH": "ʊ", "UW": "u",
-    "B": "b", "CH": "tʃ", "D": "d", "DH": "ð", "F": "f", "G": "ɡ", "HH": "h", "JH": "dʒ", "K": "k", "L": "l",
-    "M": "m", "N": "n", "NG": "ŋ", "P": "p", "R": "r", "S": "s", "SH": "ʃ", "T": "t", "TH": "θ", "V": "v",
-    "W": "w", "Y": "j", "Z": "z", "ZH": "ʒ",
+    "AA": "ɑ",
+    "AE": "æ",
+    "AH": "ʌ",
+    "AO": "ɔ",
+    "AW": "aʊ",
+    "AY": "aɪ",
+    "EH": "ɛ",
+    "ER": "ɝ",
+    "EY": "eɪ",
+    "IH": "ɪ",
+    "IY": "i",
+    "OW": "oʊ",
+    "OY": "ɔɪ",
+    "UH": "ʊ",
+    "UW": "u",
+    "B": "b",
+    "CH": "tʃ",
+    "D": "d",
+    "DH": "ð",
+    "F": "f",
+    "G": "ɡ",
+    "HH": "h",
+    "JH": "dʒ",
+    "K": "k",
+    "L": "l",
+    "M": "m",
+    "N": "n",
+    "NG": "ŋ",
+    "P": "p",
+    "R": "r",
+    "S": "s",
+    "SH": "ʃ",
+    "T": "t",
+    "TH": "θ",
+    "V": "v",
+    "W": "w",
+    "Y": "j",
+    "Z": "z",
+    "ZH": "ʒ",
 }
 VOWELS = {"AA", "AE", "AH", "AO", "AW", "AY", "EH", "ER", "EY", "IH", "IY", "OW", "OY", "UH", "UW"}
 # Phụ âm đầu hợp lệ trong tiếng Anh (để đặt dấu nhấn đúng chỗ đầu âm tiết)
-ONSETS = {tuple(o.split()) for o in """
+ONSETS = {
+    tuple(o.split())
+    for o in """
 P R|P L|B R|B L|T R|D R|K R|K L|G R|G L|F R|F L|TH R|SH R|S P|S T|S K|S M|S N|S L|S W|S P R|S P L|S T R|S K R|S K W|
-T W|D W|K W|G W|P Y|B Y|K Y|F Y|M Y|V Y|HH Y|S K Y""".replace("\n", "").split("|") if o.strip()}
+T W|D W|K W|G W|P Y|B Y|K Y|F Y|M Y|V Y|HH Y|S K Y""".replace("\n", "").split("|")
+    if o.strip()
+}
 
 
 def load_cmu():
@@ -110,23 +149,38 @@ OVERRIDES = {"lead time": "/ˈlid ˌtaɪm/", "mix-up": "/ˈmɪks ˌʌp/"}
 
 
 PREFIX_IPA = {"un": "ʌn", "in": "ɪn", "im": "ɪm", "dis": "dɪs", "mis": "mɪs", "re": "ri"}
-SUFFIX_IPA = [("ability", "əˈbɪləti"), ("ness", "nəs"), ("ly", "li"), ("able", "əbəl"), ("ible", "əbəl"),
-              ("ful", "fəl"), ("er", "ɚ"), ("or", "ɚ"), ("al", "əl")]
+SUFFIX_IPA = [
+    ("ability", "əˈbɪləti"),
+    ("ness", "nəs"),
+    ("ly", "li"),
+    ("able", "əbəl"),
+    ("ible", "əbəl"),
+    ("ful", "fəl"),
+    ("er", "ɚ"),
+    ("or", "ɚ"),
+    ("al", "əl"),
+]
 
 
 def compose(w, pos, cmu, depth=0):
     """Từ không có trong CMU: ghép từ gốc + phiên âm tiền tố / hậu tố (promptness = prompt + -ness)."""
     if depth > 2:
         return None
+
     def lookup(x):
         if x in cmu:
             return to_ipa(pick(cmu[x], pos)).strip("/")
         return compose(x, pos, cmu, depth + 1)
+
     for suf, sipa in SUFFIX_IPA:
         if w.endswith(suf) and len(w) > len(suf) + 2:
             stem = w[: -len(suf)]
-            for base in (stem, stem + "e", stem[:-1] if len(stem) > 2 and stem[-1] == stem[-2] else None,
-                         stem[:-1] + "y" if stem.endswith("i") else None):
+            for base in (
+                stem,
+                stem + "e",
+                stem[:-1] if len(stem) > 2 and stem[-1] == stem[-2] else None,
+                stem[:-1] + "y" if stem.endswith("i") else None,
+            ):
                 if base and (b := lookup(base)):
                     if sipa.startswith("ə") and "ˈ" in sipa:  # -ability kéo trọng âm
                         b = b.replace("ˈ", "ˌ")
@@ -135,7 +189,7 @@ def compose(w, pos, cmu, depth=0):
                     return b + sipa
     for pre, pipa in PREFIX_IPA.items():
         if w.startswith(pre) and len(w) > len(pre) + 3:
-            b = lookup(w[len(pre):])
+            b = lookup(w[len(pre) :])
             if b:
                 return pipa + b
     return None
@@ -183,14 +237,20 @@ def main():
             elif raw.strip() and not raw.startswith("#") and "|" in raw:
                 words.setdefault((raw.split("|")[0].strip(), ""), None)
     ipa, missing = {}, []
-    for (w, pos) in sorted(words):
+    for w, pos in sorted(words):
         r = ipa_for(w, pos, cmu)
         key = f"{w.lower()}|{pos}"
         if r:
             ipa[key] = r
         else:
             missing.append(w)
-    json.dump(ipa, open(os.path.join(ROOT, "data/source/ipa.json"), "w", encoding="utf-8"), ensure_ascii=False, indent=0, sort_keys=True)
+    json.dump(
+        ipa,
+        open(os.path.join(ROOT, "data/source/ipa.json"), "w", encoding="utf-8"),
+        ensure_ascii=False,
+        indent=0,
+        sort_keys=True,
+    )
     print(f"{len(ipa)} phiên âm, thiếu {len(set(missing))}: {sorted(set(missing))}")
 
 

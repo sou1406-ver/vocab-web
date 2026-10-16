@@ -1,7 +1,8 @@
-"""Ghép dữ liệu sách (data/source) + phần bổ sung tiếng Việt (data/enrich) thành js/data.js
+"""Ghép dữ liệu sách (data/source) + phần bổ sung tiếng Việt (data/enrich) thành src/data/*.json
 
 Chạy:  python tools/build_data.py
 """
+
 import glob
 import json
 import os
@@ -21,7 +22,9 @@ def ipa_of(word, pos):
     return IPA.get(f"{w}|{pos}") or IPA.get(f"{w}|") or next((v for k, v in IPA.items() if k.split("|")[0] == w), None)
 
 
-fam_pages = {int(k): v for k, v in json.load(open(os.path.join(ROOT, "data/source/families.json"), encoding="utf-8")).items()}
+fam_pages = {
+    int(k): v for k, v in json.load(open(os.path.join(ROOT, "data/source/families.json"), encoding="utf-8")).items()
+}
 
 UNITS = [
     ("business", "Kinh doanh tổng quát", "General Business", "briefcase", range(1, 6)),
@@ -35,14 +38,58 @@ UNITS = [
     ("entertainment", "Giải trí", "Entertainment", "film", range(41, 46)),
     ("health", "Sức khoẻ", "Health", "heart", range(46, 51)),
 ]
-LESSON_VI = ["Hợp đồng", "Tiếp thị", "Bảo hành", "Lập kế hoạch kinh doanh", "Hội nghị", "Máy tính",
-             "Công nghệ văn phòng", "Quy trình văn phòng", "Thiết bị điện tử", "Thư tín", "Đăng tuyển & tuyển dụng",
-             "Ứng tuyển & phỏng vấn", "Tuyển dụng & đào tạo", "Lương & phúc lợi", "Thăng chức, lương hưu & khen thưởng",
-             "Mua sắm", "Đặt mua vật tư", "Vận chuyển", "Hoá đơn", "Hàng tồn kho", "Ngân hàng", "Kế toán", "Đầu tư",
-             "Thuế", "Báo cáo tài chính", "Tài sản & phòng ban", "Họp hội đồng & uỷ ban", "Kiểm soát chất lượng",
-             "Phát triển sản phẩm", "Thuê & cho thuê", "Chọn nhà hàng", "Ăn ngoài", "Đặt bữa trưa", "Nghề nấu ăn",
-             "Sự kiện", "Du lịch chung", "Hãng hàng không", "Tàu hoả", "Khách sạn", "Thuê xe", "Phim ảnh", "Sân khấu",
-             "Âm nhạc", "Bảo tàng", "Truyền thông", "Phòng khám", "Nha khoa", "Bảo hiểm y tế", "Bệnh viện", "Nhà thuốc"]
+LESSON_VI = [
+    "Hợp đồng",
+    "Tiếp thị",
+    "Bảo hành",
+    "Lập kế hoạch kinh doanh",
+    "Hội nghị",
+    "Máy tính",
+    "Công nghệ văn phòng",
+    "Quy trình văn phòng",
+    "Thiết bị điện tử",
+    "Thư tín",
+    "Đăng tuyển & tuyển dụng",
+    "Ứng tuyển & phỏng vấn",
+    "Tuyển dụng & đào tạo",
+    "Lương & phúc lợi",
+    "Thăng chức, lương hưu & khen thưởng",
+    "Mua sắm",
+    "Đặt mua vật tư",
+    "Vận chuyển",
+    "Hoá đơn",
+    "Hàng tồn kho",
+    "Ngân hàng",
+    "Kế toán",
+    "Đầu tư",
+    "Thuế",
+    "Báo cáo tài chính",
+    "Tài sản & phòng ban",
+    "Họp hội đồng & uỷ ban",
+    "Kiểm soát chất lượng",
+    "Phát triển sản phẩm",
+    "Thuê & cho thuê",
+    "Chọn nhà hàng",
+    "Ăn ngoài",
+    "Đặt bữa trưa",
+    "Nghề nấu ăn",
+    "Sự kiện",
+    "Du lịch chung",
+    "Hãng hàng không",
+    "Tàu hoả",
+    "Khách sạn",
+    "Thuê xe",
+    "Phim ảnh",
+    "Sân khấu",
+    "Âm nhạc",
+    "Bảo tàng",
+    "Truyền thông",
+    "Phòng khám",
+    "Nha khoa",
+    "Bảo hiểm y tế",
+    "Bệnh viện",
+    "Nhà thuốc",
+]
 
 AFFIXES = {
     # ---- Tiền tố ----
@@ -89,7 +136,12 @@ AFFIXES = {
     "-ure": ("suffix", "n", "sự, kết quả", "Động từ → danh từ (failure, departure)"),
     "-ture": ("suffix", "n", "sự, vật", "Động từ → danh từ (mixture)"),
     "-ature": ("suffix", "n", "sự, vật", "Động từ → danh từ (signature)"),
-    "-al": ("suffix", "n/adj", "sự; thuộc về", "Động từ → danh từ (arrival, rehearsal) hoặc danh từ → tính từ (practical)"),
+    "-al": (
+        "suffix",
+        "n/adj",
+        "sự; thuộc về",
+        "Động từ → danh từ (arrival, rehearsal) hoặc danh từ → tính từ (practical)",
+    ),
     "-ship": ("suffix", "n", "tình trạng, mối quan hệ", "Danh từ → danh từ trừu tượng (apprenticeship)"),
     "-th": ("suffix", "n", "tính chất", "Tính từ → danh từ, thường đổi gốc (strong → strength)"),
     "-ism": ("suffix", "n", "tính, chủ nghĩa", "Danh từ trừu tượng (criticism)"),
@@ -145,30 +197,86 @@ AFFIXES = {
     "-ly": ("suffix", "adv", "một cách", "Tính từ → trạng từ. ⚠ Danh từ + -ly → TÍNH TỪ (leisurely)"),
 }
 
-OCR_FIX = {"ac�ssed": "accessed", "re'n�ts": "reports", "r�sum�": "résumé", "per�nt": "percent",
-           "unne�ssary": "unnecessary", "as�rtain": "ascertain", "l�ation": "location", "spi�s": "spices",
-           "on� a year": "once a year", "Acustomer": "A customer", "departrnent": "department", "concemed": "concerned",
-           "conditionat": "conditional"}
+OCR_FIX = {
+    "ac�ssed": "accessed",
+    "re'n�ts": "reports",
+    "r�sum�": "résumé",
+    "per�nt": "percent",
+    "unne�ssary": "unnecessary",
+    "as�rtain": "ascertain",
+    "l�ation": "location",
+    "spi�s": "spices",
+    "on� a year": "once a year",
+    "Acustomer": "A customer",
+    "departrnent": "department",
+    "concemed": "concerned",
+    "conditionat": "conditional",
+}
 # Lỗi OCR trong câu ví dụ (ký tự � = chữ OCR không đọc được)
-OCR_FIX.update({
-    "ac�ssed": "accessed", "as�rtain": "ascertain", "caf�s": "cafés", "caf�": "café",
-    "entr�e": "entrée", "l�ation": "location", "per�nt": "percent", "re'n�ts": "reports",
-    "r�sum�": "résumé", "spi�s": "spices", "total�I": "total — I",
-    "Intemet": "Internet", "govemment": "government", "retum": "return", "altemative": "alternative",
-    "aftemoon": "afternoon", " wili ": " will ", " wilt ": " will ", " abte ": " able ", " atl ": " all ",
-    "ionger": "longer", "Technicatly": "Technically", " feit ": " felt ", "cx)nfident": "confident",
-    "suweed": "succeed", "mk up to as as": "look up to as much as", "goa:i": "good", "companyrs": "company's",
-    "disptay": "display", "tildget": "budget", "comers of the shelves": "corners of the shelves",
-    "wouid": "would", "we self it": "we sell it", "tie flavor": "the flavor", "tt is ": "It is ",
-    "it took him over": "It took him over", "I'm tying": "I'm trying", "won't heat": "won't heal",
-    "acmunt": "account", "wuorkers": "workers", "Dont ": "Don't ", " cant ": " can't ", " arent.": " aren't.",
-    "couldnt": "couldn't", "con- sultation": "consultation", "com- mensurate": "commensurate",
-    "time- consuming": "time-consuming", "expendi- ture": "expenditure", "prepa- ration": "preparation",
-    "cus- tomers": "customers", "satis- faction": "satisfaction", "responsibili- ties": "responsibilities",
-    "co- payments": "co-payments", "do-it- yourself": "do-it-yourself", "\"heat- resistant'": "\"heat-resistant\"",
-    "f can provide": "I can provide", "If you file your taxes late": "If you file your taxes late",
-    "creaning": "cleaning", "den- tist": "dentist", "prob- lems": "problems",
-})
+OCR_FIX.update(
+    {
+        "ac�ssed": "accessed",
+        "as�rtain": "ascertain",
+        "caf�s": "cafés",
+        "caf�": "café",
+        "entr�e": "entrée",
+        "l�ation": "location",
+        "per�nt": "percent",
+        "re'n�ts": "reports",
+        "r�sum�": "résumé",
+        "spi�s": "spices",
+        "total�I": "total — I",
+        "Intemet": "Internet",
+        "govemment": "government",
+        "retum": "return",
+        "altemative": "alternative",
+        "aftemoon": "afternoon",
+        " wili ": " will ",
+        " wilt ": " will ",
+        " abte ": " able ",
+        " atl ": " all ",
+        "ionger": "longer",
+        "Technicatly": "Technically",
+        " feit ": " felt ",
+        "cx)nfident": "confident",
+        "suweed": "succeed",
+        "mk up to as as": "look up to as much as",
+        "goa:i": "good",
+        "companyrs": "company's",
+        "disptay": "display",
+        "tildget": "budget",
+        "comers of the shelves": "corners of the shelves",
+        "wouid": "would",
+        "we self it": "we sell it",
+        "tie flavor": "the flavor",
+        "tt is ": "It is ",
+        "it took him over": "It took him over",
+        "I'm tying": "I'm trying",
+        "won't heat": "won't heal",
+        "acmunt": "account",
+        "wuorkers": "workers",
+        "Dont ": "Don't ",
+        " cant ": " can't ",
+        " arent.": " aren't.",
+        "couldnt": "couldn't",
+        "con- sultation": "consultation",
+        "com- mensurate": "commensurate",
+        "time- consuming": "time-consuming",
+        "expendi- ture": "expenditure",
+        "prepa- ration": "preparation",
+        "cus- tomers": "customers",
+        "satis- faction": "satisfaction",
+        "responsibili- ties": "responsibilities",
+        "co- payments": "co-payments",
+        "do-it- yourself": "do-it-yourself",
+        "\"heat- resistant'": '"heat-resistant"',
+        "f can provide": "I can provide",
+        "If you file your taxes late": "If you file your taxes late",
+        "creaning": "cleaning",
+        "den- tist": "dentist",
+        "prob- lems": "problems",
+    }
+)
 
 
 def fix(s):
@@ -224,20 +332,31 @@ for path in sorted(glob.glob(os.path.join(ROOT, "data/enrich/*.txt"))):
             continue
         m = re.match(r"^# (\d+)\s*$", line)
         if m:
-            lesson = int(m.group(1)); enrich[lesson] = []; continue
+            lesson = int(m.group(1))
+            enrich[lesson] = []
+            continue
         if line.startswith("#"):
             continue
         cols = [c.strip() for c in line.split("|")]
         if line.startswith("  "):
             if len(cols) < 4:
                 sys.exit(f"{path}:{ln} dòng họ từ thiếu cột: {line}")
-            enrich[lesson][-1]["family"].append({"w": cols[0], "pos": cols[1], "parts": [p.strip() for p in cols[2].split("+")],
-                                                  "vi": cols[3], **({"note": cols[4]} if len(cols) > 4 and cols[4] else {})})
+            enrich[lesson][-1]["family"].append(
+                {
+                    "w": cols[0],
+                    "pos": cols[1],
+                    "parts": [p.strip() for p in cols[2].split("+")],
+                    "vi": cols[3],
+                    **({"note": cols[4]} if len(cols) > 4 and cols[4] else {}),
+                }
+            )
         else:
             if len(cols) != 4:
                 sys.exit(f"{path}:{ln} dòng từ gốc cần 4 cột: {line}")
             split = lambda s: [] if s in ("", "-") else [x.strip() for x in s.split(",") if x.strip()]
-            enrich[lesson].append({"word": cols[0], "vi": cols[1], "syn": split(cols[2]), "ant": split(cols[3]), "family": []})
+            enrich[lesson].append(
+                {"word": cols[0], "vi": cols[1], "syn": split(cols[2]), "ant": split(cols[3]), "family": []}
+            )
 
 # ---------- Ghép ----------
 problems = []
@@ -246,7 +365,7 @@ out_lessons, out_words = [], []
 for l in book:
     n = l["n"]
     unit = next(u for u in UNITS if n in u[4])
-    next_page = next((p for p in lesson_pages if p > l["page"]), 10 ** 6)
+    next_page = next((p for p in lesson_pages if p > l["page"]), 10**6)
     fp = next((p for p in sorted(fam_pages) if l["page"] < p < next_page), None)
     fam_rows = fam_pages.get(fp, [])
     fam_by_word = {}
@@ -266,7 +385,9 @@ for l in book:
     heads = enrich.get(n, [])
     ents = l["entries"]
     if [norm(h["word"]) for h in heads] != [norm(e["word"]) for e in ents]:
-        problems.append(f"Bài {n}: danh sách từ khác sách\n  sách : {[e['word'] for e in ents]}\n  bổ sung: {[h['word'] for h in heads]}")
+        problems.append(
+            f"Bài {n}: danh sách từ khác sách\n  sách : {[e['word'] for e in ents]}\n  bổ sung: {[h['word'] for h in heads]}"
+        )
         continue
     ids = []
     for e, h in zip(ents, heads):
@@ -293,12 +414,23 @@ for l in book:
                 f = {**f, "ipa": ipa}
             family.append(f)
         self_fam = next((f for f in family if norm(f["w"]) == norm(h["word"])), None)
-        out_words.append({
-            "id": wid, "lesson": n, "word": h["word"], "pos": pos, "ipa": ipa_of(h["word"], pos) or "", "def": definition,
-            "ex": [fix(x) for x in e["ex"]], "exVi": [vi_of(x) or "" for x in e["ex"]], "vi": h["vi"], "syn": h["syn"], "ant": h["ant"],
-            "parts": self_fam["parts"] if self_fam else [h["word"]],
-            "family": family,
-        })
+        out_words.append(
+            {
+                "id": wid,
+                "lesson": n,
+                "word": h["word"],
+                "pos": pos,
+                "ipa": ipa_of(h["word"], pos) or "",
+                "def": definition,
+                "ex": [fix(x) for x in e["ex"]],
+                "exVi": [vi_of(x) or "" for x in e["ex"]],
+                "vi": h["vi"],
+                "syn": h["syn"],
+                "ant": h["ant"],
+                "parts": self_fam["parts"] if self_fam else [h["word"]],
+                "family": family,
+            }
+        )
         ids.append(wid)
     unused = [r["word"] for r in fam_rows if r["word"] and norm(fix(r["word"])) not in used_rows]
     if unused:
@@ -308,16 +440,30 @@ for l in book:
 topics = [{"id": u[0], "name": u[1], "en": u[2], "icon": u[3], "lessons": list(u[4])} for u in UNITS]
 affixes = {k: {"type": v[0], "makes": v[1], "vi": v[2], "fn": v[3]} for k, v in AFFIXES.items()}
 
-js = ("/* TỰ ĐỘNG TẠO bởi tools/build_data.py — đừng sửa tay. Sửa data/enrich/*.txt rồi chạy lại script. */\n"
-      "const TOPICS = " + json.dumps(topics, ensure_ascii=False) + ";\n"
-      "const LESSONS = " + json.dumps(out_lessons, ensure_ascii=False) + ";\n"
-      "const AFFIXES = " + json.dumps(affixes, ensure_ascii=False, indent=0) + ";\n"
-      "const WORDS = [\n" + ",\n".join(json.dumps(w, ensure_ascii=False) for w in out_words) + "\n];\n")
-open(os.path.join(ROOT, "js/data.js"), "w", encoding="utf-8").write(js)
+OUT_DIR = os.path.join(ROOT, "src/data")
+os.makedirs(OUT_DIR, exist_ok=True)
+
+
+def write_json(name, obj, one_per_line=False):
+    """Ghi src/data/<name>.json (mảng lớn: mỗi phần tử một dòng để diff git dễ đọc)."""
+    path = os.path.join(OUT_DIR, name + ".json")
+    if one_per_line and isinstance(obj, list):
+        text = "[\n" + ",\n".join(json.dumps(x, ensure_ascii=False) for x in obj) + "\n]\n"
+    else:
+        text = json.dumps(obj, ensure_ascii=False, indent=1) + "\n"
+    open(path, "w", encoding="utf-8", newline="\n").write(text)
+
+
+write_json("topics", topics)
+write_json("lessons", out_lessons, one_per_line=True)
+write_json("affixes", affixes)
+write_json("words", out_words, one_per_line=True)
 
 fam_total = sum(len(w["family"]) for w in out_words)
-print(f"{len(out_lessons)} bài, {len(out_words)} từ gốc, {fam_total} từ trong họ từ, "
-      f"{sum(1 for w in out_words for f in w['family'] if 'ex' in f)} câu ví dụ họ từ từ sách")
+print(
+    f"{len(out_lessons)} bài, {len(out_words)} từ gốc, {fam_total} từ trong họ từ, "
+    f"{sum(1 for w in out_words for f in w['family'] if 'ex' in f)} câu ví dụ họ từ từ sách"
+)
 missing = [x for w in out_words for x, v in zip(w["ex"], w["exVi"]) if not v]
 missing += [f["ex"] for w in out_words for f in w["family"] if f.get("ex") and not f.get("exVi")]
 print(f"Bản dịch câu ví dụ: dùng {len(used_trans)}/{len(TRANS)}, còn {len(missing)} câu chưa dịch")
@@ -327,7 +473,7 @@ if problems:
 
 
 # =====================================================================
-# BÀI TẬP TRONG SÁCH → js/exercises.js
+# BÀI TẬP TRONG SÁCH → src/data/exercises.json
 # =====================================================================
 EX_PATH = os.path.join(ROOT, "data/source/exercises.json")
 OV_PATH = os.path.join(ROOT, "data/source/exercises_overrides.json")
@@ -380,7 +526,9 @@ if os.path.exists(EX_PATH):
     TEXT_FIXES = ov.get("text_fixes", [])
 
     def ocr_fix(s):
-        s = re.sub(r"(?<!\S)(?!___(?!_))\S*_\S*(?!\S)", "", s)  # chừa lại ký hiệu chỗ trống ___  # mảnh rác OCR còn dính dấu gạch dưới
+        s = re.sub(
+            r"(?<!\S)(?!___(?!_))\S*_\S*(?!\S)", "", s
+        )  # chừa lại ký hiệu chỗ trống ___  # mảnh rác OCR còn dính dấu gạch dưới
         for a, b in TEXT_FIXES:  # khớp trọn từ để không sửa nhầm bên trong từ khác
             s = re.sub(r"(?<![A-Za-z])" + re.escape(a.strip()) + r"(?![A-Za-z])", b.strip(), s)
         return "\n".join(re.sub(r" {2,}", " ", fix(x)).strip() for x in s.split("\n"))
@@ -395,35 +543,82 @@ if os.path.exists(EX_PATH):
             if nb != len(w["answers"]):
                 ex_problems.append(f"Bài {n} WIC: {nb} chỗ trống / {len(w['answers'])} đáp án")
             rec["wic"] = {"text": ocr_fix(w["text"]), "answers": [alternatives(ocr_fix(a)) for a in w["answers"]]}
-        p5 = [q for q in L.get("part5", []) if q["text"].count("___") == 1 and len(q["options"]) == 4 and all(q["options"].values()) and q["answer"] in q["options"]]
+        p5 = [
+            q
+            for q in L.get("part5", [])
+            if q["text"].count("___") == 1
+            and len(q["options"]) == 4
+            and all(q["options"].values())
+            and q["answer"] in q["options"]
+        ]
         if len(p5) != len(L.get("part5", [])):
             ex_problems.append(f"Bài {n} Part 5: bỏ {len(L.get('part5', [])) - len(p5)} câu lỗi")
-        rec["part5"] = [{"n": q["n"], "text": ocr_fix(q["text"]), "options": {k: ocr_fix(v) for k, v in q["options"].items()}, "answer": q["answer"]} for q in p5]
+        rec["part5"] = [
+            {
+                "n": q["n"],
+                "text": ocr_fix(q["text"]),
+                "options": {k: ocr_fix(v) for k, v in q["options"].items()},
+                "answer": q["answer"],
+            }
+            for q in p5
+        ]
         p6 = L.get("part6")
         if p6:
-            ok = all(len(q["options"]) == 4 and all(q["options"].values()) and q["answer"] in q["options"] for q in p6["questions"]) and \
-                len(re.findall(r"\{\{\d+\}\}", p6["text"])) == len(p6["questions"])
+            ok = all(
+                len(q["options"]) == 4 and all(q["options"].values()) and q["answer"] in q["options"]
+                for q in p6["questions"]
+            ) and len(re.findall(r"\{\{\d+\}\}", p6["text"])) == len(p6["questions"])
             if ok:
-                rec["part6"] = {"text": ocr_fix(p6["text"]), "questions": [dict(q, options={k: ocr_fix(v) for k, v in q["options"].items()}) for q in p6["questions"]]}
+                rec["part6"] = {
+                    "text": ocr_fix(p6["text"]),
+                    "questions": [
+                        dict(q, options={k: ocr_fix(v) for k, v in q["options"].items()}) for q in p6["questions"]
+                    ],
+                }
             else:
                 ex_problems.append(f"Bài {n} Part 6 chưa hợp lệ — bỏ qua")
         out_ex["lessons"][n] = rec
     for n, R in ex["reviews"].items():
-        p5 = [q for q in R["part5"] if q["text"].count("___") == 1 and len(q["options"]) == 4 and all(q["options"].values()) and q["answer"] in q["options"]]
+        p5 = [
+            q
+            for q in R["part5"]
+            if q["text"].count("___") == 1
+            and len(q["options"]) == 4
+            and all(q["options"].values())
+            and q["answer"] in q["options"]
+        ]
         blocks = []
         for b in R["part6"]:
-            if all(len(q["options"]) == 4 and all(q["options"].values()) and q["answer"] in q["options"] for q in b["questions"]) and \
-                    len(re.findall(r"\{\{\d+\}\}", b["text"])) == len(b["questions"]):
-                blocks.append({"text": ocr_fix(b["text"]), "questions": [dict(q, options={k: ocr_fix(v) for k, v in q["options"].items()}) for q in b["questions"]]})
+            if all(
+                len(q["options"]) == 4 and all(q["options"].values()) and q["answer"] in q["options"]
+                for q in b["questions"]
+            ) and len(re.findall(r"\{\{\d+\}\}", b["text"])) == len(b["questions"]):
+                blocks.append(
+                    {
+                        "text": ocr_fix(b["text"]),
+                        "questions": [
+                            dict(q, options={k: ocr_fix(v) for k, v in q["options"].items()}) for q in b["questions"]
+                        ],
+                    }
+                )
             else:
                 ex_problems.append(f"Ôn tập #{n} đoạn {[q['n'] for q in b['questions']]} chưa hợp lệ — bỏ qua")
         if len(p5) != len(R["part5"]):
             ex_problems.append(f"Ôn tập #{n}: bỏ {len(R['part5']) - len(p5)} câu lỗi")
-        out_ex["reviews"][n] = {"part5": [{"n": q["n"], "text": ocr_fix(q["text"]), "options": {k: ocr_fix(v) for k, v in q["options"].items()}, "answer": q["answer"]} for q in p5], "part6": blocks}
+        out_ex["reviews"][n] = {
+            "part5": [
+                {
+                    "n": q["n"],
+                    "text": ocr_fix(q["text"]),
+                    "options": {k: ocr_fix(v) for k, v in q["options"].items()},
+                    "answer": q["answer"],
+                }
+                for q in p5
+            ],
+            "part6": blocks,
+        }
 
-    js_ex = ("/* TỰ ĐỘNG TẠO bởi tools/build_data.py từ data/source/exercises*.json — đừng sửa tay. */\n"
-             "const EXERCISES = " + json.dumps(out_ex, ensure_ascii=False) + ";\n")
-    open(os.path.join(ROOT, "js/exercises.js"), "w", encoding="utf-8").write(js_ex)
+    write_json("exercises", out_ex)
     n_wic = sum(1 for L in out_ex["lessons"].values() if "wic" in L)
     n_p5 = sum(len(L["part5"]) for L in out_ex["lessons"].values())
     n_p6 = sum(1 for L in out_ex["lessons"].values() if "part6" in L)

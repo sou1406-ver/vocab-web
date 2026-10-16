@@ -3,14 +3,20 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>VocaNetwork — 600 Essential Words TOEIC</title>
+    <meta
+      name="description"
+      content="Học 600 Essential Words for the TOEIC theo trường từ: tiền tố, hậu tố, họ từ, đồng nghĩa, trái nghĩa."
+    />
+    <title>Vocab Learn — 600 Essential Words TOEIC</title>
+    <link rel="icon" href="./favicon-32.png" type="image/png" sizes="32x32" />
+    <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
+    <meta name="theme-color" content="#2a4fcf" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Literata:ital,opsz,wght@0,7..72,500..700;1,7..72,400..500&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="css/style.css" />
     <script>
       // Áp dụng giao diện (sáng / tối / theo máy) trước khi vẽ trang để tránh nháy màn hình
       (function () {
@@ -25,65 +31,7 @@
     </script>
   </head>
   <body>
-    <header class="header">
-      <div class="header-inner">
-        <div class="brand" data-act="nav" data-href="#/">
-          <div class="brand-logo" id="brand-logo"></div>
-          <div>
-            <div class="brand-name">VocaNetwork</div>
-            <div class="brand-sub">600 Essential Words · TOEIC</div>
-          </div>
-        </div>
-        <nav class="tabs" id="tabs"></nav>
-        <div class="header-actions">
-          <div class="gsearch" id="gsearch">
-            <input
-              id="gsearch-input"
-              class="input"
-              type="search"
-              placeholder="Tìm từ, họ từ, nghĩa Việt…"
-              autocomplete="off"
-              spellcheck="false"
-              aria-label="Tìm từ"
-              aria-controls="gsearch-results"
-              aria-expanded="false"
-              data-input="gSearch"
-            />
-            <kbd class="gsearch-key" aria-hidden="true">/</kbd>
-            <div class="gsearch-results" id="gsearch-results" role="listbox" hidden></div>
-          </div>
-          <button
-            class="icon-btn gsearch-toggle"
-            data-act="openSearch"
-            title="Tìm từ"
-            aria-label="Tìm từ"
-            id="gsearch-btn"
-          ></button>
-          <div class="profile-wrap">
-            <button
-              class="avatar-btn"
-              id="avatar-btn"
-              data-act="profileMenu"
-              aria-haspopup="menu"
-              aria-expanded="false"
-              title="Hồ sơ học tập"
-            ></button>
-            <div class="profile-menu" id="profile-menu" role="menu" hidden></div>
-          </div>
-        </div>
-      </div>
-    </header>
-
-    <main id="app" class="container"></main>
-
-    <nav class="bottom-nav" id="bottom-nav"></nav>
-    <div class="toast-wrap" id="toasts"></div>
-    <div id="modal-root"></div>
-
-    <script src="js/data.js"></script>
-    <script src="js/exercises.js"></script>
-    <script src="js/app.js"></script>
-    <script src="js/firebase-config.js"></script>
-    <script src="js/cloud.js"></script>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

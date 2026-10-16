@@ -6,6 +6,7 @@
   --map    expages.json: {bài: {"wic": [trang], "read": [trang]}}
 Chỗ trống được xác định bằng cách dò đường kẻ ngang trên ảnh, nên không phụ thuộc OCR đọc được dấu gạch dưới.
 """
+
 import argparse
 import json
 import os
@@ -33,7 +34,8 @@ for raw in open(args.ocr, encoding="utf-8-sig"):
     raw = raw.rstrip("\n")
     m = re.match(r"=====PAGE p(\d+)=====", raw)
     if m:
-        cur = int(m.group(1)); continue
+        cur = int(m.group(1))
+        continue
     if not raw.strip():
         continue
     li, x, y, w, h, t = raw.split("\t", 5)
@@ -70,7 +72,9 @@ def underlines(pno):
     for y, x0, x1 in runs:
         for s in segs:
             if y - s["y1"] <= 2 and min(x1, s["x1"]) - max(x0, s["x0"]) > 0.6 * min(x1 - x0, s["x1"] - s["x0"]):
-                s["y1"] = y; s["x0"] = min(s["x0"], x0); s["x1"] = max(s["x1"], x1)
+                s["y1"] = y
+                s["x0"] = min(s["x0"], x0)
+                s["x1"] = max(s["x1"], x1)
                 break
         else:
             segs.append({"y0": y, "y1": y, "x0": x0, "x1": x1})
@@ -82,9 +86,19 @@ def underlines(pno):
         merged.sort(key=lambda s: (s["y1"], s["x0"]))
         out_m = []
         for s in merged:
-            m = next((o for o in out_m if abs(o["y1"] - s["y1"]) <= 3 and s["x0"] <= o["x1"] + 45 and s["x1"] >= o["x0"] - 45), None)
+            m = next(
+                (
+                    o
+                    for o in out_m
+                    if abs(o["y1"] - s["y1"]) <= 3 and s["x0"] <= o["x1"] + 45 and s["x1"] >= o["x0"] - 45
+                ),
+                None,
+            )
             if m:
-                m["x0"] = min(m["x0"], s["x0"]); m["x1"] = max(m["x1"], s["x1"]); m["y0"] = min(m["y0"], s["y0"]); m["y1"] = max(m["y1"], s["y1"])
+                m["x0"] = min(m["x0"], s["x0"])
+                m["x1"] = max(m["x1"], s["x1"])
+                m["y0"] = min(m["y0"], s["y0"])
+                m["y1"] = max(m["y1"], s["y1"])
                 changed = True
             else:
                 out_m.append(s)
@@ -129,7 +143,12 @@ def build_rows(tokens, blanks, med_h):
     for b in blanks:
         # chữ đè lên đường kẻ (vd số "16" trong Part 6) thì bỏ chữ, giữ chỗ trống
         for t in list(items):
-            if not t.get("blank") and t["x"] < b["x"] + b["w"] - 4 and t["x"] + t["w"] > b["x"] + 4 and 0 <= b["y"] - (t["y"] + t["h"]) <= 14:
+            if (
+                not t.get("blank")
+                and t["x"] < b["x"] + b["w"] - 4
+                and t["x"] + t["w"] > b["x"] + 4
+                and 0 <= b["y"] - (t["y"] + t["h"]) <= 14
+            ):
                 if re.fullmatch(r"[_\-\dIlZßO|\.]{1,8}", t["t"]) and re.search(r"[_\dIlZß]", t["t"]):
                     items.remove(t)
                 elif re.fullmatch(r"[_\-\dIlZßO|\.]{1,8}([.,;:!?])", t["t"]):
@@ -185,7 +204,8 @@ if args.crops_ocr and os.path.exists(args.crops_ocr):
         raw = raw.rstrip("\n")
         m = re.match(r"=====PAGE (\S+)=====", raw)
         if m:
-            cname = m.group(1); continue
+            cname = m.group(1)
+            continue
         if raw.strip():
             li, x, y, w, h, tx = raw.split("\t", 5)
             CROP_OCR[cname].append({"x": int(x), "y": int(y), "t": tx})
@@ -213,7 +233,9 @@ def fill_line_ends(rows, pno):
             x = r["x1"] + 8
             for e in extra:
                 if re.search(r"[A-Za-z]", e["t"]):
-                    r["items"].append({"x": x + (e["x"] - 60) / SCALE, "y": top, "w": 10, "h": 10, "t": e["t"], "yc": r["yc"]})
+                    r["items"].append(
+                        {"x": x + (e["x"] - 60) / SCALE, "y": top, "w": 10, "h": 10, "t": e["t"], "yc": r["yc"]}
+                    )
             r["x1"] = right
         elif args.crops:
             if img is None:
@@ -245,7 +267,7 @@ def parse_wic(pno):
     i = find_row(rows, r"Read the following")
     if i is None:
         raise ValueError("không thấy dòng hướng dẫn")
-    rest = rows[i + 1:]
+    rest = rows[i + 1 :]
     # bảng từ: các hàng sát nhau ngay dưới hướng dẫn; đoạn văn bắt đầu sau khoảng cách lớn đầu tiên
     k = 1
     gap0 = rest[1]["yc"] - rest[0]["yc"] if len(rest) > 1 else 0
@@ -263,7 +285,8 @@ def parse_wic(pno):
         # sang đoạn mới: dòng thụt vào rõ ràng VÀ dòng trước kết thúc câu
         prev_end = cur[-1]["items"][-1]["t"] if cur else ""
         if cur and r["x0"] > left + 25 and not r["items"][0].get("blank") and re.search(r"[.!?:\"')]$", prev_end):
-            paras.append(cur); cur = []
+            paras.append(cur)
+            cur = []
         cur.append(r)
     if cur:
         paras.append(cur)
@@ -274,6 +297,7 @@ def parse_wic(pno):
         nonlocal n
         n += 1
         return f"{{{{{n}}}}}"
+
     text = re.sub(r"___", num, text)
     text = re.sub(r"\s+([.,;:!?])", r"\1", text)
     return {"text": text, "blanks": n}
@@ -315,7 +339,7 @@ def parse_questions(rows, numbers):
             for j, mi in enumerate(markers):
                 end = markers[j + 1] if j + 1 < len(markers) else len(items)
                 letter = OPT.match(items[mi]["t"]).group(1)
-                cur["opts"][letter] = clean(" ".join(t["t"] for t in items[mi + 1:end])).strip(" .")
+                cur["opts"][letter] = clean(" ".join(t["t"] for t in items[mi + 1 : end])).strip(" .")
         else:
             cur["sent"].append({"items": items})
     out = {}
@@ -372,16 +396,20 @@ def parse_reading(pno):
     line_gap = gaps[len(gaps) // 3] if gaps else mh * 2
     prev = None
     for r in passage_rows:
-        is_heading = (r["x0"] > left_margin + 120 and r["x1"] < right_margin - 120 and not any(t.get("blank") for t in r["items"]))
+        is_heading = (
+            r["x0"] > left_margin + 120 and r["x1"] < right_margin - 120 and not any(t.get("blank") for t in r["items"])
+        )
         # khoảng cách dòng lớn bất thường = sang đoạn mới; dòng ngắn kết thúc bằng dấu phẩy/hai chấm (lời chào, To:/From:) cũng tách dòng
         new_para = prev is not None and (r["yc"] - prev["yc"] > line_gap * 1.45 or prev["x1"] < right_margin - 150)
         if is_heading:
             if para:
-                parts.append(join_rows(para)); para = []
+                parts.append(join_rows(para))
+                para = []
             parts.append("## " + join_rows([r]))
         else:
             if new_para and para:
-                parts.append(join_rows(para)); para = []
+                parts.append(join_rows(para))
+                para = []
             para.append(r)
         prev = r
     if para:
@@ -393,6 +421,7 @@ def parse_reading(pno):
         nonlocal n
         n += 1
         return f"{{{{{n}}}}}"
+
     text = re.sub(r"___", num, text)
     text = re.sub(r"\s+([.,;:!?])", r"\1", text)
     # phương án: chia theo cột
@@ -411,9 +440,13 @@ def parse_review(p1, p2):
     rows = build_rows(toks, [], mh)
     # mốc bắt đầu: dòng hướng dẫn "Choose the word…" (số "1." có thể bị OCR bỏ sót)
     ih = find_row(rows, r"best completes the sentence|Choose the word")
-    top = rows[ih]["yc"] + mh if ih is not None else next((r["yc"] for r in rows if re.fullmatch(r"\d{1,2}[.,]", r["items"][0]["t"])), 0)
+    top = (
+        rows[ih]["yc"] + mh
+        if ih is not None
+        else next((r["yc"] for r in rows if re.fullmatch(r"\d{1,2}[.,]", r["items"][0]["t"])), 0)
+    )
     ic = find_row(rows, r"the one word|one word or phrase")
-    cut = rows[ic]["yc"] if ic is not None else 10 ** 6
+    cut = rows[ic]["yc"] if ic is not None else 10**6
     body = [t for t in toks if top - mh < t["y"] + t["h"] / 2 < cut - mh / 2]
     blanks = [b for b in underlines(p1) if top - mh < b["y"] < cut - mh / 2]
     singles = parse_questions(split_columns(body, blanks, page_width(p1) / 2, mh), set(range(1, 11)))
@@ -432,9 +465,11 @@ def parse_review(p1, p2):
 
 def parse_cloze_rows(rows, mid, mh):
     """Luồng hàng gồm nhiều khối: đoạn văn có chỗ trống, theo sau là phương án (2 cột)."""
+
     def is_opt(r):
         first = next((t for t in r["items"] if not t.get("blank")), None)  # bỏ qua nét kẻ trang trí đứng đầu hàng
         return bool(first and (re.fullmatch(r"\d{1,2}[.,]", first["t"]) or OPT.match(first["t"])))
+
     blocks, cur = [], None
     for r in rows:
         if re.fullmatch(r"\d{1,3}", " ".join(t["t"] for t in r["items"])):
@@ -468,8 +503,15 @@ def parse_cloze_rows(rows, mid, mh):
         text = tidy_blanks(join_rows(rows_p))
         opt_tokens = [t for r in b["opts"] for t in r["items"] if not t.get("blank")]
         # số câu có thể nằm giữa hàng (cột phải): "11. (A) hold   13. (A) satisfy"
-        nums = sorted({int(it[k]["t"][:-1]) for r in b["opts"] for it in [r["items"]] for k in range(len(it) - 1)
-                       if re.fullmatch(r"\d{1,2}[.,]", it[k]["t"]) and OPT.match(it[k + 1]["t"])})
+        nums = sorted(
+            {
+                int(it[k]["t"][:-1])
+                for r in b["opts"]
+                for it in [r["items"]]
+                for k in range(len(it) - 1)
+                if re.fullmatch(r"\d{1,2}[.,]", it[k]["t"]) and OPT.match(it[k + 1]["t"])
+            }
+        )
         qs = parse_questions(split_columns(opt_tokens, [], mid, mh), set(nums))
         it = iter(nums)
         text = re.sub(r"___", lambda m: f"{{{{{next(it, 0)}}}}}", text)
@@ -490,17 +532,23 @@ def parse_key(pnos):
             text += " " + join_rows(build_rows(ct, [], mh))
     text = clean(text)
     # số thứ tự OCR đọc nhầm: "li." → "11.", "IO." → "10."
-    text = re.sub(r"(?<=\s)([0-9IlOi]{1,2})(?=\s*[.,]\s)", lambda m: m.group(1).translate(str.maketrans("IliO", "1110")), text)
+    text = re.sub(
+        r"(?<=\s)([0-9IlOi]{1,2})(?=\s*[.,]\s)", lambda m: m.group(1).translate(str.maketrans("IliO", "1110")), text
+    )
     key = {"lessons": {}, "reviews": {}}
     # Đánh số bài theo thứ tự xuất hiện (OCR đôi khi đọc sai số bài, vd "Lesson 33" → "Lesson Ord…")
     n = 0
-    for m in re.finditer(r"Lesson (?!s)\S+ .*?Words [Ii]n Context:(.*?)Word Practice:(.*?)(?=Lesson |Word Review|$)", text):
+    for m in re.finditer(
+        r"Lesson (?!s)\S+ .*?Words [Ii]n Context:(.*?)Word Practice:(.*?)(?=Lesson |Word Review|$)", text
+    ):
         n += 1
         wic = [w.strip(" .") for w in re.split(r"\s*\b\d{1,2}\s*[.,]\s*", m.group(1)) if w.strip(" .")]
         wp = dict(re.findall(r"(\d{1,2})\s*[.,]\s*([A-D])\b", m.group(2)))
         key["lessons"][n] = {"wic": wic, "practice": {int(k): v for k, v in wp.items()}}
     # Word Review: số thứ tự hay bị OCR làm mất → đánh theo thứ tự xuất hiện; chấp nhận "l.c", "14B", "17 A", "12, D"
-    for i, m in enumerate(re.finditer(r"Word Review\s*(?:#\s*\d+\s*:)?(.*?)(?=Lesson|Word Review|ANSWER|Word The|$)", text), 1):
+    for i, m in enumerate(
+        re.finditer(r"Word Review\s*(?:#\s*\d+\s*:)?(.*?)(?=Lesson|Word Review|ANSWER|Word The|$)", text), 1
+    ):
         body = re.sub(r"(?<![A-Za-z])[lI](?=\s*[.,]?\s*[A-Da-d]\b)", "1", m.group(1))
         body = body.replace("II.", "11.").replace("Il.", "11.")
         key["reviews"][i] = {int(k): v.upper() for k, v in re.findall(r"(\d{1,2})\s*[.,]?\s*([A-Da-d])\b", body)}
@@ -545,6 +593,7 @@ def merge_split_blanks(text, answers):
         nonlocal n
         n += 1
         return f"{{{{{n}}}}}"
+
     return re.sub(r"\{\{BLANK\}\}", num, text), n
 
 
@@ -571,12 +620,21 @@ for n in range(1, 51):
         rec["part5"] = [{"n": q, **p5[q], "answer": k["practice"].get(q)} for q in sorted(p5)]
         for q in rec["part5"]:
             if q["text"].count("___") != 1 or len(q["options"]) != 4 or not q["answer"]:
-                problems.append(f"Bài {n} câu {q['n']}: trống={q['text'].count('___')} pa={len(q['options'])} đa={q['answer']}")
+                problems.append(
+                    f"Bài {n} câu {q['n']}: trống={q['text'].count('___')} pa={len(q['options'])} đa={q['answer']}"
+                )
         if len(p5) != 6:
             problems.append(f"Bài {n} Part 5: {len(p5)} câu")
-        rec["part6"] = {"text": p6["text"], "questions": [{"n": q, "options": p6["questions"].get(q, {}), "answer": k["practice"].get(q)} for q in (16, 17, 18)]}
+        rec["part6"] = {
+            "text": p6["text"],
+            "questions": [
+                {"n": q, "options": p6["questions"].get(q, {}), "answer": k["practice"].get(q)} for q in (16, 17, 18)
+            ],
+        }
         if p6["blanks"] != 3 or any(len(q["options"]) != 4 or not q["answer"] for q in rec["part6"]["questions"]):
-            problems.append(f"Bài {n} Part 6: trống={p6['blanks']} pa={[len(q['options']) for q in rec['part6']['questions']]}")
+            problems.append(
+                f"Bài {n} Part 6: trống={p6['blanks']} pa={[len(q['options']) for q in rec['part6']['questions']]}"
+            )
     except Exception as ex:
         problems.append(f"Bài {n} Reading lỗi: {ex}")
     out["lessons"][n] = rec
@@ -590,16 +648,29 @@ if args.review_pages:
             problems.append(f"Ôn tập #{i} lỗi: {ex}")
             continue
         ans = key["reviews"].get(i, {})
-        rv = {"part5": [{"n": q, **singles[q], "answer": ans.get(q)} for q in sorted(singles)],
-              "part6": [{"text": b["text"], "questions": [dict(q, answer=ans.get(q["n"])) for q in b["questions"]]} for b in blocks]}
+        rv = {
+            "part5": [{"n": q, **singles[q], "answer": ans.get(q)} for q in sorted(singles)],
+            "part6": [
+                {"text": b["text"], "questions": [dict(q, answer=ans.get(q["n"])) for q in b["questions"]]}
+                for b in blocks
+            ],
+        }
         out["reviews"][i] = rv
         for q in rv["part5"]:
             if q["text"].count("___") != 1 or len(q["options"]) != 4 or not q["answer"]:
-                problems.append(f"Ôn tập #{i} câu {q['n']}: trống={q['text'].count('___')} pa={len(q['options'])} đa={q['answer']}")
+                problems.append(
+                    f"Ôn tập #{i} câu {q['n']}: trống={q['text'].count('___')} pa={len(q['options'])} đa={q['answer']}"
+                )
         for b in rv["part6"]:
             nb = len(re.findall(r"\{\{\d+\}\}", b["text"]))
-            if nb != len(b["questions"]) or "{{0}}" in b["text"] or any(len(q["options"]) != 4 or not q["answer"] for q in b["questions"]):
-                problems.append(f"Ôn tập #{i} đoạn {[q['n'] for q in b['questions']]}: trống={nb} pa={[len(q['options']) for q in b['questions']]}")
+            if (
+                nb != len(b["questions"])
+                or "{{0}}" in b["text"]
+                or any(len(q["options"]) != 4 or not q["answer"] for q in b["questions"])
+            ):
+                problems.append(
+                    f"Ôn tập #{i} đoạn {[q['n'] for q in b['questions']]}: trống={nb} pa={[len(q['options']) for q in b['questions']]}"
+                )
         total = len(rv["part5"]) + sum(len(b["questions"]) for b in rv["part6"])
         if total != len(ans):
             problems.append(f"Ôn tập #{i}: {total} câu, {len(ans)} đáp án")

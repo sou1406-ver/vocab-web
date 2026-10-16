@@ -1,0 +1,554 @@
+{
+ "un-": {
+  "type": "prefix",
+  "makes": null,
+  "vi": "không, ngược lại",
+  "fn": "Phủ định tính từ; đảo ngược hành động (unlock)"
+ },
+ "in-": {
+  "type": "prefix",
+  "makes": null,
+  "vi": "không",
+  "fn": "Phủ định (biến thể: im- trước b/m/p, il- trước l, ir- trước r)"
+ },
+ "im-": {
+  "type": "prefix",
+  "makes": null,
+  "vi": "không",
+  "fn": "Biến thể của in- trước b, m, p (imbalance, impractical)"
+ },
+ "il-": {
+  "type": "prefix",
+  "makes": null,
+  "vi": "không",
+  "fn": "Biến thể của in- trước l (illogical)"
+ },
+ "ir-": {
+  "type": "prefix",
+  "makes": null,
+  "vi": "không",
+  "fn": "Biến thể của in- trước r (irresponsible, irregular)"
+ },
+ "dis-": {
+  "type": "prefix",
+  "makes": null,
+  "vi": "không, trái lại",
+  "fn": "Phủ định động từ, danh từ, tính từ"
+ },
+ "mis-": {
+  "type": "prefix",
+  "makes": null,
+  "vi": "sai, nhầm",
+  "fn": "Làm sai, làm tệ (misjudge, mismatch)"
+ },
+ "non-": {
+  "type": "prefix",
+  "makes": null,
+  "vi": "không",
+  "fn": "Phủ định trung tính (non-refundable)"
+ },
+ "a-": {
+  "type": "prefix",
+  "makes": null,
+  "vi": "không",
+  "fn": "Phủ định gốc Hy Lạp (atypical)"
+ },
+ "mal-": {
+  "type": "prefix",
+  "makes": null,
+  "vi": "xấu, hỏng",
+  "fn": "Hoạt động sai, tệ (malfunction)"
+ },
+ "de-": {
+  "type": "prefix",
+  "makes": null,
+  "vi": "gỡ bỏ, đảo ngược",
+  "fn": "Loại bỏ, làm ngược lại (decode, deregulate)"
+ },
+ "re-": {
+  "type": "prefix",
+  "makes": null,
+  "vi": "lại, lần nữa",
+  "fn": "Lặp lại hành động (reassure, reorder)"
+ },
+ "pre-": {
+  "type": "prefix",
+  "makes": null,
+  "vi": "trước",
+  "fn": "Xảy ra trước (predetermined, prerequisite)"
+ },
+ "fore-": {
+  "type": "prefix",
+  "makes": null,
+  "vi": "trước",
+  "fn": "Trước (về thời gian) (forecast)"
+ },
+ "over-": {
+  "type": "prefix",
+  "makes": null,
+  "vi": "quá mức",
+  "fn": "Làm quá nhiều (overcharge, overcrowded)"
+ },
+ "under-": {
+  "type": "prefix",
+  "makes": null,
+  "vi": "dưới mức, chưa đủ",
+  "fn": "Làm chưa đủ (underestimate, underfunded)"
+ },
+ "out-": {
+  "type": "prefix",
+  "makes": null,
+  "vi": "ra ngoài; vượt hơn",
+  "fn": "Ra ngoài, vượt qua (outsource, outdated)"
+ },
+ "up-": {
+  "type": "prefix",
+  "makes": null,
+  "vi": "lên",
+  "fn": "Nâng lên, làm mới (update)"
+ },
+ "en-": {
+  "type": "prefix",
+  "makes": null,
+  "vi": "làm cho, đưa vào",
+  "fn": "Tạo động từ (enable, entitle, encourage)"
+ },
+ "co-": {
+  "type": "prefix",
+  "makes": null,
+  "vi": "cùng nhau",
+  "fn": "Cùng làm (coordinate)"
+ },
+ "inter-": {
+  "type": "prefix",
+  "makes": null,
+  "vi": "giữa, lẫn nhau",
+  "fn": "Tương hỗ (interact)"
+ },
+ "sur-": {
+  "type": "prefix",
+  "makes": null,
+  "vi": "thêm, trên",
+  "fn": "Phụ thêm (surcharge)"
+ },
+ "ac-": {
+  "type": "prefix",
+  "makes": null,
+  "vi": "hướng tới",
+  "fn": "Biến thể của ad- (accustom)"
+ },
+ "-tion": {
+  "type": "suffix",
+  "makes": "n",
+  "vi": "sự, việc",
+  "fn": "Động từ → danh từ"
+ },
+ "-sion": {
+  "type": "suffix",
+  "makes": "n",
+  "vi": "sự, việc",
+  "fn": "Động từ → danh từ (thường với gốc tận cùng -d, -de, -se)"
+ },
+ "-ation": {
+  "type": "suffix",
+  "makes": "n",
+  "vi": "sự, việc",
+  "fn": "Động từ → danh từ"
+ },
+ "-ion": {
+  "type": "suffix",
+  "makes": "n",
+  "vi": "sự, việc",
+  "fn": "Động từ → danh từ"
+ },
+ "-ition": {
+  "type": "suffix",
+  "makes": "n",
+  "vi": "sự, việc",
+  "fn": "Động từ → danh từ (compete → competition)"
+ },
+ "-ison": {
+  "type": "suffix",
+  "makes": "n",
+  "vi": "sự",
+  "fn": "Chỉ gặp trong comparison"
+ },
+ "-ment": {
+  "type": "suffix",
+  "makes": "n",
+  "vi": "sự, việc",
+  "fn": "Động từ → danh từ"
+ },
+ "-ness": {
+  "type": "suffix",
+  "makes": "n",
+  "vi": "tính, sự",
+  "fn": "Tính từ → danh từ chỉ tính chất"
+ },
+ "-ity": {
+  "type": "suffix",
+  "makes": "n",
+  "vi": "tính, khả năng",
+  "fn": "Tính từ → danh từ"
+ },
+ "-ty": {
+  "type": "suffix",
+  "makes": "n",
+  "vi": "tính",
+  "fn": "Tính từ → danh từ (loyalty, penalty)"
+ },
+ "-ance": {
+  "type": "suffix",
+  "makes": "n",
+  "vi": "sự",
+  "fn": "Động từ → danh từ"
+ },
+ "-ence": {
+  "type": "suffix",
+  "makes": "n",
+  "vi": "sự",
+  "fn": "Động từ / tính từ -ent → danh từ"
+ },
+ "-ancy": {
+  "type": "suffix",
+  "makes": "n",
+  "vi": "tình trạng",
+  "fn": "Danh từ chỉ trạng thái (occupancy)"
+ },
+ "-ency": {
+  "type": "suffix",
+  "makes": "n",
+  "vi": "tình trạng",
+  "fn": "Danh từ chỉ trạng thái (urgency)"
+ },
+ "-cy": {
+  "type": "suffix",
+  "makes": "n",
+  "vi": "tình trạng, tính",
+  "fn": "Tính từ -t/-te → danh từ (accuracy, efficiency)"
+ },
+ "-age": {
+  "type": "suffix",
+  "makes": "n",
+  "vi": "sự, lượng",
+  "fn": "Động từ → danh từ (storage, coverage)"
+ },
+ "-ure": {
+  "type": "suffix",
+  "makes": "n",
+  "vi": "sự, kết quả",
+  "fn": "Động từ → danh từ (failure, departure)"
+ },
+ "-ture": {
+  "type": "suffix",
+  "makes": "n",
+  "vi": "sự, vật",
+  "fn": "Động từ → danh từ (mixture)"
+ },
+ "-ature": {
+  "type": "suffix",
+  "makes": "n",
+  "vi": "sự, vật",
+  "fn": "Động từ → danh từ (signature)"
+ },
+ "-al": {
+  "type": "suffix",
+  "makes": "n/adj",
+  "vi": "sự; thuộc về",
+  "fn": "Động từ → danh từ (arrival, rehearsal) hoặc danh từ → tính từ (practical)"
+ },
+ "-ship": {
+  "type": "suffix",
+  "makes": "n",
+  "vi": "tình trạng, mối quan hệ",
+  "fn": "Danh từ → danh từ trừu tượng (apprenticeship)"
+ },
+ "-th": {
+  "type": "suffix",
+  "makes": "n",
+  "vi": "tính chất",
+  "fn": "Tính từ → danh từ, thường đổi gốc (strong → strength)"
+ },
+ "-ism": {
+  "type": "suffix",
+  "makes": "n",
+  "vi": "tính, chủ nghĩa",
+  "fn": "Danh từ trừu tượng (criticism)"
+ },
+ "-dom": {
+  "type": "suffix",
+  "makes": "n",
+  "vi": "trạng thái",
+  "fn": "Tính từ → danh từ (wisdom)"
+ },
+ "-ology": {
+  "type": "suffix",
+  "makes": "n",
+  "vi": "môn học",
+  "fn": "Ngành, học thuyết (methodology)"
+ },
+ "-ice": {
+  "type": "suffix",
+  "makes": "n",
+  "vi": "sự",
+  "fn": "Động từ → danh từ (service)"
+ },
+ "-is": {
+  "type": "suffix",
+  "makes": "n",
+  "vi": "sự",
+  "fn": "Danh từ gốc Hy Lạp (diagnosis)"
+ },
+ "-se": {
+  "type": "suffix",
+  "makes": "n",
+  "vi": "sự",
+  "fn": "Động từ → danh từ (response)"
+ },
+ "-ety": {
+  "type": "suffix",
+  "makes": "n",
+  "vi": "sự",
+  "fn": "Danh từ (variety)"
+ },
+ "-ise": {
+  "type": "suffix",
+  "makes": "n",
+  "vi": "chuyên môn",
+  "fn": "Danh từ chỉ chuyên môn (expertise)"
+ },
+ "-ior": {
+  "type": "suffix",
+  "makes": "n",
+  "vi": "cách, lối",
+  "fn": "Danh từ (behavior)"
+ },
+ "-ele": {
+  "type": "suffix",
+  "makes": "n",
+  "vi": "tập hợp",
+  "fn": "Chỉ gặp trong clientele"
+ },
+ "-s": {
+  "type": "suffix",
+  "makes": "n",
+  "vi": "(số nhiều mang nghĩa riêng)",
+  "fn": "Danh từ số nhiều có nghĩa khác (returns, remains)"
+ },
+ "-er": {
+  "type": "suffix",
+  "makes": "n",
+  "vi": "người / vật làm",
+  "fn": "Động từ → người làm (employer, scanner)"
+ },
+ "-or": {
+  "type": "suffix",
+  "makes": "n",
+  "vi": "người / vật làm",
+  "fn": "Động từ → người làm (investor, generator)"
+ },
+ "-itor": {
+  "type": "suffix",
+  "makes": "n",
+  "vi": "người làm",
+  "fn": "Động từ → người làm (competitor)"
+ },
+ "-ee": {
+  "type": "suffix",
+  "makes": "n",
+  "vi": "người được / bị",
+  "fn": "Động từ → người nhận hành động (trainee, attendee)"
+ },
+ "-ist": {
+  "type": "suffix",
+  "makes": "n",
+  "vi": "người, nhà",
+  "fn": "Người chuyên về (specialist)"
+ },
+ "-ian": {
+  "type": "suffix",
+  "makes": "n",
+  "vi": "người chuyên",
+  "fn": "Người làm nghề (technician)"
+ },
+ "-ant": {
+  "type": "suffix",
+  "makes": "n/adj",
+  "vi": "người; có tính",
+  "fn": "Động từ → người (applicant, assistant) hoặc tính từ (hesitant)"
+ },
+ "-ent": {
+  "type": "suffix",
+  "makes": "adj/n",
+  "vi": "có tính",
+  "fn": "Động từ → tính từ (confident) hoặc danh từ (repellent)"
+ },
+ "-ful": {
+  "type": "suffix",
+  "makes": "adj",
+  "vi": "đầy, có",
+  "fn": "Danh từ → tính từ (successful, forgetful)"
+ },
+ "-less": {
+  "type": "suffix",
+  "makes": "adj",
+  "vi": "không có",
+  "fn": "Danh từ → tính từ (flavorless, regardless)"
+ },
+ "-able": {
+  "type": "suffix",
+  "makes": "adj",
+  "vi": "có thể",
+  "fn": "Động từ → tính từ (affordable, refundable)"
+ },
+ "-ible": {
+  "type": "suffix",
+  "makes": "adj",
+  "vi": "có thể",
+  "fn": "Biến thể của -able (accessible, flexible)"
+ },
+ "-ive": {
+  "type": "suffix",
+  "makes": "adj",
+  "vi": "có tính",
+  "fn": "Động từ → tính từ (attractive, productive)"
+ },
+ "-ative": {
+  "type": "suffix",
+  "makes": "adj",
+  "vi": "có tính",
+  "fn": "Động từ → tính từ (comparative, conservative)"
+ },
+ "-itive": {
+  "type": "suffix",
+  "makes": "adj",
+  "vi": "có tính",
+  "fn": "Động từ → tính từ (competitive, sensitive)"
+ },
+ "-ial": {
+  "type": "suffix",
+  "makes": "adj",
+  "vi": "thuộc về",
+  "fn": "Danh từ → tính từ (beneficial, essential)"
+ },
+ "-ic": {
+  "type": "suffix",
+  "makes": "adj",
+  "vi": "thuộc về",
+  "fn": "Danh từ → tính từ (strategic, basic)"
+ },
+ "-ical": {
+  "type": "suffix",
+  "makes": "adj",
+  "vi": "thuộc về",
+  "fn": "Danh từ → tính từ (typical, methodical)"
+ },
+ "-atic": {
+  "type": "suffix",
+  "makes": "adj",
+  "vi": "có tính",
+  "fn": "Danh từ → tính từ (systematic, thematic)"
+ },
+ "-tic": {
+  "type": "suffix",
+  "makes": "adj",
+  "vi": "thuộc về",
+  "fn": "Danh từ → tính từ (diagnostic, emphatic)"
+ },
+ "-ous": {
+  "type": "suffix",
+  "makes": "adj",
+  "vi": "có, đầy",
+  "fn": "Danh từ → tính từ (cautious, nervous)"
+ },
+ "-ual": {
+  "type": "suffix",
+  "makes": "adj",
+  "vi": "thuộc về",
+  "fn": "Danh từ → tính từ (habitual)"
+ },
+ "-y": {
+  "type": "suffix",
+  "makes": "adj/n",
+  "vi": "có, nhiều",
+  "fn": "Danh từ → tính từ (risky, trendy); đôi khi tạo danh từ (delivery)"
+ },
+ "-ory": {
+  "type": "suffix",
+  "makes": "adj/n",
+  "vi": "có tính",
+  "fn": "Động từ → tính từ (mandatory, satisfactory) hoặc danh từ (directory)"
+ },
+ "-atory": {
+  "type": "suffix",
+  "makes": "adj/n",
+  "vi": "có tính",
+  "fn": "Động từ → tính từ / danh từ (preparatory, signatory)"
+ },
+ "-ary": {
+  "type": "suffix",
+  "makes": "adj/n",
+  "vi": "thuộc về",
+  "fn": "Danh từ → tính từ (revolutionary, customary)"
+ },
+ "-ite": {
+  "type": "suffix",
+  "makes": "adj",
+  "vi": "thuộc về",
+  "fn": "Chỉ gặp trong favorite"
+ },
+ "-some": {
+  "type": "suffix",
+  "makes": "adj",
+  "vi": "gây ra, có",
+  "fn": "Danh từ → tính từ (burdensome)"
+ },
+ "-ate": {
+  "type": "suffix",
+  "makes": "adj/v",
+  "vi": "có tính; làm cho",
+  "fn": "Tạo tính từ (considerate) hoặc động từ (validate)"
+ },
+ "-ed": {
+  "type": "suffix",
+  "makes": "adj",
+  "vi": "bị, được (cảm nhận)",
+  "fn": "Quá khứ phân từ làm tính từ: cảm nhận / bị tác động (excited)"
+ },
+ "-ing": {
+  "type": "suffix",
+  "makes": "adj/n",
+  "vi": "gây ra; việc",
+  "fn": "Tính từ chỉ bản chất gây ra (exciting) hoặc danh từ (training)"
+ },
+ "-n": {
+  "type": "suffix",
+  "makes": "adj",
+  "vi": "bị, được",
+  "fn": "Quá khứ phân từ bất quy tắc (mistaken)"
+ },
+ "-ize": {
+  "type": "suffix",
+  "makes": "v",
+  "vi": "làm cho, hoá",
+  "fn": "Danh từ / tính từ → động từ (minimize, specialize)"
+ },
+ "-ify": {
+  "type": "suffix",
+  "makes": "v",
+  "vi": "làm cho",
+  "fn": "Tính từ → động từ (diversify)"
+ },
+ "-en": {
+  "type": "suffix",
+  "makes": "v",
+  "vi": "làm cho trở nên",
+  "fn": "Tính từ → động từ (strengthen, broaden)"
+ },
+ "-ly": {
+  "type": "suffix",
+  "makes": "adv",
+  "vi": "một cách",
+  "fn": "Tính từ → trạng từ. ⚠ Danh từ + -ly → TÍNH TỪ (leisurely)"
+ }
+}

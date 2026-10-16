@@ -1,6 +1,10 @@
 # Dữ liệu tự sinh (tools/build_data.py) — giữ dạng gọn
-js/data.js
-js/exercises.js
+src/data/
 data/
+dist/
+node_modules/
+package-lock.json
 *.pdf
 vocanetwork_*.html
+src/components/reactbits/
+test-results/
