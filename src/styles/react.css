@@ -419,3 +419,14 @@ select option:disabled {
 .fc-stage {
   margin-top: 14px;
 }
+
+/* Thanh tiêu đề: khung rộng tối đa 1240px nên logo + 6 tab + ô tìm + avatar phải vừa ~1200px.
+   Tên tài khoản (có thể rất dài, vd từ Google) luôn ẩn cạnh avatar — vẫn hiện trong menu và trang Tổng quan. */
+.avatar-btn .avatar-name {
+  display: none;
+}
+@media (min-width: 1360px) {
+  .gsearch {
+    width: 220px;
+  }
+}

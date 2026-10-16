@@ -203,3 +203,29 @@ for (const theme of ["light", "dark"])
     }
     expect(found).toEqual([]);
   });
+
+test("thanh tiêu đề không bị cắt tab ở mọi bề ngang 1024–1920px, kể cả tên tài khoản rất dài", async ({
+  page,
+  isMobile,
+}) => {
+  test.skip(isMobile, "chỉ áp dụng màn hình rộng");
+  test.setTimeout(90_000);
+  await page.goto("#/");
+  await page.evaluate(() => {
+    const p = JSON.parse(localStorage.getItem("vn-profiles") || "[]");
+    p[0].name = "Phúc Nguyễn Ngọc Thành Trung";
+    localStorage.setItem("vn-profiles", JSON.stringify(p));
+  });
+  const bad: string[] = [];
+  for (let w = 1024; w <= 1920; w += 16) {
+    await page.setViewportSize({ width: w, height: 600 });
+    await page.goto("#/");
+    const r = await page.evaluate(() => {
+      const tabs = document.querySelector(".tabs") as HTMLElement;
+      const inner = document.querySelector(".header-inner") as HTMLElement;
+      return tabs.scrollWidth - tabs.clientWidth + Math.max(0, inner.scrollWidth - inner.clientWidth);
+    });
+    if (r > 0) bad.push(`${w}px: tràn ${r}px`);
+  }
+  expect(bad).toEqual([]);
+});
