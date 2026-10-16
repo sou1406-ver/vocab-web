@@ -6,15 +6,15 @@
   <title>VocaNetwork — 600 Essential Words TOEIC</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Literata:ital,opsz,wght@0,7..72,500..700;1,7..72,400..500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
   <script>
-    // Áp dụng giao diện sáng/tối trước khi vẽ trang để tránh nháy màn hình
+    // Áp dụng giao diện (sáng / tối / theo máy) trước khi vẽ trang để tránh nháy màn hình
     (function () {
-      var t = null;
-      try { t = localStorage.getItem("vn-theme"); } catch (e) {}
-      if (!t) t = window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-      document.documentElement.setAttribute("data-theme", t);
+      var p = "system";
+      try { p = localStorage.getItem("vn-theme") || "system"; } catch (e) {}
+      var dark = p === "dark" || (p === "system" && window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches);
+      document.documentElement.setAttribute("data-theme", dark ? "dark" : "light");
     })();
   </script>
 </head>
@@ -30,7 +30,14 @@
       </div>
       <nav class="tabs" id="tabs"></nav>
       <div class="header-actions">
-        <button class="icon-btn" data-act="toggleTheme" title="Đổi giao diện sáng / tối" id="theme-btn"></button>
+        <div class="gsearch" id="gsearch">
+          <input id="gsearch-input" class="input" type="search" placeholder="Tìm từ, họ từ, nghĩa Việt…" autocomplete="off" spellcheck="false"
+                 aria-label="Tìm từ" aria-controls="gsearch-results" aria-expanded="false" data-input="gSearch">
+          <kbd class="gsearch-key" aria-hidden="true">/</kbd>
+          <div class="gsearch-results" id="gsearch-results" role="listbox" hidden></div>
+        </div>
+        <button class="icon-btn gsearch-toggle" data-act="openSearch" title="Tìm từ" aria-label="Tìm từ" id="gsearch-btn"></button>
+        <div class="theme-seg" id="theme-seg" role="radiogroup" aria-label="Giao diện sáng / tối"></div>
       </div>
     </div>
   </header>
@@ -42,6 +49,7 @@
   <div id="modal-root"></div>
 
   <script src="js/data.js"></script>
+  <script src="js/exercises.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>

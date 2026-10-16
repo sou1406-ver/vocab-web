@@ -79,7 +79,7 @@ const STATUS = {
 };
 const TAB_DEFS = [
   { id: "topics", label: "Chủ đề", short: "Chủ đề", icon: "grid", href: "#/" },
-  { id: "network", label: "Mạng lưới Trường từ", short: "Trường từ", icon: "network", href: "#/network" },
+  { id: "network", label: "Trường từ", short: "Trường từ", icon: "network", href: "#/network" },
   { id: "flashcards", label: "Flashcard 3D", short: "Flashcard", icon: "layers", href: "#/flashcards" },
   { id: "quiz", label: "Bài tập", short: "Bài tập", icon: "pencil", href: "#/quiz" },
   { id: "affixes", label: "Tiền tố · Hậu tố", short: "Phụ tố", icon: "puzzle", href: "#/affixes" },
@@ -104,6 +104,7 @@ const CUSTOM_TOPIC = { id: "custom", name: "Tự thêm", en: "My word networks",
 let ALL = [], BY_ID = {}, LESSON_BY_N = {}, TOPIC_BY_ID = {}, FORM_INDEX = {};
 
 function rebuildIndex() {
+  SEARCH_INDEX = null;
   ALL = [...WORDS, ...CUSTOM];
   BY_ID = Object.fromEntries(ALL.map((w) => [w.id, w]));
   LESSON_BY_N = Object.fromEntries(LESSONS.map((l) => [l.n, l]));
@@ -129,7 +130,7 @@ function recordAnswer(id, ok) {
 // Họ từ đầy đủ, luôn chứa chính từ gốc
 function familyOf(w) {
   const fam = w.family.slice();
-  if (!fam.some((f) => same(f.w, w.word))) fam.unshift({ w: w.word, pos: w.pos || "phr", parts: w.parts || [w.word], vi: w.vi });
+  if (!fam.some((f) => same(f.w, w.word))) fam.unshift({ w: w.word, pos: w.pos || "phr", parts: w.parts || [w.word], vi: w.vi, ipa: w.ipa });
   return fam;
 }
 const expandedCount = (w) => familyOf(w).filter((f) => !same(f.w, w.word)).length + w.syn.length + w.ant.length;
@@ -170,12 +171,82 @@ function toast(msg) {
   $("#toasts").appendChild(el);
   setTimeout(() => el.remove(), 2600);
 }
-function applyThemeIcon() {
-  const dark = document.documentElement.getAttribute("data-theme") === "dark";
-  $("#theme-btn").innerHTML = icon(dark ? "sun" : "moon");
+const THEMES = [["light", "sun", "Sáng"], ["dark", "moon", "Tối"], ["system", "monitor", "Theo máy"]];
+const darkQuery = window.matchMedia ? matchMedia("(prefers-color-scheme: dark)") : null;
+function themePref() {
+  try { return localStorage.getItem("vn-theme") || "system"; } catch (e) { return "system"; }
+}
+function applyTheme(pref) {
+  const dark = pref === "dark" || (pref === "system" && darkQuery && darkQuery.matches);
+  document.documentElement.setAttribute("data-theme", dark ? "dark" : "light");
+  try { localStorage.setItem("vn-theme", pref); } catch (e) { /* bỏ qua */ }
+  renderThemeSeg();
+}
+function renderThemeSeg() {
+  const pref = themePref();
+  $("#theme-seg").innerHTML = THEMES.map(([k, ic, label]) =>
+    `<button role="radio" aria-checked="${pref === k}" class="${pref === k ? "active" : ""}" data-act="setTheme" data-theme="${k}" title="${label}">${icon(ic, "sm")}<span>${label}</span></button>`).join("");
+}
+if (darkQuery) darkQuery.addEventListener("change", () => { if (themePref() === "system") applyTheme("system"); });
+const applyThemeIcon = renderThemeSeg; // tên cũ
+
+// ---------------------------------------------------------------- tìm kiếm toàn trang (ô trên thanh tiêu đề)
+let SEARCH_INDEX = null;
+const GS = { results: [], sel: 0 };
+function buildSearchIndex() {
+  SEARCH_INDEX = [];
+  for (const w of ALL) {
+    SEARCH_INDEX.push({ form: w.word, pos: w.pos, vi: w.vi, ipa: w.ipa, root: w, kind: "root" });
+    for (const f of w.family) if (!same(f.w, w.word)) SEARCH_INDEX.push({ form: f.w, pos: f.pos, vi: f.vi, ipa: f.ipa, root: w, kind: "family" });
+    for (const s of w.syn) SEARCH_INDEX.push({ form: s, pos: "", vi: `đồng nghĩa của “${w.word}”`, root: w, kind: "syn" });
+  }
+  for (const e of SEARCH_INDEX) { e.ff = fold(e.form); e.fv = fold(e.vi); }
+}
+function searchWords(q) {
+  const f = fold(q.trim());
+  if (!f) return [];
+  if (!SEARCH_INDEX) buildSearchIndex();
+  const kindRank = { root: 0, family: 1, syn: 2 };
+  const scored = [];
+  for (const e of SEARCH_INDEX) {
+    let s = -1;
+    if (e.ff === f) s = 0;
+    else if (e.ff.startsWith(f)) s = 1;
+    else if (e.ff.includes(" " + f) || e.ff.includes("-" + f)) s = 2;
+    else if (f.length >= 3 && e.ff.includes(f)) s = 3;
+    else if (f.length >= 2 && e.kind !== "syn" && e.fv.includes(f)) s = 4;
+    if (s >= 0) scored.push([s * 10 + kindRank[e.kind], e]);
+  }
+  scored.sort((a, b) => a[0] - b[0] || a[1].form.length - b[1].form.length);
+  const seen = new Set();
+  // Mỗi từ chỉ hiện một lần (ưu tiên bản là từ gốc trong sách)
+  return scored.map((x) => x[1]).filter((e) => { const k = lower(e.form); return seen.has(k) ? false : seen.add(k); }).slice(0, 10);
+}
+function renderSearch() {
+  const box = $("#gsearch-results"), inp = $("#gsearch-input");
+  const q = inp.value.trim();
+  if (!q) { box.hidden = true; inp.setAttribute("aria-expanded", "false"); return; }
+  GS.results = searchWords(q);
+  GS.sel = Math.min(GS.sel, Math.max(0, GS.results.length - 1));
+  box.innerHTML = GS.results.length ? GS.results.map((e, i) => `
+    <button class="gs-item ${i === GS.sel ? "sel" : ""}" role="option" aria-selected="${i === GS.sel}" data-act="gsGo" data-href="#/network/${e.root.id}/${encodeURIComponent(e.form)}">
+      <span class="gs-main"><b>${esc(e.form)}</b>${ipaTag(e)}${posTag(e.pos)}</span>
+      <span class="gs-vi">${esc(e.vi)}</span>
+      <span class="gs-from">${e.kind === "root" ? esc(lessonLabel(e.root)) : e.kind === "family" ? `họ từ ${esc(e.root.word)}` : `→ ${esc(e.root.word)}`}</span>
+    </button>`).join("")
+    : `<div class="gs-empty">Không tìm thấy “${esc(q)}”. Thử gõ không dấu hoặc một phần của từ.</div>`;
+  box.hidden = false;
+  inp.setAttribute("aria-expanded", "true");
+}
+function closeSearch(clear) {
+  $("#gsearch-results").hidden = true;
+  $("#gsearch-input").setAttribute("aria-expanded", "false");
+  document.querySelector(".header").classList.remove("search-open");
+  if (clear) { $("#gsearch-input").value = ""; $("#gsearch-input").blur(); }
 }
 
 // ---------------------------------------------------------------- shared fragments
+const ipaTag = (x) => (x && x.ipa ? `<span class="ipa">${esc(x.ipa)}</span>` : "");
 const posTag = (p) => (p ? `<span class="pos-tag" title="${POS_LABEL[p] || p}">(${esc(p)})</span>` : "");
 const dot = (id) => `<span class="dot ${statusOf(id)}" title="${STATUS[statusOf(id)].label}"></span>`;
 
@@ -211,7 +282,7 @@ function scopeSelects(st, prefix) {
 // ---------------------------------------------------------------- app state
 const S = {
   tab: "topics",
-  net: { unit: "all", lesson: "all", q: "", id: null, focus: null },
+  net: { unit: "all", lesson: "all", q: "", id: null, focus: null, status: "all", pos: "all", affix: "all", sort: "book" },
   fc: { unit: "all", lesson: "1", status: "all", deck: [], i: 0, flipped: false },
   quiz: { type: "formation", unit: "all", lesson: "1", style: "choice", qs: [], i: 0, right: 0, wrong: 0, answered: false, picked: [], last: null },
   affix: null,
@@ -221,89 +292,88 @@ const S = {
 // =====================================================================
 // TAB 1 — CHỦ ĐỀ
 // =====================================================================
+function lessonProgress(n) {
+  const words = ALL.filter((w) => w.lesson === n);
+  const mastered = words.filter((w) => statusOf(w.id) === "mastered").length;
+  const started = words.some((w) => statusOf(w.id) !== "new");
+  return { total: words.length, mastered, started };
+}
+// Bài nên học tiếp: bài đang học dở đầu tiên, nếu không có thì bài chưa xong đầu tiên
+function resumeLesson() {
+  const open = LESSONS.filter((l) => { const p = lessonProgress(l.n); return p.mastered < p.total; });
+  return open.find((l) => lessonProgress(l.n).started) || open[0] || LESSONS[0];
+}
 function viewTopics() {
   const total = ALL.length;
-  const expanded = ALL.reduce((s, w) => s + expandedCount(w), 0);
   const mastered = ALL.filter((w) => statusOf(w.id) === "mastered").length;
+  const learning = ALL.filter((w) => statusOf(w.id) === "learning").length;
   const pct = total ? Math.round((mastered / total) * 100) : 0;
-  const kpi = (label, num, sub, color, ic, extra = "") => `
-    <div class="card kpi">
-      <div><div class="eyebrow">${label}</div>
-        <div class="row" style="gap:8px;align-items:baseline"><div class="num" style="color:var(--${color})">${num}</div>${extra}</div>
-        <div class="sub">${sub}</div></div>
-      <div class="kpi-icon" style="background:var(--${color}-soft);color:var(--${color})">${icon(ic)}</div>
-    </div>`;
-  const topicCard = (t) => {
+  const next = resumeLesson();
+  const np = lessonProgress(next.n);
+  const unitBlock = (t, i) => {
     const words = ALL.filter((w) => unitOf(w) === t.id);
     const m = words.filter((w) => statusOf(w.id) === "mastered").length;
-    const p = words.length ? Math.round((m / words.length) * 100) : 0;
     const lessons = t.id === "custom" ? [] : LESSONS.filter((l) => l.unit === t.id);
     return `
-    <div class="card topic-card">
-      <div class="topic-head">
-        <div class="topic-icon">${icon(t.icon, "lg")}</div>
-        <div style="flex:1;min-width:0">
-          <h3>${esc(t.name)}</h3>
-          <div class="muted" style="font-size:.8rem">${esc(t.en)} · ${t.id === "custom" ? "" : `${lessons.length} bài · `}${words.length} từ gốc</div>
+    <section class="unit">
+      <div>
+        <div class="unit-no">${t.id === "custom" ? "Của bạn" : `Phần ${i + 1}`}</div>
+        <h3 class="unit-title">${esc(t.name)}</h3>
+        <div class="unit-en">${esc(t.en)}</div>
+        <div class="unit-meta"><span>${m}/${words.length} từ đã thuộc</span></div>
+        <div class="unit-links">
+          <button class="text-link" data-act="openUnit" data-unit="${t.id}" data-to="flashcards">Flashcard</button>
+          <button class="text-link" data-act="openUnit" data-unit="${t.id}" data-to="quiz">Bài tập</button>
         </div>
-        <span class="badge b-emerald">${p}%</span>
       </div>
-      <div class="progress"><span style="width:${p}%"></span></div>
-      ${lessons.length ? `<div class="lesson-list">${lessons.map((l) => {
-        const lw = words.filter((w) => w.lesson === l.n);
-        const lm = lw.filter((w) => statusOf(w.id) === "mastered").length;
-        return `<button class="lesson-row" data-act="openLesson" data-n="${l.n}">
-          <span class="ln">${String(l.n).padStart(2, "0")}</span>
-          <span class="lt">${esc(l.title)} <small>· ${esc(l.vi)}</small></span>
-          <span class="lp">${lm}/${lw.length}</span></button>`;
-      }).join("")}</div>` : `<div class="muted" style="font-size:.85rem">${words.map((w) => esc(w.word)).join(", ")}</div>`}
-      <div class="topic-actions">
-        <button class="btn sm soft" data-act="openUnit" data-unit="${t.id}" data-to="network">${icon("network", "sm")} Sơ đồ</button>
-        <button class="btn sm" data-act="openUnit" data-unit="${t.id}" data-to="flashcards">${icon("layers", "sm")} Flashcard</button>
-        <button class="btn sm" data-act="openUnit" data-unit="${t.id}" data-to="quiz">${icon("pencil", "sm")} Bài tập</button>
-      </div>
-    </div>`;
+      <div class="lesson-grid">${lessons.length ? lessons.map((l) => {
+        const p = lessonProgress(l.n);
+        const done = p.total && p.mastered === p.total;
+        return `<button class="lesson-tile ${done ? "done" : ""}" data-act="openLesson" data-n="${l.n}">
+          <span class="ln">Bài ${l.n}${done ? " · xong" : p.mastered ? ` · ${p.mastered}/${p.total}` : ""}${hasBook && lessonBookDone(l.n) ? ' <span class="ex-done" title="Đã làm bài tập trong sách">✓ bài tập</span>' : ""}</span>
+          <span class="lt">${esc(l.title)}</span>
+          <span class="lv">${esc(l.vi)}</span>
+          <span class="progress"><span style="width:${p.total ? (p.mastered / p.total) * 100 : 0}%"></span></span>
+        </button>`;
+      }).join("") : words.map((w) => `<button class="lesson-tile" data-act="nav" data-href="#/network/${w.id}">
+          <span class="lt">${esc(w.word)}</span><span class="lv">${esc(w.vi)}</span></button>`).join("")}</div>
+    </section>`;
   };
   return `
   <div class="stack">
-    <section class="hero">
+    <section class="home-head">
       <div>
-        <div class="hero-pill">${icon("branch", "sm")} 600 Essential Words for the TOEIC — 50 bài · 10 chủ đề</div>
-        <h1>Học Từ Vựng Theo Chủ Đề &amp; Mở Rộng Trường Từ</h1>
-        <p>Mỗi từ trong sách là một <b>từ gốc</b>: ghép <span style="color:#bae6fd;font-weight:700">Tiền tố</span> +
-          <u style="font-weight:700">Từ gốc</u> + <span style="color:#a7f3d0;font-weight:700">Hậu tố</span> để ra cả họ từ
-          (N · V · Adj · Adv), kèm đồng nghĩa, trái nghĩa và câu ví dụ gốc trong sách.</p>
+        <p class="kicker">600 Essential Words for the TOEIC · 50 bài</p>
+        <h1>Học một từ, nhớ cả họ từ.</h1>
+        <p class="lede">Mỗi từ trong sách được tách thành <b>tiền tố + gốc + hậu tố</b>. Nhìn cách ghép là thấy ngay
+          danh từ, động từ, tính từ, trạng từ của nó — đúng dạng bài điền từ trong TOEIC Part 5.</p>
       </div>
-      <div class="row">
-        <button class="btn white" data-act="nav" data-href="#/network">${icon("network")} Khám phá Sơ đồ Trường từ</button>
-        <button class="btn glass" data-act="nav" data-href="#/affixes">${icon("book")} Quy luật Tiền tố / Hậu tố</button>
+      <div class="resume">
+        <div class="eyebrow">${np.started ? "Học tiếp" : "Bắt đầu"}</div>
+        <h3>Bài ${next.n} · ${esc(next.title)}</h3>
+        <p class="muted">${esc(next.vi)} · ${np.mastered}/${np.total} từ đã thuộc</p>
+        <div class="progress"><span style="width:${np.total ? (np.mastered / np.total) * 100 : 0}%"></span></div>
+        <div class="row">
+          <button class="btn primary" data-act="openLesson" data-n="${next.n}">Mở trường từ bài ${next.n} ${icon("right", "sm")}</button>
+          <button class="btn" data-act="openLessonFlash" data-n="${next.n}">Flashcard</button>
+          ${hasBook ? `<button class="btn" data-act="openLessonBook" data-n="${next.n}">Bài tập sách</button>` : ""}
+        </div>
       </div>
     </section>
 
-    <div class="grid grid-4">
-      ${kpi("Tổng từ gốc", total, `Trên ${LESSONS.length} bài học`, "indigo", "anchor")}
-      ${kpi("Tổng từ mở rộng", expanded.toLocaleString("vi-VN"), "Họ từ + đồng nghĩa + trái nghĩa", "teal", "branch")}
-      ${kpi("Công thức ghép từ", Object.keys(AFFIXES).length, "Tiền tố + hậu tố trong hệ thống", "sky", "puzzle")}
-      ${kpi("Trường từ đã thuộc", mastered, "Đánh dấu ở Sơ đồ / Flashcard", "emerald", "check2", `<span class="badge b-emerald">${pct}%</span>`)}
+    <div class="overall">
+      <span><b>${mastered}</b> / ${total} từ đã thuộc</span>
+      <span>${learning} đang học</span>
+      <div class="progress" title="${pct}%"><span style="width:${pct}%"></span></div>
     </div>
 
-    <div class="card legend-bar">
-      <b class="row" style="gap:6px">🎨 Quy ước màu sắc cấu tạo từ:</b>
-      <div class="row" style="gap:8px">
-        <span class="legend-chip chip prefix">Tiền tố (Prefix)</span>
-        <span class="legend-chip chip root">Từ gốc (Root)</span>
-        <span class="legend-chip chip suffix">Hậu tố (Suffix)</span>
-        <span class="legend-chip" style="background:var(--teal-soft);color:var(--teal-text);border-color:var(--teal-line)">Đồng nghĩa</span>
-        <span class="legend-chip" style="background:var(--rose-soft);color:var(--rose-text);border-color:var(--rose-line)">Trái nghĩa</span>
+    <div>
+      <div class="toc-head">
+        <h2 class="section-title">Mục lục</h2>
+        <button class="btn sm ghost" data-act="openWordModal">${icon("plus", "sm")} Thêm trường từ của bạn</button>
       </div>
+      ${topicsWithCustom().map(unitBlock).join("")}
     </div>
-
-    <div class="row between">
-      <div><h2 class="section-title">Danh sách chủ đề</h2>
-        <p class="section-sub">Theo 10 phần của sách — bấm vào một bài để mở sơ đồ trường từ của 12 từ trong bài</p></div>
-      <button class="btn primary" data-act="openWordModal">${icon("plus")} Thêm trường từ mới</button>
-    </div>
-    <div class="grid grid-3">${topicsWithCustom().map(topicCard).join("")}</div>
   </div>`;
 }
 
@@ -324,9 +394,28 @@ function matchReason(w, q) {
   if (famVi) return `${famVi.w}: ${famVi.vi}`;
   return null;
 }
+// Bộ lọc phụ của trang Trường từ
+const NET_FILTERS = {
+  status: { label: "Trạng thái", options: [["all", "Mọi trạng thái"], ["new", "Chưa học"], ["learning", "Đang học"], ["mastered", "Đã thuộc"], ["unmastered", "Chưa thuộc"]] },
+  pos: { label: "Từ loại", options: [["all", "Mọi từ loại"], ["n", "Danh từ"], ["v", "Động từ"], ["adj", "Tính từ"], ["adv", "Trạng từ"], ["phr", "Cụm từ"]] },
+  sort: { label: "Sắp xếp", options: [["book", "Theo thứ tự sách"], ["az", "A → Z"], ["family", "Họ từ lớn nhất"], ["weak", "Hay làm sai nhất"]] },
+};
+const isPhrase = (w) => /\s/.test(w.word.trim());
+function matchesFilters(w) {
+  const { status, pos, affix } = S.net;
+  const s = statusOf(w.id);
+  if (status === "unmastered" ? s === "mastered" : status !== "all" && s !== status) return false;
+  if (pos === "phr" ? !isPhrase(w) : pos !== "all" && (isPhrase(w) || w.pos !== pos)) return false;
+  if (affix !== "all" && !familyOf(w).some((f) => f.parts && f.parts.includes(affix))) return false;
+  return true;
+}
+const activeNetFilters = () => ["status", "pos", "affix"].filter((k) => S.net[k] !== "all").length + (S.net.sort !== "book" ? 1 : 0);
 function networkList() {
-  const { unit, lesson, q } = S.net;
-  let list = scopeWords(unit, lesson);
+  const { unit, lesson, q, sort } = S.net;
+  let list = scopeWords(unit, lesson).filter(matchesFilters);
+  if (sort === "az") list = list.slice().sort((a, b) => a.word.localeCompare(b.word));
+  else if (sort === "family") list = list.slice().sort((a, b) => expandedCount(b) - expandedCount(a));
+  else if (sort === "weak") list = list.slice().sort((a, b) => ((STATS[b.id] || {}).w || 0) - ((STATS[a.id] || {}).w || 0));
   if (q.trim()) {
     const f = fold(q.trim());
     list = list.filter((w) => fold(w.word).includes(f) || matchReason(w, q.trim()));
@@ -334,9 +423,51 @@ function networkList() {
   }
   return list;
 }
+function filterBarHTML() {
+  const sel = (key) => {
+    const f = NET_FILTERS[key];
+    return `<label class="filter-sel ${S.net[key] !== (key === "sort" ? "book" : "all") ? "on" : ""}"><span>${f.label}</span>
+      <select data-change="netFilter" data-key="${key}">${f.options.map(([v, l]) => `<option value="${v}" ${S.net[key] === v ? "selected" : ""}>${l}</option>`).join("")}</select></label>`;
+  };
+  const affixOpts = (type) => Object.keys(AFFIXES).filter((k) => AFFIXES[k].type === type)
+    .map((k) => `<option value="${esc(k)}" ${S.net.affix === k ? "selected" : ""}>${esc(k)} — ${esc(AFFIXES[k].vi)}</option>`).join("");
+  const n = activeNetFilters();
+  return `<div class="filter-row">
+    ${sel("status")}${sel("pos")}
+    <label class="filter-sel ${S.net.affix !== "all" ? "on" : ""}"><span>Phụ tố</span>
+      <select data-change="netFilter" data-key="affix"><option value="all">Mọi phụ tố</option>
+        <optgroup label="Tiền tố">${affixOpts("prefix")}</optgroup><optgroup label="Hậu tố">${affixOpts("suffix")}</optgroup></select></label>
+    ${sel("sort")}
+    ${n ? `<button class="text-link" data-act="netClearFilters">${icon("x", "sm")} Xoá ${n} bộ lọc</button>` : ""}
+  </div>`;
+}
+
+// Thanh chuyển bài: bài trước / các bài cùng phần / bài sau. "where" = net | fc | quiz
+function lessonNavHTML(st, where) {
+  if (st.unit === "all" || st.unit === "custom") return "";
+  const cur = st.lesson === "all" ? null : +st.lesson;
+  const sib = LESSONS.filter((l) => l.unit === st.unit);
+  const prev = cur ? LESSON_BY_N[cur - 1] : null, next = cur ? LESSON_BY_N[cur + 1] : null;
+  const unitIdx = TOPICS.findIndex((x) => x.id === st.unit);
+  const step = (l) => {
+    const p = lessonProgress(l.n);
+    const on = l.n === cur;
+    return `<button class="step ${on ? "active" : ""} ${p.total && p.mastered === p.total ? "done" : ""}" data-act="goLesson" data-where="${where}" data-n="${l.n}" ${on ? 'aria-current="page"' : ""}>
+      <span class="step-n">Bài ${l.n}</span><span class="step-t">${esc(l.title)}</span>
+      <span class="step-bar"><span style="width:${p.total ? (p.mastered / p.total) * 100 : 0}%"></span></span></button>`;
+  };
+  return `<nav class="lesson-nav" aria-label="Chuyển bài">
+    <button class="btn sm ghost nav-edge" data-act="goLesson" data-where="${where}" data-n="${prev ? prev.n : ""}" ${prev ? "" : "disabled"} title="${prev ? `Bài ${prev.n}: ${esc(prev.title)}` : ""}">${icon("left", "sm")}<span>Bài trước</span></button>
+    <div class="lesson-steps">
+      <button class="step step-all ${cur ? "" : "active"}" data-act="goLesson" data-where="${where}" data-n="all"><span class="step-n">Phần ${unitIdx + 1}</span><span class="step-t">Cả phần</span></button>
+      ${sib.map(step).join("")}
+    </div>
+    <button class="btn sm ghost nav-edge" data-act="goLesson" data-where="${where}" data-n="${next ? next.n : ""}" ${next ? "" : "disabled"} title="${next ? `Bài ${next.n}: ${esc(next.title)}` : ""}"><span>Bài sau</span>${icon("right", "sm")}</button>
+  </nav>`;
+}
 
 function rootListHTML(list, q) {
-  if (!list.length) return `<div class="empty" style="padding:24px">Không có từ nào khớp bộ lọc.</div>`;
+  if (!list.length) return `<div class="empty" style="padding:24px">Không có từ nào khớp.${activeNetFilters() || S.net.q ? `<br><button class="btn sm" data-act="netReset">Bỏ lọc &amp; tìm kiếm</button>` : ""}</div>`;
   return list.map((w) => {
     const reason = q ? matchReason(w, q) : null;
     return `<button class="root-item ${w.id === S.net.id ? "active" : ""}" data-act="nav" data-href="#/network/${w.id}" data-id="${w.id}">
@@ -348,7 +479,7 @@ function rootListHTML(list, q) {
       <span class="rc">+${expandedCount(w)}</span></button>`;
   }).join("");
 }
-const canvasOrEmpty = (cur) => (cur ? canvasHTML(cur) : `<div class="card empty"><b>Chưa có từ gốc nào được chọn</b>Hãy chọn chủ đề khác hoặc xoá ô tìm kiếm.</div>`);
+const canvasOrEmpty = (cur) => (cur ? canvasHTML(cur) : `<div class="card empty"><b>Không tìm thấy từ nào</b>Thử từ khác, hoặc xem lại toàn bộ 600 từ.<br><button class="btn" data-act="netReset">Xem tất cả từ</button></div>`);
 
 // Cập nhật riêng danh sách + sơ đồ (giữ nguyên ô tìm kiếm và vị trí cuộn)
 function updateNetwork({ list: refreshList = true } = {}) {
@@ -389,7 +520,9 @@ function viewNetwork() {
         <button class="pill-btn ${S.net.unit === "all" ? "active" : ""}" data-act="netUnit" data-unit="all">Tất cả</button>
         ${units.map((t) => `<button class="pill-btn ${S.net.unit === t.id ? "active" : ""}" data-act="netUnit" data-unit="${t.id}">${esc(t.name)}</button>`).join("")}
       </div>
+      ${filterBarHTML()}
     </div>
+    ${lessonNavHTML(S.net, "net")}
 
     <div class="explorer">
       <aside class="card sidebar">
@@ -409,7 +542,7 @@ function canvasHTML(w) {
   const other = fam.filter((f) => !POS_COLS.some((c) => c.k === f.pos));
   const wordCard = (f) => `
     <div class="wcard ${same(f.w, w.word) ? "is-root" : ""}" data-w="${esc(lower(f.w))}">
-      <div class="row between" style="gap:4px;flex-wrap:nowrap"><span class="ww">${esc(f.w)}</span>${speakBtn(f.w)}</div>
+      <div class="row between" style="gap:4px;flex-wrap:nowrap"><span class="ww">${esc(f.w)}</span>${speakBtn(f.w)}</div>${f.ipa ? `<div class="ipa">${esc(f.ipa)}</div>` : ""}
       ${f.parts && f.parts.length > 1 ? `<div style="margin-top:4px;font-size:.7rem">${chipsHTML(f.parts)}</div>` : ""}
       <div class="wv">${esc(f.vi)}</div>
       ${f.note ? `<div class="note">${esc(f.note)}</div>` : ""}
@@ -425,90 +558,79 @@ function canvasHTML(w) {
     const i = list.findIndex((x) => x.id === w.id);
     return { prev: list[i - 1], next: list[i + 1] };
   })();
+  const head = (no, title, sub, extra = "") => `
+    <div class="branch-head">
+      <div class="row" style="gap:12px;flex-wrap:nowrap;align-items:baseline">
+        <span class="branch-no">${no}</span>
+        <div><h3>${title}</h3>${sub ? `<p class="section-sub">${sub}</p>` : ""}</div>
+      </div>${extra}
+    </div>`;
   return `
-    <section class="card root-banner animate-pop">
+    <section class="root-banner animate-pop">
       <div class="row between" style="align-items:flex-start">
         <div style="flex:1 1 380px;min-width:0">
-          <div class="row" style="gap:6px">
-            <span class="badge b-solid">TỪ GỐC (ROOT)</span>
-            <span class="badge b-indigo">${esc(unit.name)}</span>
-            <span class="badge b-slate">${esc(lessonLabel(w))}${w.lesson ? ` · ${esc(LESSON_BY_N[w.lesson].vi)}` : ""}</span>
-            <span class="badge b-teal">+${expandedCount(w)} từ trong mạng lưới</span>
-          </div>
-          <div class="row" style="margin-top:12px;gap:12px">
-            <h2>${esc(w.word)}</h2>${posTag(w.pos)}
-            <button class="btn sm soft" data-act="speak" data-text="${esc(w.word)}">${icon("volume", "sm")} Phát âm</button>
+          <div class="crumbs">${esc(unit.name)} › ${esc(lessonLabel(w))}${w.lesson ? ` · ${esc(LESSON_BY_N[w.lesson].vi)}` : ""}</div>
+          <div class="row" style="margin-top:6px;gap:10px;align-items:baseline">
+            <h2>${esc(w.word)}</h2>${ipaTag(w)}${posTag(w.pos)}
+            <button class="speak-btn" data-act="speak" data-text="${esc(w.word)}" title="Nghe phát âm">${icon("volume")}</button>
           </div>
           <div class="vi">${esc(w.vi)}</div>
-          ${w.def ? `<div class="def"><span class="eyebrow">Định nghĩa (sách):</span> ${esc(w.def)}</div>` : ""}
-          ${w.parts && w.parts.length > 1 ? `<div style="margin-top:8px;font-size:.78rem">${chipsHTML(w.parts)}</div>` : ""}
+          ${w.def ? `<div class="def">${esc(w.def)}</div>` : ""}
         </div>
         <div class="stack-sm" style="text-align:right">
-          <select class="status-select ${st}" data-change="status" data-id="${w.id}">
-            ${Object.entries(STATUS).map(([k, v]) => `<option value="${k}" ${k === st ? "selected" : ""}>${v.emoji} ${v.label}</option>`).join("")}
+          <select class="status-select ${st}" data-change="status" data-id="${w.id}" aria-label="Trạng thái học">
+            ${Object.entries(STATUS).map(([k, v]) => `<option value="${k}" ${k === st ? "selected" : ""}>${v.label}</option>`).join("")}
           </select>
           ${w.lesson ? "" : `<button class="btn sm" data-act="openWordModal" data-id="${w.id}">${icon("pencil", "sm")} Sửa</button>`}
         </div>
       </div>
-      ${w.ex && w.ex.length ? `<div class="book-ex">${w.ex.map((x) => `<div><span>“${esc(x)}”</span>${speakBtn(x)}</div>`).join("")}</div>` : ""}
+      ${w.ex && w.ex.length ? `<div class="book-ex">${w.ex.map((x) => `<div><span>${esc(x)}</span>${speakBtn(x)}</div>`).join("")}</div>` : ""}
     </section>
 
     <section class="card branch">
-      <div class="branch-head">
-        <div class="row" style="gap:12px;flex-wrap:nowrap">
-          <div class="bi" style="background:var(--sky-soft);color:var(--sky)">${icon("puzzle")}</div>
-          <div><h3>Nhánh 1: Công thức ghép Tiền tố &amp; Hậu tố</h3>
-            <p class="section-sub">Quy luật cấu tạo các từ mới từ gốc <b style="color:var(--indigo)">${esc(w.word)}</b> — bấm vào phụ tố để xem các từ khác dùng nó</p></div>
-        </div>
-      </div>
+      ${head("01", "Cấu tạo từ", "Bấm vào tiền tố / hậu tố để xem các từ khác dùng nó",
+        `<div class="legend"><span class="chip prefix">tiền tố</span><span class="chip root">gốc</span><span class="chip suffix">hậu tố</span></div>`)}
       ${formulas.length ? formulas.map((f) => `
         <div class="formula">
           <div class="formula-parts">
             ${f.parts.map((p) => morphHTML(p, w.id)).join('<span class="plus">+</span>')}
             <span class="arrow">${icon("right", "sm")}</span>
-            <span class="formula-result"><b>${esc(f.w)}</b>${posTag(f.pos)}${speakBtn(f.w)}</span>
+            <span class="formula-result"><b>${esc(f.w)}</b>${ipaTag(f)}${posTag(f.pos)}${speakBtn(f.w)}</span>
           </div>
           <div class="formula-meaning">${esc(f.vi)}${f.note ? `<div class="note">${esc(f.note)}</div>` : ""}</div>
-        </div>`).join("") : `<p class="muted" style="font-size:.85rem">Từ này không có dạng ghép tiền tố / hậu tố (cụm từ hoặc từ đơn).</p>`}
+        </div>`).join("") : `<p class="muted">“${esc(w.word)}” là cụm từ / từ đơn, không ghép thêm tiền tố hay hậu tố.</p>`}
     </section>
 
     <section class="card branch">
-      <div class="branch-head">
-        <div class="row" style="gap:12px;flex-wrap:nowrap">
-          <div class="bi" style="background:var(--violet-soft);color:var(--violet)">${icon("branch")}</div>
-          <div><h3>Nhánh 2: Họ từ loại phái sinh (N • V • Adj • Adv)</h3>
-            <p class="section-sub">Câu ví dụ in nghiêng lấy từ mục <i>Word Families</i> của sách</p></div>
-        </div>
-      </div>
+      ${head("02", "Họ từ theo từ loại", "Câu in nghiêng lấy từ mục <i>Word Families</i> của sách")}
       <div class="pos-cols">${POS_COLS.map((c) => {
         const items = fam.filter((f) => f.pos === c.k);
-        return `<div class="pos-col"><div class="pos-col-head"><span class="badge ${c.cls}">${c.title}</span><span class="muted" style="font-size:.72rem;font-weight:700">${items.length} từ</span></div>
-          ${items.length ? items.map(wordCard).join("") : `<p class="muted" style="font-size:.78rem;font-style:italic">Không có dạng từ loại này</p>`}</div>`;
+        return `<div class="pos-col"><div class="pos-col-head"><span class="badge">${c.title}</span><span class="muted" style="font-size:.8rem">${items.length || "—"}</span></div>
+          ${items.length ? items.map(wordCard).join("") : `<p class="muted" style="font-size:.84rem;padding:0 2px">Không có dạng này</p>`}</div>`;
       }).join("")}</div>
       ${other.length ? `<div style="margin-top:14px"><div class="eyebrow" style="margin-bottom:8px">Cụm từ / dạng khác</div><div class="grid grid-3">${other.map(wordCard).join("")}</div></div>` : ""}
     </section>
 
     <div class="grid grid-2">
       <section class="card branch">
-        <div class="branch-head"><div class="row" style="gap:12px;flex-wrap:nowrap">
-          <div class="bi" style="background:var(--teal-soft);color:var(--teal)">${icon("compare")}</div>
-          <div><h3>Nhánh 3: Đồng nghĩa &amp; Trái nghĩa</h3><p class="section-sub">Mở rộng vốn từ tương đương và đối lập</p></div></div></div>
-        <div class="rel-label" style="color:var(--teal)">≈ Từ đồng nghĩa</div>
-        ${w.syn.length ? w.syn.map((x) => relCard(x, "syn")).join("") : `<p class="muted" style="font-size:.8rem">Chưa có</p>`}
-        <div class="rel-label" style="color:var(--rose);margin-top:14px">≠ Từ trái nghĩa</div>
-        ${w.ant.length ? w.ant.map((x) => relCard(x, "ant")).join("") : `<p class="muted" style="font-size:.8rem">Chưa có</p>`}
+        ${head("03", "Đồng nghĩa &amp; trái nghĩa", "")}
+        <div class="rel-label" style="color:var(--teal-text)">≈ Đồng nghĩa</div>
+        ${w.syn.length ? w.syn.map((x) => relCard(x, "syn")).join("") : `<p class="muted" style="font-size:.86rem">Chưa có</p>`}
+        <div class="rel-label" style="color:var(--rose-text);margin-top:16px">≠ Trái nghĩa</div>
+        ${w.ant.length ? w.ant.map((x) => relCard(x, "ant")).join("") : `<p class="muted" style="font-size:.86rem">Chưa có</p>`}
       </section>
       <section class="card branch" style="display:flex;flex-direction:column">
-        <div class="branch-head"><div class="row" style="gap:12px;flex-wrap:nowrap">
-          <div class="bi" style="background:var(--amber-soft);color:var(--amber)">${icon("quote")}</div>
-          <div><h3>Nhánh 4: Luyện tập trường từ này</h3><p class="section-sub">Làm bài ngay với ${fam.length} từ của họ từ</p></div></div></div>
-        <div class="stack-sm" style="flex:1">
-          ${Object.entries(QUIZ_TYPES).filter(([k]) => k !== "mixed").map(([k, t]) => `
-            <button class="btn" style="width:100%;justify-content:flex-start" data-act="quizForWord" data-id="${w.id}" data-type="${k}">${icon(t.icon, "sm")} ${t.label}<span class="muted" style="font-weight:500;margin-left:auto;font-size:.75rem">${t.desc}</span></button>`).join("")}
+        ${head("04", "Luyện riêng họ từ này", `${fam.length} từ`)}
+        <button class="btn primary" style="width:100%" data-act="quizForWord" data-id="${w.id}" data-type="formation">Điền dạng từ trong câu ${icon("right", "sm")}</button>
+        ${hasBook && w.lesson ? `<button class="btn" style="width:100%;margin-top:8px" data-act="openLessonBook" data-n="${w.lesson}">${icon("book", "sm")} Bài tập trong sách · bài ${w.lesson}</button>` : ""}
+        <div class="row" style="margin-top:10px;gap:6px 16px">
+          ${Object.entries(QUIZ_TYPES).filter(([k]) => k !== "mixed" && k !== "formation").map(([k, t]) => `
+            <button class="text-link" data-act="quizForWord" data-id="${w.id}" data-type="${k}">${t.label}</button>`).join("")}
         </div>
-        <div class="row between" style="margin-top:16px;padding-top:14px;border-top:1px solid var(--border)">
+        <div class="row between" style="margin-top:auto;padding-top:16px">
           ${prevNext.prev ? `<button class="btn sm ghost" data-act="nav" data-href="#/network/${prevNext.prev.id}">${icon("left", "sm")} ${esc(prevNext.prev.word)}</button>` : "<span></span>"}
-          ${prevNext.next ? `<button class="btn sm ghost" data-act="nav" data-href="#/network/${prevNext.next.id}">${esc(prevNext.next.word)} ${icon("right", "sm")}</button>` : "<span></span>"}
+          ${prevNext.next ? `<button class="btn sm ghost" data-act="nav" data-href="#/network/${prevNext.next.id}">${esc(prevNext.next.word)} ${icon("right", "sm")}</button>`
+            : S.net.lesson !== "all" && LESSON_BY_N[+S.net.lesson + 1] ? `<button class="btn sm soft" data-act="goLesson" data-where="net" data-n="${+S.net.lesson + 1}">Sang bài ${+S.net.lesson + 1} ${icon("right", "sm")}</button>` : "<span></span>"}
         </div>
       </section>
     </div>`;
@@ -557,8 +679,9 @@ function viewFlashcards() {
         <button class="btn sm" data-act="fcShuffle">${icon("shuffle", "sm")} Trộn thẻ</button>
       </div>
     </div>
+    ${lessonNavHTML(st, "fc")}
     <div class="bar"><span style="width:${st.deck.length ? ((st.i + 1) / st.deck.length) * 100 : 0}%"></span></div>`;
-  if (!w) return `<div class="stack">${controls}<div class="card empty"><b>Không có thẻ nào</b>Đổi bộ lọc chủ đề / trạng thái để có thẻ học.</div></div>`;
+  if (!w) return `<div class="stack">${controls}<div class="card empty"><b>Không có thẻ nào ở bộ lọc này</b>${S.fc.status === "unmastered" ? "Bạn đã thuộc hết phần này 🎉" : "Bộ lọc trạng thái đang loại hết các thẻ."}<br><button class="btn" data-act="fcAll">Hiện tất cả thẻ của phần này</button></div></div>`;
   const fam = familyOf(w).filter((f) => !same(f.w, w.word));
   const counts = POS_COLS.map((c) => [c, fam.filter((f) => f.pos === c.k).length]).filter(([, n]) => n);
   const s = statusOf(w.id);
@@ -574,10 +697,10 @@ function viewFlashcards() {
               <span class="badge ${s === "mastered" ? "b-emerald" : s === "learning" ? "b-amber" : "b-slate"}">${STATUS[s].emoji} ${STATUS[s].label}</span>
             </div>
             <div style="text-align:center" class="stack-sm">
-              <div><span class="badge b-violet">${icon("anchor", "sm")} Từ gốc trung tâm</span></div>
               <div class="fc-word">${esc(w.word)}</div>
+              ${w.ipa ? `<div class="ipa fc-ipa">${esc(w.ipa)}</div>` : ""}
               <div><button class="btn sm soft" data-act="speak" data-text="${esc(w.word)}">${icon("volume", "sm")} Nghe phát âm</button></div>
-              <p class="muted" style="font-size:.75rem;margin-top:14px">Nhẩm trong đầu nghĩa và các dạng từ trước khi lật:</p>
+              <p class="muted" style="font-size:.86rem;margin-top:14px">Nhẩm nghĩa và các dạng từ trước khi lật thẻ:</p>
               <div class="row" style="justify-content:center;gap:6px">
                 ${counts.map(([c, n]) => `<span class="badge ${c.cls}">${n} ${c.title.split(" (")[0].toLowerCase()}</span>`).join("")}
                 ${w.syn.length ? `<span class="badge b-teal">${w.syn.length} đồng nghĩa</span>` : ""}
@@ -588,7 +711,7 @@ function viewFlashcards() {
           </div>
           <div class="fc-face fc-back">
             <div class="row between" style="align-items:flex-start;border-bottom:1px solid rgba(255,255,255,.1);padding-bottom:12px">
-              <div><div class="row" style="gap:8px"><h3 style="font-size:1.5rem">${esc(w.word)}</h3><span class="mono" style="color:#a5b4fc;font-size:.8rem">(${esc(w.pos)})</span></div>
+              <div><div class="row" style="gap:8px"><h3 style="font-size:1.5rem">${esc(w.word)}</h3><span style="color:oklch(0.8 0.05 262);font-size:.9rem">${esc(w.ipa || "")}</span><span class="pp" style="font-style:italic;color:oklch(0.78 0.05 262);font-size:.85rem">(${esc(w.pos)})</span></div>
                 <div class="fc-vi">${esc(w.vi)}</div>
                 ${w.def ? `<div style="font-size:.78rem;color:#94a3b8;margin-top:2px">${esc(w.def)}</div>` : ""}</div>
               <button class="btn sm primary" data-act="nav" data-href="#/network/${w.id}">Xem sơ đồ lớn</button>
@@ -696,7 +819,9 @@ function buildQs(roots) {
 }
 function startQuiz() {
   const st = S.quiz;
-  const roots = st.forWord ? [BY_ID[st.forWord]] : scopeWords(st.unit, st.lesson);
+  const only = st.only || "all";
+  const roots = st.forWord ? [BY_ID[st.forWord]] : scopeWords(st.unit, st.lesson)
+    .filter((w) => only === "all" || (only === "unmastered" ? statusOf(w.id) !== "mastered" : statusOf(w.id) === only));
   const gen = { formation: formationQs, synonym: synonymQs, meaning: meaningQs, build: buildQs };
   let qs;
   if (st.type === "mixed") qs = shuffle(Object.values(gen).flatMap((g) => shuffle(g(roots)).slice(0, 4)));
@@ -741,7 +866,7 @@ function questionHTML(q) {
     return `
       <div class="q-box">
         <div class="eyebrow">Chọn từ ${q.ant ? "TRÁI NGHĨA" : "ĐỒNG NGHĨA"} với từ sau:</div>
-        <div class="row" style="margin-top:8px"><span class="q-big">${esc(q.root.word)}</span>${posTag(q.root.pos)}${speakBtn(q.root.word, "")}</div>
+        <div class="row" style="margin-top:8px"><span class="q-big">${esc(q.root.word)}</span>${ipaTag(q.root)}${posTag(q.root.pos)}${speakBtn(q.root.word, "")}</div>
         <div class="q-hint">Nghĩa: ${esc(q.root.vi)}</div>
       </div>
       ${keyed(q.options, (o) => o, (o) => same(o, q.correct))}
@@ -753,7 +878,7 @@ function questionHTML(q) {
       <div class="q-box">
         <div class="eyebrow">${q.reverse ? "Từ nào có nghĩa là:" : "Nghĩa của từ:"}</div>
         ${q.reverse ? `<div class="q-big" style="font-size:1.5rem;margin-top:8px">${esc(w.vi)}</div>`
-          : `<div class="row" style="margin-top:8px"><span class="q-big">${esc(w.word)}</span>${posTag(w.pos)}${speakBtn(w.word, "")}</div>`}
+          : `<div class="row" style="margin-top:8px"><span class="q-big">${esc(w.word)}</span>${ipaTag(w)}${posTag(w.pos)}${speakBtn(w.word, "")}</div>`}
         ${w.def ? `<div class="q-hint">Định nghĩa (sách): ${esc(w.def)}</div>` : ""}
       </div>
       ${keyed(q.options, (o) => (q.reverse ? o.word : o.vi), (o) => o === w)}
@@ -775,20 +900,24 @@ function questionHTML(q) {
     </div>
     ${st.answered ? explainHTML(st.last.ok, f, q.root, st.last.ok ? "" : "Thứ tự đúng ở trên.") : ""}`;
 }
-function viewQuiz() {
+function viewAutoQuiz() {
   const st = S.quiz;
   const header = `
     <div class="card filter-bar">
       <div class="seg">${Object.entries(QUIZ_TYPES).map(([k, t]) => `<button class="${st.type === k ? "active" : ""}" data-act="quizSetType" data-type="${k}">${icon(t.icon, "sm")} ${t.label}</button>`).join("")}</div>
       <div class="row">
-        ${st.forWord ? `<span class="badge b-violet" style="padding:6px 12px">Trường từ: ${esc(BY_ID[st.forWord].word)} <button class="speak-btn" data-act="quizClearWord" title="Bỏ lọc">${icon("x", "sm")}</button></span>` : scopeSelects(st, "quiz")}
+        ${st.forWord ? `<span class="badge b-violet" style="padding:6px 12px">Trường từ: ${esc(BY_ID[st.forWord].word)} <button class="speak-btn" data-act="quizClearWord" title="Bỏ lọc">${icon("x", "sm")}</button></span>` : scopeSelects(st, "quiz") + `
+          <label class="row" style="gap:6px"><span class="eyebrow">Ôn</span><select class="select" data-change="quizOnly">
+            ${[["all", "Tất cả từ"], ["unmastered", "Từ chưa thuộc"], ["learning", "Từ đang học"]].map(([k, v]) => `<option value="${k}" ${(st.only || "all") === k ? "selected" : ""}>${v}</option>`).join("")}
+          </select></label>`}
         ${st.type === "formation" ? `<select class="select" data-change="quizStyle">
           <option value="choice" ${st.style === "choice" ? "selected" : ""}>Trắc nghiệm 4 đáp án</option>
           <option value="typing" ${st.style === "typing" ? "selected" : ""}>Tự gõ từ biến đổi</option></select>` : ""}
         <button class="btn sm soft" data-act="quizRestart">${icon("repeat", "sm")} Làm đề mới</button>
       </div>
-    </div>`;
-  if (!st.qs.length) return `<div class="stack">${header}<div class="card empty"><b>Không có câu hỏi phù hợp</b>Phạm vi này chưa có dữ liệu cho dạng bài “${QUIZ_TYPES[st.type].label}”. Hãy chọn bài / chủ đề khác.</div></div>`;
+    </div>
+    ${st.forWord ? "" : lessonNavHTML(st, "quiz")}`;
+  if (!st.qs.length) return `<div class="stack">${header}<div class="card empty"><b>Chưa có câu hỏi dạng “${QUIZ_TYPES[st.type].label}” ở phạm vi này</b>Các từ trong phạm vi này không có dữ liệu cho dạng bài đó.<br><button class="btn" data-act="quizSetType" data-type="mixed">Làm dạng Tổng hợp</button></div></div>`;
   if (st.i >= st.qs.length) {
     const pct = Math.round((st.right / st.qs.length) * 100);
     return `<div class="stack">${header}
@@ -849,6 +978,226 @@ function quizNext() {
   if (inp) inp.focus();
 }
 
+// ---------------------------------------------------------------- BÀI TẬP TRONG SÁCH
+const BOOK_SCORES = store.get("vn-book", {});
+const BOOK = { unit: "business", lesson: "1", fills: {}, checked: {}, active: null };
+const hasBook = typeof EXERCISES !== "undefined";
+const unitIndex = (unit) => TOPICS.findIndex((t) => t.id === unit);
+const bookKey = (sec) => (BOOK.lesson === "all" ? `R${unitIndex(BOOK.unit) + 1}` : `L${BOOK.lesson}`) + ":" + sec;
+const normAns = (s) => lower(s).replace(/[’']/g, "'").replace(/\s+/g, " ").replace(/[.,!?]$/, "");
+
+function viewQuiz() {
+  const mode = S.quiz.mode || (hasBook ? "book" : "auto");
+  const sw = `<div class="mode-switch" role="tablist">
+    <button role="tab" aria-selected="${mode === "book"}" class="${mode === "book" ? "active" : ""}" data-act="quizMode" data-mode="book">${icon("book", "sm")} Bài tập trong sách</button>
+    <button role="tab" aria-selected="${mode === "auto"}" class="${mode === "auto" ? "active" : ""}" data-act="quizMode" data-mode="auto">${icon("layers", "sm")} Tự luyện từ vựng</button>
+  </div>`;
+  return sw + (mode === "book" && hasBook ? viewBook() : viewAutoQuiz());
+}
+
+// Tìm họ từ chứa một từ/cụm trong phương án (vd "will cancel" → cancel)
+function familyLookup(text) {
+  const w = lower(text).replace(/[^a-z' -]/g, "").trim();
+  const cands = [w, w.replace(/^(to|be|is|are|will|have|has|had|was|were|been|more|most|being) /, ""), w.split(" ").pop()];
+  for (const c of cands) {
+    const id = rootIdFor(c);
+    if (id) {
+      const root = BY_ID[id];
+      const f = familyOf(root).find((x) => same(x.w, c)) || familyOf(root)[0];
+      return { root, f };
+    }
+  }
+  return null;
+}
+
+function bookSectionHead(kicker, title, sub, sec, total) {
+  const best = BOOK_SCORES[bookKey(sec)];
+  const ck = BOOK.checked[sec];
+  const badge = ck
+    ? `<span class="badge ${ck.right === ck.total ? "b-emerald" : ck.right / ck.total >= 0.6 ? "b-amber" : "b-rose"}">${ck.right}/${ck.total} đúng</span>`
+    : best ? `<span class="badge b-slate" title="Điểm cao nhất">Cao nhất ${best.right}/${best.total}</span>` : `<span class="badge b-slate">${total} câu</span>`;
+  return `<div class="ex-head">
+    <div><div class="ex-kicker">${kicker}</div><h3>${title}</h3>${sub ? `<p class="section-sub">${sub}</p>` : ""}</div>
+    <div class="ex-score">${badge}</div>
+  </div>`;
+}
+
+function renderPassage(text, gapHTML) {
+  return text.split("\n").map((line) => {
+    const html = esc(line).replace(/\{\{(\d+)\}\}/g, (m, n) => gapHTML(+n));
+    return line.startsWith("## ") ? `<h4 class="passage-h">${html.slice(3)}</h4>` : `<p>${html}</p>`;
+  }).join("");
+}
+
+function sectionActions(sec, done, total, unit) {
+  const ck = BOOK.checked[sec];
+  return `<div class="ex-actions">${ck
+    ? `<button class="btn" data-act="bookReset" data-sec="${sec}">${icon("undo", "sm")} Làm lại</button>`
+    : `<button class="btn primary" data-act="bookCheck" data-sec="${sec}" ${done ? "" : "disabled"}>Kiểm tra</button>
+       <span class="muted" style="font-size:.86rem">${done}/${total} ${unit}</span>`}</div>`;
+}
+
+// ---- Words in Context: đoạn văn + bảng từ
+function wicHTML(wic) {
+  const sec = "wic";
+  const fills = BOOK.fills[sec] || {};
+  const ck = BOOK.checked[sec];
+  const total = wic.answers.length;
+  const bank = wic.answers.map((alts, i) => ({ i, w: alts[0] })).sort((a, b) => a.w.localeCompare(b.w));
+  const used = new Set(Object.values(fills).map((f) => f.chip));
+  const active = BOOK.active || Array.from({ length: total }, (_, k) => k + 1).find((k) => !fills[k]);
+  const gap = (n) => {
+    const f = fills[n];
+    const ok = ck && f && wic.answers[n - 1].some((a) => normAns(a) === normAns(f.w));
+    const cls = ck ? (ok ? "right" : "wrong") : f ? "filled" : n === active ? "active" : "";
+    const fix = ck && !ok ? `<span class="gap-fix">${esc(wic.answers[n - 1].join(" / "))}</span>` : "";
+    return `<button class="gap ${cls}" data-act="wicGap" data-n="${n}" ${ck ? "disabled" : ""} aria-label="Chỗ trống ${n}${f ? ": " + esc(f.w) : ""}"><span class="gap-n">${n}</span>${f ? esc(f.w) : "&nbsp;"}</button>${fix}`;
+  };
+  return `<section class="card ex-section" id="sec-wic">
+    ${bookSectionHead("Words in Context", "Điền từ vào đoạn văn", ck ? "" : "Chạm một từ để điền vào ô đang sáng; chạm ô đã điền để xoá.", sec, total)}
+    <div class="wordbank">${bank.map((b) => `<button class="bank-chip ${used.has(b.i) ? "used" : ""}" data-act="wicChip" data-i="${b.i}" ${ck || used.has(b.i) ? "disabled" : ""}>${esc(b.w)}</button>`).join("")}</div>
+    <div class="passage">${renderPassage(wic.text, gap)}</div>
+    ${sectionActions(sec, Object.keys(fills).length, total, "ô đã điền")}
+  </section>`;
+}
+
+// ---- Câu trắc nghiệm (Part 5, Word Review 1–10, phương án Part 6)
+function mcqItemHTML(q, sec, inPassage) {
+  const pick = (BOOK.fills[sec] || {})[q.n];
+  const ck = BOOK.checked[sec];
+  let head;
+  if (inPassage) {
+    head = `<p class="mcq-q"><span class="qn">${q.n}.</span> <span class="muted">Chỗ trống số ${q.n}</span></p>`;
+  } else {
+    const blank = pick ? `<span class="blank-inline ${ck ? (pick === q.answer ? "right" : "wrong") : "filled"}">${esc(q.options[pick])}</span>` : `<span class="blank-inline">&nbsp;</span>`;
+    head = `<p class="mcq-q"><span class="qn">${q.n}.</span> ${esc(q.text).replace("___", blank)}</p>`;
+  }
+  let fb = "";
+  if (ck) {
+    const right = q.options[q.answer];
+    const fam = familyLookup(right);
+    fb = `<div class="mcq-fb ${pick === q.answer ? "ok" : "bad"}">${pick === q.answer ? "✓ Đúng" : pick ? "✗ Sai" : "Bỏ trống"} — đáp án <b>(${q.answer}) ${esc(right)}</b>${
+      fam ? ` · <span class="muted">${esc(fam.f.vi || fam.root.vi)}</span> · <a href="#/network/${fam.root.id}/${encodeURIComponent(fam.f.w)}">họ từ “${esc(fam.root.word)}” →</a>` : ""}</div>`;
+  }
+  return `<li class="mcq" id="q-${sec}-${q.n}">${head}
+    <div class="opt-grid">${["A", "B", "C", "D"].map((L) => {
+      const cls = ck ? (L === q.answer ? "right" : L === pick ? "wrong" : "") : L === pick ? "selected" : "";
+      return `<button class="opt ${cls}" data-act="bookPick" data-sec="${sec}" data-q="${q.n}" data-v="${L}" ${ck ? "disabled" : ""} aria-pressed="${L === pick}"><span class="k">${L}</span>${esc(q.options[L])}</button>`;
+    }).join("")}</div>${fb}
+  </li>`;
+}
+function mcqSectionHTML(sec, kicker, title, qs) {
+  const ck = BOOK.checked[sec];
+  return `<section class="card ex-section" id="sec-${sec}">
+    ${bookSectionHead(kicker, title, ck ? "" : "Chọn từ đúng điền vào chỗ trống.", sec, qs.length)}
+    <ol class="mcq-list">${qs.map((q) => mcqItemHTML(q, sec, false)).join("")}</ol>
+    ${sectionActions(sec, Object.keys(BOOK.fills[sec] || {}).length, qs.length, "câu đã chọn")}
+  </section>`;
+}
+
+// ---- Đoạn văn trắc nghiệm (Part 6, Word Review 11–19)
+function clozeHTML(block, sec) {
+  const fills = BOOK.fills[sec] || {};
+  const ck = BOOK.checked[sec];
+  const qByN = Object.fromEntries(block.questions.map((q) => [q.n, q]));
+  const gap = (n) => {
+    const q = qByN[n];
+    if (!q) return "____";
+    const pick = fills[n];
+    const cls = ck ? (pick === q.answer ? "right" : "wrong") : pick ? "filled" : "";
+    return `<button class="gap ${cls}" data-act="jumpQ" data-target="q-${sec}-${n}" aria-label="Chỗ trống ${n}"><span class="gap-n">${n}</span>${pick ? esc(q.options[pick]) : "&nbsp;"}</button>`;
+  };
+  return `<div class="passage">${renderPassage(block.text, gap)}</div>
+    <ol class="mcq-list compact">${block.questions.map((q) => mcqItemHTML(q, sec, true)).join("")}</ol>`;
+}
+function clozeSectionHTML(sec, kicker, title, blocks) {
+  const ck = BOOK.checked[sec];
+  const total = blocks.reduce((s, b) => s + b.questions.length, 0);
+  return `<section class="card ex-section" id="sec-${sec}">
+    ${bookSectionHead(kicker, title, ck ? "" : "Đọc đoạn văn rồi chọn từ cho từng chỗ trống.", sec, total)}
+    ${blocks.map((b) => clozeHTML(b, sec)).join('<hr class="ex-sep">')}
+    ${sectionActions(sec, Object.keys(BOOK.fills[sec] || {}).length, total, "chỗ trống đã chọn")}
+  </section>`;
+}
+
+function viewBook() {
+  const st = BOOK;
+  const controls = `<div class="card filter-bar">
+      <div class="row">${scopeSelects(st, "book")}</div>
+      <p class="muted" style="font-size:.84rem;max-width:56ch">Bài tập &amp; đáp án lấy từ sách. Phần nghe (Part 1–4) và đọc hiểu dài (Part 7) không có trên web.</p>
+    </div>
+    ${lessonNavHTML(st, "book")}`;
+  if (st.unit === "all" || st.unit === "custom") {
+    return `<div class="stack">${controls}<div class="card empty"><b>Chọn một bài hoặc một phần</b>Mỗi bài có Words in Context, Part 5 và Part 6; mỗi phần có thêm bài ôn Word Review.<br><button class="btn primary" data-act="goLesson" data-where="book" data-n="1">Bắt đầu từ bài 1</button></div></div>`;
+  }
+  if (st.lesson === "all") {
+    const n = unitIndex(st.unit) + 1;
+    const R = EXERCISES.reviews[n];
+    return `<div class="stack">${controls}
+      <div class="ex-title"><span class="kicker">Ôn tập phần ${n}</span><h2>Word Review #${n} · ${esc(TOPIC_BY_ID[st.unit].name)}</h2></div>
+      ${R ? mcqSectionHTML("r5", "Word Review · câu 1–10", "Chọn từ đúng", R.part5) + clozeSectionHTML("r6", "Word Review · câu 11–19", "Điền từ vào đoạn văn", R.part6) : `<div class="card empty"><b>Chưa có dữ liệu</b></div>`}
+    </div>`;
+  }
+  const L = EXERCISES.lessons[st.lesson] || {};
+  const l = LESSON_BY_N[st.lesson];
+  return `<div class="stack">${controls}
+    <div class="ex-title"><span class="kicker">Bài ${l.n}</span><h2>${esc(l.title)} · ${esc(l.vi)}</h2>
+      <button class="text-link" data-act="openLesson" data-n="${l.n}">Xem lại 12 trường từ của bài ${icon("right", "sm")}</button></div>
+    ${L.wic ? wicHTML(L.wic) : ""}
+    ${L.part5 && L.part5.length ? mcqSectionHTML("p5", "Part 5 · Incomplete Sentences", "Hoàn thành câu", L.part5) : ""}
+    ${L.part6 ? clozeSectionHTML("p6", "Part 6 · Text Completion", "Hoàn thành đoạn văn", [L.part6]) : ""}
+  </div>`;
+}
+
+function bookQuestions(sec) {
+  if (BOOK.lesson === "all") {
+    const R = EXERCISES.reviews[unitIndex(BOOK.unit) + 1];
+    return sec === "r5" ? R.part5 : R.part6.flatMap((b) => b.questions);
+  }
+  const L = EXERCISES.lessons[BOOK.lesson];
+  return sec === "p5" ? L.part5 : L.part6.questions;
+}
+function saveBookScore(sec, right, total) {
+  const k = bookKey(sec);
+  const prev = BOOK_SCORES[k];
+  if (!prev || right / total >= prev.right / prev.total) BOOK_SCORES[k] = { right, total, at: Date.now() };
+  store.set("vn-book", BOOK_SCORES);
+}
+function bookCheck(sec) {
+  const fills = BOOK.fills[sec] || {};
+  let right = 0, total = 0;
+  if (sec === "wic") {
+    EXERCISES.lessons[BOOK.lesson].wic.answers.forEach((alts, i) => {
+      total++;
+      const f = fills[i + 1];
+      const ok = !!f && alts.some((a) => normAns(a) === normAns(f.w));
+      if (ok) right++;
+      const fam = familyLookup(alts[0]);
+      if (fam) recordAnswer(fam.root.id, ok);
+    });
+  } else {
+    for (const q of bookQuestions(sec)) {
+      total++;
+      const ok = fills[q.n] === q.answer;
+      if (ok) right++;
+      const fam = familyLookup(q.options[q.answer]);
+      if (fam) recordAnswer(fam.root.id, ok);
+    }
+  }
+  BOOK.checked[sec] = { right, total };
+  BOOK.active = null;
+  saveBookScore(sec, right, total);
+  render();
+  const el = $(`#sec-${sec}`);
+  if (el && el.getBoundingClientRect().top < 60) el.scrollIntoView({ behavior: smooth(), block: "start" });
+  toast(right === total ? `Xuất sắc! Đúng cả ${total}/${total} 🎉` : `Đúng ${right}/${total} — xem lại những chỗ đánh dấu đỏ`);
+}
+function resetBook() { BOOK.fills = {}; BOOK.checked = {}; BOOK.active = null; }
+// Đã làm đủ các phần của một bài chưa (dùng cho dấu ✓ ở Mục lục)
+function lessonBookDone(n) {
+  return ["wic", "p5", "p6"].every((s) => BOOK_SCORES[`L${n}:${s}`]);
+}
+
 // =====================================================================
 // TAB 5 — TIỀN TỐ / HẬU TỐ
 // =====================================================================
@@ -877,7 +1226,8 @@ function viewAffixes() {
             <span class="morph ${a.type}" style="font-size:1.3rem;padding:10px 16px">${esc(sel)}<small>${a.type === "prefix" ? "Tiền tố" : "Hậu tố"}</small></span>
             <div><h3 style="font-size:1.15rem">${esc(a.vi)}</h3><p class="muted" style="font-size:.85rem">${esc(a.fn)}</p></div>
           </div>
-          <button class="btn sm ghost" data-act="nav" data-href="#/affixes">${icon("x", "sm")} Đóng</button>
+          <div class="row"><button class="btn sm soft" data-act="netByAffix" data-affix="${esc(sel)}">${icon("network", "sm")} Lọc trường từ theo phụ tố này</button>
+          <button class="btn sm ghost" data-act="nav" data-href="#/affixes">${icon("x", "sm")} Đóng</button></div>
         </div>
         <div class="eyebrow" style="margin:18px 0 10px">${list.length} từ trong 600 từ TOEIC dùng ${a.type === "prefix" ? "tiền tố" : "hậu tố"} này</div>
         <div class="affix-words">${list.map(({ w, f }) => `
@@ -890,10 +1240,10 @@ function viewAffixes() {
   }
   return `
   <div class="stack">
-    <section class="hero" style="padding:26px">
-      <div><div class="hero-pill">${icon("puzzle", "sm")} ${keys.length} phụ tố</div>
-        <h1 style="font-size:1.6rem">Bảng quy luật Tiền tố &amp; Hậu tố</h1>
-        <p>Nhìn đuôi từ là đoán được từ loại — kỹ năng quan trọng nhất cho Part 5 TOEIC. Bấm vào một phụ tố để xem tất cả từ trong sách dùng nó.</p></div>
+    <section class="page-head">
+      <p class="kicker">${keys.length} tiền tố &amp; hậu tố</p>
+      <h1>Nhìn đuôi từ, đoán từ loại</h1>
+      <p class="lede">Kỹ năng then chốt cho TOEIC Part 5. Bấm vào một phụ tố để xem mọi từ trong sách dùng nó.</p>
     </section>
     ${panel}
     ${groups.filter(([, ks]) => ks.length).map(([title, ks]) => `
@@ -930,10 +1280,10 @@ function viewManage() {
       <div class="search-box" style="margin-top:16px">${icon("search", "sm")}<input class="input" placeholder="Tìm trong trường từ tự thêm…" value="${esc(S.mgrQ)}" data-input="mgrSearch"></div>
     </section>
 
-    <div class="grid grid-3">
-      <div class="card kpi"><div><div class="eyebrow">Trường từ tự thêm</div><div class="num" style="color:var(--indigo)">${CUSTOM.length}</div></div><div class="kpi-icon" style="background:var(--indigo-soft);color:var(--indigo)">${icon("folder")}</div></div>
-      <div class="card kpi"><div><div class="eyebrow">Đã thuộc (cả sách)</div><div class="num" style="color:var(--emerald)">${learned}</div></div><div class="kpi-icon" style="background:var(--emerald-soft);color:var(--emerald)">${icon("check2")}</div></div>
-      <div class="card kpi"><div><div class="eyebrow">Câu bài tập đã làm</div><div class="num" style="color:var(--teal)">${answered}</div></div><div class="kpi-icon" style="background:var(--teal-soft);color:var(--teal)">${icon("pencil")}</div></div>
+    <div class="stats-line">
+      <span><b>${CUSTOM.length}</b>trường từ của bạn</span>
+      <span><b>${learned}</b>từ đã thuộc</span>
+      <span><b>${answered}</b>câu bài tập đã làm</span>
     </div>
 
     <div class="row between"><p class="muted" style="font-weight:600;font-size:.85rem">Hiển thị ${list.length} trường từ tự thêm</p>
@@ -950,7 +1300,7 @@ function viewManage() {
           <button class="btn sm ghost danger" data-act="deleteCustom" data-id="${w.id}">${icon("trash", "sm")}</button>
         </div>
       </div>`).join("")}</div>`
-      : `<div class="card empty"><b>Chưa có trường từ tự thêm</b>Bấm “Thêm từ gốc &amp; trường từ” để tạo sơ đồ cho từ bạn muốn học.</div>`}
+      : `<div class="card empty"><b>Chưa có trường từ nào của bạn</b>Thêm một từ bạn gặp ngoài sách, kèm họ từ của nó, để học chung với 600 từ.<br><button class="btn primary" data-act="openWordModal">${icon("plus", "sm")} Thêm trường từ đầu tiên</button></div>`}
   </div>`;
 }
 
@@ -1026,7 +1376,8 @@ function renderChrome() {
   $("#brand-logo").innerHTML = icon("network");
   $("#tabs").innerHTML = TAB_DEFS.map((t) => `<button class="tab ${S.tab === t.id ? "active" : ""}" data-act="nav" data-href="${t.href}">${icon(t.icon, "sm")} ${t.label}</button>`).join("");
   $("#bottom-nav").innerHTML = TAB_DEFS.map((t) => `<button class="${S.tab === t.id ? "active" : ""}" data-act="nav" data-href="${t.href}">${icon(t.icon)}<span>${t.short}</span></button>`).join("");
-  applyThemeIcon();
+  renderThemeSeg();
+  $("#gsearch-btn").innerHTML = icon("search");
 }
 let renderedTab = null;
 function render() {
@@ -1057,13 +1408,18 @@ function route() {
   S.tab = TAB_DEFS.some((t) => t.id === tab) ? tab : "topics";
   let filtersReset = false;
   if (S.tab === "network" && a && BY_ID[a]) {
-    if (!networkList().some((w) => w.id === a)) { S.net.unit = "all"; S.net.lesson = "all"; S.net.q = ""; filtersReset = true; }
+    if (!networkList().some((w) => w.id === a)) { Object.assign(S.net, { unit: "all", lesson: "all", q: "", status: "all", pos: "all", affix: "all" }); filtersReset = true; }
     S.net.id = a;
     S.net.focus = b || null;
   }
   if (S.tab === "affixes") S.affix = a || null;
   if (S.tab === "flashcards" && !S.fc.deck.length) buildDeck();
   if (S.tab === "quiz" && !S.quiz.qs.length && S.quiz.i === 0) startQuiz();
+  // lần đầu mở bài tập sách: chọn sẵn bài đang học dở
+  if (S.tab === "quiz" && hasBook && !BOOK.touched) {
+    const r = resumeLesson();
+    Object.assign(BOOK, { unit: r.unit, lesson: String(r.n), touched: true });
+  }
 
   if (S.tab === "network" && prevTab === "network" && !filtersReset && $("#root-list")) {
     // Đổi từ gốc trong cùng trang: chỉ vẽ lại vùng sơ đồ
@@ -1081,23 +1437,98 @@ function route() {
 const ACTIONS = {
   nav: (el) => { const h = el.dataset.href; if (location.hash === h) route(); else location.hash = h; },
   speak: (el) => speak(el.dataset.text),
-  toggleTheme: () => {
-    const t = document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark";
-    document.documentElement.setAttribute("data-theme", t);
-    try { localStorage.setItem("vn-theme", t); } catch (e) { /* bỏ qua */ }
-    applyThemeIcon();
-  },
+  setTheme: (el) => { applyTheme(el.dataset.theme); toast(`Giao diện: ${THEMES.find((x) => x[0] === el.dataset.theme)[2]}`); },
+  openSearch: () => { document.querySelector(".header").classList.toggle("search-open"); $("#gsearch-input").focus(); },
+  gsGo: (el) => { closeSearch(true); ACTIONS.nav(el); },
   openLesson: (el) => {
     const l = LESSON_BY_N[el.dataset.n];
     Object.assign(S.net, { unit: l.unit, lesson: String(l.n), q: "", id: null });
     location.hash = "#/network";
     if (S.tab === "network") render();
   },
+  netReset: () => { Object.assign(S.net, { unit: "all", lesson: "all", q: "", id: null, status: "all", pos: "all", affix: "all", sort: "book" }); render(); },
+  goLesson: (el) => {
+    const n = el.dataset.n, where = el.dataset.where;
+    if (!n) return;
+    const st = { net: S.net, fc: S.fc, quiz: S.quiz, book: BOOK }[where];
+    if (n !== "all") st.unit = LESSON_BY_N[n].unit;
+    st.lesson = n;
+    if (where === "net") { st.id = null; st.q = ""; }
+    if (where === "fc") buildDeck();
+    if (where === "quiz") startQuiz();
+    if (where === "book") resetBook();
+    render();
+    const nav = $(".lesson-nav");
+    if (nav && nav.getBoundingClientRect().top < 60) window.scrollTo({ top: window.scrollY + nav.getBoundingClientRect().top - 76, behavior: smooth() });
+    const active = $(".lesson-steps .step.active");
+    if (active) active.scrollIntoView({ block: "nearest", inline: "center" });
+  },
+  quizMode: (el) => { S.quiz.mode = el.dataset.mode; render(); },
+  openLessonBook: (el) => {
+    const l = LESSON_BY_N[el.dataset.n];
+    Object.assign(BOOK, { unit: l.unit, lesson: String(l.n), touched: true });
+    resetBook();
+    S.quiz.mode = "book";
+    if (location.hash === "#/quiz") render(); else location.hash = "#/quiz";
+  },
+  wicChip: (el) => {
+    const wic = EXERCISES.lessons[BOOK.lesson].wic;
+    const fills = (BOOK.fills.wic = BOOK.fills.wic || {});
+    const total = wic.answers.length;
+    const empty = (k) => !fills[k];
+    let n = BOOK.active && empty(BOOK.active) ? BOOK.active : Array.from({ length: total }, (_, k) => k + 1).find(empty);
+    if (BOOK.active && !empty(BOOK.active)) n = BOOK.active; // ô đang chọn đã có chữ: thay thế
+    if (!n) return;
+    fills[n] = { w: wic.answers[+el.dataset.i][0], chip: +el.dataset.i };
+    // tự chuyển sang ô trống kế tiếp
+    BOOK.active = Array.from({ length: total }, (_, k) => ((n + k) % total) + 1).find(empty) || null;
+    render();
+    const nxt = BOOK.active && $(`.gap[data-n="${BOOK.active}"]`);
+    if (nxt && window.innerWidth < 760) nxt.scrollIntoView({ block: "center", behavior: smooth() });
+  },
+  wicGap: (el) => {
+    const n = +el.dataset.n;
+    const fills = (BOOK.fills.wic = BOOK.fills.wic || {});
+    if (fills[n]) delete fills[n];
+    BOOK.active = n;
+    render();
+  },
+  bookPick: (el) => {
+    const sec = el.dataset.sec;
+    (BOOK.fills[sec] = BOOK.fills[sec] || {})[el.dataset.q] = el.dataset.v;
+    render();
+  },
+  bookCheck: (el) => bookCheck(el.dataset.sec),
+  bookReset: (el) => {
+    const sec = el.dataset.sec;
+    delete BOOK.fills[sec]; delete BOOK.checked[sec]; BOOK.active = null;
+    render();
+    const s = $(`#sec-${sec}`);
+    if (s) s.scrollIntoView({ behavior: smooth(), block: "start" });
+  },
+  jumpQ: (el) => {
+    const target = document.getElementById(el.dataset.target);
+    if (!target) return;
+    target.scrollIntoView({ behavior: smooth(), block: "center" });
+    target.classList.remove("pulse"); void target.offsetWidth; target.classList.add("pulse");
+  },
+  netByAffix: (el) => { Object.assign(S.net, { unit: "all", lesson: "all", q: "", id: null, affix: el.dataset.affix }); location.hash = "#/network"; },
+  netClearFilters: () => { Object.assign(S.net, { status: "all", pos: "all", affix: "all", sort: "book", id: null }); render(); },
+  fcAll: () => { S.fc.status = "all"; buildDeck(); render(); },
+  openLessonFlash: (el) => {
+    const l = LESSON_BY_N[el.dataset.n];
+    Object.assign(S.fc, { unit: l.unit, lesson: String(l.n), status: "all" });
+    buildDeck();
+    location.hash = "#/flashcards";
+  },
   openUnit: (el) => {
     const unit = el.dataset.unit, to = el.dataset.to;
     if (to === "network") Object.assign(S.net, { unit, lesson: "all", q: "", id: null });
     if (to === "flashcards") { Object.assign(S.fc, { unit, lesson: "all" }); buildDeck(); }
-    if (to === "quiz") { Object.assign(S.quiz, { unit, lesson: "all", forWord: null }); startQuiz(); }
+    if (to === "quiz") {
+      Object.assign(S.quiz, { unit, lesson: "all", forWord: null }); startQuiz();
+      if (hasBook && unit !== "custom") { Object.assign(BOOK, { unit, lesson: "all", touched: true }); resetBook(); S.quiz.mode = "book"; }
+    }
     location.hash = "#/" + to;
   },
   netUnit: (el) => { Object.assign(S.net, { unit: el.dataset.unit, lesson: "all", id: null }); render(); },
@@ -1108,7 +1539,7 @@ const ACTIONS = {
   quizSetType: (el) => { S.quiz.type = el.dataset.type; startQuiz(); render(); },
   quizRestart: () => { startQuiz(); render(); },
   quizClearWord: () => { S.quiz.forWord = null; startQuiz(); render(); },
-  quizForWord: (el) => { Object.assign(S.quiz, { forWord: el.dataset.id, type: el.dataset.type }); startQuiz(); location.hash = "#/quiz"; },
+  quizForWord: (el) => { Object.assign(S.quiz, { forWord: el.dataset.id, type: el.dataset.type, mode: "auto" }); startQuiz(); location.hash = "#/quiz"; },
   quizChoose: (el) => quizChoose(+el.dataset.i),
   quizNext: () => quizNext(),
   tile: (el) => { const st = S.quiz; const i = +el.dataset.i; if (!st.answered && !st.picked.includes(i)) { st.picked.push(i); render(); } },
@@ -1143,16 +1574,21 @@ const CHANGES = {
     if (d) d.className = `dot ${el.value}`;
     toast(`Đã đánh dấu: ${STATUS[el.value].label}`);
   },
+  netFilter: (el) => { S.net[el.dataset.key] = el.value; S.net.id = null; render(); },
   netLesson: (el) => { S.net.lesson = el.value; S.net.id = null; updateNetwork(); },
   fcUnit: (el) => { S.fc.unit = el.value; S.fc.lesson = "all"; buildDeck(); render(); },
   fcLesson: (el) => { S.fc.lesson = el.value; buildDeck(); render(); },
   fcStatus: (el) => { S.fc.status = el.value; buildDeck(); render(); },
   quizUnit: (el) => { S.quiz.unit = el.value; S.quiz.lesson = "all"; startQuiz(); render(); },
   quizLesson: (el) => { S.quiz.lesson = el.value; startQuiz(); render(); },
+  bookUnit: (el) => { BOOK.touched = true; BOOK.unit = el.value; BOOK.lesson = "all"; resetBook(); render(); },
+  bookLesson: (el) => { BOOK.lesson = el.value; resetBook(); render(); },
+  quizOnly: (el) => { S.quiz.only = el.value; startQuiz(); render(); },
   quizStyle: (el) => { S.quiz.style = el.value; render(); },
   importJSON: (el) => importJSON(el),
 };
 const INPUTS = {
+  gSearch: () => { GS.sel = 0; renderSearch(); },
   netSearch: (el) => {
     // Gõ tới đâu lọc tới đó, nhưng chờ 120ms để không vẽ lại liên tục
     clearTimeout(INPUTS._t);
@@ -1198,6 +1634,7 @@ document.addEventListener("keydown", (e) => {
   if ($("#modal-root").innerHTML) { if (e.key === "Escape") $("#modal-root").innerHTML = ""; return; }
   const tag = (e.target.tagName || "").toLowerCase();
   if (tag === "input" || tag === "textarea" || tag === "select") return;
+  if (e.key === "/" && !e.ctrlKey && !e.metaKey) { e.preventDefault(); ACTIONS.openSearch(); return; }
   if (S.tab === "flashcards") {
     if (e.key === " ") { e.preventDefault(); fcFlip(); }
     else if (e.key === "ArrowRight") fcMove(1);
@@ -1205,7 +1642,7 @@ document.addEventListener("keydown", (e) => {
     else if (e.key === "1") fcRate("new");
     else if (e.key === "2") fcRate("learning");
     else if (e.key === "3") fcRate("mastered");
-  } else if (S.tab === "quiz") {
+  } else if (S.tab === "quiz" && (S.quiz.mode || (hasBook ? "book" : "auto")) === "auto") {
     const st = S.quiz;
     const n = parseInt(e.key, 10);
     const q = st.qs[st.i];
@@ -1214,6 +1651,15 @@ document.addEventListener("keydown", (e) => {
     else if (st.answered && e.key === "Enter") { e.preventDefault(); quizNext(); }
   }
 });
+$("#gsearch-input").addEventListener("keydown", (e) => {
+  const n = GS.results.length;
+  if (e.key === "ArrowDown" && n) { e.preventDefault(); GS.sel = (GS.sel + 1) % n; renderSearch(); }
+  else if (e.key === "ArrowUp" && n) { e.preventDefault(); GS.sel = (GS.sel - 1 + n) % n; renderSearch(); }
+  else if (e.key === "Enter" && n) { e.preventDefault(); const b = $$(".gs-item")[GS.sel]; if (b) ACTIONS.gsGo(b); }
+  else if (e.key === "Escape") { closeSearch(true); }
+});
+$("#gsearch-input").addEventListener("focus", () => { if ($("#gsearch-input").value.trim()) renderSearch(); });
+document.addEventListener("pointerdown", (e) => { if (!e.target.closest("#gsearch, #gsearch-btn")) closeSearch(false); });
 window.addEventListener("hashchange", route);
 
 rebuildIndex();

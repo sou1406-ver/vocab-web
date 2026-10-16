@@ -1,0 +1,757 @@
+{
+  "_ghi_chu": "Sửa tay những chỗ OCR đọc sai/bỏ sót trong bài tập của sách (đã đối chiếu với ảnh trang). Áp dụng sau data/source/exercises.json khi chạy tools/build_data.py.",
+  "lessons": {
+    "2": {
+      "part5": {
+        "11": {
+          "options": {
+            "A": "compare",
+            "B": "comparison",
+            "C": "comparative",
+            "D": "comparable"
+          }
+        },
+        "12": {
+          "options": {
+            "A": "satisfy",
+            "B": "satisfactory",
+            "C": "satisfaction",
+            "D": "satisfied"
+          }
+        }
+      }
+    },
+    "5": {
+      "part6": {
+        "text": "All members of the Countywide Small Business Owners Association are invited to take part in our annual conference, to be held on March 31 at the Grand Hotel in Marysville.\nThe conference begins at 8:30 A.M. with an address by this year's guest, Cynthia Quinn, owner of Designs by Cynthia, Inc., and winner of numerous business and community awards. Morning small group sessions begin at 9:30. Attendees can {{16}} from a variety of session topics including Financing Your New Business; Selecting the Best Location; and Formulas for Success. Lunch will be served at 12:30, followed by afternoon small group sessions at 2:00.\nThis is the Association's most popular event, so {{17}} early to assure your place. Fill out the form below and send it to the Association Secretary by March 1. To arrange overnight {{18}} at the Grand Hotel, get in touch with the hotel reservations clerk at 498-1231. Mention the conference in order to get a special discount price.",
+        "16": {
+          "options": {
+            "A": "select",
+            "B": "selection",
+            "C": "selective",
+            "D": "selectively"
+          },
+          "answer": "A"
+        },
+        "17": {
+          "options": {
+            "A": "will register",
+            "B": "must register",
+            "C": "registering",
+            "D": "register"
+          },
+          "answer": "D"
+        },
+        "18": {
+          "options": {
+            "A": "accommodate",
+            "B": "accommodating",
+            "C": "accommodations",
+            "D": "accommodates"
+          },
+          "answer": "C"
+        }
+      },
+      "part5": {
+        "10": {
+          "options": {
+            "B": "accommodate"
+          }
+        }
+      }
+    },
+    "7": {
+      "part5": {
+        "12": {
+          "options": {
+            "A": "physique",
+            "B": "physical",
+            "C": "physicality",
+            "D": "physically"
+          }
+        }
+      },
+      "part6": {
+        "replace": [
+          [
+            "Assistant Office Manager\nPhotocopier",
+            "Assistant Office Manager\nRe: Photocopier"
+          ]
+        ],
+        "16": {
+          "options": {
+            "A": "reduce",
+            "B": "reducing",
+            "C": "reducible",
+            "D": "reduction"
+          }
+        }
+      }
+    },
+    "9": {
+      "wic_answers": [
+        "sharply",
+        "networks",
+        "facilitated",
+        "processing",
+        "disks",
+        "technical",
+        "storage",
+        "software",
+        "replace",
+        "popular",
+        "revolutionize",
+        "skills"
+      ]
+    },
+    "15": {
+      "part6": {
+        "17": {
+          "answer": "B"
+        }
+      }
+    },
+    "21": {
+      "part6": {
+        "16": {
+          "options": {
+            "A": "deduct",
+            "B": "deducted",
+            "C": "are deducted",
+            "D": "are deducting"
+          }
+        }
+      }
+    },
+    "27": {
+      "part5": {
+        "15": {
+          "answer": "B"
+        }
+      }
+    },
+    "28": {
+      "wic_answers": [
+        "conform",
+        "defects",
+        "garment",
+        "inspect",
+        "throws out",
+        "enhance",
+        "repel",
+        "take back",
+        "brand",
+        "uniform",
+        "wrinkle",
+        "perceive"
+      ]
+    },
+    "30": {
+      "part6": {
+        "17": {
+          "answer": "C"
+        }
+      }
+    },
+    "35": {
+      "wic_answers": [
+        "coordinated",
+        "planning",
+        "site",
+        "stage",
+        "exact",
+        "dimensions",
+        "regulations",
+        "lead time",
+        "ideally",
+        "assist",
+        "proximity",
+        "general"
+      ]
+    },
+    "38": {
+      "part6": {
+        "_ghi_chu": "Sách đánh số nhầm phương án Part 6 thành 17–19",
+        "16": {
+          "options": {
+            "A": "far",
+            "B": "fair",
+            "C": "fore",
+            "D": "fare"
+          },
+          "answer": "D"
+        },
+        "17": {
+          "options": {
+            "A": "relatively",
+            "B": "relation",
+            "C": "relative",
+            "D": "related"
+          },
+          "answer": "A"
+        },
+        "18": {
+          "options": {
+            "A": "duration",
+            "B": "during",
+            "C": "endure",
+            "D": "endurance"
+          },
+          "answer": "A"
+        }
+      }
+    },
+    "40": {
+      "part5": {
+        "14": {
+          "options": {
+            "A": "nerve",
+            "B": "nervousness",
+            "C": "nervous",
+            "D": "nervously"
+          }
+        },
+        "11": {
+          "options": {
+            "C": "coincidence"
+          }
+        }
+      },
+      "part6": {
+        "17": {
+          "answer": "A"
+        },
+        "18": {
+          "options": {
+            "B": "disappointed"
+          }
+        }
+      }
+    },
+    "48": {
+      "wic_answers": [
+        "concerns",
+        "personnel",
+        "policy",
+        "portion",
+        "salary",
+        "allow",
+        "suitable",
+        "emphasize",
+        "alternatives",
+        "regardless",
+        "aspect",
+        "incurs"
+      ]
+    },
+    "10": {
+      "part5": {
+        "10": {
+          "options": {
+            "C": "complicated"
+          }
+        }
+      }
+    },
+    "17": {
+      "part5": {
+        "12": {
+          "options": {
+            "D": "essentially"
+          }
+        }
+      }
+    },
+    "25": {
+      "part5": {
+        "12": {
+          "options": {
+            "D": "projects"
+          }
+        }
+      }
+    },
+    "26": {
+      "part5": {
+        "10": {
+          "options": {
+            "D": "collaborates"
+          }
+        }
+      }
+    },
+    "47": {
+      "part5": {
+        "11": {
+          "options": {
+            "A": "encouraging"
+          }
+        }
+      },
+      "part6": {
+        "18": {
+          "options": {
+            "A": "encourage",
+            "B": "encourages"
+          }
+        }
+      }
+    }
+  },
+  "reviews": {
+    "2": {
+      "part6": {
+        "14": {
+          "options": {
+            "A": "of",
+            "B": "on",
+            "C": "at",
+            "D": "to"
+          }
+        }
+      }
+    },
+    "3": {
+      "part5": {
+        "7": {
+          "answer": "B"
+        },
+        "8": {
+          "answer": "B"
+        },
+        "6": {
+          "answer": "C"
+        }
+      }
+    },
+    "10": {
+      "part5": {
+        "4": {
+          "answer": "A"
+        },
+        "5": {
+          "answer": "C"
+        },
+        "6": {
+          "answer": "D"
+        },
+        "7": {
+          "answer": "A"
+        }
+      }
+    },
+    "7": {
+      "part6": {
+        "13": {
+          "options": {
+            "B": "elegance"
+          }
+        },
+        "19": {
+          "options": {
+            "C": "coordinates"
+          }
+        }
+      }
+    },
+    "8": {
+      "part6": {
+        "17": {
+          "options": {
+            "A": "passport"
+          }
+        }
+      }
+    }
+  },
+  "text_fixes": [
+    [
+      "offer itive upgrades",
+      "offer competitive upgrades"
+    ],
+    [
+      "acx)ept",
+      "accept"
+    ],
+    [
+      "gcx)d",
+      "good"
+    ],
+    [
+      "accx)unts",
+      "accounts"
+    ],
+    [
+      "you cen ",
+      "you can "
+    ],
+    [
+      "dont ce-lnt on",
+      "don't count on"
+    ],
+    [
+      "ail IJ.S.",
+      "all U.S."
+    ],
+    [
+      "tt•E",
+      "the"
+    ],
+    [
+      ". tt was",
+      ". It was"
+    ],
+    [
+      "11:OO",
+      "11:00"
+    ],
+    [
+      "&tanging",
+      "changing"
+    ],
+    [
+      "with you atl the",
+      "with you all the"
+    ],
+    [
+      "to filt the",
+      "to fill the"
+    ],
+    [
+      "in fulf at",
+      "in full at"
+    ],
+    [
+      ". tf you",
+      ". If you"
+    ],
+    [
+      "IVe",
+      "I've"
+    ],
+    [
+      "EN)ple",
+      "people"
+    ],
+    [
+      "amount of fime",
+      "amount of time"
+    ],
+    [
+      "taking rmre than",
+      "taking more than"
+    ],
+    [
+      "cerry-on",
+      "carry-on"
+    ],
+    [
+      "for medicat",
+      "for medical"
+    ],
+    [
+      "your personat",
+      "your personal"
+    ],
+    [
+      "please pian",
+      "please plan"
+    ],
+    [
+      "on timel",
+      "on time!"
+    ],
+    [
+      "serving amholic",
+      "serving alcoholic"
+    ],
+    [
+      "DressedtWorst",
+      "Dressed/Worst"
+    ],
+    [
+      "e4Erienced",
+      "experienced"
+    ],
+    [
+      "ttEir",
+      "their"
+    ],
+    [
+      "a)nditions",
+      "conditions"
+    ],
+    [
+      "the rairmat",
+      "the raincoat"
+    ],
+    [
+      "anythingl",
+      "anything!"
+    ],
+    [
+      "Afier",
+      "After"
+    ],
+    [
+      "overthe",
+      "over the"
+    ],
+    [
+      "goai",
+      "goal"
+    ],
+    [
+      "Accnunting",
+      "Accounting"
+    ],
+    [
+      "altemating",
+      "alternating"
+    ],
+    [
+      "arnong",
+      "among"
+    ],
+    [
+      "busines ",
+      "business "
+    ],
+    [
+      "cnlleagues",
+      "colleagues"
+    ],
+    [
+      "cnmpanies",
+      "companies"
+    ],
+    [
+      "cnmputer",
+      "computer"
+    ],
+    [
+      "cnT1binations",
+      "combinations"
+    ],
+    [
+      "cnuntry",
+      "country"
+    ],
+    [
+      "conceming",
+      "concerning"
+    ],
+    [
+      "concem",
+      "concern"
+    ],
+    [
+      "considerabiy",
+      "considerably"
+    ],
+    [
+      "cornpany",
+      "company"
+    ],
+    [
+      "creaning",
+      "cleaning"
+    ],
+    [
+      "custorners",
+      "customers"
+    ],
+    [
+      "dcetor",
+      "doctor"
+    ],
+    [
+      "didnt",
+      "didn't"
+    ],
+    [
+      "dispiay",
+      "display"
+    ],
+    [
+      "doesnt",
+      "doesn't"
+    ],
+    [
+      "Dont",
+      "Don't"
+    ],
+    [
+      "dont",
+      "don't"
+    ],
+    [
+      "essentialty",
+      "essentially"
+    ],
+    [
+      "extemal",
+      "external"
+    ],
+    [
+      "fumiture",
+      "furniture"
+    ],
+    [
+      "govemment",
+      "government"
+    ],
+    [
+      "informatjon",
+      "information"
+    ],
+    [
+      "intemational",
+      "international"
+    ],
+    [
+      "Intemet",
+      "Internet"
+    ],
+    [
+      "internationafism",
+      "internationalism"
+    ],
+    [
+      "isnt",
+      "isn't"
+    ],
+    [
+      "neednt",
+      "needn't"
+    ],
+    [
+      "ovemight",
+      "overnight"
+    ],
+    [
+      "realisic",
+      "realistic"
+    ],
+    [
+      "recnrds",
+      "records"
+    ],
+    [
+      "redrement",
+      "retirement"
+    ],
+    [
+      "reprts",
+      "reports"
+    ],
+    [
+      "resetve",
+      "reserve"
+    ],
+    [
+      "retums",
+      "returns"
+    ],
+    [
+      "retum",
+      "return"
+    ],
+    [
+      "seMces",
+      "services"
+    ],
+    [
+      "sentice",
+      "service"
+    ],
+    [
+      "servie",
+      "service"
+    ],
+    [
+      "succesfut",
+      "successful"
+    ],
+    [
+      "suficient",
+      "sufficient"
+    ],
+    [
+      "teievision",
+      "television"
+    ],
+    [
+      "tlat",
+      "that"
+    ],
+    [
+      "waming",
+      "warning"
+    ],
+    [
+      "webming",
+      "welcoming"
+    ],
+    [
+      "wiil",
+      "will"
+    ],
+    [
+      "wndition",
+      "condition"
+    ],
+    [
+      "wstomer",
+      "customer"
+    ],
+    [
+      "threeday",
+      "three-day"
+    ],
+    [
+      "selfconfidence",
+      "self-confidence"
+    ],
+    [
+      "rnovies",
+      "movies"
+    ],
+    [
+      "a tot of",
+      "a lot of"
+    ],
+    [
+      "yöu",
+      "you"
+    ],
+    [
+      "Is It ",
+      "Is it "
+    ],
+    [
+      "confidentia",
+      "confidential"
+    ],
+    [
+      "detaited",
+      "detailed"
+    ],
+    [
+      "setl out",
+      "sell out"
+    ],
+    [
+      "tumover",
+      "turnover"
+    ],
+    [
+      "rely onl",
+      "rely on!"
+    ],
+    [
+      "FrOm",
+      "From"
+    ]
+  ]
+}

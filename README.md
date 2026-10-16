@@ -12,29 +12,29 @@ Mở `index.html` bằng trình duyệt là xong — không cần cài đặt.
 
 | Tab | Nội dung |
 |---|---|
-| Chủ đề | 10 chủ đề × 5 bài theo sách, tiến độ từng bài |
-| Mạng lưới Trường từ | Sơ đồ mỗi từ: công thức ghép phụ tố, 4 cột từ loại (kèm câu ví dụ trong mục *Word Families* của sách), đồng nghĩa / trái nghĩa |
+| Chủ đề | Mục lục 10 phần × 5 bài theo sách, tiến độ từng bài, ô “Học tiếp” gợi ý bài đang học dở |
+| Trường từ | Sơ đồ mỗi từ: phiên âm IPA, cấu tạo tiền tố/gốc/hậu tố, họ từ theo 4 từ loại (kèm câu ví dụ *Word Families* trong sách), đồng nghĩa / trái nghĩa. Lọc theo trạng thái, từ loại, phụ tố; sắp xếp |
 | Flashcard 3D | Lật thẻ, tự đánh giá Chưa nhớ / Đang học / Đã thuộc (phím `Space`, `1` `2` `3`, `←` `→`) |
-| Bài tập | Biến đổi từ loại (câu gốc trong sách), đồng nghĩa – trái nghĩa, nghĩa của từ, ghép từ, tổng hợp |
-| Tiền tố · Hậu tố | Bảng phụ tố, bấm vào để xem mọi từ dùng phụ tố đó |
+| Bài tập | **Bài tập trong sách**: Words in Context (50 đoạn), Part 5 (300 câu), Part 6 (50 đoạn), Word Review (10 bài × 19 câu) — chấm điểm, giải thích, lưu điểm cao nhất. **Tự luyện**: biến đổi từ loại, đồng nghĩa, nghĩa, ghép từ |
+| Tiền tố · Hậu tố | 92 phụ tố, bấm vào để xem mọi từ dùng phụ tố đó |
 | Tự thêm | Thêm trường từ riêng, xuất / nhập JSON để sao lưu |
 
-Tiến độ học lưu trong trình duyệt (localStorage) — dùng **Xuất JSON** để sao lưu hoặc chuyển máy.
+Ô tìm kiếm trên thanh tiêu đề (phím `/`) tìm được từ gốc, họ từ, đồng nghĩa và nghĩa tiếng Việt (gõ không dấu cũng được).
+Giao diện Sáng / Tối / Theo máy. Tiến độ lưu trong trình duyệt (localStorage) — dùng **Xuất JSON** để sao lưu.
 
 ## Cấu trúc dữ liệu
 
 ```
-data/source/book.json       ← 600 từ, định nghĩa, ví dụ (OCR từ PDF)
-data/source/families.json   ← bảng WORD FAMILIES của từng bài (OCR)
-data/enrich/*.txt           ← nghĩa tiếng Việt, đồng nghĩa, trái nghĩa, cấu tạo từ (sửa ở đây)
-tools/build_data.py         ← ghép tất cả thành js/data.js
+data/source/book.json                 ← 600 từ, định nghĩa, ví dụ (OCR từ PDF)
+data/source/families.json             ← bảng WORD FAMILIES của từng bài (OCR)
+data/source/ipa.json                  ← phiên âm IPA (tools/make_ipa.py, từ CMU Pronouncing Dictionary)
+data/source/exercises.json            ← bài tập trong sách (tools/parse_exercises.py)
+data/source/exercises_overrides.json  ← sửa tay chỗ OCR sai (đã đối chiếu ảnh trang) + bảng sửa chính tả
+data/enrich/*.txt                     ← nghĩa tiếng Việt, đồng nghĩa, trái nghĩa, cấu tạo từ (sửa ở đây)
+tools/build_data.py                   ← ghép tất cả thành js/data.js và js/exercises.js
 ```
 
-Sửa / bổ sung từ: chỉnh file trong `data/enrich/` rồi chạy
-
-```
-python tools/build_data.py
-```
+Sửa / bổ sung từ: chỉnh file trong `data/enrich/` rồi chạy `python tools/build_data.py`.
 
 Định dạng `data/enrich/*.txt`:
 
@@ -46,3 +46,11 @@ agreement | sự thoả thuận | contract, deal | disagreement      ← từ g�
 ```
 
 Tiền tố viết `un-`, hậu tố viết `-ment`; phụ tố mới cần khai báo trong `AFFIXES` ở `tools/build_data.py`.
+Từ mới cần phiên âm: chạy `python tools/make_ipa.py` (lần đầu tải CMU dict) rồi build lại.
+
+## Cách trích bài tập từ sách (PDF scan)
+
+1. Render trang PDF thành ảnh 200 dpi, OCR bằng Windows OCR có toạ độ từng chữ (`tools/ocr.ps1`).
+2. `tools/parse_exercises.py` dựng lại hàng chữ theo toạ độ, tách 2 cột, **dò đường gạch dưới trên ảnh** để biết vị trí chỗ trống,
+   tự bù chữ OCR bỏ sót ở cuối dòng (cắt dòng, phóng to, OCR lại) và đọc đáp án ở Answer Key.
+3. Những chỗ OCR thiếu phương án / đáp án được sửa tay trong `exercises_overrides.json`.

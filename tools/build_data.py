@@ -11,6 +11,16 @@ import sys
 sys.stdout.reconfigure(encoding="utf-8")
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 book = json.load(open(os.path.join(ROOT, "data/source/book.json"), encoding="utf-8"))
+IPA_PATH = os.path.join(ROOT, "data/source/ipa.json")
+IPA = json.load(open(IPA_PATH, encoding="utf-8")) if os.path.exists(IPA_PATH) else {}
+
+
+def ipa_of(word, pos):
+    """Phiên âm từ data/source/ipa.json (tạo bởi tools/make_ipa.py)."""
+    w = word.lower().strip()
+    return IPA.get(f"{w}|{pos}") or IPA.get(f"{w}|") or next((v for k, v in IPA.items() if k.split("|")[0] == w), None)
+
+
 fam_pages = {int(k): v for k, v in json.load(open(os.path.join(ROOT, "data/source/families.json"), encoding="utf-8")).items()}
 
 UNITS = [
@@ -222,10 +232,13 @@ for l in book:
             ex = book_example(f["w"])
             if ex:
                 f = {**f, "ex": ex}
+            ipa = ipa_of(f["w"], f["pos"])
+            if ipa:
+                f = {**f, "ipa": ipa}
             family.append(f)
         self_fam = next((f for f in family if norm(f["w"]) == norm(h["word"])), None)
         out_words.append({
-            "id": wid, "lesson": n, "word": h["word"], "pos": pos, "def": definition,
+            "id": wid, "lesson": n, "word": h["word"], "pos": pos, "ipa": ipa_of(h["word"], pos) or "", "def": definition,
             "ex": [fix(x) for x in e["ex"]], "vi": h["vi"], "syn": h["syn"], "ant": h["ant"],
             "parts": self_fam["parts"] if self_fam else [h["word"]],
             "family": family,
@@ -251,3 +264,110 @@ print(f"{len(out_lessons)} bài, {len(out_words)} từ gốc, {fam_total} từ t
       f"{sum(1 for w in out_words for f in w['family'] if 'ex' in f)} câu ví dụ họ từ từ sách")
 if problems:
     print("\n".join(problems))
+
+
+# =====================================================================
+# BÀI TẬP TRONG SÁCH → js/exercises.js
+# =====================================================================
+EX_PATH = os.path.join(ROOT, "data/source/exercises.json")
+OV_PATH = os.path.join(ROOT, "data/source/exercises_overrides.json")
+if os.path.exists(EX_PATH):
+    ex = json.load(open(EX_PATH, encoding="utf-8"))
+    ov = json.load(open(OV_PATH, encoding="utf-8")) if os.path.exists(OV_PATH) else {}
+
+    def patch_questions(qs, patch):
+        by_n = {str(q["n"]): q for q in qs}
+        for k, v in patch.items():
+            if k in by_n and isinstance(v, dict):
+                q = by_n[k]
+                if "options" in v:
+                    q["options"] = {**q["options"], **v["options"]}  # chỉ ghi đè các phương án được sửa
+                    q["options"] = {k: q["options"][k] for k in sorted(q["options"])}
+                if "answer" in v:
+                    q["answer"] = v["answer"]
+
+    def patch_part6(p6, patch):
+        if "text" in patch:
+            p6["text"] = patch["text"]
+        for a, b in patch.get("replace", []):
+            p6["text"] = p6["text"].replace(a, b)
+        patch_questions(p6["questions"], patch)
+
+    for n, pv in ov.get("lessons", {}).items():
+        L = ex["lessons"][n]
+        if "wic_answers" in pv:
+            L["wic"]["answers"] = pv["wic_answers"]
+        if "part5" in pv:
+            patch_questions(L["part5"], pv["part5"])
+        if "part6" in pv:
+            patch_part6(L["part6"], pv["part6"])
+    for n, pv in ov.get("reviews", {}).items():
+        R = ex["reviews"][n]
+        if "part5" in pv:
+            patch_questions(R["part5"], pv["part5"])
+        if "part6" in pv:
+            for blk in R["part6"]:
+                patch_questions(blk["questions"], pv["part6"])
+
+    def alternatives(a):
+        """'achievements/merits' hoặc 'aggressive (or conservative)' → danh sách đáp án chấp nhận."""
+        a = a.strip()
+        m = re.match(r"^(.*?)\s*\(or\s+(.*?)\)$", a)
+        if m:
+            return [m.group(1).strip(), m.group(2).strip()]
+        return [x.strip() for x in a.split("/") if x.strip()]
+
+    TEXT_FIXES = ov.get("text_fixes", [])
+
+    def ocr_fix(s):
+        s = re.sub(r"(?<!\S)(?!___(?!_))\S*_\S*(?!\S)", "", s)  # chừa lại ký hiệu chỗ trống ___  # mảnh rác OCR còn dính dấu gạch dưới
+        for a, b in TEXT_FIXES:  # khớp trọn từ để không sửa nhầm bên trong từ khác
+            s = re.sub(r"(?<![A-Za-z])" + re.escape(a.strip()) + r"(?![A-Za-z])", b.strip(), s)
+        return "\n".join(re.sub(r" {2,}", " ", fix(x)).strip() for x in s.split("\n"))
+
+    out_ex = {"lessons": {}, "reviews": {}}
+    ex_problems = []
+    for n, L in ex["lessons"].items():
+        rec = {}
+        w = L.get("wic")
+        if w:
+            nb = len(re.findall(r"\{\{\d+\}\}", w["text"]))
+            if nb != len(w["answers"]):
+                ex_problems.append(f"Bài {n} WIC: {nb} chỗ trống / {len(w['answers'])} đáp án")
+            rec["wic"] = {"text": ocr_fix(w["text"]), "answers": [alternatives(ocr_fix(a)) for a in w["answers"]]}
+        p5 = [q for q in L.get("part5", []) if q["text"].count("___") == 1 and len(q["options"]) == 4 and all(q["options"].values()) and q["answer"] in q["options"]]
+        if len(p5) != len(L.get("part5", [])):
+            ex_problems.append(f"Bài {n} Part 5: bỏ {len(L.get('part5', [])) - len(p5)} câu lỗi")
+        rec["part5"] = [{"n": q["n"], "text": ocr_fix(q["text"]), "options": {k: ocr_fix(v) for k, v in q["options"].items()}, "answer": q["answer"]} for q in p5]
+        p6 = L.get("part6")
+        if p6:
+            ok = all(len(q["options"]) == 4 and all(q["options"].values()) and q["answer"] in q["options"] for q in p6["questions"]) and \
+                len(re.findall(r"\{\{\d+\}\}", p6["text"])) == len(p6["questions"])
+            if ok:
+                rec["part6"] = {"text": ocr_fix(p6["text"]), "questions": [dict(q, options={k: ocr_fix(v) for k, v in q["options"].items()}) for q in p6["questions"]]}
+            else:
+                ex_problems.append(f"Bài {n} Part 6 chưa hợp lệ — bỏ qua")
+        out_ex["lessons"][n] = rec
+    for n, R in ex["reviews"].items():
+        p5 = [q for q in R["part5"] if q["text"].count("___") == 1 and len(q["options"]) == 4 and all(q["options"].values()) and q["answer"] in q["options"]]
+        blocks = []
+        for b in R["part6"]:
+            if all(len(q["options"]) == 4 and all(q["options"].values()) and q["answer"] in q["options"] for q in b["questions"]) and \
+                    len(re.findall(r"\{\{\d+\}\}", b["text"])) == len(b["questions"]):
+                blocks.append({"text": ocr_fix(b["text"]), "questions": [dict(q, options={k: ocr_fix(v) for k, v in q["options"].items()}) for q in b["questions"]]})
+            else:
+                ex_problems.append(f"Ôn tập #{n} đoạn {[q['n'] for q in b['questions']]} chưa hợp lệ — bỏ qua")
+        if len(p5) != len(R["part5"]):
+            ex_problems.append(f"Ôn tập #{n}: bỏ {len(R['part5']) - len(p5)} câu lỗi")
+        out_ex["reviews"][n] = {"part5": [{"n": q["n"], "text": ocr_fix(q["text"]), "options": {k: ocr_fix(v) for k, v in q["options"].items()}, "answer": q["answer"]} for q in p5], "part6": blocks}
+
+    js_ex = ("/* TỰ ĐỘNG TẠO bởi tools/build_data.py từ data/source/exercises*.json — đừng sửa tay. */\n"
+             "const EXERCISES = " + json.dumps(out_ex, ensure_ascii=False) + ";\n")
+    open(os.path.join(ROOT, "js/exercises.js"), "w", encoding="utf-8").write(js_ex)
+    n_wic = sum(1 for L in out_ex["lessons"].values() if "wic" in L)
+    n_p5 = sum(len(L["part5"]) for L in out_ex["lessons"].values())
+    n_p6 = sum(1 for L in out_ex["lessons"].values() if "part6" in L)
+    n_rv = sum(len(R["part5"]) + sum(len(b["questions"]) for b in R["part6"]) for R in out_ex["reviews"].values())
+    print(f"Bài tập: {n_wic} đoạn Words in Context, {n_p5} câu Part 5, {n_p6} đoạn Part 6, {n_rv} câu Word Review")
+    if ex_problems:
+        print("\n".join(ex_problems))
