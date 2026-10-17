@@ -37,10 +37,12 @@ export const newProfileId = () => "p" + Date.now().toString(36) + Math.random().
 function initProfiles(): { profiles: Profile[]; current: string } {
   let profiles = storage.get<Profile[]>("vn-profiles", []);
   let current = storage.get<string | null>("vn-current", null);
+  // Rename the old generic default for existing local profiles as well as new ones.
+  profiles = profiles.map((p) => (p.name === "Bạn" ? { ...p, name: "Học viên" } : p));
   if (!profiles.length) {
     const p: Profile = {
       id: newProfileId(),
-      name: "Bạn",
+      name: "Học viên",
       color: PROFILE_COLORS[0],
       goal: 20,
       target: 600,

@@ -34,7 +34,7 @@ export function ProfileModal({ isNew }: { isNew: boolean }) {
     e.preventDefault();
     const fd = new FormData(e.currentTarget);
     const data = {
-      name: String(fd.get("name") || "").trim() || "Bạn",
+      name: String(fd.get("name") || "").trim() || "Học viên",
       color: String(fd.get("color") || PROFILE_COLORS[0]),
       target: +(fd.get("target") ?? 600) || 600,
       goal: +(fd.get("goal") ?? 20) || 20,
@@ -76,7 +76,7 @@ export function ProfileModal({ isNew }: { isNew: boolean }) {
             name="name"
             required
             maxLength={40}
-            defaultValue={p.name === "Bạn" && !p.setup ? "" : p.name}
+            defaultValue={p.name === "Học viên" && !p.setup ? "" : p.name}
             placeholder="vd: Minh Anh"
           />
         </label>

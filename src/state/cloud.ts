@@ -178,7 +178,7 @@ async function attach(u: User) {
         goal: 20,
         target: 600,
         color: PROFILE_COLORS[0],
-        name: "Bạn",
+        name: "Học viên",
         ...base,
         id: pid,
         created: Date.now(),
@@ -250,7 +250,7 @@ function detach() {
     profiles = [
       {
         id: newProfileId(),
-        name: "Bạn",
+        name: "Học viên",
         color: PROFILE_COLORS[0],
         goal: 20,
         target: 600,
