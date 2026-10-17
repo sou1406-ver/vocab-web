@@ -12,7 +12,7 @@ export const TABS: { to: string; label: string; short: string; icon: IconName; e
   { to: "/flashcards", label: "Flashcard 3D", short: "Flashcard", icon: "layers" },
   { to: "/review", label: "Ôn tập", short: "Ôn tập", icon: "repeat" },
   { to: "/quiz", label: "Bài tập", short: "Bài tập", icon: "pencil" },
-  { to: "/affixes", label: "Tiền tố · Hậu tố", short: "Phụ tố", icon: "puzzle" },
+  { to: "/knowledge", label: "Kiến thức", short: "Kiến thức", icon: "book" },
   { to: "/", label: "Tổng quan", short: "Tổng quan", icon: "home", end: true },
 ];
 
@@ -62,7 +62,7 @@ export function Layout() {
                 to={t.to}
                 end={t.end}
                 className={({ isActive }) =>
-                  `tab${isActive || (t.to === "/network" && pathname.startsWith("/term/")) ? " active" : ""}`
+                  `tab${isActive || (t.to === "/network" && pathname.startsWith("/term/")) || (t.to === "/knowledge" && pathname.startsWith("/affixes")) ? " active" : ""}`
                 }
               >
                 <Icon name={t.icon} size="sm" />
@@ -89,7 +89,11 @@ export function Layout() {
             to={t.to}
             end={t.end}
             className={({ isActive }) =>
-              isActive || (t.to === "/network" && pathname.startsWith("/term/")) ? "active" : ""
+              isActive ||
+              (t.to === "/network" && pathname.startsWith("/term/")) ||
+              (t.to === "/knowledge" && pathname.startsWith("/affixes"))
+                ? "active"
+                : ""
             }
           >
             <Icon name={t.icon} />

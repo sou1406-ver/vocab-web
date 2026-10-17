@@ -3,6 +3,7 @@ import { Layout } from "./components/Layout";
 import { AffixesPage } from "./pages/Affixes";
 import { Dashboard } from "./pages/Dashboard";
 import { FlashcardsPage } from "./pages/Flashcards";
+import { KnowledgePage } from "./pages/Knowledge";
 import { ManagePage } from "./pages/Manage";
 import { NetworkPage } from "./pages/Network";
 import { QuizPage } from "./pages/Quiz";
@@ -24,6 +25,7 @@ const router = createHashRouter([
       { path: "quiz", element: <QuizPage /> },
       { path: "review", element: <ReviewPage /> },
       { path: "affixes/:affix?", element: <AffixesPage /> },
+      { path: "knowledge", element: <KnowledgePage /> },
       { path: "manage", element: <ManagePage /> },
       { path: "*", element: <Navigate to="/" replace /> },
     ],
