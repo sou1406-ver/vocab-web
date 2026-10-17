@@ -1,4 +1,5 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { Icon } from "@/components/Icon";
 import { EVERYDAY_ENTRIES, EVERYDAY_KIND_LABEL, type EverydayKind } from "@/data/everyday";
 import { STATUS_INFO } from "@/lib/data";
@@ -17,6 +18,9 @@ const FILTER_LABEL: Record<(typeof FILTERS)[number], string> = {
 const statusId = (id: string) => `everyday:${id}`;
 
 export function EverydayPage() {
+  const [searchParams] = useSearchParams();
+  const reviewMode = searchParams.get("review") === "learning";
+  const reviewStarted = useRef(false);
   const [filter, setFilter] = useState<(typeof FILTERS)[number]>("all");
   const [query, setQuery] = useState("");
   const [studyIds, setStudyIds] = useState<string[] | null>(null);
@@ -34,6 +38,17 @@ export function EverydayPage() {
   const studied = EVERYDAY_ENTRIES.filter((entry) => status[statusId(entry.id)] === "mastered").length;
   const current = studyIds ? EVERYDAY_ENTRIES.find((entry) => entry.id === studyIds[studyIndex]) : null;
 
+  useEffect(() => {
+    if (!reviewMode || reviewStarted.current) return;
+    reviewStarted.current = true;
+    const ids = EVERYDAY_ENTRIES.filter((entry) => status[statusId(entry.id)] === "learning").map((entry) => entry.id);
+    if (ids.length) {
+      setStudyIds(ids);
+      setStudyIndex(0);
+      setRevealed(false);
+    }
+  }, [reviewMode, status]);
+
   const startStudy = () => {
     if (!visible.length) return;
     setStudyIds(visible.map((entry) => entry.id));
@@ -42,7 +57,8 @@ export function EverydayPage() {
   };
   const rate = (value: Status) => {
     if (!current) return;
-    setStatus(statusId(current.id), value);
+    // “Chưa nhớ” vẫn cần quay lại Ôn tập, nên giữ mục ở trạng thái đang học.
+    setStatus(statusId(current.id), value === "new" ? "learning" : value);
     logActivity("card");
     setRevealed(false);
     setStudyIndex((i) => i + 1);

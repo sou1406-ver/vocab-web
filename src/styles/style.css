@@ -3611,6 +3611,29 @@ input[type="search"]::-webkit-search-cancel-button {
   flex-wrap: wrap;
   gap: 8px;
 }
+.review-collections {
+  display: flex;
+  width: fit-content;
+  max-width: 100%;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 5px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--surface);
+}
+.review-everyday-action {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+}
+.review-everyday-action p { margin: 0; }
 .review-item {
   display: flex;
   align-items: center;
@@ -3637,6 +3660,10 @@ input[type="search"]::-webkit-search-cancel-button {
   align-items: center;
   gap: 7px;
   flex-wrap: wrap;
+}
+@media (max-width: 620px) {
+  .review-item { align-items: flex-start; }
+  .review-word { gap: 4px 10px; }
 }
 
 /* ============ Kiến thức ============ */
