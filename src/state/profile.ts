@@ -38,11 +38,11 @@ function initProfiles(): { profiles: Profile[]; current: string } {
   let profiles = storage.get<Profile[]>("vn-profiles", []);
   let current = storage.get<string | null>("vn-current", null);
   // Rename the old generic default for existing local profiles as well as new ones.
-  profiles = profiles.map((p) => (p.name === "Bạn" ? { ...p, name: "Học viên" } : p));
+  profiles = profiles.map((p) => (p.name === "Bạn" || p.name === "Học viên" ? { ...p, name: "Đại ca" } : p));
   if (!profiles.length) {
     const p: Profile = {
       id: newProfileId(),
-      name: "Học viên",
+      name: "Đại ca",
       color: PROFILE_COLORS[0],
       goal: 20,
       target: 600,
