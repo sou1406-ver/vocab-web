@@ -36,7 +36,8 @@ export function EverydayPage() {
     const q = fold(query.trim());
     return EVERYDAY_ENTRIES.filter((entry) => {
       const matchesKind = filter === "all" || entry.kind === filter;
-      const matchesQuery = !q || fold(`${entry.text} ${entry.meaning} ${entry.definition} ${entry.example}`).includes(q);
+      const senseText = entry.otherSenses?.map((sense) => `${sense.meaning} ${sense.definition} ${sense.example}`).join(" ") ?? "";
+      const matchesQuery = !q || fold(`${entry.text} ${entry.meaning} ${entry.definition} ${entry.example} ${senseText}`).includes(q);
       return matchesKind && matchesQuery;
     });
   }, [filter, query]);
@@ -166,6 +167,14 @@ export function EverydayPage() {
                 <p className="everyday-definition"><span>EN</span>{current.definition}</p>
                 <p className="everyday-meaning"><span>VI</span>{current.meaning}</p>
                 <blockquote>{current.example}<small>{current.exampleVi}</small></blockquote>
+                {current.otherSenses?.length ? <div className="everyday-other-senses">
+                  <h3>Nghĩa khác</h3>
+                  {current.otherSenses.map((sense) => <article key={`${sense.meaning}-${sense.definition}`}>
+                    <p className="everyday-definition"><span>EN</span>{sense.definition}</p>
+                    <p className="everyday-meaning"><span>VI</span>{sense.meaning}</p>
+                    <blockquote>{sense.example}<small>{sense.exampleVi}</small></blockquote>
+                  </article>)}
+                </div> : null}
                 {current.usage && <small className="muted">{current.usage}</small>}
               </div>
             ) : (
@@ -226,6 +235,14 @@ export function EverydayPage() {
                   <p className="everyday-definition"><span>EN</span>{entry.definition}</p>
                   <p className="everyday-meaning"><span>VI</span>{entry.meaning}</p>
                   <blockquote>{entry.example}<small>{entry.exampleVi}</small></blockquote>
+                  {entry.otherSenses?.length ? <details className="everyday-other-senses">
+                    <summary>{entry.otherSenses.length} nghĩa khác</summary>
+                    {entry.otherSenses.map((sense) => <article key={`${sense.meaning}-${sense.definition}`}>
+                      <p className="everyday-definition"><span>EN</span>{sense.definition}</p>
+                      <p className="everyday-meaning"><span>VI</span>{sense.meaning}</p>
+                      <blockquote>{sense.example}<small>{sense.exampleVi}</small></blockquote>
+                    </article>)}
+                  </details> : null}
                   {entry.usage && <p className="everyday-usage">{entry.usage}</p>}
                 </article>
               );
