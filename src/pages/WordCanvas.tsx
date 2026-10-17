@@ -96,9 +96,11 @@ export function WordCanvas({ w, prev, next, lesson }: { w: Word; prev?: Word; ne
                   <section className="word-sense" key={`${sense.pos}-${senseIndex}`}>
                     <div className="word-sense-head">
                       <PosTag pos={sense.pos} />
-                      <span className="vi">{sense.meaning}</span>
+                      {sense.meaning && <span className="vi">{sense.meaning}</span>}
                     </div>
-                    <div className="def">{sense.definition}</div>
+                    {(sense.definitions ?? (sense.definition ? [sense.definition] : [])).map((definition, i) => (
+                      <div className="def" key={i}>{definition}</div>
+                    ))}
                     {sense.ex?.map((example, i) => (
                       <div className="word-sense-example" key={i}>
                         <span>{example}{sense.exVi?.[i] && <span className="ex-vi">{sense.exVi[i]}</span>}</span>

@@ -262,7 +262,31 @@
    },
    {
     "word": "market",
-    "def": "v. the course of buying and selling a product; n., the demand for a product",
+    "def": "n. the people who might buy a product or the business of buying and selling it; v., to promote and offer a product for sale",
+    "senses": [
+     {
+      "pos": "n",
+      "meaning": "thị trường",
+      "definition": "the people who may buy a product, or the business of buying and selling it",
+      "ex": [
+       "The market for brightly colored clothing was brisk last year, but it's moving sluggishly this year."
+      ],
+      "exVi": [
+       "Thị trường quần áo màu sáng năm ngoái rất sôi động, nhưng năm nay lại chậm chạp."
+      ]
+     },
+     {
+      "pos": "v",
+      "meaning": "tiếp thị, đưa ra thị trường",
+      "definition": "to promote a product and offer it for sale",
+      "ex": [
+       "When Omar first began making his chutneys, he marketed them door-to-door to gourmet shops."
+      ],
+      "exVi": [
+       "Khi mới bắt đầu làm nước sốt chutney, Omar đã đi chào bán đến từng cửa hàng thực phẩm cao cấp."
+      ]
+     }
+    ],
     "ex": [
      "When Omar first began making his chutneys, he marketed them door-to-door to gourmet shops.",
      "The market for brightly colored clothing was brisk last year, but it's moving sluggishly this year."

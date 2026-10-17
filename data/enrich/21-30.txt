@@ -99,7 +99,7 @@ invest | đầu tư | put money into, finance, fund | divest
   reinvest | v | re-+invest | tái đầu tư
 long-term | dài hạn | lasting, enduring, extended | short-term
 portfolio | danh mục đầu tư; hồ sơ năng lực | holdings, investments, collection | -
-pull out | rút ra, rút lui | withdraw, leave, exit, retreat | put in, join
+pull out | rút lui, rút ra; (n) sự rút lui, việc thu hồi | withdraw, leave, exit, retreat | put in, join
 resource | nguồn lực, tài nguyên | asset, supply, reserve, means | -
   resource | n | resource | nguồn lực
   resourceful | adj | resource+-ful | tháo vát
@@ -172,7 +172,7 @@ realistic | thực tế | practical, sensible, feasible, achievable | unrealisti
   realize | v | real+-ize | nhận ra; thực hiện
   realistic | adj | real+-ist+-ic | thực tế
   unrealistic | adj | un-+real+-ist+-ic | không thực tế
-target | mục tiêu | goal, objective, aim | -
+target | nhắm đến; (n) mục tiêu | goal, objective, aim | -
 translation | sự chuyển đổi, bản dịch | conversion, interpretation, rendering | -
   translate | v | translate | dịch
   translation | n | translate+-ion | bản dịch

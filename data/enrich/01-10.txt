@@ -45,7 +45,7 @@ provision | điều khoản; sự cung cấp; sự dự phòng | clause, conditi
   provider | n | provide+-er | nhà cung cấp
   provision | n | provide+-sion | điều khoản; sự cung cấp | provide → provi-
   provisional | adj | provide+-sion+-al | tạm thời
-resolve | giải quyết; quyết tâm | settle, solve, fix, sort out | -
+resolve | giải quyết; (n) sự quyết tâm | settle, solve, fix, sort out | -
   resolve | v | resolve | giải quyết; quyết định
   resolution | n | resolve+-tion | sự giải quyết; nghị quyết | resolve → resolu-
   resolved | adj | resolve+-ed | đã được giải quyết; kiên quyết
@@ -177,7 +177,7 @@ variety | sự đa dạng; nhiều loại | diversity, range, assortment, array 
   variable | adj | vary+-able | có thể thay đổi | y → i
 
 # 4
-address | giải quyết (vấn đề); phát biểu; địa chỉ | deal with, tackle, handle, speak to | ignore, neglect
+address | bài phát biểu; (v) đề cập đến | deal with, tackle, handle, speak to | ignore, neglect
 avoid | tránh, né | evade, prevent, steer clear of, dodge | face, confront
   avoid | v | avoid | tránh
   avoidance | n | avoid+-ance | sự tránh né
@@ -255,7 +255,7 @@ overcrowded | quá đông đúc | packed, congested, jammed | empty, deserted
   crowd | n | crowd | đám đông
   crowded | adj | crowd+-ed | đông đúc
   overcrowded | adj | over-+crowd+-ed | quá đông
-register | đăng ký, ghi danh | sign up, enroll, enlist, record | withdraw
+register | sổ đăng ký; (v) đăng ký, ghi danh | sign up, enroll, enlist, record | withdraw
   register | v | register | đăng ký
   registration | n | register+-ation | sự đăng ký | register → registr-
   registered | adj | register+-ed | đã đăng ký
@@ -284,7 +284,7 @@ compatible | tương thích | consistent, suitable, harmonious | incompatible
 delete | xoá | erase, remove, cancel | add, insert
   delete | v | delete | xoá
   deletion | n | delete+-ion | sự xoá
-display | hiển thị, trưng bày | show, exhibit, present | hide, conceal
+display | màn hình hiển thị; (v) hiển thị, trưng bày | show, exhibit, present | hide, conceal
 duplicate | sao chép; (n) bản sao | copy, replicate, reproduce | -
   duplicate | v | duplicate | sao chép
   duplication | n | duplicate+-ion | sự sao chép
@@ -298,7 +298,7 @@ ignore | phớt lờ, bỏ qua | disregard, neglect, overlook | notice, attend t
   ignore | v | ignore | phớt lờ
   ignorance | n | ignore+-ance | sự thiếu hiểu biết
   ignorant | adj | ignore+-ant | thiếu hiểu biết
-search | tìm kiếm | look for, seek, hunt, explore | -
+search | cuộc tìm kiếm; (v) tìm kiếm | look for, seek, hunt, explore | -
 shut down | tắt (máy); đóng cửa | turn off, close, stop | start up, turn on
 warning | lời cảnh báo | alert, caution, notice | -
   warn | v | warn | cảnh báo
@@ -370,7 +370,7 @@ outdated | lỗi thời | obsolete, old-fashioned, out of date | modern, up-to-d
   date | n | date | ngày tháng
   outdated | adj | out-+date+-ed | lỗi thời
   update | v | up-+date | cập nhật
-practice | thói quen, lệ thường; sự luyện tập | custom, procedure, habit, routine | -
+practice | phương pháp, thói quen; (v) luyện tập | custom, procedure, habit, routine | -
   practice | n | practice | thực tiễn, thói quen
   practical | adj | practice+-al | thực tế, thiết thực
   impractical | adj | im-+practice+-al | không thực tế
@@ -450,7 +450,7 @@ fold | gấp, gập | bend, crease, double over | unfold
   unfold | v | un-+fold | mở ra
   folder | n | fold+-er | bìa hồ sơ, thư mục
 layout | bố cục, cách trình bày | design, arrangement, format, plan | -
-mention | đề cập, nhắc đến | refer to, cite, note, bring up | omit
+mention | lời đề cập; (v) đề cập, nhắc đến | refer to, cite, note, bring up | omit
   mention | v | mention | đề cập
   mentionable | adj | mention+-able | có thể nhắc đến
   unmentionable | adj | un-+mention+-able | không nên nhắc tới

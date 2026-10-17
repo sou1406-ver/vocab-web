@@ -63,7 +63,7 @@ expert | chuyên gia; (adj) thành thạo | specialist, authority, professional 
   expert | n | expert | chuyên gia
   expertise | n | expert+-ise | chuyên môn
   expertly | adv | expert+-ly | một cách thành thạo
-follow up | theo dõi tiếp, liên hệ lại | pursue, check on, continue | neglect
+follow up | theo dõi, xử lý tiếp; (n) bước tiếp theo | pursue, check on, continue | neglect
 hesitant | do dự, ngập ngừng | reluctant, unsure, uncertain, wavering | eager, decisive
   hesitate | v | hesitate | do dự
   hesitation | n | hesitate+-ion | sự do dự
@@ -89,7 +89,7 @@ generate | tạo ra, phát sinh | produce, create, cause, yield | destroy
   generation | n | generate+-ion | sự tạo ra; thế hệ
   generator | n | generate+-or | máy phát điện
   generated | adj | generate+-ed | được tạo ra
-hire | thuê, tuyển dụng | employ, recruit, take on, engage | fire, dismiss
+hire | nhân viên mới được tuyển; (v) tuyển dụng | employ, recruit, take on, engage | fire, dismiss
   hire | v | hire | thuê, tuyển
   rehire | v | re-+hire | tuyển lại
 keep up with | theo kịp | stay abreast of, keep pace with, follow | fall behind
@@ -98,10 +98,10 @@ mentor | người cố vấn, người hướng dẫn | adviser, guide, coach, c
   mentor | v | mentor | hướng dẫn, kèm cặp
   mentoring | n | mentor+-ing | việc kèm cặp
 on track | đúng hướng, đúng tiến độ | on schedule, on course, on target | off track, behind
-reject | từ chối, bác bỏ | refuse, turn down, decline, dismiss | accept, approve
+reject | thứ bị loại; (v) từ chối, bác bỏ | refuse, turn down, decline, dismiss | accept, approve
   reject | v | reject | từ chối
   rejection | n | reject+-ion | sự từ chối
-set up | thiết lập, sắp xếp | establish, arrange, organize, install | dismantle
+set up | được sắp đặt; (v) thiết lập, sắp xếp | establish, arrange, organize, install | dismantle
 success | sự thành công | achievement, triumph, accomplishment | failure
   succeed | v | succeed | thành công
   success | n | success | sự thành công

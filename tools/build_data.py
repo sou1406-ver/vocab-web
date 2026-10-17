@@ -322,6 +322,65 @@ def vi_of(sentence):
     return None
 
 
+POS_PREFIX = re.compile(r"^(v|n|adj|adv|prep|conj)\s*\.\s*,?\s*", re.IGNORECASE)
+
+
+def senses_of(entry, head):
+    """Separate word senses when the source marks multiple parts of speech or aligned glosses."""
+    if entry.get("senses"):
+        return entry["senses"]
+
+    clauses = []
+    current_pos = ""
+    for raw in entry["def"].split(";"):
+        clause = fix(raw)
+        marker = POS_PREFIX.match(clause)
+        if marker:
+            current_pos = marker.group(1).lower()
+            clause = clause[marker.end():].strip()
+        if clause:
+            clauses.append((current_pos, clause))
+
+    groups = {}
+    for pos, definition in clauses:
+        groups.setdefault(pos, []).append(definition)
+    if len(clauses) < 2 or (len(groups) == 1 and not next(iter(groups))):
+        return []
+
+    tagged_translations = {}
+    tagged_matches = list(re.finditer(r";\s*\((v|n|adj|adv|prep|conj)\)\s*([^;]+)", head["vi"], re.IGNORECASE))
+    if tagged_matches:
+        for match in tagged_matches:
+            tagged_translations[match.group(1).lower()] = match.group(2).strip()
+        base_pos = set(groups) - {match.group(1).lower() for match in tagged_matches}
+        if len(base_pos) == 1:
+            tagged_translations[next(iter(base_pos))] = head["vi"][:tagged_matches[0].start()].strip(" ;")
+        elif clauses[0][0] not in tagged_translations:
+            tagged_translations[clauses[0][0]] = head["vi"][:tagged_matches[0].start()].strip(" ;")
+
+    senses = []
+    for index, (pos, definitions) in enumerate(groups.items()):
+        root_forms = [
+            item for item in head["family"]
+            if norm(item["w"]) == norm(head["word"]) and item["pos"] == pos
+        ]
+        meaning = root_forms[0]["vi"] if root_forms else tagged_translations.get(pos)
+        if not meaning and len(groups) == 1:
+            meaning = head["vi"]
+        elif not meaning and pos == clauses[0][0] and not re.search(r";|,", head["vi"]):
+            meaning = head["vi"]
+        senses.append({
+            "pos": pos,
+            **({"meaning": meaning} if meaning else {}),
+            "definitions": definitions,
+        })
+
+    if senses:
+        senses[0]["ex"] = [fix(x) for x in entry["ex"]]
+        senses[0]["exVi"] = [vi_of(x) or "" for x in entry["ex"]]
+    return senses
+
+
 # ---------- Đọc file bổ sung ----------
 enrich = {}
 for path in sorted(glob.glob(os.path.join(ROOT, "data/enrich/*.txt"))):
@@ -414,6 +473,7 @@ for l in book:
                 f = {**f, "ipa": ipa}
             family.append(f)
         self_fam = next((f for f in family if norm(f["w"]) == norm(h["word"])), None)
+        senses = senses_of(e, h)
         out_words.append(
             {
                 "id": wid,
@@ -422,7 +482,7 @@ for l in book:
                 "pos": pos,
                 "ipa": ipa_of(h["word"], pos) or "",
                 "def": definition,
-                **({"senses": e["senses"]} if e.get("senses") else {}),
+                **({"senses": senses} if senses else {}),
                 "ex": [fix(x) for x in e["ex"]],
                 "exVi": [vi_of(x) or "" for x in e["ex"]],
                 "vi": h["vi"],

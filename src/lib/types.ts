@@ -35,8 +35,9 @@ export interface Word {
 
 export interface WordSense {
   pos: string;
-  meaning: string;
-  definition: string;
+  meaning?: string;
+  definition?: string;
+  definitions?: string[];
   ex?: string[];
   exVi?: string[];
 }
