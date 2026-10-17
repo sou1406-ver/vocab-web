@@ -367,6 +367,52 @@ select option:disabled {
   color: var(--faint);
 }
 
+/* Chromium's customizable native select keeps native keyboard and screen-reader behavior,
+   while letting its popup use the app's warm surface and restrained active state. Other
+   browsers retain the native popup and the option colors above as a graceful fallback. */
+@supports (appearance: base-select) {
+  select {
+    appearance: base-select;
+  }
+  select::picker(select) {
+    appearance: base-select;
+    margin-block: 5px;
+    padding: 5px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--surface);
+    color: var(--text);
+    box-shadow: var(--shadow-lg);
+  }
+  select option {
+    min-height: 38px;
+    padding: 8px 11px;
+    border-radius: 7px;
+    background: transparent;
+    color: var(--text);
+    transition: background-color 0.14s ease, color 0.14s ease;
+  }
+  select option:hover,
+  select option:checked {
+    background: var(--indigo-soft);
+    color: var(--indigo-text);
+  }
+  select optgroup {
+    padding: 5px 7px 2px;
+    color: var(--muted);
+    font-size: 0.76rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  select::picker-icon {
+    color: var(--muted);
+    transition: transform 0.18s ease;
+  }
+  select:open::picker-icon {
+    transform: rotate(180deg);
+  }
+}
+
 /* Ô lọc dạng viên thuốc: vòng focus vẽ ở cả viên (.filter-sel:focus-within), bỏ viền focus riêng của <select> bên trong
    để không bị hai viền chồng nhau */
 .filter-sel select:focus,
