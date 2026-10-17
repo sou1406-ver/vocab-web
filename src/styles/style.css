@@ -254,7 +254,7 @@ p {
   overflow: visible;
   padding: 4px;
   border-radius: 14px;
-  background: var(--surface-2);
+  background: var(--bg);
 }
 .tab {
   display: inline-flex;
@@ -285,6 +285,9 @@ p {
   color: var(--text);
   background: var(--surface);
   box-shadow: var(--shadow-sm);
+}
+:root[data-theme="dark"] .tab.active {
+  background: var(--surface-2);
 }
 .header-actions {
   display: flex;
@@ -332,7 +335,7 @@ p {
     transform: translateX(-50%);
     border: 1px solid var(--border);
     border-radius: 18px;
-    background: color-mix(in srgb, var(--surface) 94%, transparent);
+    background: var(--bg);
     box-shadow: var(--shadow-lg);
     backdrop-filter: blur(18px);
   }
@@ -347,7 +350,7 @@ p {
     background: none;
     font-size: 0.72rem;
     font-weight: 600;
-    color: var(--muted);
+    color: var(--text-2);
     min-width: 0;
     min-height: 50px;
     padding: 0 6px;
@@ -355,12 +358,16 @@ p {
     transition: color 0.18s ease, background 0.18s ease;
   }
   .bottom-nav :is(button, a).active {
-    color: var(--indigo);
+    color: var(--indigo-text);
     background: var(--indigo-soft);
   }
   main.container {
     padding-bottom: 96px !important;
   }
+}
+:root[data-theme="dark"] .bottom-nav :is(button, a).active {
+  color: var(--text);
+  background: var(--surface-2);
 }
 @media (max-width: 520px) {
   .brand-sub {
