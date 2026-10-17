@@ -6,6 +6,7 @@ import { FlashcardsPage } from "./pages/Flashcards";
 import { ManagePage } from "./pages/Manage";
 import { NetworkPage } from "./pages/Network";
 import { QuizPage } from "./pages/Quiz";
+import { ReviewPage } from "./pages/Review";
 import { TermPage } from "./pages/Term";
 import { TopicsPage } from "./pages/Topics";
 
@@ -21,6 +22,7 @@ const router = createHashRouter([
       { path: "term/:term", element: <TermPage /> },
       { path: "flashcards", element: <FlashcardsPage /> },
       { path: "quiz", element: <QuizPage /> },
+      { path: "review", element: <ReviewPage /> },
       { path: "affixes/:affix?", element: <AffixesPage /> },
       { path: "manage", element: <ManagePage /> },
       { path: "*", element: <Navigate to="/" replace /> },

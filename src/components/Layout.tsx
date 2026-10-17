@@ -10,6 +10,7 @@ export const TABS: { to: string; label: string; short: string; icon: IconName; e
   { to: "/topics", label: "Chủ đề", short: "Chủ đề", icon: "grid" },
   { to: "/network", label: "Trường từ", short: "Trường từ", icon: "network" },
   { to: "/flashcards", label: "Flashcard 3D", short: "Flashcard", icon: "layers" },
+  { to: "/review", label: "Ôn tập", short: "Ôn tập", icon: "repeat" },
   { to: "/quiz", label: "Bài tập", short: "Bài tập", icon: "pencil" },
   { to: "/affixes", label: "Tiền tố · Hậu tố", short: "Phụ tố", icon: "puzzle" },
   { to: "/", label: "Tổng quan", short: "Tổng quan", icon: "home", end: true },
