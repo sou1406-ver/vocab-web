@@ -188,8 +188,8 @@ export function Dashboard() {
           <div>
             <h3>Cá nhân hoá lộ trình của bạn</h3>
             <p className="muted">
-              Đặt tên, mục tiêu điểm TOEIC và số câu mỗi ngày — trang này sẽ gợi ý bài học và theo dõi tiến độ theo mục
-              tiêu đó.
+              Đặt tên hồ sơ, chọn mục tiêu TOEIC và số câu/thẻ bạn muốn học mỗi ngày. Lộ trình sẽ gợi ý bài phù hợp và
+              giúp bạn theo dõi tiến độ.
             </p>
           </div>
           <button className="btn primary" onClick={() => setModal({ kind: "profile", isNew: false })}>
@@ -256,8 +256,8 @@ export function Dashboard() {
               "Bạn đã đủ vốn từ cho mục tiêu này — thử nâng mục tiêu nhé!"
             ) : (
               <>
-                Còn <b>{tWords - mastered}</b> từ nữa. Ước tính khoảng{" "}
-                <b>{Math.max(1, Math.ceil(((tWords - mastered) * 3) / goal))}</b> ngày nếu học {goal} câu/thẻ mỗi ngày (tính trung bình 3 lượt luyện cho mỗi từ).
+                Còn <b>{tWords - mastered}</b> từ. Nếu học {goal} câu/thẻ mỗi ngày, bạn sẽ cần khoảng{" "}
+                <b>{Math.max(1, Math.ceil(((tWords - mastered) * 3) / goal))}</b> ngày (ước tính 3 lượt ôn cho mỗi từ).
               </>
             )}
           </p>
@@ -332,7 +332,7 @@ export function Dashboard() {
               })}
             </ul>
           ) : (
-            <p className="muted d-empty">Chưa có từ nào bị làm sai. Làm vài bài tập để trang này gợi ý từ cần ôn.</p>
+            <p className="muted d-empty">Chưa có từ nào cần ôn. Làm vài bài tập để xem những từ bạn hay nhầm ở đây.</p>
           )}
         </DCard>
 
@@ -358,7 +358,7 @@ export function Dashboard() {
             <p className="muted d-empty">Chưa làm bài tập trong sách nào.</p>
           )}
           <button className="btn sm" style={{ marginTop: 12 }} onClick={() => act.openLessonBook(next.n)}>
-            <Icon name="book" size="sm" /> Làm bài tập bài {next.n}
+            <Icon name="book" size="sm" /> Làm bài tập của bài {next.n}
           </button>
         </DCard>
       </div>

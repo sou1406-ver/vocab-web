@@ -76,7 +76,7 @@ function Explain({
   return (
     <div className={cx("explain", ok ? "ok" : "bad")} ref={box}>
       <div style={{ flex: "1 1 300px" }}>
-        <h4>{ok ? "✅ Chính xác!" : "❌ Chưa đúng"}</h4>
+        <h4>{ok ? "✅ Đúng rồi!" : "❌ Chưa đúng"}</h4>
         {entry && entry.parts && entry.parts.length > 1 && (
           <div className="row" style={{ gap: 4, marginTop: 8 }}>
             <Chips parts={entry.parts} />
@@ -101,7 +101,7 @@ function Explain({
           )}
         </p>
         <p style={{ fontSize: ".78rem" }}>
-          <Link to={netHref(root.id, entry ? entry.w : root.word)}>Xem sơ đồ trường từ “{root.word}” →</Link>
+          <Link to={netHref(root.id, entry ? entry.w : root.word)}>Mở trường từ “{root.word}” →</Link>
         </p>
       </div>
       <button className="btn dark" id="quiz-next" ref={btn} onClick={onNext}>
@@ -153,7 +153,7 @@ function QuestionView({
     return (
       <>
         <div className="q-box">
-          <div className="eyebrow">Điền dạng từ đúng của từ trong ngoặc (biến đổi từ loại / thêm tiền tố, hậu tố):</div>
+          <div className="eyebrow">Chọn dạng đúng của từ trong ngoặc để hoàn thành câu:</div>
           <div className="q-text">
             {before}
             <span className="blank">{st.answered ? q.m.text : "______"}</span>{" "}
@@ -218,7 +218,7 @@ function QuestionView({
     return (
       <>
         <div className="q-box">
-          <div className="eyebrow">Chọn từ {q.ant ? "TRÁI NGHĨA" : "ĐỒNG NGHĨA"} với từ sau:</div>
+          <div className="eyebrow">Chọn từ {q.ant ? "trái nghĩa" : "đồng nghĩa"} với từ sau:</div>
           <div className="row" style={{ marginTop: 8 }}>
             <span className="q-big">{q.root.word}</span>
             <Ipa ipa={q.root.ipa} />
@@ -286,7 +286,7 @@ function QuestionView({
   return (
     <>
       <div className="q-box" style={{ textAlign: "center" }}>
-        <div className="eyebrow">Ghép tiền tố + từ gốc + hậu tố thành từ có nghĩa:</div>
+        <div className="eyebrow">Ghép tiền tố, từ gốc và hậu tố để tạo thành một từ có nghĩa:</div>
         <div className="q-big" style={{ fontSize: "1.45rem", marginTop: 8 }}>
           {f.vi}
         </div>
@@ -500,15 +500,15 @@ function AutoQuiz() {
           <div className="topic-icon" style={{ margin: "0 auto" }}>
             <Icon name="award" size="lg" />
           </div>
-          <h3 style={{ fontSize: "1.5rem", marginTop: 14 }}>Hoàn thành bài luyện tập!</h3>
+          <h3 style={{ fontSize: "1.5rem", marginTop: 14 }}>Hoàn thành lượt luyện!</h3>
           <p className="muted" style={{ marginTop: 4 }}>
             {st.missed.length > 0
-              ? `Có ${st.missed.length} từ bạn vừa trả lời sai. Ôn nhanh trước khi tiếp tục.`
+              ? `Có ${st.missed.length} từ cần ôn lại. Hãy xem lại trước khi tiếp tục nhé.`
               : p >= 80
-              ? "Rất tốt — bạn nắm chắc quy luật biến đổi từ."
+              ? "Rất tốt! Bạn đang nắm khá vững phần này."
               : p >= 50
-                ? "Khá ổn, ôn lại sơ đồ các từ sai nhé."
-                : "Cần ôn thêm — xem lại sơ đồ trường từ rồi làm lại."}
+                ? "Bạn làm khá tốt. Hãy xem lại những câu còn nhầm nhé."
+                : "Hãy xem lại các từ và phần giải thích, rồi thử lại nhé."}
           </p>
           <div
             className="grid grid-2"
@@ -542,7 +542,7 @@ function AutoQuiz() {
                 className={cx("btn", st.missed.length === 0 && "primary")}
                 onClick={() => act.openLesson(nextLesson.n)}
               >
-                <Icon name="right" size="sm" /> Sang bài {nextLesson.n}
+                <Icon name="right" size="sm" /> Học tiếp bài {nextLesson.n}
               </button>
             )}
             <button className={cx("btn", st.missed.length === 0 && !nextLesson && "primary")} onClick={() => restart()}>
