@@ -6,6 +6,7 @@ import { FlashcardsPage } from "./pages/Flashcards";
 import { KnowledgePage } from "./pages/Knowledge";
 import { ManagePage } from "./pages/Manage";
 import { NetworkPage } from "./pages/Network";
+import { PracticePage } from "./pages/Practice";
 import { QuizPage } from "./pages/Quiz";
 import { ReviewPage } from "./pages/Review";
 import { TermPage } from "./pages/Term";
@@ -23,6 +24,7 @@ const router = createHashRouter([
       { path: "term/:term", element: <TermPage /> },
       { path: "flashcards", element: <FlashcardsPage /> },
       { path: "quiz", element: <QuizPage /> },
+      { path: "practice", element: <PracticePage /> },
       { path: "review", element: <ReviewPage /> },
       { path: "affixes/:affix?", element: <AffixesPage /> },
       { path: "knowledge", element: <KnowledgePage /> },
