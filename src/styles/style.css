@@ -3497,6 +3497,11 @@ input[type="search"]::-webkit-search-cancel-button {
   display: grid;
   gap: 10px;
 }
+.review-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
 .review-item {
   display: flex;
   align-items: center;
