@@ -246,10 +246,14 @@ p {
 }
 .tabs {
   display: flex;
+  align-items: center;
   gap: 2px;
   flex: 1 1 auto;
   min-width: 0;
   overflow: visible;
+  padding: 4px;
+  border-radius: 14px;
+  background: var(--surface-2);
 }
 .tab {
   display: inline-flex;
@@ -257,22 +261,26 @@ p {
   gap: 7px;
   border: 0;
   background: transparent;
-  padding: 0 12px;
+  min-height: 40px;
+  padding: 0 11px;
+  border-radius: 10px;
   font-weight: 600;
   font-size: 0.9rem;
   color: var(--muted);
   white-space: nowrap;
-  box-shadow: inset 0 -2px 0 transparent;
+  transition: color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
 }
 .tab .icon {
   display: none;
 }
 .tab:hover {
   color: var(--text);
+  background: color-mix(in srgb, var(--surface) 55%, transparent);
 }
 .tab.active {
   color: var(--text);
-  box-shadow: inset 0 -2px 0 var(--indigo);
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
 }
 .practice-menu {
   position: relative;
@@ -295,12 +303,15 @@ p {
   color: var(--text);
 }
 .practice-menu:not(.compact) > button {
-  padding: 0 12px;
+  min-height: 40px;
+  padding: 0 11px;
+  border-radius: 10px;
   font-size: 0.9rem;
-  box-shadow: inset 0 -2px 0 transparent;
+  transition: color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
 }
 .practice-menu:not(.compact) > button.active {
-  box-shadow: inset 0 -2px 0 var(--indigo);
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
 }
 .practice-menu.compact > button {
   flex-direction: column;
@@ -309,6 +320,7 @@ p {
   min-height: 48px;
   border-radius: 10px;
   font-size: 0.72rem;
+  transition: color 0.18s ease, background 0.18s ease;
 }
 .practice-popover {
   position: absolute;
@@ -374,15 +386,24 @@ p {
   .bottom-nav {
     display: flex;
     position: fixed;
-    inset: auto 0 0 0;
+    left: 50%;
+    right: auto;
+    bottom: calc(10px + env(safe-area-inset-bottom));
     z-index: 30;
-    justify-content: space-around;
-    background: var(--surface);
-    border-top: 1px solid var(--border);
-    padding: 4px 4px calc(4px + env(safe-area-inset-bottom));
+    width: min(740px, calc(100% - 28px));
+    justify-content: space-between;
+    gap: 3px;
+    padding: 6px;
+    transform: translateX(-50%);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    background: color-mix(in srgb, var(--surface) 94%, transparent);
+    box-shadow: var(--shadow-lg);
+    backdrop-filter: blur(18px);
   }
   .bottom-nav :is(button, a) {
     display: flex;
+    flex: 1 1 0;
     flex-direction: column;
     align-items: center;
     justify-content: center;
@@ -392,12 +413,15 @@ p {
     font-size: 0.72rem;
     font-weight: 600;
     color: var(--muted);
-    min-width: 52px;
-    min-height: 48px;
-    border-radius: 10px;
+    min-width: 0;
+    min-height: 50px;
+    padding: 0 6px;
+    border-radius: 12px;
+    transition: color 0.18s ease, background 0.18s ease;
   }
   .bottom-nav :is(button, a).active {
     color: var(--indigo);
+    background: var(--indigo-soft);
   }
   .practice-menu.compact .practice-popover {
     top: auto;
