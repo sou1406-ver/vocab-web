@@ -231,7 +231,7 @@ export function Dashboard() {
             </div>
             <div className="row">
               <button className="btn primary" onClick={() => act.openLesson(next.n)}>
-                Trường từ <Icon name="right" size="sm" />
+                Bắt đầu học <Icon name="right" size="sm" />
               </button>
               <button className="btn" onClick={() => act.openLessonFlash(next.n)}>
                 Flashcard
@@ -256,8 +256,8 @@ export function Dashboard() {
               "Bạn đã đủ vốn từ cho mục tiêu này — thử nâng mục tiêu nhé!"
             ) : (
               <>
-                Còn <b>{tWords - mastered}</b> từ nữa. Với {goal} câu/ngày, khoảng{" "}
-                <b>{Math.max(1, Math.ceil(((tWords - mastered) * 3) / goal))}</b> ngày.
+                Còn <b>{tWords - mastered}</b> từ nữa. Ước tính khoảng{" "}
+                <b>{Math.max(1, Math.ceil(((tWords - mastered) * 3) / goal))}</b> ngày nếu học {goal} câu/thẻ mỗi ngày (tính trung bình 3 lượt luyện cho mỗi từ).
               </>
             )}
           </p>
