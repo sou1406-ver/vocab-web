@@ -19,6 +19,14 @@ const statusId = (id: string) => `everyday:${id}`;
 const USAGE_LABEL: Record<UsageLevel, string> = { 0: "Hiếm gặp", 1: "Ít gặp hơn", 2: "Phổ biến", 3: "Rất phổ biến" };
 type EverydayQuestion = { id: string; choices: string[] };
 
+function UsageMeter({ level }: { level: UsageLevel }) {
+  return (
+    <span className={`freq freq-${level}`} role="img" title={USAGE_LABEL[level]} aria-label={USAGE_LABEL[level]}>
+      <i /><i /><i />
+    </span>
+  );
+}
+
 export function EverydayPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const reviewMode = searchParams.get("review") === "learning";
@@ -267,7 +275,7 @@ export function EverydayPage() {
                   <div className="row between">
                     <span className="badge b-indigo">{EVERYDAY_KIND_LABEL[entry.kind]}</span>
                     <div className="row everyday-badges">
-                      <span className={`freq-tag${entry.usageLevel === 3 ? " top" : ""}`}>{USAGE_LABEL[entry.usageLevel]}</span>
+                      <UsageMeter level={entry.usageLevel} />
                       <span className={`badge ${learned === "mastered" ? "b-emerald" : learned === "learning" ? "b-amber" : "b-slate"}`}>{STATUS_INFO[learned].label}</span>
                     </div>
                   </div>
