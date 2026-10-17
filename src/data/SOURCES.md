@@ -1,6 +1,15 @@
 # Everyday vocabulary sources
 
-The Everyday collection is curated rather than imported as a raw dataset. Entries added to `everyday.ts` use newly written English definitions, Vietnamese meanings, and example sentences.
+The Everyday collection combines hand-curated entries with a larger imported set. Curated entries use newly written English definitions, Vietnamese meanings, and examples. Imported entries retain the source English definition and Vietnamese translation.
+
+## Full personal-study lists
+
+The following source files are included locally as candidate pools. The app only imports a curated shortlist of common and very common expressions; less useful or overly specific entries are excluded. Duplicate headwords already present in the curated list are skipped. Usage levels are editorial labels because the source lists do not provide corpus-frequency data. The source lists do not provide example sentences, so imported entries show the English definition and Vietnamese translation without an example.
+
+- Project: [GitHub Vocabulary](https://github.com/tema4p/english-vocabulary)
+- Files: [1,845 idioms](https://github.com/tema4p/english-vocabulary/blob/main/content/idioms/English_Idioms_in_Action_EN.txt) with [Vietnamese translations](https://github.com/tema4p/english-vocabulary/blob/main/content/idioms/English_Idioms_in_Action_VI.txt); [1,511 phrasal verbs](https://github.com/tema4p/english-vocabulary/blob/main/content/phrasal-verbs/English_Phrasal_Verbs_in_Action_EN.txt) with [Vietnamese translations](https://github.com/tema4p/english-vocabulary/blob/main/content/phrasal-verbs/English_Phrasal_Verbs_in_Action_VI.txt).
+- License: [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/). This is personal, non-commercial study use.
+- Attribution: GitHub Vocabulary, [original repository](https://github.com/tema4p/english-vocabulary), [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/). Imported material is reformatted for the app and duplicate headwords are omitted.
 
 ## Candidate discovery
 
@@ -9,7 +18,7 @@ The Everyday collection is curated rather than imported as a raw dataset. Entrie
 
 ## Meaning checks
 
-Cambridge Dictionary pages were consulted to check the sense and usage of selected new idioms. The app's short explanations and examples are original paraphrases, not copied dictionary examples.
+Cambridge Dictionary pages were consulted to check the sense and usage of selected curated idioms. The app's short explanations and examples are original paraphrases, not copied dictionary examples.
 
 - [spill the beans](https://dictionary.cambridge.org/dictionary/english/spill-the-beans)
 - [break the ice](https://dictionary.cambridge.org/dictionary/english/break-the-ice)

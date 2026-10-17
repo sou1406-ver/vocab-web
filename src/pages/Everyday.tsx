@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { Icon } from "@/components/Icon";
-import { EVERYDAY_ENTRIES, EVERYDAY_KIND_LABEL, type EverydayKind } from "@/data/everyday";
+import { EVERYDAY_ENTRIES, EVERYDAY_KIND_LABEL, type EverydayKind, type UsageLevel } from "@/data/everyday";
 import { STATUS_INFO } from "@/lib/data";
 import type { Status } from "@/lib/types";
 import { fold, shuffle } from "@/lib/util";
@@ -16,14 +16,19 @@ const FILTER_LABEL: Record<(typeof FILTERS)[number], string> = {
   slang: "Từ lóng",
 };
 const statusId = (id: string) => `everyday:${id}`;
+const USAGE_LABEL: Record<UsageLevel, string> = { "very-common": "Rất hay gặp", common: "Hay gặp" };
 type EverydayQuestion = { id: string; choices: string[] };
 
 export function EverydayPage() {
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const reviewMode = searchParams.get("review") === "learning";
+  const paramKind = searchParams.get("kind");
+  const filter = FILTERS.includes(paramKind as (typeof FILTERS)[number]) ? (paramKind as (typeof FILTERS)[number]) : "all";
   const reviewStarted = useRef(false);
-  const [filter, setFilter] = useState<(typeof FILTERS)[number]>("all");
+  const [usageFilter, setUsageFilter] = useState<"all" | UsageLevel>("all");
+  const [statusFilter, setStatusFilter] = useState<"all" | Status>("all");
   const [query, setQuery] = useState("");
+  const [displayLimit, setDisplayLimit] = useState(60);
   const [studyIds, setStudyIds] = useState<string[] | null>(null);
   const [studyIndex, setStudyIndex] = useState(0);
   const [revealed, setRevealed] = useState(false);
@@ -36,14 +41,25 @@ export function EverydayPage() {
     const q = fold(query.trim());
     return EVERYDAY_ENTRIES.filter((entry) => {
       const matchesKind = filter === "all" || entry.kind === filter;
+      const matchesUsage = usageFilter === "all" || entry.usageLevel === usageFilter;
+      const entryStatus: Status = status[statusId(entry.id)] ?? "new";
+      const matchesStatus = statusFilter === "all" || entryStatus === statusFilter;
       const senseText = entry.otherSenses?.map((sense) => `${sense.meaning} ${sense.definition} ${sense.example}`).join(" ") ?? "";
-      const matchesQuery = !q || fold(`${entry.text} ${entry.meaning} ${entry.definition} ${entry.example} ${senseText}`).includes(q);
-      return matchesKind && matchesQuery;
+      const matchesQuery = !q || fold(`${entry.text} ${entry.meaning} ${entry.definition} ${entry.example ?? ""} ${senseText}`).includes(q);
+      return matchesKind && matchesUsage && matchesStatus && matchesQuery;
     });
-  }, [filter, query]);
+  }, [filter, usageFilter, statusFilter, query, status]);
+  const displayed = visible.slice(0, displayLimit);
   const studied = EVERYDAY_ENTRIES.filter((entry) => status[statusId(entry.id)] === "mastered").length;
   const current = studyIds ? EVERYDAY_ENTRIES.find((entry) => entry.id === studyIds[studyIndex]) : null;
   const quizCurrent = quiz ? EVERYDAY_ENTRIES.find((entry) => entry.id === quiz[quizIndex]?.id) : null;
+  const setKindFilter = (kind: (typeof FILTERS)[number]) => {
+    const next = new URLSearchParams(searchParams);
+    if (kind === "all") next.delete("kind");
+    else next.set("kind", kind);
+    setSearchParams(next, { replace: true });
+    setDisplayLimit(60);
+  };
 
   useEffect(() => {
     if (!reviewMode || reviewStarted.current) return;
@@ -66,9 +82,9 @@ export function EverydayPage() {
   const startQuiz = () => {
     if (!visible.length) return;
     const questions = shuffle(visible).slice(0, 10).map((entry) => {
-      const distractors = shuffle(EVERYDAY_ENTRIES.filter((other) => other.id !== entry.id))
-        .slice(0, 3)
-        .map((other) => other.meaning);
+      const distractors = shuffle([...new Set(
+        EVERYDAY_ENTRIES.filter((other) => other.id !== entry.id && other.meaning !== entry.meaning).map((other) => other.meaning),
+      )]).slice(0, 3);
       return { id: entry.id, choices: shuffle([entry.meaning, ...distractors]) };
     });
     setStudyIds(null);
@@ -106,6 +122,10 @@ export function EverydayPage() {
         <p className="lede">
           Học cụm từ, phrasal verbs, thành ngữ và từ lóng theo ngữ cảnh. Bộ này có tiến độ riêng, không cộng vào 600 từ TOEIC.
         </p>
+        <nav className="everyday-shortcuts" aria-label="Đi nhanh tới bộ từ">
+          <button className={`btn sm${filter === "idiom" ? " primary" : ""}`} aria-pressed={filter === "idiom"} onClick={() => setKindFilter("idiom")}>Học idiom <span>→</span></button>
+          <button className={`btn sm${filter === "phrasal" ? " primary" : ""}`} aria-pressed={filter === "phrasal"} onClick={() => setKindFilter("phrasal")}>Phrasal verbs <span>→</span></button>
+        </nav>
       </header>
 
       <section className="d-stats everyday-stats" aria-label="Tiến độ bộ sưu tập">
@@ -137,7 +157,7 @@ export function EverydayPage() {
             </div>
             {quizChoice !== null && <div className="everyday-answer">
               <p className="everyday-definition"><span>EN</span>{quizCurrent.definition}</p>
-              <blockquote>{quizCurrent.example}<small>{quizCurrent.exampleVi}</small></blockquote>
+              {quizCurrent.example && <blockquote>{quizCurrent.example}{quizCurrent.exampleVi && <small>{quizCurrent.exampleVi}</small>}</blockquote>}
               {quizCurrent.usage && <small className="muted">{quizCurrent.usage}</small>}
               <button className="btn primary everyday-quiz-next" onClick={nextQuizQuestion}>{quizIndex + 1 === quiz.length ? "Xem kết quả" : "Câu tiếp theo"}</button>
             </div>}
@@ -166,7 +186,7 @@ export function EverydayPage() {
               <div className="everyday-answer">
                 <p className="everyday-definition"><span>EN</span>{current.definition}</p>
                 <p className="everyday-meaning"><span>VI</span>{current.meaning}</p>
-                <blockquote>{current.example}<small>{current.exampleVi}</small></blockquote>
+                {current.example && <blockquote>{current.example}{current.exampleVi && <small>{current.exampleVi}</small>}</blockquote>}
                 {current.otherSenses?.length ? <div className="everyday-other-senses">
                   <h3>Nghĩa khác</h3>
                   {current.otherSenses.map((sense) => <article key={`${sense.meaning}-${sense.definition}`}>
@@ -202,15 +222,32 @@ export function EverydayPage() {
           <section className="card everyday-controls">
             <div className="everyday-filter-list" role="group" aria-label="Lọc loại cụm từ">
               {FILTERS.map((key) => (
-                <button key={key} className={`btn sm${filter === key ? " primary" : ""}`} aria-pressed={filter === key} onClick={() => setFilter(key)}>
+              <button key={key} className={`btn sm${filter === key ? " primary" : ""}`} aria-pressed={filter === key} onClick={() => setKindFilter(key)}>
                   {FILTER_LABEL[key]}
                 </button>
               ))}
             </div>
+            <div className="everyday-extra-filters">
+              <label>Mức độ phổ biến
+                <select className="input" value={usageFilter} onChange={(event) => { setUsageFilter(event.target.value as "all" | UsageLevel); setDisplayLimit(60); }}>
+                  <option value="all">Mọi mức độ</option>
+                  <option value="very-common">Rất hay gặp</option>
+                  <option value="common">Hay gặp</option>
+                </select>
+              </label>
+              <label>Tiến độ
+                <select className="input" value={statusFilter} onChange={(event) => { setStatusFilter(event.target.value as "all" | Status); setDisplayLimit(60); }}>
+                  <option value="all">Mọi trạng thái</option>
+                  <option value="new">Chưa học</option>
+                  <option value="learning">Đang học</option>
+                  <option value="mastered">Đã thuộc</option>
+                </select>
+              </label>
+            </div>
             <label className="search-box everyday-search">
               <span className="sr-only">Tìm trong bộ sưu tập</span>
               <Icon name="search" size="sm" />
-              <input className="input" value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Tìm cụm từ hoặc nghĩa..." />
+              <input className="input" value={query} onChange={(e) => { setQuery(e.target.value); setDisplayLimit(60); }} placeholder="Tìm cụm từ hoặc nghĩa..." />
             </label>
             <button className="btn" disabled={!visible.length} onClick={startStudy}>
               <Icon name="layers" size="sm" /> Học {visible.length} thẻ
@@ -221,20 +258,21 @@ export function EverydayPage() {
           </section>
 
           <section className="everyday-grid" aria-label="Các cụm từ đời thường">
-            {visible.map((entry) => {
+            {displayed.map((entry) => {
               const learned: Status = status[statusId(entry.id)] ?? "new";
               return (
                 <article className="card everyday-item" key={entry.id}>
                   <div className="row between">
                     <span className="badge b-indigo">{EVERYDAY_KIND_LABEL[entry.kind]}</span>
-                    <span className={`badge ${learned === "mastered" ? "b-emerald" : learned === "learning" ? "b-amber" : "b-slate"}`}>
-                      {STATUS_INFO[learned].label}
-                    </span>
+                    <div className="row everyday-badges">
+                      <span className="badge b-slate">{USAGE_LABEL[entry.usageLevel]}</span>
+                      <span className={`badge ${learned === "mastered" ? "b-emerald" : learned === "learning" ? "b-amber" : "b-slate"}`}>{STATUS_INFO[learned].label}</span>
+                    </div>
                   </div>
                   <h2>{entry.text}</h2>
                   <p className="everyday-definition"><span>EN</span>{entry.definition}</p>
                   <p className="everyday-meaning"><span>VI</span>{entry.meaning}</p>
-                  <blockquote>{entry.example}<small>{entry.exampleVi}</small></blockquote>
+                  {entry.example && <blockquote>{entry.example}{entry.exampleVi && <small>{entry.exampleVi}</small>}</blockquote>}
                   {entry.otherSenses?.length ? <details className="everyday-other-senses">
                     <summary>{entry.otherSenses.length} nghĩa khác</summary>
                     {entry.otherSenses.map((sense) => <article key={`${sense.meaning}-${sense.definition}`}>
@@ -248,6 +286,10 @@ export function EverydayPage() {
               );
             })}
           </section>
+          {visible.length > displayLimit && <div className="everyday-load-more">
+            <p className="muted">Đang hiện {displayed.length.toLocaleString("vi-VN")} / {visible.length.toLocaleString("vi-VN")} mục phù hợp</p>
+            <button className="btn" onClick={() => setDisplayLimit((limit) => limit + 60)}>Hiện thêm 60 mục</button>
+          </div>}
           {!visible.length && <p className="muted">Không tìm thấy mục nào phù hợp.</p>}
         </>
       )}
