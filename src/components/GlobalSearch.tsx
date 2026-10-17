@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { lessonLabel } from "@/lib/data";
+import { FreqMeter } from "@/components/FreqMeter";
+import { lessonLabel, termInfo } from "@/lib/data";
 import { searchWords } from "@/lib/search";
 import { cx } from "@/lib/util";
 import { useProfile } from "@/state/profile";
@@ -116,6 +117,7 @@ export function GlobalSearch() {
                   onClick={() => go(i)}
                 >
                   <span className="gs-main">
+                    <FreqMeter z={termInfo(e.form).z} />
                     <b>{e.form}</b>
                     <Ipa ipa={e.ipa} />
                     <PosTag pos={e.pos} />

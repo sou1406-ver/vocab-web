@@ -2,7 +2,8 @@ import type { CSSProperties, ReactNode } from "react";
 import { Link } from "react-router-dom";
 import { Chips, Ipa, Morph, PosTag, SpeakBtn } from "@/components/bits";
 import { Icon } from "@/components/Icon";
-import { familyOf, lessonLabel, LESSON_BY_N, POS_COLS, STATUS_INFO, TOPIC_BY_ID, unitOf } from "@/lib/data";
+import { FreqMeter } from "@/components/FreqMeter";
+import { familyOf, lessonLabel, LESSON_BY_N, POS_COLS, STATUS_INFO, termInfo, TOPIC_BY_ID, unitOf } from "@/lib/data";
 import type { FamilyEntry, Status, Word } from "@/lib/types";
 import { lower, same } from "@/lib/util";
 import { goLesson, useActions } from "@/state/actions";
@@ -35,7 +36,7 @@ function WordCard({ f, root }: { f: FamilyEntry; root: Word }) {
   return (
     <div className={`wcard${same(f.w, root.word) ? " is-root" : ""}`} data-w={lower(f.w)}>
       <div className="row between" style={{ gap: 4, flexWrap: "nowrap" }}>
-        <span className="ww">{f.w}</span>
+        <span className="row" style={{ gap: 6 }}><FreqMeter z={termInfo(f.w).z} /><span className="ww">{f.w}</span></span>
         <SpeakBtn text={f.w} />
       </div>
       {f.ipa && <div className="ipa">{f.ipa}</div>}
@@ -84,6 +85,7 @@ export function WordCanvas({ w, prev, next, lesson }: { w: Word; prev?: Word; ne
             </div>
             <div className="row" style={{ marginTop: 6, gap: 10, alignItems: "baseline" }}>
               <h2>{w.word}</h2>
+              <FreqMeter z={termInfo(w.word).z} />
               <Ipa ipa={w.ipa} />
               {(w.senses?.length ? w.senses.map((sense) => sense.pos) : [w.pos]).map((pos, i) => (
                 <PosTag key={`${pos}-${i}`} pos={pos} />

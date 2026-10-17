@@ -2,10 +2,11 @@ import type { CSSProperties, ReactNode } from "react";
 import { Link } from "react-router-dom";
 import { Progress } from "@/components/bits";
 import { Icon } from "@/components/Icon";
+import { FreqMeter } from "@/components/FreqMeter";
 import { Avatar } from "@/components/ProfileMenu";
 import CountUp from "@/components/reactbits/CountUp";
 import SpotlightCard from "@/components/reactbits/SpotlightCard";
-import { LESSONS, targetInfo, TOPICS, unitOf, WORDS } from "@/lib/data";
+import { LESSONS, targetInfo, termInfo, TOPICS, unitOf, WORDS } from "@/lib/data";
 import { lessonBookDone, lessonProgress, pct, resumeLesson } from "@/lib/progress";
 import type { DayLog } from "@/lib/types";
 import { cx, dayKey } from "@/lib/util";
@@ -323,6 +324,7 @@ export function Dashboard() {
                 return (
                   <li key={id}>
                     <Link to={`/network/${id}`}>
+                      <FreqMeter z={termInfo(w.word).z} />
                       <b>{w.word}</b>
                       <span className="muted">{w.vi}</span>
                     </Link>

@@ -1,10 +1,11 @@
 import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 import { Empty, Ipa, netHref, SpeakBtn } from "@/components/bits";
 import { Icon } from "@/components/Icon";
+import { FreqMeter } from "@/components/FreqMeter";
 import { freqLevel, lessonLabel, termInfo } from "@/lib/data";
 import { cx, lower } from "@/lib/util";
 import { useProfile } from "@/state/profile";
-import { FreqMeter, termHref } from "./Relations";
+import { termHref } from "./Relations";
 
 /** Trang của một từ đồng nghĩa / trái nghĩa KHÔNG có trong 600 từ của sách (vd "program"):
     nghĩa, phát âm, độ phổ biến và các trường từ mà nó thuộc về. */

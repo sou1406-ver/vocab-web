@@ -1,8 +1,9 @@
 import { Link } from "react-router-dom";
 import { Progress } from "@/components/bits";
+import { FreqMeter } from "@/components/FreqMeter";
 import { Icon } from "@/components/Icon";
 import BlurText from "@/components/reactbits/BlurText";
-import { LESSONS, unitOf } from "@/lib/data";
+import { LESSONS, termInfo, unitOf } from "@/lib/data";
 import { lessonBookDone, lessonProgress, pct, resumeLesson } from "@/lib/progress";
 import type { Topic } from "@/lib/types";
 import { cx } from "@/lib/util";
@@ -61,6 +62,7 @@ function UnitBlock({ t, i }: { t: Topic; i: number }) {
             })
           : words.map((w) => (
               <Link key={w.id} className="lesson-tile" to={`/network/${w.id}`}>
+                <FreqMeter z={termInfo(w.word).z} />
                 <span className="lt">{w.word}</span>
                 <span className="lv">{w.vi}</span>
               </Link>

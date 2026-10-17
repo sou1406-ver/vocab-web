@@ -2,8 +2,9 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Empty } from "@/components/bits";
 import { Icon } from "@/components/Icon";
+import { FreqMeter } from "@/components/FreqMeter";
 import { EVERYDAY_ENTRIES, EVERYDAY_KIND_LABEL } from "@/data/everyday";
-import { lessonLabel } from "@/lib/data";
+import { lessonLabel, termInfo } from "@/lib/data";
 import { useActions } from "@/state/actions";
 import { useProfile } from "@/state/profile";
 
@@ -110,6 +111,7 @@ export function ReviewPage() {
                 <article className="card review-item" key={word.id}>
                   <div className="review-word">
                     <Link to={`/network/${word.id}`}>
+                      <FreqMeter z={termInfo(word.word).z} />
                       <b>{word.word}</b>
                     </Link>
                     <span className="muted">{word.vi}</span>

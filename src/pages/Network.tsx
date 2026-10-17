@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Empty, StatusDot } from "@/components/bits";
 import { Icon } from "@/components/Icon";
+import { FreqMeter } from "@/components/FreqMeter";
 import { LessonNav } from "@/components/LessonNav";
 import {
   AFFIXES,
@@ -11,6 +12,7 @@ import {
   LESSON_BY_N,
   LESSONS,
   lessonLabel,
+  termInfo,
   type Catalog,
 } from "@/lib/data";
 import { matchReason } from "@/lib/search";
@@ -278,6 +280,7 @@ export function NetworkPage() {
                     <div style={{ minWidth: 0 }}>
                       <div className="row" style={{ gap: 6, flexWrap: "nowrap" }}>
                         <StatusDot id={w.id} />
+                        <FreqMeter z={termInfo(w.word).z} />
                         <span className="rw">{w.word}</span>
                         <span className="mono muted" style={{ fontSize: ".7rem" }}>
                           {w.pos ? `(${w.pos})` : ""}

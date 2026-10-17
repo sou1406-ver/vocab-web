@@ -2,8 +2,9 @@ import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Empty, Ipa, PosTag } from "@/components/bits";
 import { Icon } from "@/components/Icon";
+import { FreqMeter } from "@/components/FreqMeter";
 import { LessonNav, ScopeSelects } from "@/components/LessonNav";
-import { familyOf, lessonLabel, POS_COLS, STATUS_INFO, TOPIC_BY_ID, unitOf } from "@/lib/data";
+import { familyOf, lessonLabel, POS_COLS, STATUS_INFO, termInfo, TOPIC_BY_ID, unitOf } from "@/lib/data";
 import { speak } from "@/lib/speech";
 import type { Status } from "@/lib/types";
 import { cx, same } from "@/lib/util";
@@ -160,7 +161,7 @@ export function FlashcardsPage() {
                 </span>
               </div>
               <div style={{ textAlign: "center" }} className="stack-sm">
-                <div className="fc-word">{w.word}</div>
+                <div className="row" style={{ justifyContent: "center", gap: 10 }}><FreqMeter z={termInfo(w.word).z} /><div className="fc-word">{w.word}</div></div>
                 <Ipa ipa={w.ipa} className="fc-ipa" />
                 <div>
                   <button className="btn sm soft" onClick={() => speak(w.word)}>
@@ -191,6 +192,7 @@ export function FlashcardsPage() {
               >
                 <div>
                   <div className="row" style={{ gap: 8 }}>
+                    <FreqMeter z={termInfo(w.word).z} />
                     <h3 style={{ fontSize: "1.5rem" }}>{w.word}</h3>
                     <span style={{ color: "oklch(0.8 0.05 262)", fontSize: ".9rem" }}>{w.ipa}</span>
                     {w.pos && (

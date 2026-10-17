@@ -2,9 +2,10 @@ import { useEffect, useRef, type ReactNode } from "react";
 import { Link } from "react-router-dom";
 import { Chips, Empty, Ipa, netHref, PosTag, SpeakBtn } from "@/components/bits";
 import { Icon, type IconName } from "@/components/Icon";
+import { FreqMeter } from "@/components/FreqMeter";
 import { LessonNav, ScopeSelects } from "@/components/LessonNav";
 import ClickSpark, { type ClickSparkHandle } from "@/components/reactbits/ClickSpark";
-import { affixType, familyOf, LESSON_BY_N, POS_LABEL } from "@/lib/data";
+import { affixType, familyOf, LESSON_BY_N, POS_LABEL, termInfo } from "@/lib/data";
 import { isRightChoice, type Question } from "@/lib/quiz";
 import type { FamilyEntry, Word } from "@/lib/types";
 import { cx, lower, same, scrollBehavior } from "@/lib/util";
@@ -221,6 +222,7 @@ function QuestionView({
           <div className="eyebrow">Chọn từ {q.ant ? "trái nghĩa" : "đồng nghĩa"} với từ sau:</div>
           <div className="row" style={{ marginTop: 8 }}>
             <span className="q-big">{q.root.word}</span>
+            <FreqMeter z={termInfo(q.root.word).z} />
             <Ipa ipa={q.root.ipa} />
             <PosTag pos={q.root.pos} />
             <SpeakBtn text={q.root.word} size="" />
@@ -262,6 +264,7 @@ function QuestionView({
           ) : (
             <div className="row" style={{ marginTop: 8 }}>
               <span className="q-big">{w.word}</span>
+              <FreqMeter z={termInfo(w.word).z} />
               <Ipa ipa={w.ipa} />
               <PosTag pos={w.pos} />
               <SpeakBtn text={w.word} size="" />

@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { Ipa, netHref, SpeakBtn } from "@/components/bits";
 import { Icon } from "@/components/Icon";
+import { FreqMeter } from "@/components/FreqMeter";
 import { freqLevel, termInfo, type Catalog } from "@/lib/data";
 import type { Word } from "@/lib/types";
 import { cx, lower } from "@/lib/util";
@@ -9,18 +10,6 @@ import { cx, lower } from "@/lib/util";
 export function termHref(cat: Catalog, term: string) {
   const id = cat.rootIdFor(term);
   return id ? netHref(id, term) : `/term/${encodeURIComponent(term)}`;
-}
-
-/** Vạch đo độ phổ biến 3 nấc */
-export function FreqMeter({ z }: { z: number }) {
-  const { level, label } = freqLevel(z);
-  return (
-    <span className={`freq freq-${level}`} role="img" title={`${label} (Zipf ${z || "—"})`} aria-label={label}>
-      <i />
-      <i />
-      <i />
-    </span>
-  );
 }
 
 function RelCard({ term, kind, root, cat }: { term: string; kind: "syn" | "ant"; root: Word; cat: Catalog }) {
