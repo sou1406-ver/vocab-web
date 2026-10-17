@@ -254,7 +254,7 @@ p {
   overflow: visible;
   padding: 4px;
   border-radius: 14px;
-  background: var(--bg);
+  background: transparent;
 }
 .tab {
   display: inline-flex;
@@ -333,11 +333,11 @@ p {
     gap: 3px;
     padding: 6px;
     transform: translateX(-50%);
-    border: 1px solid var(--border);
+    border: 1px solid transparent;
     border-radius: 18px;
-    background: var(--bg);
-    box-shadow: var(--shadow-lg);
-    backdrop-filter: blur(18px);
+    background: transparent;
+    box-shadow: none;
+    backdrop-filter: none;
   }
   .bottom-nav :is(button, a) {
     display: flex;
