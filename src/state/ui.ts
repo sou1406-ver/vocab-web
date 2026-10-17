@@ -47,6 +47,7 @@ export interface QuizState {
   i: number;
   right: number;
   wrong: number;
+  missed: string[];
   answered: boolean;
   picked: number[];
   last: { ok: boolean; pick?: number } | null;
@@ -110,6 +111,7 @@ export const useUI = create<UIState>()((set, get) => ({
     i: 0,
     right: 0,
     wrong: 0,
+    missed: [],
     answered: false,
     picked: [],
     last: null,
@@ -130,7 +132,7 @@ export const useUI = create<UIState>()((set, get) => ({
   resetSession: () =>
     set({
       fc: { ...get().fc, deck: [], i: 0, flipped: false, stale: true },
-      quiz: { ...get().quiz, qs: [], i: 0, stale: true },
+      quiz: { ...get().quiz, qs: [], i: 0, missed: [], stale: true },
       book: { ...get().book, touched: false, ...freshBook },
     }),
   toast: (msg) => {

@@ -4,7 +4,7 @@ import { Chips, Empty, Ipa, netHref, PosTag, SpeakBtn } from "@/components/bits"
 import { Icon, type IconName } from "@/components/Icon";
 import { LessonNav, ScopeSelects } from "@/components/LessonNav";
 import ClickSpark, { type ClickSparkHandle } from "@/components/reactbits/ClickSpark";
-import { affixType, familyOf, POS_LABEL } from "@/lib/data";
+import { affixType, familyOf, LESSON_BY_N, POS_LABEL } from "@/lib/data";
 import { isRightChoice, type Question } from "@/lib/quiz";
 import type { FamilyEntry, Word } from "@/lib/types";
 import { cx, lower, same, scrollBehavior } from "@/lib/util";
@@ -371,7 +371,13 @@ function AutoQuiz() {
   const answer = (ok: boolean, pick?: number) => {
     const s = useUI.getState().quiz;
     if (s.answered || !q) return;
-    setQuiz({ answered: true, last: { ok, pick }, right: s.right + (ok ? 1 : 0), wrong: s.wrong + (ok ? 0 : 1) });
+    setQuiz({
+      answered: true,
+      last: { ok, pick },
+      right: s.right + (ok ? 1 : 0),
+      wrong: s.wrong + (ok ? 0 : 1),
+      missed: ok ? s.missed : [...new Set([...s.missed, q.root.id])],
+    });
     recordAnswer(q.root.id, ok);
     // Trả lời đúng: bắn tia sáng (React Bits · ClickSpark) từ nút vừa chọn
     if (ok && spark.current && cardRef.current) {
@@ -486,6 +492,7 @@ function AutoQuiz() {
 
   if (st.i >= st.qs.length) {
     const p = Math.round((st.right / st.qs.length) * 100);
+    const nextLesson = !st.forWord && st.lesson !== "all" ? LESSON_BY_N[+st.lesson + 1] : undefined;
     return (
       <div className="stack">
         {header}
@@ -495,7 +502,9 @@ function AutoQuiz() {
           </div>
           <h3 style={{ fontSize: "1.5rem", marginTop: 14 }}>Hoàn thành bài luyện tập!</h3>
           <p className="muted" style={{ marginTop: 4 }}>
-            {p >= 80
+            {st.missed.length > 0
+              ? `Có ${st.missed.length} từ bạn vừa trả lời sai. Ôn nhanh trước khi tiếp tục.`
+              : p >= 80
               ? "Rất tốt — bạn nắm chắc quy luật biến đổi từ."
               : p >= 50
                 ? "Khá ổn, ôn lại sơ đồ các từ sai nhé."
@@ -523,7 +532,20 @@ function AutoQuiz() {
             </div>
           </div>
           <div className="row" style={{ justifyContent: "center" }}>
-            <button className="btn primary" onClick={() => restart()}>
+            {st.missed.length > 0 && (
+              <button className="btn primary" onClick={() => act.reviewWords(st.missed)}>
+                <Icon name="repeat" size="sm" /> Ôn {st.missed.length} từ vừa sai
+              </button>
+            )}
+            {nextLesson && (
+              <button
+                className={cx("btn", st.missed.length === 0 && "primary")}
+                onClick={() => act.openLesson(nextLesson.n)}
+              >
+                <Icon name="right" size="sm" /> Sang bài {nextLesson.n}
+              </button>
+            )}
+            <button className={cx("btn", st.missed.length === 0 && !nextLesson && "primary")} onClick={() => restart()}>
               <Icon name="undo" size="sm" /> Làm bài mới
             </button>
             <button className="btn" onClick={() => act.navigate("/network")}>

@@ -37,6 +37,7 @@ export function startQuiz() {
     i: 0,
     right: 0,
     wrong: 0,
+    missed: [],
     answered: false,
     picked: [],
     last: null,
@@ -130,6 +131,13 @@ export function useActions() {
         .map(([id]) => id)
         .slice(0, 20);
       ui().setFc({ unit: "all", lesson: "all", status: "all", deck: ids, i: 0, flipped: false, stale: false });
+      navigate("/flashcards");
+    },
+    reviewWords(ids: string[]) {
+      const { catalog } = useProfile.getState();
+      const deck = [...new Set(ids)].filter((id) => catalog.byId[id]);
+      if (!deck.length) return;
+      ui().setFc({ unit: "all", lesson: "all", status: "all", deck, i: 0, flipped: false, stale: false });
       navigate("/flashcards");
     },
     netByAffix(affix: string) {
