@@ -2,6 +2,7 @@ import { createHashRouter, Navigate, RouterProvider } from "react-router-dom";
 import { Layout } from "./components/Layout";
 import { AffixesPage } from "./pages/Affixes";
 import { Dashboard } from "./pages/Dashboard";
+import { EverydayPage } from "./pages/Everyday";
 import { FlashcardsPage } from "./pages/Flashcards";
 import { KnowledgePage } from "./pages/Knowledge";
 import { ManagePage } from "./pages/Manage";
@@ -25,6 +26,7 @@ const router = createHashRouter([
       { path: "flashcards", element: <FlashcardsPage /> },
       { path: "quiz", element: <QuizPage /> },
       { path: "practice", element: <PracticePage /> },
+      { path: "everyday", element: <EverydayPage /> },
       { path: "review", element: <ReviewPage /> },
       { path: "affixes/:affix?", element: <AffixesPage /> },
       { path: "knowledge", element: <KnowledgePage /> },

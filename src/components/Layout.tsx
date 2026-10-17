@@ -33,7 +33,7 @@ export function Layout() {
   const modal = useUI((s) => s.modal);
   const tabKey = pathname.split("/")[1] || "dash";
   const prevTab = useRef(tabKey);
-  const practiceActive = ["/network", "/flashcards", "/quiz", "/term"].some(
+  const practiceActive = ["/network", "/flashcards", "/quiz", "/term", "/everyday"].some(
     (path) => pathname === path || pathname.startsWith(`${path}/`),
   );
 

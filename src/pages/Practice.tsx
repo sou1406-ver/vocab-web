@@ -24,6 +24,13 @@ const ways: { to: string; title: string; icon: IconName; description: string; ac
     description: "Luyện nhận diện từ loại, cấu tạo từ và nghĩa trong câu hỏi TOEIC.",
     action: "Làm bài tập",
   },
+  {
+    to: "/everyday",
+    title: "Tiếng Anh đời thường",
+    icon: "quote",
+    description: "Mở rộng vốn từ với cụm từ, phrasal verbs, thành ngữ và tiếng lóng có ghi chú ngữ cảnh.",
+    action: "Khám phá bộ sưu tập",
+  },
 ];
 
 export function PracticePage() {
@@ -32,7 +39,7 @@ export function PracticePage() {
       <header className="page-head">
         <p className="kicker">CHỌN CÁCH HỌC HÔM NAY</p>
         <h1>Luyện tập</h1>
-        <p className="lede">Ba công cụ học từ vựng, mỗi công cụ giúp bạn luyện một bước khác nhau.</p>
+        <p className="lede">Chọn cách học từ vựng hoặc khám phá thêm cách người ta dùng tiếng Anh trong đời thường.</p>
       </header>
 
       <section className="practice-options" aria-label="Các cách luyện tập">

@@ -450,7 +450,7 @@ main.container {
 }
 .practice-options {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 16px;
 }
 .practice-option.spotlight-card {
@@ -3709,6 +3709,268 @@ input[type="search"]::-webkit-search-cancel-button {
 }
 .knowledge-affix > div:nth-child(2) {
   flex: 1;
+}
+.knowledge-switch {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border);
+}
+.knowledge-switch button {
+  min-height: 42px;
+  padding: 0 14px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--text-2);
+  font: inherit;
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+.knowledge-switch button.active {
+  border-color: var(--indigo-line);
+  background: var(--indigo-soft);
+  color: var(--indigo-text);
+}
+.grammar-library {
+  display: grid;
+  gap: 12px;
+}
+.grammar-topic {
+  padding: 0;
+  overflow: clip;
+}
+.grammar-topic > summary {
+  display: flex;
+  min-height: 70px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 15px 20px;
+  cursor: pointer;
+  list-style: none;
+}
+.grammar-topic > summary::-webkit-details-marker {
+  display: none;
+}
+.grammar-topic > summary span {
+  display: grid;
+  gap: 3px;
+}
+.grammar-topic > summary b {
+  color: var(--text);
+  font-size: 1rem;
+}
+.grammar-topic > summary small {
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+.grammar-topic > summary .icon {
+  color: var(--indigo-text);
+  transition: transform 0.18s ease;
+}
+.grammar-topic[open] > summary {
+  border-bottom: 1px solid var(--border);
+}
+.grammar-topic[open] > summary .icon {
+  transform: rotate(45deg);
+}
+.grammar-content {
+  display: grid;
+  gap: 14px;
+  padding: 18px 20px 20px;
+  color: var(--text-2);
+  font-size: 0.91rem;
+  line-height: 1.65;
+}
+.grammar-table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+.grammar-table {
+  width: 100%;
+  min-width: 680px;
+  border-collapse: collapse;
+  background: var(--surface);
+  font-size: 0.82rem;
+}
+.grammar-table th,
+.grammar-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+  white-space: nowrap;
+}
+.grammar-table thead th,
+.grammar-table tbody th {
+  color: var(--text);
+  background: var(--surface-2);
+  font-weight: 700;
+}
+.grammar-table tr:last-child th,
+.grammar-table tr:last-child td {
+  border-bottom: 0;
+}
+.grammar-example,
+.grammar-note {
+  padding: 11px 13px;
+  border-radius: 9px;
+  background: var(--surface-2);
+}
+.grammar-example span {
+  display: block;
+  color: var(--muted);
+}
+.grammar-quick-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+.grammar-quick-grid p {
+  display: grid;
+  gap: 7px;
+  padding: 13px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+}
+.grammar-quick-grid code {
+  color: var(--indigo-text);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+}
+.grammar-quick-grid i {
+  color: var(--muted);
+  font-size: 0.83rem;
+}
+.grammar-rules p {
+  padding-left: 13px;
+  border-left: 2px solid var(--indigo-line);
+}
+
+/* ============ Tiếng Anh đời thường ============ */
+.everyday-page {
+  display: grid;
+  gap: 20px;
+}
+.everyday-stats {
+  margin: 0;
+}
+.everyday-controls {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 14px;
+}
+.everyday-filter-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+.everyday-search {
+  flex: 1 1 220px;
+}
+.everyday-search .input {
+  padding-left: 38px;
+}
+.everyday-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+.everyday-item {
+  display: flex;
+  min-height: 230px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 17px;
+}
+.everyday-item h2 {
+  font-size: 1.15rem;
+}
+.everyday-meaning {
+  color: var(--text-2);
+  font-weight: 600;
+}
+.everyday-item blockquote,
+.everyday-answer blockquote {
+  display: grid;
+  gap: 5px;
+  margin: auto 0 0;
+  padding: 11px 12px;
+  border-left: 2px solid var(--indigo-line);
+  border-radius: 0 8px 8px 0;
+  background: var(--surface-2);
+  color: var(--text-2);
+  font-size: 0.85rem;
+  line-height: 1.55;
+}
+.everyday-item blockquote small,
+.everyday-answer blockquote small {
+  color: var(--muted);
+}
+.everyday-usage {
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+.everyday-study {
+  display: grid;
+  gap: 18px;
+  padding: 20px;
+}
+.everyday-study-face {
+  display: grid;
+  min-height: 280px;
+  align-content: center;
+  justify-items: center;
+  gap: 18px;
+  padding: 22px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  background: var(--surface-2);
+  text-align: center;
+}
+.everyday-study-face h2 {
+  font-size: clamp(1.5rem, 4vw, 2.1rem);
+}
+.everyday-answer {
+  display: grid;
+  max-width: 640px;
+  justify-items: center;
+  gap: 12px;
+  color: var(--text-2);
+}
+.everyday-answer > p {
+  font-size: 1.1rem;
+  font-weight: 650;
+}
+.everyday-exit {
+  justify-self: start;
+}
+.everyday-finished {
+  display: grid;
+  justify-items: center;
+  gap: 12px;
+  padding: 32px 20px;
+  text-align: center;
+}
+@media (max-width: 1000px) {
+  .everyday-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 720px) {
+  .grammar-quick-grid,
+  .everyday-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .everyday-controls > .btn.primary {
+    flex: 1 1 100%;
+  }
 }
 
 .heatmap {
