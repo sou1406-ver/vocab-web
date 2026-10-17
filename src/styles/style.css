@@ -419,6 +419,13 @@ p {
     border-radius: 12px;
     transition: color 0.18s ease, background 0.18s ease;
   }
+  .bottom-nav > .practice-menu.compact {
+    flex: 1 1 0;
+    min-width: 0;
+  }
+  .bottom-nav > .practice-menu.compact > button {
+    width: 100%;
+  }
   .bottom-nav :is(button, a).active {
     color: var(--indigo);
     background: var(--indigo-soft);
