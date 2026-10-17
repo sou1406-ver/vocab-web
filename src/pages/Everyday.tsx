@@ -16,7 +16,7 @@ const FILTER_LABEL: Record<(typeof FILTERS)[number], string> = {
   slang: "Từ lóng",
 };
 const statusId = (id: string) => `everyday:${id}`;
-const USAGE_LABEL: Record<UsageLevel, string> = { "very-common": "Rất hay gặp", common: "Hay gặp" };
+const USAGE_LABEL: Record<UsageLevel, string> = { 0: "Hiếm gặp", 1: "Ít gặp hơn", 2: "Phổ biến", 3: "Rất phổ biến" };
 type EverydayQuestion = { id: string; choices: string[] };
 
 export function EverydayPage() {
@@ -229,10 +229,12 @@ export function EverydayPage() {
             </div>
             <div className="everyday-extra-filters">
               <label>Mức độ phổ biến
-                <select className="input" value={usageFilter} onChange={(event) => { setUsageFilter(event.target.value as "all" | UsageLevel); setDisplayLimit(60); }}>
+                <select className="input" value={usageFilter} onChange={(event) => { const value = event.target.value; setUsageFilter(value === "all" ? "all" : Number(value) as UsageLevel); setDisplayLimit(60); }}>
                   <option value="all">Mọi mức độ</option>
-                  <option value="very-common">Rất hay gặp</option>
-                  <option value="common">Hay gặp</option>
+                  <option value={3}>Rất phổ biến</option>
+                  <option value={2}>Phổ biến</option>
+                  <option value={1}>Ít gặp hơn</option>
+                  <option value={0}>Hiếm gặp</option>
                 </select>
               </label>
               <label>Tiến độ
@@ -265,7 +267,7 @@ export function EverydayPage() {
                   <div className="row between">
                     <span className="badge b-indigo">{EVERYDAY_KIND_LABEL[entry.kind]}</span>
                     <div className="row everyday-badges">
-                      <span className="badge b-slate">{USAGE_LABEL[entry.usageLevel]}</span>
+                      <span className={`freq-tag${entry.usageLevel === 3 ? " top" : ""}`}>{USAGE_LABEL[entry.usageLevel]}</span>
                       <span className={`badge ${learned === "mastered" ? "b-emerald" : learned === "learning" ? "b-amber" : "b-slate"}`}>{STATUS_INFO[learned].label}</span>
                     </div>
                   </div>

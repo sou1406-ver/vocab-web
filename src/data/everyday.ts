@@ -2,9 +2,10 @@ import idiomDefinitions from "./idioms-en.txt?raw";
 import idiomTranslations from "./idioms-vi.txt?raw";
 import phrasalDefinitions from "./phrasal-en.txt?raw";
 import phrasalTranslations from "./phrasal-vi.txt?raw";
+import { freqLevel, termInfo } from "@/lib/data";
 
 export type EverydayKind = "phrase" | "phrasal" | "idiom" | "slang";
-export type UsageLevel = "very-common" | "common";
+export type UsageLevel = 0 | 1 | 2 | 3;
 
 export interface EverydayEntry {
   id: string;
@@ -176,24 +177,41 @@ const ENGLISH_DEFINITIONS: Record<string, string> = {
   "ev-above-board": "honest, open, and legal",
 };
 
-const CURATED_ENTRIES: EverydayEntry[] = EVERYDAY_BASE.map((entry) => ({
-  ...entry,
-  definition: ENGLISH_DEFINITIONS[entry.id],
-  usageLevel: "very-common",
-}));
+const CURATED_ENTRIES: EverydayEntry[] = EVERYDAY_BASE.map((entry) => {
+  const level = freqLevel(termInfo(entry.text).z).level;
+  return {
+    ...entry,
+    definition: ENGLISH_DEFINITIONS[entry.id],
+    // Curated expressions without an exact Zipf match are kept at the middle
+    // book level; imported entries below need a measured score to be included.
+    usageLevel: level || 2,
+  };
+});
 
 const knownTerms = new Set(CURATED_ENTRIES.map((entry) => entry.text.trim().toLocaleLowerCase().replace(/\s+/g, " ")));
 
-// Keep imported content focused on expressions learners are likely to meet.
-// The source doesn't publish corpus frequency, so these are editorial levels,
-// not corpus statistics. Rare and overly specific entries are intentionally omitted.
-const VERY_COMMON_TERMS = new Set(`
-ask for back up break down break in break up bring up call back call off carry on carry out check in check out clean up come across come back come in come on come out come up count on cut down deal with drop off end up fall apart fall behind figure out fill in find out get along get away get back get in get off get on get out get over get through get up give back give up go ahead go back go on grow up hand in hang out hold on keep on leave out let down look after look for look forward to look into look out look up make up move on pass away pass out pay back pick up point out put away put off put on put out put up run away run into run out set off set up show up shut down sit down slow down sort out speak up stand for stand out stand up take after take away take back take off take on take over take up talk over throw away try on turn around turn down turn off turn on turn out turn up wake up work out write down
-as a matter of fact at the end of the day better late than never break the ice by the way call it a day cost an arm and a leg cross your fingers every cloud has a silver lining get out of hand get the hang of it give someone a hand hit the nail on the head in hot water in the same boat keep an eye on it let the cat out of the bag miss the boat once in a blue moon on the same page piece of cake pull someone's leg speak of the devil the ball is in your court the best of both worlds the last straw through thick and thin under the weather when pigs fly
-`.trim().split("\n").map((term) => term.trim().toLocaleLowerCase()));
-const COMMON_TERMS = new Set(`
-add up ask around be about to be fed up with be supposed to blow up break even bring about bring back bring in bring out bring over bring round call for catch up with come along come back to come down with come forward come out of come round come through come up with cut off do without dress up fall down fall for get across get around get away with get by get down get into get together get to give away give in go away go by go out go through go with go without keep away keep back keep up with kick off lay off look around look back look down on look on look over look through look up to make out make over pass on pay for pull over put aside put forward put through put together put up run across run after run over save up set aside settle down sign up sleep in split up stick to take in take out take up with tell off think over throw up turn into turn over use up wear out work on
-a blessing in disguise actions speak louder than words against the clock all ears all of a sudden back to square one bite the bullet burn the midnight oil by all means by heart come in handy easy does it get cold feet give it a try go the extra mile have a change of heart have a lot on one's plate in a nutshell it takes two to tango keep your fingers crossed learn the hard way make ends meet no pain no gain off the top of one's head on cloud nine out of the blue play it by ear put all your eggs in one basket rain cats and dogs see eye to eye take it easy the elephant in the room the tip of the iceberg time flies under the table up in the air
+// Idioms are selected editorially because most idiom headwords have no exact
+// Zipf entry. Phrasal verbs use the same Zipf cutoffs shown elsewhere in the app.
+const COMMON_IDIOMS = new Set(`
+a piece of cake
+bite the bullet
+burn the midnight oil
+call it a day
+every cloud has a silver lining
+go the extra mile
+in hot water
+it's not rocket science
+keep an eye on
+kill two birds with one stone
+let sleeping dogs lie
+make ends meet
+miss the boat
+no pain no gain
+out of the blue
+see eye to eye
+the tip of the iceberg
+through thick and thin
+up in the air
 `.trim().split("\n").map((term) => term.trim().toLocaleLowerCase()));
 
 function parseSourceLines(englishSource: string, vietnameseSource: string, kind: EverydayKind, sourceKey: string): EverydayEntry[] {
@@ -210,15 +228,16 @@ function parseSourceLines(englishSource: string, vietnameseSource: string, kind:
     const definition = line.slice(englishSeparator + 3).trim();
     const meaning = vietnameseLine.slice(vietnameseSeparator + 3).trim();
     const key = text.toLocaleLowerCase().replace(/\s+/g, " ");
-    const usageLevel = VERY_COMMON_TERMS.has(key) ? "very-common" : COMMON_TERMS.has(key) ? "common" : null;
-    if (!text || !definition || !meaning || !usageLevel || knownTerms.has(key)) return [];
+    const zipf = termInfo(text).z;
+    const level = kind === "phrasal" ? freqLevel(zipf).level : COMMON_IDIOMS.has(key) ? Math.max(2, freqLevel(zipf).level) : 0;
+    if (!text || !definition || !meaning || level < 2 || knownTerms.has(key)) return [];
     knownTerms.add(key);
 
     return [{
       id: `source-${sourceKey}-${index + 1}`,
       text,
       kind,
-      usageLevel,
+      usageLevel: level as UsageLevel,
       definition,
       meaning,
     }];
