@@ -20,6 +20,8 @@ export interface Word {
   pos: string;
   ipa?: string;
   def: string;
+  /** Các nghĩa tách theo từ loại khi một từ có nhiều cách dùng. */
+  senses?: WordSense[];
   ex: string[];
   exVi?: string[];
   vi: string;
@@ -29,6 +31,14 @@ export interface Word {
   family: FamilyEntry[];
   /** thời điểm sửa gần nhất (chỉ từ tự thêm) — để gộp khi đồng bộ nhiều máy */
   updated?: number;
+}
+
+export interface WordSense {
+  pos: string;
+  meaning: string;
+  definition: string;
+  ex?: string[];
+  exVi?: string[];
 }
 
 export interface Lesson {

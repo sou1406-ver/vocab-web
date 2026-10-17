@@ -7364,6 +7364,32 @@
    {
     "word": "record",
     "def": "n. an official copy of documents",
+    "senses": [
+     {
+      "pos": "n",
+      "meaning": "hồ sơ; bản ghi",
+      "definition": "information about someone or something that is written down or stored",
+      "ex": [
+       "Ms. Han typed a written request for her medical records.",
+       "The official records kept in the city archives showed that an unusually high number of babies are born in the summer months."
+      ],
+      "exVi": [
+       "Bà Han đánh máy đơn xin hồ sơ bệnh án của mình.",
+       "Hồ sơ chính thức lưu ở kho lưu trữ thành phố cho thấy số trẻ sinh vào mùa hè cao bất thường."
+      ]
+     },
+     {
+      "pos": "v",
+      "meaning": "ghi lại; lưu lại",
+      "definition": "to write down or store information so it can be used later",
+      "ex": [
+       "The doctor records the patient's description of her symptoms in the patient's medical chart."
+      ],
+      "exVi": [
+       "Bác sĩ ghi lại những triệu chứng mà bệnh nhân mô tả vào hồ sơ bệnh án."
+      ]
+     }
+    ],
     "ex": [
      "Ms. Han typed a written request for her medical records.",
      "The official records kept in the city archives showed that an unusually high number of babies are born in the summer months."

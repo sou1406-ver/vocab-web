@@ -1147,6 +1147,51 @@ a.morph:hover,
   font-size: 0.94rem;
   margin-top: 4px;
 }
+.word-senses {
+  display: grid;
+  gap: 10px;
+  margin-top: 14px;
+  max-width: 760px;
+}
+.word-sense {
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--surface-2) 62%, transparent);
+}
+.word-sense-head {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.root-banner .word-sense-head .vi {
+  margin: 0;
+  font-size: 1rem;
+}
+.word-sense .def {
+  margin-top: 5px;
+}
+.word-sense-example {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 10px;
+  padding-left: 12px;
+  border-left: 2px solid var(--surface-3);
+  color: var(--text-2);
+  font-family: var(--font-display);
+  font-style: italic;
+  line-height: 1.55;
+}
+.word-sense-example .ex-vi {
+  display: block;
+  margin-top: 2px;
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+  font-style: normal;
+}
 .book-ex {
   margin-top: 16px;
   display: grid;
@@ -3923,6 +3968,32 @@ input[type="search"]::-webkit-search-cancel-button {
   color: var(--text-2);
   font-weight: 600;
 }
+.everyday-definition,
+.everyday-meaning {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin: 0;
+  line-height: 1.55;
+  text-align: left;
+}
+.everyday-definition {
+  color: var(--text-2);
+  font-size: 0.88rem;
+}
+.everyday-definition > span,
+.everyday-meaning > span {
+  flex: none;
+  color: var(--muted);
+  font-size: 0.68rem;
+  font-weight: 750;
+  letter-spacing: 0.06em;
+}
+.everyday-meaning {
+  color: var(--text);
+  font-size: 0.92rem;
+  font-weight: 650;
+}
 .everyday-item blockquote,
 .everyday-answer blockquote {
   display: grid;
@@ -3975,6 +4046,12 @@ input[type="search"]::-webkit-search-cancel-button {
   font-size: 1.1rem;
   font-weight: 650;
 }
+.everyday-answer > .everyday-definition,
+.everyday-answer > .everyday-meaning {
+  width: min(100%, 640px);
+}
+.everyday-answer > .everyday-definition { font-size: 0.95rem; }
+.everyday-answer > .everyday-meaning { font-size: 1.05rem; }
 .everyday-quiz-options {
   display: grid;
   width: min(100%, 620px);

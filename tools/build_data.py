@@ -422,6 +422,7 @@ for l in book:
                 "pos": pos,
                 "ipa": ipa_of(h["word"], pos) or "",
                 "def": definition,
+                **({"senses": e["senses"]} if e.get("senses") else {}),
                 "ex": [fix(x) for x in e["ex"]],
                 "exVi": [vi_of(x) or "" for x in e["ex"]],
                 "vi": h["vi"],

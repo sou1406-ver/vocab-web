@@ -36,7 +36,7 @@ export function EverydayPage() {
     const q = fold(query.trim());
     return EVERYDAY_ENTRIES.filter((entry) => {
       const matchesKind = filter === "all" || entry.kind === filter;
-      const matchesQuery = !q || fold(`${entry.text} ${entry.meaning} ${entry.example}`).includes(q);
+      const matchesQuery = !q || fold(`${entry.text} ${entry.meaning} ${entry.definition} ${entry.example}`).includes(q);
       return matchesKind && matchesQuery;
     });
   }, [filter, query]);
@@ -135,6 +135,7 @@ export function EverydayPage() {
               })}
             </div>
             {quizChoice !== null && <div className="everyday-answer">
+              <p className="everyday-definition"><span>EN</span>{quizCurrent.definition}</p>
               <blockquote>{quizCurrent.example}<small>{quizCurrent.exampleVi}</small></blockquote>
               {quizCurrent.usage && <small className="muted">{quizCurrent.usage}</small>}
               <button className="btn primary everyday-quiz-next" onClick={nextQuizQuestion}>{quizIndex + 1 === quiz.length ? "Xem kết quả" : "Câu tiếp theo"}</button>
@@ -162,7 +163,8 @@ export function EverydayPage() {
             <h2>{current.text}</h2>
             {revealed ? (
               <div className="everyday-answer">
-                <p>{current.meaning}</p>
+                <p className="everyday-definition"><span>EN</span>{current.definition}</p>
+                <p className="everyday-meaning"><span>VI</span>{current.meaning}</p>
                 <blockquote>{current.example}<small>{current.exampleVi}</small></blockquote>
                 {current.usage && <small className="muted">{current.usage}</small>}
               </div>
@@ -221,7 +223,8 @@ export function EverydayPage() {
                     </span>
                   </div>
                   <h2>{entry.text}</h2>
-                  <p className="everyday-meaning">{entry.meaning}</p>
+                  <p className="everyday-definition"><span>EN</span>{entry.definition}</p>
+                  <p className="everyday-meaning"><span>VI</span>{entry.meaning}</p>
                   <blockquote>{entry.example}<small>{entry.exampleVi}</small></blockquote>
                   {entry.usage && <p className="everyday-usage">{entry.usage}</p>}
                 </article>

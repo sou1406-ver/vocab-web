@@ -85,11 +85,35 @@ export function WordCanvas({ w, prev, next, lesson }: { w: Word; prev?: Word; ne
             <div className="row" style={{ marginTop: 6, gap: 10, alignItems: "baseline" }}>
               <h2>{w.word}</h2>
               <Ipa ipa={w.ipa} />
-              <PosTag pos={w.pos} />
+              {(w.senses?.length ? w.senses.map((sense) => sense.pos) : [w.pos]).map((pos, i) => (
+                <PosTag key={`${pos}-${i}`} pos={pos} />
+              ))}
               <SpeakBtn text={w.word} size="" />
             </div>
-            <div className="vi">{w.vi}</div>
-            {w.def && <div className="def">{w.def}</div>}
+            {w.senses?.length ? (
+              <div className="word-senses">
+                {w.senses.map((sense, senseIndex) => (
+                  <section className="word-sense" key={`${sense.pos}-${senseIndex}`}>
+                    <div className="word-sense-head">
+                      <PosTag pos={sense.pos} />
+                      <span className="vi">{sense.meaning}</span>
+                    </div>
+                    <div className="def">{sense.definition}</div>
+                    {sense.ex?.map((example, i) => (
+                      <div className="word-sense-example" key={i}>
+                        <span>{example}{sense.exVi?.[i] && <span className="ex-vi">{sense.exVi[i]}</span>}</span>
+                        <SpeakBtn text={example} />
+                      </div>
+                    ))}
+                  </section>
+                ))}
+              </div>
+            ) : (
+              <>
+                <div className="vi">{w.vi}</div>
+                {w.def && <div className="def">{w.def}</div>}
+              </>
+            )}
           </div>
           <div className="stack-sm" style={{ textAlign: "right" }}>
             <select
@@ -115,7 +139,7 @@ export function WordCanvas({ w, prev, next, lesson }: { w: Word; prev?: Word; ne
             )}
           </div>
         </div>
-        {w.ex.length > 0 && (
+        {!w.senses?.length && w.ex.length > 0 && (
           <div className="book-ex">
             {w.ex.map((x, i) => (
               <div key={i}>
