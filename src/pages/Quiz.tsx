@@ -30,14 +30,14 @@ function LetterSlotsInput({
   value,
   onChange,
   inputRef,
-  revealAnswer = false,
+  revealCount = 0,
   placeholder,
 }: {
   word: string;
   value: string;
   onChange: (value: string) => void;
   inputRef: RefObject<HTMLInputElement>;
-  revealAnswer?: boolean;
+  revealCount?: number;
   placeholder: string;
 }) {
   const letters = Array.from(word);
@@ -50,7 +50,8 @@ function LetterSlotsInput({
             return <span className="letter-slot-space" key={`space-${index}`} />;
           }
           const typedChar = typed[index] === " " ? "" : typed[index];
-          const shown = typedChar || (revealAnswer ? char.toLocaleLowerCase() : "");
+          const revealedLetters = Array.from(word.slice(0, index)).filter((letter) => letter !== " ").length;
+          const shown = typedChar || (revealedLetters < revealCount ? char.toLocaleLowerCase() : "");
           return (
             <span className={cx("letter-slot", shown && "filled")} key={`${char}-${index}`}>
               {shown || "_"}
@@ -176,14 +177,15 @@ function QuestionView({
   onNext,
 }: {
   q: Question;
-  onAnswer: (ok: boolean, pick?: number, close?: boolean) => void;
+  onAnswer: (ok: boolean, pick?: number, close?: boolean, masteryCredit?: boolean) => void;
   onTypingWrong: () => void;
   onNext: () => void;
 }) {
   const st = useUI((s) => s.quiz);
   const setQuiz = useUI((s) => s.setQuiz);
   const inputRef = useRef<HTMLInputElement>(null);
-  const [hintVisible, setHintVisible] = useState(false);
+  const [hintCount, setHintCount] = useState(0);
+  const [hintPenalty, setHintPenalty] = useState(false);
   const [typedValue, setTypedValue] = useState("");
   const [typingError, setTypingError] = useState(false);
 
@@ -192,7 +194,7 @@ function QuestionView({
     const quality = typedAnswerQuality(answer, target, alternatives);
     if (quality === "correct") {
       setTypingError(false);
-      onAnswer(true);
+      onAnswer(true, undefined, false, !hintPenalty);
       return;
     }
     setTypingError(true);
@@ -200,11 +202,16 @@ function QuestionView({
     onTypingWrong();
   };
 
-  const revealAnswerHint = () => {
-    if (hintVisible) return;
-    setHintVisible(true);
-    setTypingError(true);
-    onTypingWrong();
+  const revealNextLetter = (word: string) => {
+    const letterCount = Array.from(word).filter((letter) => letter !== " ").length;
+    if (hintCount >= letterCount) return;
+    const nextCount = hintCount + 1;
+    setHintCount(nextCount);
+    if (nextCount > 2 && !hintPenalty) {
+      setHintPenalty(true);
+      setTypingError(true);
+      onTypingWrong();
+    }
   };
 
   useEffect(() => {
@@ -339,7 +346,7 @@ function QuestionView({
                 setTypingError(false);
               }}
               inputRef={inputRef}
-              revealAnswer
+              revealCount={1}
               placeholder="Nhập từ còn thiếu"
             />
             {typingError && (
@@ -370,6 +377,7 @@ function QuestionView({
   }
 
   if (q.kind === "adaptive-recall") {
+    const hintTotal = Array.from(q.root.word).filter((letter) => letter !== " ").length;
     return (
       <>
         <div className="q-box">
@@ -392,13 +400,12 @@ function QuestionView({
             </>
           )}
           <div className="row" style={{ gap: 10, marginTop: 12, flexWrap: "wrap" }}>
-            {!hintVisible ? (
-              <button className="btn sm soft" type="button" onClick={revealAnswerHint}>
-                <Icon name="book" size="sm" /> Gợi ý đáp án
+            {hintCount < hintTotal && (
+              <button className="btn sm soft" type="button" onClick={() => revealNextLetter(q.root.word)}>
+                <Icon name="book" size="sm" /> Gợi ý chữ tiếp theo
               </button>
-            ) : (
-              <span className="badge b-indigo">Đã dùng gợi ý · lượt này không tính là đã thuộc</span>
             )}
+            {hintPenalty && <span className="badge b-amber">Quá 2 gợi ý · lượt này tính sai</span>}
           </div>
         </div>
         {!st.answered && (
@@ -420,13 +427,13 @@ function QuestionView({
                 setTypingError(false);
               }}
               inputRef={inputRef}
-              revealAnswer={hintVisible}
+              revealCount={hintCount}
               placeholder="Gõ từ bạn nhớ"
             />
             {typingError && (
               <div className="typing-error" role="alert">
-                {hintVisible
-                  ? "Đã mở đáp án. Lượt này không tính là đã thuộc; gõ đúng để tiếp tục."
+                {hintPenalty
+                  ? "Dùng quá 2 gợi ý; lượt này đã tính sai. Nhập đúng để tiếp tục."
                   : "Chưa đúng, thử lại nhé."}
               </div>
             )}
@@ -453,6 +460,7 @@ function QuestionView({
   }
 
   if (q.kind === "listening") {
+    const hintTotal = Array.from(q.root.word).filter((letter) => letter !== " ").length;
     return (
       <>
         <div className="q-box">
@@ -464,13 +472,12 @@ function QuestionView({
             <Ipa ipa={q.root.ipa} />
           </div>
           <div className="row" style={{ gap: 10, marginTop: 12, flexWrap: "wrap" }}>
-            {!hintVisible ? (
-              <button className="btn sm soft" type="button" onClick={revealAnswerHint}>
-                <Icon name="book" size="sm" /> Gợi ý đáp án
+            {hintCount < hintTotal && (
+              <button className="btn sm soft" type="button" onClick={() => revealNextLetter(q.root.word)}>
+                <Icon name="book" size="sm" /> Gợi ý chữ tiếp theo
               </button>
-            ) : (
-              <span className="badge b-indigo">Đã dùng gợi ý · lượt này không tính là đã thuộc</span>
             )}
+            {hintPenalty && <span className="badge b-amber">Quá 2 gợi ý · lượt này tính sai</span>}
           </div>
         </div>
         {!st.answered && (
@@ -492,13 +499,13 @@ function QuestionView({
                 setTypingError(false);
               }}
               inputRef={inputRef}
-              revealAnswer={hintVisible}
+              revealCount={hintCount}
               placeholder="Gõ từ vừa nghe"
             />
             {typingError && (
               <div className="typing-error" role="alert">
-                {hintVisible
-                  ? "Đã mở đáp án. Lượt này không tính là đã thuộc; gõ đúng để tiếp tục."
+                {hintPenalty
+                  ? "Dùng quá 2 gợi ý; lượt này đã tính sai. Nhập đúng để tiếp tục."
                   : "Chưa đúng, thử lại nhé."}
               </div>
             )}
@@ -803,12 +810,12 @@ function AutoQuiz() {
 
   const q = st.qs[st.i];
 
-  const answer = (ok: boolean, pick?: number, close = false) => {
+  const answer = (ok: boolean, pick?: number, close = false, masteryCredit = true) => {
     const s = useUI.getState().quiz;
     if (s.answered || !q) return;
     const before = useProfile.getState();
     const wasConfirming = Boolean(before.srs?.[q.root.id]?.confirming || before.status[q.root.id] === "confirming");
-    if (!close) recordAnswer(q.root.id, ok);
+    if (!close && (!ok || masteryCredit)) recordAnswer(q.root.id, ok);
     setQuiz({
       answered: true,
       last: { ok, pick, close },
