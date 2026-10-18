@@ -169,5 +169,6 @@ export interface Profile {
   target: number;
   created: number;
   setup: boolean;
+  demo?: boolean;
   cloud?: { uid: string; email: string; photo: string };
 }

@@ -26,7 +26,7 @@ export function Avatar({ p, size = "" }: { p: Profile; size?: "" | "sm" | "lg" }
 function createDemoProfile() {
   const before = useProfile.getState();
   const words = before.catalog.all;
-  const existing = before.profiles.find((profile) => profile.name === "Demo kiểm thử");
+  const existing = before.profiles.find((profile) => profile.demo === true);
   if (existing) before.switchProfile(existing.id);
   else
     before.addProfile({
@@ -36,6 +36,7 @@ function createDemoProfile() {
       newWordLimit: 10,
       target: 600,
       setup: true,
+      demo: true,
     });
 
   // Re-seeding the demo should be deterministic and must not keep old demo progress.
@@ -157,6 +158,7 @@ export function ProfileMenu() {
   const open = useUI((s) => s.menuOpen);
   const { setMenuOpen, setModal, resetSession } = useUI.getState();
   const user = useCloud((s) => s.user);
+  const showDemoTools = import.meta.env.DEV || new URLSearchParams(window.location.search).has("demo");
   const pref = useThemePref();
   const wrapRef = useRef<HTMLDivElement>(null);
   const btnRef = useRef<HTMLButtonElement>(null);
@@ -246,17 +248,19 @@ export function ProfileMenu() {
           <button className="pm-item" role="menuitem" onClick={() => setModal({ kind: "profile", isNew: true })}>
             <Icon name="plus" size="sm" /> Thêm hồ sơ mới
           </button>
-          <button
-            className="pm-item"
-            role="menuitem"
-            onClick={() => {
-              createDemoProfile();
-              resetSession();
-              navigate("/quiz");
-            }}
-          >
-            <Icon name="layers" size="sm" /> Tạo / làm mới hồ sơ demo
-          </button>
+          {showDemoTools && (
+            <button
+              className="pm-item"
+              role="menuitem"
+              onClick={() => {
+                createDemoProfile();
+                resetSession();
+                navigate("/quiz");
+              }}
+            >
+              <Icon name="layers" size="sm" /> Tạo / làm mới hồ sơ demo
+            </button>
+          )}
           <div className="pm-label">Giao diện</div>
           <div className="pm-theme" role="radiogroup" aria-label="Giao diện">
             {THEMES.map(([k, ic, label]) => (
