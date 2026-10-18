@@ -31,6 +31,7 @@ function LetterSlotsInput({
   onChange,
   inputRef,
   revealCount = 0,
+  lockedCount = revealCount,
   placeholder,
 }: {
   word: string;
@@ -38,6 +39,7 @@ function LetterSlotsInput({
   onChange: (value: string) => void;
   inputRef: RefObject<HTMLInputElement>;
   revealCount?: number;
+  lockedCount?: number;
   placeholder: string;
 }) {
   const letters = Array.from(word);
@@ -64,7 +66,7 @@ function LetterSlotsInput({
         ref={inputRef}
         className="letter-slot-native-input"
         value={value}
-        onChange={(event) => onChange(event.target.value.slice(0, word.length))}
+        onChange={(event) => onChange(applyFixedHintLetters(event.target.value, word, lockedCount))}
         maxLength={word.length}
         autoComplete="off"
         spellCheck={false}
@@ -73,6 +75,25 @@ function LetterSlotsInput({
       />
     </div>
   );
+}
+
+function applyFixedHintLetters(value: string, word: string, lockedCount: number) {
+  const answerLetters = Array.from(word.toLocaleLowerCase().replace(/\s/g, ""));
+  const inputLetters = Array.from(value.toLocaleLowerCase().replace(/\s/g, "")).slice(0, answerLetters.length);
+  for (let index = 0; index < Math.min(lockedCount, answerLetters.length); index++)
+    inputLetters[index] = answerLetters[index];
+
+  let letterIndex = 0;
+  let result = "";
+  for (const character of word) {
+    if (character === " ") {
+      if (inputLetters.length > letterIndex) result += " ";
+    } else {
+      result += inputLetters[letterIndex] ?? "";
+      letterIndex++;
+    }
+  }
+  return result.trimEnd();
 }
 
 export function QuizPage() {
@@ -222,6 +243,8 @@ function QuestionView({
     if (hintCount >= letterCount) return;
     const nextCount = hintCount + 1;
     setHintCount(nextCount);
+    setTypedValue((value) => applyFixedHintLetters(value, word, nextCount));
+    inputRef.current?.focus();
     if (nextCount > 2 && !hintPenalty) {
       setHintPenalty(true);
       setTypingError(true);
@@ -364,6 +387,7 @@ function QuestionView({
               }}
               inputRef={inputRef}
               revealCount={1}
+              lockedCount={1}
               placeholder="Nhập từ còn thiếu"
             />
             {typingError && (
@@ -448,6 +472,7 @@ function QuestionView({
               }}
               inputRef={inputRef}
               revealCount={hintCount}
+              lockedCount={hintCount}
               placeholder="Gõ từ bạn nhớ"
             />
             {typingError && (
@@ -525,6 +550,7 @@ function QuestionView({
               }}
               inputRef={inputRef}
               revealCount={hintCount}
+              lockedCount={hintCount}
               placeholder="Gõ từ vừa nghe"
             />
             {typingError && (
