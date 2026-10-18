@@ -111,6 +111,9 @@ function reconcileSchedules(
   schedules: Record<string, ReviewSchedule>,
 ) {
   const now = Date.now();
+  for (const [id, schedule] of Object.entries(schedules)) {
+    if ((!status[id] || status[id] === "new") && (statusAt[id] ?? 0) >= schedule.at) delete schedules[id];
+  }
   for (const [id, state] of Object.entries(status)) {
     let schedule = schedules[id] ?? scheduleFor(id, status, schedules, statusAt, now);
     if (!schedule) continue;

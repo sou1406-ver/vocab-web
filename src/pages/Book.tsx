@@ -1,10 +1,10 @@
-import { useRef, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Link } from "react-router-dom";
 import { Empty, netHref } from "@/components/bits";
 import { Icon } from "@/components/Icon";
 import { LessonNav, ScopeSelects } from "@/components/LessonNav";
-import { EXERCISES, familyLookup, LESSON_BY_N, TOPIC_BY_ID, unitIndex } from "@/lib/data";
-import type { ClozeBlock, McqQuestion, OptionKey, WordsInContext } from "@/lib/types";
+import { familyLookup, LESSON_BY_N, TOPIC_BY_ID, unitIndex } from "@/lib/data";
+import type { ClozeBlock, Exercises, McqQuestion, OptionKey, WordsInContext } from "@/lib/types";
 import { cx, lower, scrollBehavior } from "@/lib/util";
 import { goLesson, useActions } from "@/state/actions";
 import { useProfile } from "@/state/profile";
@@ -432,11 +432,22 @@ function ClozeSection({
 }
 
 export function BookExercises() {
+  const [exercises, setExercises] = useState<Exercises | null>(null);
   const act = useActions();
   const book = useUI((s) => s.book);
   const setBook = useUI((s) => s.setBook);
   const resetBook = useUI((s) => s.resetBook);
   const topRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    let active = true;
+    void import("@/lib/exercises").then(({ EXERCISES }) => {
+      if (active) setExercises(EXERCISES);
+    });
+    return () => {
+      active = false;
+    };
+  }, []);
 
   const controls = (
     <>
@@ -463,6 +474,16 @@ export function BookExercises() {
     </>
   );
 
+  if (!exercises)
+    return (
+      <div className="stack">
+        {controls}
+        <div className="card muted" role="status">
+          Đang tải bài tập…
+        </div>
+      </div>
+    );
+
   if (book.unit === "all" || book.unit === "custom")
     return (
       <div className="stack">
@@ -479,7 +500,7 @@ export function BookExercises() {
 
   if (book.lesson === "all") {
     const n = unitIndex(book.unit) + 1;
-    const R = EXERCISES.reviews[n];
+    const R = exercises.reviews[n];
     return (
       <div className="stack">
         {controls}
@@ -507,7 +528,7 @@ export function BookExercises() {
     );
   }
 
-  const L = EXERCISES.lessons[book.lesson];
+  const L = exercises.lessons[book.lesson];
   const l = LESSON_BY_N[+book.lesson];
   return (
     <div className="stack">

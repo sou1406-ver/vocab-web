@@ -4,6 +4,10 @@ import { dayKey } from "./util";
 export const REVIEW_INTERVAL_DAYS = [1, 3, 7, 14, 30, 60] as const;
 export const DAILY_REVIEW_LIMIT = 20;
 
+export function shouldPromoteToMastered(previous: ReviewSchedule | undefined, next: ReviewSchedule) {
+  return !next.confirming && next.box >= 5 && next.at > (previous?.at ?? -1);
+}
+
 /** Pending confirmation is shown in the UI, but never replaces the saved learning status. */
 export function displayedStatus(
   id: string,

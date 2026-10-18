@@ -11,6 +11,7 @@ import {
   scheduleAnswer,
   scheduleFor,
   scheduleRating,
+  shouldPromoteToMastered,
 } from "./srs";
 import { buildQs, findForm, formationQs, makeQuiz, QUIZ_LEN } from "./quiz";
 import { searchWords } from "./search";
@@ -91,6 +92,14 @@ describe("mergeData", () => {
     );
     expect(merged.status.x).toBe("learning");
     expect(merged.srs?.x.box).toBe(1);
+  });
+  it("reset về Chưa học xoá lịch cũ nếu tombstone mới hơn", () => {
+    const merged = mergeData(
+      { ...base, srs: { x: { box: 2, due: 200, at: 100 } } },
+      { status: {}, statusAt: { x: 101 } },
+    );
+    expect(merged.status.x).toBeUndefined();
+    expect(merged.srs?.x).toBeUndefined();
   });
   it("trạng thái đang xác nhận không được ghi vào status chính khi đồng bộ", () => {
     const merged = mergeData(
@@ -186,7 +195,15 @@ describe("lịch ôn Leitner", () => {
   });
   it("không tăng hộp khi trả lời đúng trước ngày đến hạn", () => {
     const current = { x: { box: 2, due: dueAfterDays(now, 3), at: now } };
-    expect(scheduleAnswer("x", true, { x: "learning" }, current, {}, now)).toBe(current.x);
+    const next = scheduleAnswer("x", true, { x: "learning" }, current, {}, now);
+    expect(next).toBe(current.x);
+    expect(shouldPromoteToMastered(current.x, next)).toBe(false);
+  });
+  it("trả lời đúng đúng hạn từ hộp 4 đạt hộp 5", () => {
+    const previous = { box: 4, due: now, at: now };
+    const next = scheduleAnswer("x", true, { x: "learning" }, { x: previous }, {}, now);
+    expect(next.box).toBe(5);
+    expect(shouldPromoteToMastered(previous, next)).toBe(true);
   });
   it("trả lời sai từ đã thuộc đưa lịch về hộp 1", () => {
     const next = scheduleAnswer("x", false, { x: "mastered" }, { x: { box: 5, due: now, at: now } }, {}, now);

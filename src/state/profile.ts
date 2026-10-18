@@ -10,6 +10,7 @@ import {
   scheduleAnswer,
   scheduleFor,
   scheduleRating,
+  shouldPromoteToMastered,
 } from "@/lib/srs";
 
 /* Hồ sơ học tập (nhiều người dùng chung một máy) + dữ liệu của hồ sơ đang mở.
@@ -207,8 +208,10 @@ export const useProfile = create<ProfileState>()((set, get) => {
       const patch: Partial<ProfileData> = {};
       if (!id.startsWith("everyday:") && previousSchedule && previousSchedule.due <= now)
         patch.reviewedToday = markReviewedToday(get().reviewedToday, id, now);
-      if (s === "new") delete status[id];
-      else status[id] = s;
+      if (s === "new") {
+        delete status[id];
+        delete srs[id];
+      } else status[id] = s;
       save({ ...patch, status, statusAt, srs });
     },
     markRemembered: (id) => {
@@ -250,16 +253,11 @@ export const useProfile = create<ProfileState>()((set, get) => {
       if (!ok) {
         patch.status = { ...currentStatus, [id]: "learning" };
         patch.statusAt = { ...currentStatusAt, [id]: nextSchedule.at };
-      } else if (
-        ok &&
-        previousSchedule?.confirming &&
-        !nextSchedule.confirming &&
-        (nextSchedule.confirmations ?? 0) >= 3
-      ) {
+      } else if (ok && currentStatus[id] !== "mastered" && shouldPromoteToMastered(previousSchedule, nextSchedule)) {
         patch.status = { ...currentStatus, [id]: "mastered" };
         patch.statusAt = { ...currentStatusAt, [id]: nextSchedule.at };
         patch.log = bumpLog((e) => e.m++);
-      } else if (ok && currentStatus[id] === "mastered" && nextSchedule !== previousSchedule) {
+      } else if (ok && currentStatus[id] === "mastered" && nextSchedule.at > (previousSchedule?.at ?? -1)) {
         patch.statusAt = { ...currentStatusAt, [id]: nextSchedule.at };
       }
       save(patch);
@@ -326,11 +324,13 @@ export const useProfile = create<ProfileState>()((set, get) => {
       const reviewedToday = mergeDailyReviews(cur.reviewedToday, d.reviewedToday);
       const status = { ...cur.status };
       for (const [id, value] of Object.entries(d.status ?? {})) {
-        if (value === "new") delete status[id];
-        else status[id] = value === "confirming" ? "learning" : value;
+        if (value === "new") {
+          delete status[id];
+          delete srs[id];
+        } else status[id] = value === "confirming" ? "learning" : value;
         // Import is an explicit user action; make imported states newer than the current local copy.
         statusAt[id] = importedAt;
-        if (!d.srs?.[id]) srs[id] = scheduleRating(id, value, status, srs, statusAt, importedAt);
+        if (value !== "new" && !d.srs?.[id]) srs[id] = scheduleRating(id, value, status, srs, statusAt, importedAt);
       }
       save({
         custom,

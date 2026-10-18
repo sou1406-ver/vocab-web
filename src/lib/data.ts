@@ -1,10 +1,9 @@
 import affixesJson from "@/data/affixes.json";
-import exercisesJson from "@/data/exercises.json";
 import lessonsJson from "@/data/lessons.json";
 import termsJson from "@/data/terms.json";
 import topicsJson from "@/data/topics.json";
 import wordsJson from "@/data/words.json";
-import type { Affix, Exercises, FamilyEntry, Lesson, Topic, Word } from "./types";
+import type { Affix, FamilyEntry, Lesson, Topic, Word } from "./types";
 import { lower, same } from "./util";
 
 // ---------------------------------------------------------------- dữ liệu sách
@@ -12,7 +11,6 @@ export const WORDS = wordsJson as Word[];
 export const LESSONS = lessonsJson as Lesson[];
 export const TOPICS = topicsJson as Topic[];
 export const AFFIXES = affixesJson as unknown as Record<string, Affix>;
-export const EXERCISES = exercisesJson as unknown as Exercises;
 /** Nghĩa + độ phổ biến (thang Zipf) của từ đồng nghĩa / trái nghĩa */
 export const TERMS = termsJson as Record<string, { vi: string; z: number; ipa?: string }>;
 
