@@ -412,13 +412,94 @@ function QuestionView({
     );
   }
 
+  if (q.kind === "adaptive-formation") {
+    const before = q.s.slice(0, q.m.index);
+    const after = q.s.slice(q.m.index + q.m.text.length);
+    const answerComplete = typedValue.replace(/\s/g, "").length >= q.m.text.replace(/\s/g, "").length;
+    const hintTotal = Array.from(q.m.text).filter((letter) => letter !== " ").length;
+    return (
+      <>
+        <div className="q-box">
+          <div className="eyebrow">Bậc 4 · Biến đổi từ loại — điền dạng đúng:</div>
+          <div className="q-text">
+            {before}
+            <span className="blank">{st.answered ? q.m.text : "______"}</span>
+            {after}
+          </div>
+          <div className="q-hint">
+            Từ gốc: <b>{q.root.word}</b> · cần <b>{POS_LABEL[q.f.pos] ?? q.f.pos}</b> mang nghĩa “{q.f.vi}”.
+          </div>
+        </div>
+        <div className="row" style={{ gap: 10, marginTop: 12, flexWrap: "wrap" }}>
+          {!st.answered && hintCount < hintTotal && (
+            <button className="btn sm soft" type="button" onClick={() => revealNextLetter(q.m.text)}>
+              <Icon name="book" size="sm" /> Gợi ý chữ tiếp theo
+            </button>
+          )}
+          {hintPenalty && <span className="badge b-amber">Quá 2 gợi ý · hộp ôn không đổi</span>}
+        </div>
+        {!st.answered && (
+          <form
+            className="type-row type-row-slots"
+            onSubmit={(event) => {
+              event.preventDefault();
+              submitTypedAnswer(typedValue, q.m.text, q.alternatives);
+            }}
+          >
+            <label className="eyebrow" htmlFor="quiz-input">
+              Từ đã biến đổi
+            </label>
+            <LetterSlotsInput
+              word={q.m.text}
+              value={typedValue}
+              onChange={(value) => {
+                setTypedValue(value);
+                setTypingError(false);
+              }}
+              inputRef={inputRef}
+              revealCount={1}
+              lockedCount={1}
+              placeholder="Nhập dạng từ đúng"
+            />
+            {typingError && (
+              <div className="typing-error" role="alert">
+                {hintPenalty && wrongAttempts === 0
+                  ? "Lượt này không tăng hay giảm hộp ôn vì đã dùng quá 2 gợi ý."
+                  : `Chưa đúng, còn ${3 - wrongAttempts} lượt.`}
+              </div>
+            )}
+            {answerComplete && <button className="btn primary">Kiểm tra</button>}
+          </form>
+        )}
+        {st.answered && st.last && (
+          <Explain
+            ok={st.last.ok}
+            close={st.last.close}
+            root={q.root}
+            entry={q.f}
+            extra={
+              st.last.ok ? null : (
+                <>
+                  Đáp án: <b>{q.m.text}</b>.
+                </>
+              )
+            }
+            onNext={onNext}
+          />
+        )}
+      </>
+    );
+  }
+
   if (q.kind === "adaptive-recall") {
     const hintTotal = Array.from(q.root.word).filter((letter) => letter !== " ").length;
     const answerComplete = typedValue.replace(/\s/g, "").length >= hintTotal;
     return (
       <>
         <div className="q-box">
-          <div className="eyebrow">Bậc 5–6 · Tự nhớ từ và gõ đáp án:</div>
+          <div className="eyebrow">
+            Bậc {q.level} · {q.listening ? "Nghe từ và gõ đáp án:" : "Tự nhớ từ và gõ đáp án:"}
+          </div>
           {q.listening ? (
             <div className="row" style={{ marginTop: 10 }}>
               <button className="btn soft" type="button" onClick={() => speak(q.root.word)}>
@@ -637,24 +718,35 @@ function QuestionView({
     );
   }
 
-  if (q.kind === "formation") {
+  if (q.kind === "formation" || q.kind === "adaptive-formation-choice") {
+    const adaptiveFormation = q.kind === "adaptive-formation-choice";
     const before = q.s.slice(0, q.m.index);
     const after = q.s.slice(q.m.index + q.m.text.length);
     return (
       <>
         <div className="q-box">
-          <div className="eyebrow">Chọn dạng đúng của từ trong ngoặc để hoàn thành câu:</div>
+          <div className="eyebrow">
+            {adaptiveFormation
+              ? "Bậc 3 · Chọn dạng từ đúng để hoàn thành câu:"
+              : "Chọn dạng đúng của từ trong ngoặc để hoàn thành câu:"}
+          </div>
           <div className="q-text">
             {before}
-            <span className="blank">{st.answered ? q.m.text : "______"}</span>{" "}
-            <span className="base">({q.base.toUpperCase()})</span>
+            <span className="blank">{st.answered ? q.m.text : "______"}</span>
+            {!adaptiveFormation && " "}
+            {!adaptiveFormation && <span className="base">({q.base.toUpperCase()})</span>}
             {after}
           </div>
           <div className="q-hint">
+            {adaptiveFormation && (
+              <>
+                Từ gốc: <b>{q.base}</b> ·{" "}
+              </>
+            )}
             💡 Gợi ý: cần một <b>{POS_LABEL[q.f.pos] ?? q.f.pos}</b> mang nghĩa “{q.f.vi}”.
           </div>
         </div>
-        {st.style === "typing" ? (
+        {!adaptiveFormation && st.style === "typing" ? (
           <form
             className="type-row"
             onSubmit={(e) => {
@@ -904,6 +996,7 @@ function AutoQuiz() {
         cur.kind === "recall" ||
         cur.kind === "listening" ||
         cur.kind === "adaptive-hint" ||
+        cur.kind === "adaptive-formation" ||
         cur.kind === "adaptive-recall" ||
         (cur.kind === "formation" && s.style === "typing");
       if (!s.answered && !typing && cur.kind !== "build" && n >= 1 && n <= cur.options.length)
@@ -1075,7 +1168,10 @@ function AutoQuiz() {
     "adaptive-choice": `Bậc ${q.kind === "adaptive-choice" ? q.level : ""}`,
     "adaptive-cloze": "Bậc 3 · Điền câu",
     "adaptive-hint": "Bậc 4 · Gõ có gợi ý",
-    "adaptive-recall": "Bậc 5–6 · Tự nhớ",
+    "adaptive-formation-choice": "Bậc 3 · Biến đổi từ loại",
+    "adaptive-formation": "Bậc 4 · Biến đổi từ loại",
+    "adaptive-recall":
+      q.kind === "adaptive-recall" ? `Bậc ${q.level} · ${q.listening ? "Nghe & gõ" : "Tự nhớ"}` : "Bậc 5–6 · Tự nhớ",
   }[q.kind];
   const adaptive = q.kind.startsWith("adaptive-");
 

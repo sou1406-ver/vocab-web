@@ -14,6 +14,10 @@ export interface FormationQ {
   base: string;
   options: string[];
 }
+export interface AdaptiveFormationChoiceQ extends Omit<FormationQ, "kind"> {
+  kind: "adaptive-formation-choice";
+  level: 3;
+}
 export interface SynonymQ {
   kind: "synonym";
   root: Word;
@@ -65,11 +69,20 @@ export interface AdaptiveHintQ {
   translation: string;
   alternatives: string[];
 }
+export interface AdaptiveFormationQ {
+  kind: "adaptive-formation";
+  root: Word;
+  f: FamilyEntry;
+  s: string;
+  m: { index: number; text: string };
+  alternatives: string[];
+}
 export interface AdaptiveRecallQ {
   kind: "adaptive-recall";
   root: Word;
   listening: boolean;
   alternatives: string[];
+  level: 4 | 5 | 6;
 }
 export type Question =
   | FormationQ
@@ -79,8 +92,10 @@ export type Question =
   | RecallQ
   | ListeningQ
   | AdaptiveChoiceQ
+  | AdaptiveFormationChoiceQ
   | AdaptiveClozeQ
   | AdaptiveHintQ
+  | AdaptiveFormationQ
   | AdaptiveRecallQ;
 
 export const QUIZ_LEN = 10;
@@ -277,6 +292,14 @@ function clozeExamples(root: Word) {
   });
 }
 
+function formationExamples(root: Word) {
+  return familyOf(root).flatMap((entry) => {
+    if (!entry.ex || !entry.pos || same(entry.w, root.word) || entry.pos === root.pos) return [];
+    const match = findForm(entry.ex, entry.w);
+    return match ? [{ entry, sentence: entry.ex, match }] : [];
+  });
+}
+
 function adaptiveQuestion(cat: Catalog, root: Word, box: number): Question {
   const family = familyOf(root);
   const closeForms = familyAlternatives(root);
@@ -286,6 +309,8 @@ function adaptiveQuestion(cat: Catalog, root: Word, box: number): Question {
     return { kind: "adaptive-choice", root, level, options };
   }
   if (box === 3) {
+    const formation = pick(formationQs([root]));
+    if (formation && Math.random() < 0.45) return { ...formation, kind: "adaptive-formation-choice", level: 3 };
     const example = pick(clozeExamples(root));
     if (!example)
       return { kind: "adaptive-choice", root, level: 2, options: choicesFor(root.word, [], distractors(cat, root, 2)) };
@@ -300,18 +325,36 @@ function adaptiveQuestion(cat: Catalog, root: Word, box: number): Question {
     };
   }
   if (box === 4) {
+    const formation = pick(formationExamples(root));
     const example = pick(clozeExamples(root));
-    if (!example) return { kind: "adaptive-recall", root, listening: false, alternatives: closeForms };
-    return {
-      kind: "adaptive-hint",
-      root,
-      s: example.sentence,
-      m: example.match,
-      translation: example.translation,
-      alternatives: familyAlternatives(root, example.match.text),
-    };
+    const format = Math.random();
+    if (formation && format < 0.4)
+      return {
+        kind: "adaptive-formation",
+        root,
+        f: formation.entry,
+        s: formation.sentence,
+        m: formation.match,
+        alternatives: familyAlternatives(root, formation.match.text),
+      };
+    if (example && (format < 0.8 || !formation))
+      return {
+        kind: "adaptive-hint",
+        root,
+        s: example.sentence,
+        m: example.match,
+        translation: example.translation,
+        alternatives: familyAlternatives(root, example.match.text),
+      };
+    return { kind: "adaptive-recall", root, listening: true, alternatives: closeForms, level: 4 };
   }
-  return { kind: "adaptive-recall", root, listening: box >= 6 || Math.random() < 0.5, alternatives: closeForms };
+  return {
+    kind: "adaptive-recall",
+    root,
+    listening: box >= 6 || Math.random() < 0.5,
+    alternatives: closeForms,
+    level: box >= 6 ? 6 : 5,
+  };
 }
 
 export function makeQuiz(
@@ -344,7 +387,7 @@ export function makeQuiz(
 
 /** Đáp án đúng cho câu chọn đáp án */
 export function isRightChoice(q: Question, i: number) {
-  if (q.kind === "formation") return same(q.options[i], q.m.text);
+  if (q.kind === "formation" || q.kind === "adaptive-formation-choice") return same(q.options[i], q.m.text);
   if (q.kind === "adaptive-choice") return same(q.options[i], q.root.word);
   if (q.kind === "adaptive-cloze") return same(q.options[i], q.m.text);
   if (q.kind === "synonym") return same(q.options[i], q.correct);
