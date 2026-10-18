@@ -7,6 +7,7 @@ import { LessonNav, ScopeSelects } from "@/components/LessonNav";
 import ClickSpark, { type ClickSparkHandle } from "@/components/reactbits/ClickSpark";
 import { affixType, familyOf, LESSON_BY_N, POS_LABEL, termInfo } from "@/lib/data";
 import { isRightChoice, typedAnswerMatches, typedAnswerQuality, type Question } from "@/lib/quiz";
+import { displayedStatus, dueReviewIds } from "@/lib/srs";
 import { speak } from "@/lib/speech";
 import type { FamilyEntry, Word } from "@/lib/types";
 import { cx, lower, same, scrollBehavior } from "@/lib/util";
@@ -198,7 +199,13 @@ function QuestionView({
   onNext,
 }: {
   q: Question;
-  onAnswer: (ok: boolean, pick?: number, close?: boolean, masteryCredit?: boolean) => void;
+  onAnswer: (
+    ok: boolean,
+    pick?: number,
+    close?: boolean,
+    masteryCredit?: boolean,
+    reviewResults?: { id: string; ok: boolean }[],
+  ) => void;
   onNext: () => void;
 }) {
   const st = useUI((s) => s.quiz);
@@ -210,6 +217,8 @@ function QuestionView({
   const [typingError, setTypingError] = useState(false);
   const [wrongAttempts, setWrongAttempts] = useState(0);
   const wrongAttemptsRef = useRef(0);
+  const [matchWord, setMatchWord] = useState<number | null>(null);
+  const [matchPairs, setMatchPairs] = useState<Record<number, number>>({});
 
   const submitTypedAnswer = (answer: string, target: string, alternatives?: string[]) => {
     if (!answer.trim()) return;
@@ -267,6 +276,189 @@ function QuestionView({
       })}
     </div>
   );
+
+  if (q.kind === "adaptive-listen-choice") {
+    return (
+      <>
+        <div className="q-box">
+          <div className="eyebrow">Bậc 1 · Nghe phát âm rồi chọn từ:</div>
+          <div className="row" style={{ marginTop: 10 }}>
+            <button className="btn soft" type="button" onClick={() => speak(q.root.word)}>
+              <Icon name="volume" size="sm" /> Nghe lại
+            </button>
+            <Ipa ipa={q.root.ipa} />
+          </div>
+        </div>
+        {choices(
+          q.options,
+          (option) => option,
+          (option) => same(option, q.root.word),
+        )}
+        {st.answered && st.last && (
+          <Explain
+            ok={st.last.ok}
+            root={q.root}
+            extra={
+              st.last.ok ? null : (
+                <>
+                  Đáp án: <b>{q.root.word}</b>.
+                </>
+              )
+            }
+            onNext={onNext}
+          />
+        )}
+      </>
+    );
+  }
+
+  if (q.kind === "adaptive-match") {
+    const complete = Object.keys(matchPairs).length === q.words.length;
+    return (
+      <>
+        <div className="q-box">
+          <div className="eyebrow">Bậc 2 · Nối mỗi từ tiếng Anh với nghĩa tương ứng:</div>
+          <div className="match-grid">
+            <div className="match-column" aria-label="Từ tiếng Anh">
+              {q.words.map((word, index) => (
+                <button
+                  key={word.id}
+                  type="button"
+                  className={cx(
+                    "match-choice",
+                    matchWord === index && "active",
+                    matchPairs[index] !== undefined && "paired",
+                  )}
+                  onClick={() => setMatchWord(index)}
+                  disabled={st.answered}
+                >
+                  {word.word}
+                </button>
+              ))}
+            </div>
+            <div className="match-column" aria-label="Nghĩa tiếng Việt">
+              {q.meanings.map((word, index) => {
+                const pairedWord = Object.entries(matchPairs).find(([, meaningIndex]) => meaningIndex === index)?.[0];
+                return (
+                  <button
+                    key={word.id}
+                    type="button"
+                    className={cx("match-choice", pairedWord !== undefined && "paired")}
+                    disabled={st.answered || matchWord === null}
+                    onClick={() => {
+                      if (matchWord === null) return;
+                      setMatchPairs((pairs) => ({ ...pairs, [matchWord]: index }));
+                      setMatchWord(null);
+                    }}
+                  >
+                    {word.vi}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+        {!st.answered && complete && (
+          <button
+            type="button"
+            className="btn primary"
+            onClick={() => {
+              const results = q.words.map((word, index) => ({
+                id: word.id,
+                ok: q.meanings[matchPairs[index]] === word,
+              }));
+              onAnswer(
+                results.every((result) => result.ok),
+                undefined,
+                false,
+                true,
+                results,
+              );
+            }}
+          >
+            Kiểm tra cặp nối
+          </button>
+        )}
+        {st.answered && st.last && (
+          <Explain
+            ok={st.last.ok}
+            root={q.root}
+            extra={
+              st.last.ok ? (
+                "Đã nối đúng cả 4 cặp."
+              ) : (
+                <>Đáp án: {q.words.map((word) => `${word.word} — ${word.vi}`).join(" · ")}</>
+              )
+            }
+            onNext={onNext}
+          />
+        )}
+      </>
+    );
+  }
+
+  if (q.kind === "adaptive-synonym-sentence") {
+    return (
+      <>
+        <div className="q-box">
+          <div className="eyebrow">Bậc 3 · Chọn từ gần nghĩa nhất với từ được khuyết:</div>
+          <div className="q-text">{q.sentence}</div>
+          <div className="q-hint">
+            Từ gốc: <b>{q.root.word}</b> · {q.root.vi}
+          </div>
+        </div>
+        {choices(
+          q.options,
+          (option) => option,
+          (option) => same(option, q.synonym),
+        )}
+        {st.answered && st.last && (
+          <Explain
+            ok={st.last.ok}
+            root={q.root}
+            extra={
+              <>
+                Từ gần nghĩa: <b>{q.synonym}</b>.
+              </>
+            }
+            onNext={onNext}
+          />
+        )}
+      </>
+    );
+  }
+
+  if (q.kind === "adaptive-form-fix") {
+    return (
+      <>
+        <div className="q-box">
+          <div className="eyebrow">Bậc 4 · Câu sau dùng sai dạng từ. Chọn dạng đúng:</div>
+          <div className="q-text">{q.sentence}</div>
+          <div className="q-hint">
+            Từ đang dùng sai: <b>{q.wrongForm}</b> · {q.entry.vi}
+          </div>
+        </div>
+        {choices(
+          q.options,
+          (option) => option,
+          (option) => same(option, q.correctForm),
+        )}
+        {st.answered && st.last && (
+          <Explain
+            ok={st.last.ok}
+            entry={q.entry}
+            root={q.root}
+            extra={
+              <>
+                Dạng đúng là <b>{q.correctForm}</b>.
+              </>
+            }
+            onNext={onNext}
+          />
+        )}
+      </>
+    );
+  }
 
   if (q.kind === "adaptive-choice") {
     const title = q.level === 1 ? "Nhận mặt từ" : "Phân biệt từ";
@@ -942,7 +1134,7 @@ function AutoQuiz() {
   const act = useActions();
   const st = useUI((s) => s.quiz);
   const setQuiz = useUI((s) => s.setQuiz);
-  const { catalog, recordAnswer } = useProfile();
+  const { catalog, recordAnswer, status, statusAt, srs } = useProfile();
   const spark = useRef<ClickSparkHandle>(null);
   const cardRef = useRef<HTMLDivElement>(null);
 
@@ -952,22 +1144,40 @@ function AutoQuiz() {
 
   const q = st.qs[st.i];
 
-  const answer = (ok: boolean, pick?: number, close = false, masteryCredit = true) => {
+  const answer = (
+    ok: boolean,
+    pick?: number,
+    close = false,
+    masteryCredit = true,
+    reviewResults?: { id: string; ok: boolean }[],
+  ) => {
     const s = useUI.getState().quiz;
     if (s.answered || !q) return;
     const before = useProfile.getState();
-    const wasConfirming = Boolean(before.srs?.[q.root.id]?.confirming || before.status[q.root.id] === "confirming");
-    if (!close && masteryCredit) recordAnswer(q.root.id, ok);
+    const targets = reviewResults ?? [{ id: q.root.id, ok }];
+    const confirming = new Set(
+      targets
+        .filter(({ id }) => before.srs?.[id]?.confirming || before.status[id] === "confirming")
+        .map(({ id }) => id),
+    );
+    if (!close && masteryCredit) for (const result of targets) recordAnswer(result.id, result.ok);
+    const missed = new Set(s.missed);
+    for (const result of targets) {
+      if (!result.ok) missed.add(result.id);
+      else missed.delete(result.id);
+    }
     setQuiz({
       answered: true,
       last: { ok, pick, close },
       right: s.right + (ok ? 1 : 0),
       wrong: s.wrong + (!ok && !close && masteryCredit ? 1 : 0),
       close: s.close + (close ? 1 : 0),
-      missed: ok || close || !masteryCredit ? s.missed : [...new Set([...s.missed, q.root.id])],
+      missed: close || !masteryCredit ? s.missed : [...missed],
     });
-    if (ok && wasConfirming && useProfile.getState().status[q.root.id] === "mastered")
-      toast(`${q.root.word}: Đã xác nhận thuộc sau 3 lượt đúng cách quãng!`);
+    for (const id of confirming) {
+      if (useProfile.getState().status[id] === "mastered")
+        toast(`${useProfile.getState().catalog.byId[id]?.word ?? id}: Đã xác nhận thuộc sau 3 lượt đúng cách quãng!`);
+    }
     // Trả lời đúng: bắn tia sáng (React Bits · ClickSpark) từ nút vừa chọn
     if (ok && spark.current && cardRef.current) {
       const target =
@@ -982,6 +1192,17 @@ function AutoQuiz() {
     setQuiz(p);
     startQuiz();
   };
+
+  const dueCount = dueReviewIds(Object.keys(catalog.byId), status, srs ?? {}, statusAt).length;
+  const learningCount = catalog.all.filter((word) => {
+    const current = displayedStatus(word.id, status, srs ?? {});
+    return current === "learning" || current === "confirming";
+  }).length;
+  const practiceGroups: { title: string; types: QuizType[] }[] = [
+    { title: "Nghĩa", types: ["meaning", "synonym"] },
+    { title: "Dạng từ", types: ["formation", "build"] },
+    { title: "Nhớ ra", types: ["recall", "listening"] },
+  ];
 
   // Phím 1–4 chọn đáp án, Enter sang câu tiếp
   useEffect(() => {
@@ -999,7 +1220,14 @@ function AutoQuiz() {
         cur.kind === "adaptive-formation" ||
         cur.kind === "adaptive-recall" ||
         (cur.kind === "formation" && s.style === "typing");
-      if (!s.answered && !typing && cur.kind !== "build" && n >= 1 && n <= cur.options.length)
+      if (
+        !s.answered &&
+        !typing &&
+        cur.kind !== "build" &&
+        cur.kind !== "adaptive-match" &&
+        n >= 1 &&
+        n <= (cur.options?.length ?? 0)
+      )
         answer(isRightChoice(cur, n - 1), n - 1);
       else if (s.answered && e.key === "Enter" && (e.target as HTMLElement).id !== "quiz-next") {
         e.preventDefault();
@@ -1012,66 +1240,89 @@ function AutoQuiz() {
 
   const header = (
     <>
-      <div className="card filter-bar">
-        <div className="seg">
-          {(Object.keys(QUIZ_TYPES) as QuizType[]).map((k) => (
-            <button key={k} className={cx(st.type === k && "active")} onClick={() => restart({ type: k })}>
-              <Icon name={QUIZ_TYPES[k].icon} size="sm" /> {QUIZ_TYPES[k].label}
+      <section className="card quiz-start-card">
+        <div>
+          <p className="eyebrow">Luyện hôm nay</p>
+          <h2>Ôn đúng những từ cần nhớ</h2>
+          <p className="muted">
+            {Math.min(10, dueCount + learningCount)} câu · {dueCount} từ đến hạn · {learningCount} từ đang học
+          </p>
+        </div>
+        <button
+          className="btn primary"
+          onClick={() =>
+            restart({ type: "mixed", scope: "due", unit: "all", lesson: "all", only: "all", forWord: null })
+          }
+        >
+          <Icon name="layers" size="sm" /> Bắt đầu luyện
+        </button>
+      </section>
+      <div className="quiz-controls card">
+        <div className="quiz-scope-row" role="group" aria-label="Phạm vi luyện tập">
+          {(
+            [
+              ["due", "Từ cần ôn"],
+              ["lesson", "Theo bài…"],
+              ["all", "Tất cả"],
+            ] as const
+          ).map(([scope, label]) => (
+            <button
+              key={scope}
+              className={cx("quiz-scope", st.scope === scope && "active")}
+              aria-pressed={st.scope === scope}
+              onClick={() =>
+                restart({
+                  scope,
+                  only: "all",
+                  forWord: null,
+                  ...(scope === "all" ? { unit: "all", lesson: "all" } : {}),
+                })
+              }
+            >
+              {label}
             </button>
           ))}
         </div>
-        <div className="row">
-          {st.forWord && catalog.byId[st.forWord] ? (
-            <span className="badge b-violet" style={{ padding: "6px 12px" }}>
-              Trường từ: {catalog.byId[st.forWord].word}{" "}
-              <button
-                className="speak-btn"
-                title="Bỏ lọc"
-                aria-label="Bỏ lọc trường từ"
-                onClick={() => restart({ forWord: null })}
-              >
-                <Icon name="x" size="sm" />
-              </button>
-            </span>
-          ) : (
-            <>
-              <ScopeSelects
-                unit={st.unit}
-                lesson={st.lesson}
-                onUnit={(v) => restart({ unit: v, lesson: "all" })}
-                onLesson={(v) => restart({ lesson: v })}
-              />
-              <label className="row" style={{ gap: 6 }}>
-                <span className="eyebrow">Ôn</span>
-                <select className="select" value={st.only} onChange={(e) => restart({ only: e.target.value })}>
-                  <option value="all">Tất cả từ</option>
-                  <option value="unmastered">Từ chưa thuộc</option>
-                  <option value="learning">Từ đang học</option>
-                  <option value="confirming">Từ đang xác nhận</option>
-                  <option value="mastered">Từ đã thuộc thật</option>
-                </select>
-              </label>
-            </>
-          )}
-          {st.type === "formation" && (
-            <select
-              className="select"
-              aria-label="Cách trả lời"
-              value={st.style}
-              onChange={(e) => setQuiz({ style: e.target.value as "choice" | "typing" })}
-            >
-              <option value="choice">Trắc nghiệm 4 đáp án</option>
-              <option value="typing">Tự gõ từ biến đổi</option>
-            </select>
-          )}
+        {st.forWord && catalog.byId[st.forWord] ? (
+          <span className="badge b-violet">Trường từ: {catalog.byId[st.forWord].word}</span>
+        ) : st.scope === "lesson" ? (
+          <>
+            <ScopeSelects
+              unit={st.unit}
+              lesson={st.lesson}
+              onUnit={(v) => restart({ unit: v, lesson: "all" })}
+              onLesson={(v) => restart({ lesson: v })}
+            />
+            <LessonNav unit={st.unit} lesson={st.lesson} where="quiz" />
+          </>
+        ) : null}
+        <div className="quiz-control-actions">
+          <details className="quiz-custom-types">
+            <summary>▸ Luyện riêng một dạng</summary>
+            <div className="quiz-type-groups">
+              {practiceGroups.map((group) => (
+                <div key={group.title} className="quiz-type-group">
+                  <span className="eyebrow">{group.title}</span>
+                  {group.types.map((type) => (
+                    <button
+                      key={type}
+                      className={cx("quiz-type-option", st.type === type && "active")}
+                      onClick={() => restart({ type })}
+                    >
+                      <Icon name={QUIZ_TYPES[type].icon} size="sm" /> {QUIZ_TYPES[type].label}
+                    </button>
+                  ))}
+                </div>
+              ))}
+            </div>
+          </details>
           <button className="btn sm soft" onClick={() => restart()}>
-            <Icon name="repeat" size="sm" /> Làm đề mới
+            <Icon name="repeat" size="sm" /> Đề mới
           </button>
         </div>
       </div>
-      {!st.forWord && <LessonNav unit={st.unit} lesson={st.lesson} where="quiz" />}
       {st.type === "mixed" && (
-        <p className="muted">Câu hỏi tự đổi độ khó theo hộp ôn của từng từ, từ trắc nghiệm đến tự gõ đáp án.</p>
+        <p className="muted">Theo bậc sẽ tự đổi dạng và độ khó cho từng từ, từ nhận diện đến tự nhớ đáp án.</p>
       )}
     </>
   );
@@ -1172,6 +1423,10 @@ function AutoQuiz() {
     "adaptive-formation": "Bậc 4 · Biến đổi từ loại",
     "adaptive-recall":
       q.kind === "adaptive-recall" ? `Bậc ${q.level} · ${q.listening ? "Nghe & gõ" : "Tự nhớ"}` : "Bậc 5–6 · Tự nhớ",
+    "adaptive-listen-choice": "Bậc 1 · Nghe chọn từ",
+    "adaptive-match": "Bậc 2 · Nối nghĩa",
+    "adaptive-synonym-sentence": "Bậc 3 · Đồng nghĩa trong câu",
+    "adaptive-form-fix": "Bậc 4 · Sửa dạng từ",
   }[q.kind];
   const adaptive = q.kind.startsWith("adaptive-");
 

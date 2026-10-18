@@ -23,18 +23,35 @@ export function buildDeck() {
 export function startQuiz() {
   const { quiz, setQuiz } = useUI.getState();
   const { catalog, status, statusAt, srs } = useProfile.getState();
-  const roots =
+  let roots =
     quiz.forWord && catalog.byId[quiz.forWord]
       ? [catalog.byId[quiz.forWord]]
-      : catalog
-          .scope(quiz.unit, quiz.lesson)
-          .filter(
-            (w) =>
-              quiz.only === "all" ||
-              (quiz.only === "unmastered"
-                ? displayedStatus(w.id, status, srs ?? {}) !== "mastered"
-                : displayedStatus(w.id, status, srs ?? {}) === quiz.only),
-          );
+      : quiz.scope !== "lesson"
+        ? catalog.all
+        : catalog.scope(quiz.unit, quiz.lesson);
+  if (!quiz.forWord && quiz.scope === "due") {
+    const dueIds = dueReviewIds(
+      roots.map((word) => word.id),
+      status,
+      srs ?? {},
+      statusAt,
+    );
+    const dueSet = new Set(dueIds);
+    const dueWords = dueIds.map((id) => catalog.byId[id]).filter(Boolean);
+    const learningWords = roots
+      .filter(
+        (word) =>
+          !dueSet.has(word.id) && ["learning", "confirming"].includes(displayedStatus(word.id, status, srs ?? {})),
+      )
+      .sort((a, b) => (srs?.[a.id]?.due ?? 0) - (srs?.[b.id]?.due ?? 0));
+    roots = [...dueWords, ...learningWords].slice(0, 10);
+  }
+  if (quiz.only !== "all")
+    roots = roots.filter((word) =>
+      quiz.only === "unmastered"
+        ? displayedStatus(word.id, status, srs ?? {}) !== "mastered"
+        : displayedStatus(word.id, status, srs ?? {}) === quiz.only,
+    );
   setQuiz({
     qs: makeQuiz(catalog, quiz.type, roots, srs ?? {}, status, statusAt ?? {}),
     i: 0,
@@ -130,7 +147,15 @@ export function useActions() {
       const { catalog, status, srs } = useProfile.getState();
       const count = catalog.all.filter((word) => displayedStatus(word.id, status, srs ?? {}) === "mastered").length;
       if (!count) return;
-      ui().setQuiz({ mode: "auto", type: "mixed", unit: "all", lesson: "all", only: "mastered", forWord: null });
+      ui().setQuiz({
+        mode: "auto",
+        type: "mixed",
+        scope: "all",
+        unit: "all",
+        lesson: "all",
+        only: "mastered",
+        forWord: null,
+      });
       startQuiz();
       navigate("/quiz");
     },

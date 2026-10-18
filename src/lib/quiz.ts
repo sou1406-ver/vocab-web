@@ -84,6 +84,33 @@ export interface AdaptiveRecallQ {
   alternatives: string[];
   level: 4 | 5 | 6;
 }
+export interface AdaptiveListenChoiceQ {
+  kind: "adaptive-listen-choice";
+  root: Word;
+  options: string[];
+}
+export interface AdaptiveMatchQ {
+  kind: "adaptive-match";
+  root: Word;
+  words: Word[];
+  meanings: Word[];
+}
+export interface AdaptiveSynonymSentenceQ {
+  kind: "adaptive-synonym-sentence";
+  root: Word;
+  sentence: string;
+  synonym: string;
+  options: string[];
+}
+export interface AdaptiveFormFixQ {
+  kind: "adaptive-form-fix";
+  root: Word;
+  sentence: string;
+  wrongForm: string;
+  correctForm: string;
+  entry: FamilyEntry;
+  options: string[];
+}
 export type Question =
   | FormationQ
   | SynonymQ
@@ -96,7 +123,11 @@ export type Question =
   | AdaptiveClozeQ
   | AdaptiveHintQ
   | AdaptiveFormationQ
-  | AdaptiveRecallQ;
+  | AdaptiveRecallQ
+  | AdaptiveListenChoiceQ
+  | AdaptiveMatchQ
+  | AdaptiveSynonymSentenceQ
+  | AdaptiveFormFixQ;
 
 export const QUIZ_LEN = 10;
 
@@ -300,15 +331,80 @@ function formationExamples(root: Word) {
   });
 }
 
+function adaptiveMatch(cat: Catalog, root: Word): AdaptiveMatchQ | undefined {
+  const pool = shuffle(cat.all.filter((word) => word.id !== root.id && word.vi && word.vi !== root.vi));
+  const words = uniq([root, ...pool], (word) => word.vi).slice(0, 4);
+  if (words.length < 4) return undefined;
+  return { kind: "adaptive-match", root, words, meanings: shuffle(words) };
+}
+
+function adaptiveSynonymSentence(cat: Catalog, root: Word): AdaptiveSynonymSentenceQ | undefined {
+  const synonyms = root.syn.flatMap((value) => value.split(/[;,]/).map((item) => item.trim())).filter(Boolean);
+  const candidates = (root.ex ?? []).filter((sentence) => findForm(sentence, root.word));
+  if (!synonyms.length || !candidates.length) return undefined;
+  const sentence = pick(candidates);
+  const match = findForm(sentence, root.word)!;
+  const synonym = pick(synonyms);
+  const distractors = shuffle(cat.all.flatMap((word) => [...word.syn, ...word.ant, word.word])).flatMap((value) =>
+    value.split(/[;,]/).map((item) => item.trim()),
+  );
+  return {
+    kind: "adaptive-synonym-sentence",
+    root,
+    sentence: sentence.slice(0, match.index) + "______" + sentence.slice(match.index + match.text.length),
+    synonym,
+    options: choicesFor(
+      synonym,
+      distractors.filter((item) => !same(item, synonym)),
+      [root.word],
+    ),
+  };
+}
+
+function adaptiveFormFix(root: Word): AdaptiveFormFixQ | undefined {
+  const example = pick(formationExamples(root));
+  if (!example) return undefined;
+  const alternatives = familyAlternatives(root, example.match.text).filter((form) => form.length > 2);
+  const wrongForm = pick(alternatives);
+  if (!wrongForm) return undefined;
+  return {
+    kind: "adaptive-form-fix",
+    root,
+    sentence:
+      example.sentence.slice(0, example.match.index) +
+      wrongForm +
+      example.sentence.slice(example.match.index + example.match.text.length),
+    wrongForm,
+    correctForm: example.match.text,
+    entry: example.entry,
+    options: choicesFor(
+      example.match.text,
+      alternatives,
+      familyOf(root).map((entry) => entry.w),
+    ),
+  };
+}
+
 function adaptiveQuestion(cat: Catalog, root: Word, box: number): Question {
   const family = familyOf(root);
   const closeForms = familyAlternatives(root);
   if (box <= 1 || box === 2) {
+    if (box === 1 && Math.random() < 0.34) {
+      const listeningOptions = choicesFor(root.word, distractors(cat, root, 1), distractors(cat, root, 2));
+      return { kind: "adaptive-listen-choice", root, options: listeningOptions };
+    }
+    if (box === 2 && Math.random() < 0.3) {
+      const match = adaptiveMatch(cat, root);
+      if (match) return match;
+    }
+    if (box === 1 && Math.random() < 0.3) return { ...meaningQs(cat, [root])[0], reverse: false };
     const level = box <= 1 ? 1 : 2;
     const options = choicesFor(root.word, distractors(cat, root, level), distractors(cat, root, level === 1 ? 2 : 1));
     return { kind: "adaptive-choice", root, level, options };
   }
   if (box === 3) {
+    const synonymSentence = adaptiveSynonymSentence(cat, root);
+    if (synonymSentence && Math.random() < 0.25) return synonymSentence;
     const formation = pick(formationQs([root]));
     if (formation && Math.random() < 0.45) return { ...formation, kind: "adaptive-formation-choice", level: 3 };
     const example = pick(clozeExamples(root));
@@ -325,6 +421,8 @@ function adaptiveQuestion(cat: Catalog, root: Word, box: number): Question {
     };
   }
   if (box === 4) {
+    const formFix = adaptiveFormFix(root);
+    if (formFix && Math.random() < 0.25) return formFix;
     const formation = pick(formationExamples(root));
     const example = pick(clozeExamples(root));
     const format = Math.random();
@@ -366,12 +464,25 @@ export function makeQuiz(
   statusAt: Record<string, number> = {},
 ): Question[] {
   if (type === "mixed") {
-    return shuffle(roots)
+    const questions = shuffle(roots)
       .slice(0, QUIZ_LEN)
       .map((root) => {
         const box = scheduleFor(root.id, status, schedules, statusAt)?.box ?? 1;
         return adaptiveQuestion(cat, root, box);
       });
+    const format = (question: Question) => question.kind;
+    for (let index = 2; index < questions.length; index++) {
+      if (
+        format(questions[index]) !== format(questions[index - 1]) ||
+        format(questions[index]) !== format(questions[index - 2])
+      )
+        continue;
+      const alternative = questions.findIndex(
+        (candidate, candidateIndex) => candidateIndex > index && format(candidate) !== format(questions[index]),
+      );
+      if (alternative !== -1) [questions[index], questions[alternative]] = [questions[alternative], questions[index]];
+    }
+    return questions;
   }
   const gen: Record<string, () => Question[]> = {
     formation: () => formationQs(roots),
@@ -390,6 +501,9 @@ export function isRightChoice(q: Question, i: number) {
   if (q.kind === "formation" || q.kind === "adaptive-formation-choice") return same(q.options[i], q.m.text);
   if (q.kind === "adaptive-choice") return same(q.options[i], q.root.word);
   if (q.kind === "adaptive-cloze") return same(q.options[i], q.m.text);
+  if (q.kind === "adaptive-listen-choice") return same(q.options[i], q.root.word);
+  if (q.kind === "adaptive-synonym-sentence") return same(q.options[i], q.synonym);
+  if (q.kind === "adaptive-form-fix") return same(q.options[i], q.correctForm);
   if (q.kind === "synonym") return same(q.options[i], q.correct);
   if (q.kind === "meaning") return q.options[i] === q.root;
   return false;

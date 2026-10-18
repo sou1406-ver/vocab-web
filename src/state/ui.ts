@@ -38,6 +38,7 @@ export type QuizType = "formation" | "synonym" | "meaning" | "build" | "recall" 
 export interface QuizState {
   mode: "book" | "auto";
   type: QuizType;
+  scope: "due" | "lesson" | "all";
   unit: string;
   lesson: string;
   only: string;
@@ -103,6 +104,7 @@ export const useUI = create<UIState>()((set, get) => ({
   quiz: {
     mode: "book",
     type: "mixed",
+    scope: "due",
     unit: "all",
     lesson: "1",
     only: "all",
