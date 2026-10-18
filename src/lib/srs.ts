@@ -5,6 +5,22 @@ export const REVIEW_INTERVAL_DAYS = [1, 3, 7, 14, 30, 60] as const;
 export const DAILY_REVIEW_LIMIT = 20;
 export const DEFAULT_NEW_WORD_LIMIT = 10;
 
+/** Everyday vocabulary has its own collection and never consumes the TOEIC new-word quota. */
+export function canStartNewWord(
+  id: string,
+  status: Record<string, Status>,
+  daily?: DailyReviewLog,
+  limit = DEFAULT_NEW_WORD_LIMIT,
+  now = Date.now(),
+) {
+  if (id.startsWith("everyday:") || status[id]) return true;
+  const today = dayKey(new Date(now));
+  const introduced = daily?.day === today ? daily.ids : [];
+  if (introduced.includes(id)) return true;
+  const toeicIntroduced = introduced.filter((wordId) => !wordId.startsWith("everyday:")).length;
+  return toeicIntroduced < limit;
+}
+
 export function shouldPromoteToMastered(previous: ReviewSchedule | undefined, next: ReviewSchedule) {
   return !next.confirming && next.box >= 5 && next.at > (previous?.at ?? -1);
 }

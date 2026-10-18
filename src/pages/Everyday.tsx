@@ -7,7 +7,6 @@ import { displayedStatus } from "@/lib/srs";
 import type { Status } from "@/lib/types";
 import { fold, shuffle } from "@/lib/util";
 import { useProfile } from "@/state/profile";
-import { toast } from "@/state/ui";
 
 const FILTERS: ("all" | EverydayKind)[] = ["all", "phrase", "phrasal", "idiom", "slang"];
 const FILTER_LABEL: Record<(typeof FILTERS)[number], string> = {
@@ -124,11 +123,7 @@ export function EverydayPage() {
   const answerQuiz = (choice: string) => {
     if (!quizCurrent || quizChoice !== null) return;
     const correct = choice === quizCurrent.meaning;
-    if (!correct && !setStatus(statusId(quizCurrent.id), "learning")) return;
-    if (!recordAnswer(statusId(quizCurrent.id), correct)) {
-      toast("Đã dùng hết giới hạn từ mới hôm nay. Ngày mai học tiếp nhé.");
-      return;
-    }
+    recordAnswer(statusId(quizCurrent.id), correct);
     setQuizChoice(choice);
     if (correct) setQuizCorrect((value) => value + 1);
   };

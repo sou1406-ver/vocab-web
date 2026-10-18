@@ -4,6 +4,7 @@ import { mergeData } from "./merge";
 import {
   dueAfterDays,
   dueReviewIds,
+  canStartNewWord,
   displayedStatus,
   markReviewedToday,
   mergeDailyReviews,
@@ -13,7 +14,7 @@ import {
   scheduleRating,
   shouldPromoteToMastered,
 } from "./srs";
-import { buildQs, findForm, formationQs, makeQuiz, QUIZ_LEN } from "./quiz";
+import { buildQs, findForm, formationQs, listeningQs, makeQuiz, QUIZ_LEN, recallQs, typedAnswerMatches } from "./quiz";
 import { searchWords } from "./search";
 import { dayKey } from "./util";
 
@@ -27,6 +28,44 @@ describe("dữ liệu", () => {
       w.exVi!.forEach((v) => expect(v).not.toBe(""));
       for (const f of w.family) if (f.ex) expect(f.exVi, `${w.word} › ${f.w}`).toBeTruthy();
     }
+  });
+});
+
+describe("câu hỏi gõ đáp án", () => {
+  it("điền từ trong câu và so đáp án không phân biệt hoa thường", () => {
+    expect(typedAnswerMatches("  CUSTOMER ", "customer")).toBe(true);
+    expect(typedAnswerMatches("customers", "customer")).toBe(false);
+    const questions = recallQs(WORDS.slice(0, 40));
+    expect(questions.length).toBeGreaterThan(0);
+    for (const question of questions) {
+      expect(question.s.slice(question.m.index, question.m.index + question.m.text.length).toLowerCase()).toBe(
+        question.m.text.toLowerCase(),
+      );
+    }
+  });
+
+  it("tạo câu nghe gõ cho mỗi từ được chọn", () => {
+    const questions = listeningQs(WORDS.slice(0, 5));
+    expect(questions).toHaveLength(5);
+    expect(questions.every((question) => question.kind === "listening")).toBe(true);
+    expect(typedAnswerMatches(questions[0].root.word.toUpperCase(), questions[0].root.word)).toBe(true);
+  });
+});
+
+describe("giới hạn từ mới TOEIC", () => {
+  const now = new Date(2026, 9, 18, 12).getTime();
+  it("không tính cụm Everyday và vẫn cho tiếp tục từ đã bắt đầu", () => {
+    const daily = { day: dayKey(new Date(now)), ids: ["word-1", "everyday:phrase-1"] };
+    expect(canStartNewWord("everyday:phrase-2", {}, daily, 1, now)).toBe(true);
+    expect(canStartNewWord("word-1", {}, daily, 1, now)).toBe(true);
+    expect(canStartNewWord("word-2", { "word-2": "learning" }, daily, 1, now)).toBe(true);
+  });
+
+  it("chặn từ TOEIC mới khi đủ quota, nhưng mở lại khi còn chỗ", () => {
+    const daily = { day: dayKey(new Date(now)), ids: ["word-1", "word-2", "everyday:phrase-1"] };
+    expect(canStartNewWord("word-3", {}, daily, 2, now)).toBe(false);
+    expect(canStartNewWord("word-3", {}, daily, 3, now)).toBe(true);
+    expect(canStartNewWord("word-3", {}, { ...daily, day: "2026-10-17" }, 2, now)).toBe(true);
   });
 });
 

@@ -154,7 +154,8 @@ export function Dashboard() {
   );
   const reviewedCount = reviewedToday?.day === dayKey() ? reviewedToday.ids.length : 0;
   const reviewLimitReached = reviewedCount >= DAILY_REVIEW_LIMIT;
-  const introducedToday = newWordsToday?.day === dayKey() ? newWordsToday.ids.length : 0;
+  const introducedToday =
+    newWordsToday?.day === dayKey() ? newWordsToday.ids.filter((id) => !id.startsWith("everyday:")).length : 0;
   const newWordLimit = p.newWordLimit ?? DEFAULT_NEW_WORD_LIMIT;
   const newWordsRemaining = Math.max(0, newWordLimit - introducedToday);
   const unseenWords = catalog.all.filter((word) => displayedStatus(word.id, status, srs ?? {}) === "new").length;

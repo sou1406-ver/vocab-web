@@ -491,10 +491,7 @@ function AutoQuiz() {
     if (s.answered || !q) return;
     const before = useProfile.getState();
     const wasConfirming = Boolean(before.srs?.[q.root.id]?.confirming || before.status[q.root.id] === "confirming");
-    if (!recordAnswer(q.root.id, ok)) {
-      toast("Đã dùng hết giới hạn từ mới hôm nay. Ngày mai học tiếp nhé.");
-      return;
-    }
+    recordAnswer(q.root.id, ok);
     setQuiz({
       answered: true,
       last: { ok, pick },

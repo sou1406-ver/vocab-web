@@ -22,8 +22,7 @@ export function buildDeck() {
 /** Tạo đề tự luyện mới theo bộ lọc hiện tại */
 export function startQuiz() {
   const { quiz, setQuiz } = useUI.getState();
-  const { catalog, status, srs, newWordsToday } = useProfile.getState();
-  const profile = useProfile.getState().profile();
+  const { catalog, status, srs } = useProfile.getState();
   const roots =
     quiz.forWord && catalog.byId[quiz.forWord]
       ? [catalog.byId[quiz.forWord]]
@@ -36,18 +35,8 @@ export function startQuiz() {
                 ? displayedStatus(w.id, status, srs ?? {}) !== "mastered"
                 : displayedStatus(w.id, status, srs ?? {}) === quiz.only),
           );
-  const today = dayKey();
-  const introduced = newWordsToday?.day === today ? new Set(newWordsToday.ids) : new Set<string>();
-  const remaining = Math.max(0, (profile.newWordLimit ?? DEFAULT_NEW_WORD_LIMIT) - introduced.size);
-  const alreadyLearning = roots.filter(
-    (word) => displayedStatus(word.id, status, srs ?? {}) !== "new" || introduced.has(word.id),
-  );
-  const unseen = roots.filter(
-    (word) => displayedStatus(word.id, status, srs ?? {}) === "new" && !introduced.has(word.id),
-  );
-  const eligibleRoots = [...alreadyLearning, ...unseen.slice(0, remaining)];
   setQuiz({
-    qs: makeQuiz(catalog, quiz.type, eligibleRoots),
+    qs: makeQuiz(catalog, quiz.type, roots),
     i: 0,
     right: 0,
     wrong: 0,
@@ -148,7 +137,10 @@ export function useActions() {
       const profile = useProfile.getState();
       const { catalog, status, newWordsToday } = profile;
       const today = dayKey();
-      const introduced = newWordsToday?.day === today ? new Set(newWordsToday.ids) : new Set<string>();
+      const introduced =
+        newWordsToday?.day === today
+          ? new Set(newWordsToday.ids.filter((id) => !id.startsWith("everyday:")))
+          : new Set<string>();
       const remaining = Math.max(0, (profile.profile().newWordLimit ?? DEFAULT_NEW_WORD_LIMIT) - introduced.size);
       const ids = catalog.all
         .filter((word) => displayedStatus(word.id, status, profile.srs ?? {}) === "new" && !introduced.has(word.id))
