@@ -6,7 +6,15 @@ import { dayKey, storage } from "@/lib/util";
 /* Hồ sơ học tập (nhiều người dùng chung một máy) + dữ liệu của hồ sơ đang mở.
    Khoá localStorage giữ nguyên như bản HTML cũ: "vn-status@<id hồ sơ>"… → nâng cấp không mất tiến độ. */
 
-export const PROFILE_KEYS = ["vn-custom", "vn-status", "vn-status-at", "vn-stats", "vn-book", "vn-log", "vn-meta"] as const;
+export const PROFILE_KEYS = [
+  "vn-custom",
+  "vn-status",
+  "vn-status-at",
+  "vn-stats",
+  "vn-book",
+  "vn-log",
+  "vn-meta",
+] as const;
 export const PROFILE_COLORS = ["#2f4b8f", "#a8442f", "#2f7a55", "#8a5a1f", "#6b3f87", "#2b6f7d"];
 const FIELD: Record<(typeof PROFILE_KEYS)[number], keyof ProfileData> = {
   "vn-custom": "custom",
@@ -18,7 +26,15 @@ const FIELD: Record<(typeof PROFILE_KEYS)[number], keyof ProfileData> = {
   "vn-meta": "meta",
 };
 
-export const emptyData = (): ProfileData => ({ meta: {}, custom: [], status: {}, statusAt: {}, stats: {}, book: {}, log: {} });
+export const emptyData = (): ProfileData => ({
+  meta: {},
+  custom: [],
+  status: {},
+  statusAt: {},
+  stats: {},
+  book: {},
+  log: {},
+});
 
 export function readProfileData(pid: string): ProfileData {
   const d = emptyData();
@@ -225,11 +241,17 @@ export const useProfile = create<ProfileState>()((set, get) => {
       const log = { ...cur.log };
       for (const [k, v] of Object.entries(d.log ?? {})) log[k] ??= v;
       const statusAt = { ...cur.statusAt, ...d.statusAt };
+      const status = { ...cur.status };
       const importedAt = Date.now();
-      for (const id of Object.keys(d.status ?? {})) statusAt[id] ??= importedAt;
+      for (const [id, value] of Object.entries(d.status ?? {})) {
+        if (value === "new") delete status[id];
+        else status[id] = value;
+        // Import is an explicit user action; make imported states newer than the current local copy.
+        statusAt[id] = importedAt;
+      }
       save({
         custom,
-        status: { ...cur.status, ...d.status },
+        status,
         statusAt,
         stats: { ...cur.stats, ...d.stats },
         book: { ...cur.book, ...d.book },

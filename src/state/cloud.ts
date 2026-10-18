@@ -51,6 +51,7 @@ let unsub: (() => void) | null = null;
 let timer: ReturnType<typeof setTimeout> | null = null;
 let pushInFlight: Promise<void> | null = null;
 let pushAgain = false;
+let needsPush = false;
 /** true khi người dùng vừa bấm "Đăng nhập" (không phải phiên cũ tự khôi phục lúc tải trang) */
 let userInitiated = false;
 const REDIRECT_FLAG = "vn-signin-redirect";
@@ -61,6 +62,14 @@ const onHttp = () => location.protocol === "http:" || location.protocol === "htt
 
 function fail(e: unknown) {
   const err = e as { code?: string; message?: string };
+  const offline =
+    ["unavailable", "firestore/unavailable", "auth/network-request-failed"].includes(err?.code ?? "") ||
+    (typeof navigator !== "undefined" && !navigator.onLine);
+  if (offline) {
+    needsPush = true;
+    setCloud({ status: "offline", error: err?.code || "offline" });
+    return;
+  }
   console.warn("[Cloud]", e);
   const code = err?.code || err?.message || "lỗi";
   setCloud({ status: "error", error: code });
@@ -273,6 +282,10 @@ function detach() {
 async function pushOnce() {
   const user = useCloud.getState().user;
   if (!user || !db || !fb) return;
+  if (needsPush && typeof navigator !== "undefined" && !navigator.onLine) {
+    setCloud({ status: "offline" });
+    return;
+  }
   const pid = cloudPid(user.uid);
   if (!useProfile.getState().profiles.some((x) => x.id === pid)) return;
   setCloud({ status: "syncing" });
@@ -283,9 +296,7 @@ async function pushOnce() {
       const snapshot = await transaction.get(ref);
       const local = readProfileData(pid);
       localAtTransaction = local;
-      const remoteData = snapshot.exists()
-        ? ((snapshot.data() as { data?: Partial<ProfileData> }).data ?? {})
-        : {};
+      const remoteData = snapshot.exists() ? ((snapshot.data() as { data?: Partial<ProfileData> }).data ?? {}) : {};
       const next = mergeData(local, remoteData);
       const profile = useProfile.getState().profiles.find((x) => x.id === pid);
       if (!profile) throw new Error("Profile disappeared during sync");
@@ -303,6 +314,7 @@ async function pushOnce() {
       writeProfileData(pid, reconciled);
       if (useProfile.getState().current === pid && !sameData(latest, reconciled)) useProfile.getState().reload();
     });
+    needsPush = false;
     // A local edit may have happened while Firestore was committing this transaction.
     if (localAtTransaction && !sameData(latest, localAtTransaction)) pushAgain = true;
     setCloud({ status: "synced", lastSync: new Date() });
@@ -330,11 +342,15 @@ export async function push() {
 }
 
 export async function flush() {
+  let shouldPush = needsPush;
   if (timer) {
     clearTimeout(timer);
     timer = null;
-    await push();
+    shouldPush = true;
   }
+  if (pushInFlight) await pushInFlight;
+  shouldPush ||= needsPush;
+  if (shouldPush) await push();
 }
 
 // Ghi trễ 1,5 giây để gom nhiều thay đổi liên tiếp thành một lần ghi
@@ -348,7 +364,11 @@ onDataChange(() => {
   }, 1500);
 });
 
-if (typeof window !== "undefined")
-  window.addEventListener("beforeunload", () => {
-    if (timer) void push();
+if (typeof window !== "undefined") {
+  window.addEventListener("online", () => {
+    if (needsPush) void push();
   });
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "hidden") void flush();
+  });
+}

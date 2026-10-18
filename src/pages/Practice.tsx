@@ -60,7 +60,9 @@ export function PracticePage() {
             spotlightSize={240}
             flare={false}
           >
-            <span className="practice-option-icon"><Icon name={way.icon} size="lg" /></span>
+            <span className="practice-option-icon">
+              <Icon name={way.icon} size="lg" />
+            </span>
             <h2>{way.title}</h2>
             <p className="muted">{way.description}</p>
             <Link className="practice-option-link" to={way.to}>

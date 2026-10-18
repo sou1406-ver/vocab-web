@@ -90,7 +90,9 @@ export function Layout() {
             to={t.to}
             end={t.end}
             className={({ isActive }) =>
-              isActive || (t.to === "/practice" && practiceActive) || (t.to === "/knowledge" && pathname.startsWith("/affixes"))
+              isActive ||
+              (t.to === "/practice" && practiceActive) ||
+              (t.to === "/knowledge" && pathname.startsWith("/affixes"))
                 ? "active"
                 : ""
             }

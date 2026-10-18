@@ -94,7 +94,11 @@ function mergeCustom(a: Word[], b: Word[], deleted: Set<string>): Word[] {
 function stable(value: unknown): unknown {
   if (Array.isArray(value)) return value.map(stable);
   if (!value || typeof value !== "object") return value;
-  return Object.fromEntries(Object.entries(value).sort(([a], [b]) => a.localeCompare(b)).map(([key, item]) => [key, stable(item)]));
+  return Object.fromEntries(
+    Object.entries(value)
+      .sort(([a], [b]) => a.localeCompare(b))
+      .map(([key, item]) => [key, stable(item)]),
+  );
 }
 
 export const sameData = (a: unknown, b: unknown) => JSON.stringify(stable(a)) === JSON.stringify(stable(b));

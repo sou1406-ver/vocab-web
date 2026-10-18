@@ -508,10 +508,10 @@ function AutoQuiz() {
             {st.missed.length > 0
               ? `Có ${st.missed.length} từ cần ôn lại. Hãy xem lại trước khi tiếp tục nhé.`
               : p >= 80
-              ? "Rất tốt! Bạn đang nắm khá vững phần này."
-              : p >= 50
-                ? "Bạn làm khá tốt. Hãy xem lại những câu còn nhầm nhé."
-                : "Hãy xem lại các từ và phần giải thích, rồi thử lại nhé."}
+                ? "Rất tốt! Bạn đang nắm khá vững phần này."
+                : p >= 50
+                  ? "Bạn làm khá tốt. Hãy xem lại những câu còn nhầm nhé."
+                  : "Hãy xem lại các từ và phần giải thích, rồi thử lại nhé."}
           </p>
           <div
             className="grid grid-2"

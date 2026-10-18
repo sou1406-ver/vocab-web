@@ -54,6 +54,30 @@ describe("mergeData", () => {
   it("không hạ trạng thái đã thuộc", () => {
     expect(mergeData({ ...base, status: { x: "mastered" } }, { status: { x: "learning" } }).status.x).toBe("mastered");
   });
+  it("trạng thái mới hơn thắng dù bậc thấp hơn", () => {
+    const merged = mergeData(
+      { ...base, status: { x: "mastered" as const }, statusAt: { x: 200 } },
+      { status: { x: "learning" as const }, statusAt: { x: 300 } },
+    );
+    expect(merged.status.x).toBe("learning");
+    expect(merged.statusAt?.x).toBe(300);
+  });
+  it("bỏ qua trạng thái có timestamp cũ hơn", () => {
+    const merged = mergeData(
+      { ...base, status: { x: "learning" as const }, statusAt: { x: 300 } },
+      { status: { x: "mastered" as const }, statusAt: { x: 200 } },
+    );
+    expect(merged.status.x).toBe("learning");
+  });
+  it("tombstone mới đưa từ về Chưa nhớ và thắng trạng thái cloud cũ", () => {
+    const merged = mergeData({ ...base, status: { x: "mastered" as const } }, { status: {}, statusAt: { x: 300 } });
+    expect(merged.status.x).toBeUndefined();
+    expect(merged.statusAt?.x).toBe(300);
+  });
+  it("dữ liệu cũ chưa có timestamp vẫn giữ bậc trạng thái cao hơn", () => {
+    const merged = mergeData({ ...base, status: { x: "learning" as const } }, { status: { x: "mastered" as const } });
+    expect(merged.status.x).toBe("mastered");
+  });
 });
 
 describe("sinh câu hỏi", () => {

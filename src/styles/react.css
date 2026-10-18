@@ -390,7 +390,9 @@ select option:disabled {
     border-radius: 7px;
     background: transparent;
     color: var(--text);
-    transition: background-color 0.14s ease, color 0.14s ease;
+    transition:
+      background-color 0.14s ease,
+      color 0.14s ease;
   }
   select option:hover,
   select option:checked {

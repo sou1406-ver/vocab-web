@@ -36,7 +36,10 @@ function WordCard({ f, root }: { f: FamilyEntry; root: Word }) {
   return (
     <div className={`wcard${same(f.w, root.word) ? " is-root" : ""}`} data-w={lower(f.w)}>
       <div className="row between" style={{ gap: 4, flexWrap: "nowrap" }}>
-        <span className="row" style={{ gap: 6 }}><FreqMeter z={termInfo(f.w).z} /><span className="ww">{f.w}</span></span>
+        <span className="row" style={{ gap: 6 }}>
+          <FreqMeter z={termInfo(f.w).z} />
+          <span className="ww">{f.w}</span>
+        </span>
         <SpeakBtn text={f.w} />
       </div>
       {f.ipa && <div className="ipa">{f.ipa}</div>}
@@ -101,11 +104,16 @@ export function WordCanvas({ w, prev, next, lesson }: { w: Word; prev?: Word; ne
                       {sense.meaning && <span className="vi">{sense.meaning}</span>}
                     </div>
                     {(sense.definitions ?? (sense.definition ? [sense.definition] : [])).map((definition, i) => (
-                      <div className="def" key={i}>{definition}</div>
+                      <div className="def" key={i}>
+                        {definition}
+                      </div>
                     ))}
                     {sense.ex?.map((example, i) => (
                       <div className="word-sense-example" key={i}>
-                        <span>{example}{sense.exVi?.[i] && <span className="ex-vi">{sense.exVi[i]}</span>}</span>
+                        <span>
+                          {example}
+                          {sense.exVi?.[i] && <span className="ex-vi">{sense.exVi[i]}</span>}
+                        </span>
                         <SpeakBtn text={example} />
                       </div>
                     ))}

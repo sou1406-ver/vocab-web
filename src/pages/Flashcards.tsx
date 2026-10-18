@@ -161,7 +161,10 @@ export function FlashcardsPage() {
                 </span>
               </div>
               <div style={{ textAlign: "center" }} className="stack-sm">
-                <div className="row" style={{ justifyContent: "center", gap: 10 }}><FreqMeter z={termInfo(w.word).z} /><div className="fc-word">{w.word}</div></div>
+                <div className="row" style={{ justifyContent: "center", gap: 10 }}>
+                  <FreqMeter z={termInfo(w.word).z} />
+                  <div className="fc-word">{w.word}</div>
+                </div>
                 <Ipa ipa={w.ipa} className="fc-ipa" />
                 <div>
                   <button className="btn sm soft" onClick={() => speak(w.word)}>
