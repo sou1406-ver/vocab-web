@@ -49,6 +49,8 @@ let fb: {
 } | null = null;
 let unsub: (() => void) | null = null;
 let timer: ReturnType<typeof setTimeout> | null = null;
+let pushInFlight: Promise<void> | null = null;
+let pushAgain = false;
 /** true khi người dùng vừa bấm "Đăng nhập" (không phải phiên cũ tự khôi phục lúc tải trang) */
 let userInitiated = false;
 const REDIRECT_FLAG = "vn-signin-redirect";
@@ -218,7 +220,8 @@ async function attach(u: User) {
       (s) => {
         if (!s.exists() || s.metadata.hasPendingWrites || useProfile.getState().current !== pid) return;
         const cur = readProfileData(pid);
-        const m = mergeData(cur, (s.data() as { data?: Partial<ProfileData> }).data ?? {});
+        const remoteData = (s.data() as { data?: Partial<ProfileData> }).data ?? {};
+        const m = mergeData(cur, remoteData);
         if (!sameData(m, cur)) {
           withoutSync(() => {
             writeProfileData(pid, m);
@@ -226,6 +229,8 @@ async function attach(u: User) {
           });
           toast("Đã cập nhật tiến độ từ thiết bị khác");
         }
+        // Persist the union too; otherwise a later device can still read a stale cloud copy.
+        if (!sameData(m, remoteData)) void push();
         setCloud({ status: "synced", lastSync: new Date() });
       },
       fail,
@@ -265,22 +270,62 @@ function detach() {
   toast("Đã đăng xuất — tiến độ vẫn được lưu trên tài khoản Google");
 }
 
-export async function push() {
+async function pushOnce() {
   const user = useCloud.getState().user;
   if (!user || !db || !fb) return;
   const pid = cloudPid(user.uid);
-  const p = useProfile.getState().profiles.find((x) => x.id === pid);
-  if (!p) return;
+  if (!useProfile.getState().profiles.some((x) => x.id === pid)) return;
   setCloud({ status: "syncing" });
   try {
-    await fb.store.setDoc(userDoc(user.uid), {
-      profile: { name: p.name, color: p.color, goal: p.goal, target: p.target },
-      data: readProfileData(pid),
-      updatedAt: Date.now(),
+    let localAtTransaction: ProfileData | null = null;
+    const ref = userDoc(user.uid);
+    const merged = await fb.store.runTransaction(db!, async (transaction) => {
+      const snapshot = await transaction.get(ref);
+      const local = readProfileData(pid);
+      localAtTransaction = local;
+      const remoteData = snapshot.exists()
+        ? ((snapshot.data() as { data?: Partial<ProfileData> }).data ?? {})
+        : {};
+      const next = mergeData(local, remoteData);
+      const profile = useProfile.getState().profiles.find((x) => x.id === pid);
+      if (!profile) throw new Error("Profile disappeared during sync");
+      transaction.set(ref, {
+        profile: { name: profile.name, color: profile.color, goal: profile.goal, target: profile.target },
+        data: next,
+        updatedAt: Date.now(),
+      });
+      return next;
     });
+
+    const latest = readProfileData(pid);
+    const reconciled = mergeData(latest, merged);
+    withoutSync(() => {
+      writeProfileData(pid, reconciled);
+      if (useProfile.getState().current === pid && !sameData(latest, reconciled)) useProfile.getState().reload();
+    });
+    // A local edit may have happened while Firestore was committing this transaction.
+    if (localAtTransaction && !sameData(latest, localAtTransaction)) pushAgain = true;
     setCloud({ status: "synced", lastSync: new Date() });
   } catch (e) {
     fail(e);
+  }
+}
+
+export async function push() {
+  if (pushInFlight) {
+    pushAgain = true;
+    await pushInFlight;
+    return;
+  }
+  pushInFlight = pushOnce();
+  try {
+    await pushInFlight;
+  } finally {
+    pushInFlight = null;
+  }
+  if (pushAgain) {
+    pushAgain = false;
+    await push();
   }
 }
 

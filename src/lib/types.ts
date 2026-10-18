@@ -134,6 +134,8 @@ export interface ProfileData {
   meta: SyncMeta;
   custom: Word[];
   status: Record<string, Status>;
+  /** Timestamp of the most recent learning-state change for each word. */
+  statusAt?: Record<string, number>;
   stats: Record<string, WordStat>;
   book: Record<string, BookScore>;
   log: Record<string, DayLog>;

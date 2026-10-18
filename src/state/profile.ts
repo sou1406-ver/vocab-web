@@ -6,18 +6,19 @@ import { dayKey, storage } from "@/lib/util";
 /* Hồ sơ học tập (nhiều người dùng chung một máy) + dữ liệu của hồ sơ đang mở.
    Khoá localStorage giữ nguyên như bản HTML cũ: "vn-status@<id hồ sơ>"… → nâng cấp không mất tiến độ. */
 
-export const PROFILE_KEYS = ["vn-custom", "vn-status", "vn-stats", "vn-book", "vn-log", "vn-meta"] as const;
+export const PROFILE_KEYS = ["vn-custom", "vn-status", "vn-status-at", "vn-stats", "vn-book", "vn-log", "vn-meta"] as const;
 export const PROFILE_COLORS = ["#2f4b8f", "#a8442f", "#2f7a55", "#8a5a1f", "#6b3f87", "#2b6f7d"];
 const FIELD: Record<(typeof PROFILE_KEYS)[number], keyof ProfileData> = {
   "vn-custom": "custom",
   "vn-status": "status",
+  "vn-status-at": "statusAt",
   "vn-stats": "stats",
   "vn-book": "book",
   "vn-log": "log",
   "vn-meta": "meta",
 };
 
-export const emptyData = (): ProfileData => ({ meta: {}, custom: [], status: {}, stats: {}, book: {}, log: {} });
+export const emptyData = (): ProfileData => ({ meta: {}, custom: [], status: {}, statusAt: {}, stats: {}, book: {}, log: {} });
 
 export function readProfileData(pid: string): ProfileData {
   const d = emptyData();
@@ -153,11 +154,13 @@ export const useProfile = create<ProfileState>()((set, get) => {
 
     setStatus: (id, s) => {
       const status = { ...get().status };
+      const timestamps = get().statusAt ?? {};
+      const statusAt = { ...timestamps, [id]: Math.max(Date.now(), (timestamps[id] ?? 0) + 1) };
       const patch: Partial<ProfileData> = {};
       if (s === "mastered" && status[id] !== "mastered") patch.log = bumpLog((e) => e.m++);
       if (s === "new") delete status[id];
       else status[id] = s;
-      save({ ...patch, status });
+      save({ ...patch, status, statusAt });
     },
     recordAnswer: (id, ok) => {
       const stats = { ...get().stats };
@@ -170,7 +173,11 @@ export const useProfile = create<ProfileState>()((set, get) => {
         if (ok) e.c++;
       });
       const patch: Partial<ProfileData> = { stats, log };
-      if (!ok && !get().status[id]) patch.status = { ...get().status, [id]: "learning" };
+      if (!ok && !get().status[id]) {
+        patch.status = { ...get().status, [id]: "learning" };
+        const timestamps = get().statusAt ?? {};
+        patch.statusAt = { ...timestamps, [id]: Math.max(Date.now(), (timestamps[id] ?? 0) + 1) };
+      }
       save(patch);
     },
     logActivity: (kind, ok) =>
@@ -206,7 +213,7 @@ export const useProfile = create<ProfileState>()((set, get) => {
       });
     },
     resetProgress: () =>
-      save({ status: {}, stats: {}, book: {}, log: {}, meta: { ...get().meta, resetAt: Date.now() } }),
+      save({ status: {}, statusAt: {}, stats: {}, book: {}, log: {}, meta: { ...get().meta, resetAt: Date.now() } }),
     importData: (d) => {
       const cur = get();
       const custom = cur.custom.slice();
@@ -217,9 +224,13 @@ export const useProfile = create<ProfileState>()((set, get) => {
       }
       const log = { ...cur.log };
       for (const [k, v] of Object.entries(d.log ?? {})) log[k] ??= v;
+      const statusAt = { ...cur.statusAt, ...d.statusAt };
+      const importedAt = Date.now();
+      for (const id of Object.keys(d.status ?? {})) statusAt[id] ??= importedAt;
       save({
         custom,
         status: { ...cur.status, ...d.status },
+        statusAt,
         stats: { ...cur.stats, ...d.stats },
         book: { ...cur.book, ...d.book },
         log,

@@ -17,12 +17,41 @@ export function mergeData(a: ProfileData, b: Partial<ProfileData>): ProfileData 
 
   // Một bên vừa xoá tiến độ sau lần xoá của bên kia → tiến độ của bên đó là bản đúng
   if (resetB > resetA)
-    return { meta, custom, status: { ...b.status }, stats: { ...b.stats }, book: { ...b.book }, log: { ...b.log } };
+    return {
+      meta,
+      custom,
+      status: { ...b.status },
+      statusAt: { ...b.statusAt },
+      stats: { ...b.stats },
+      book: { ...b.book },
+      log: { ...b.log },
+    };
   if (resetA > resetB) return { ...a, meta, custom };
 
   const rank: Record<string, number> = { mastered: 2, learning: 1 };
-  const status = { ...a.status };
-  for (const [id, s] of Object.entries(b.status ?? {})) if ((rank[s] ?? 0) > (rank[status[id]] ?? 0)) status[id] = s;
+  const status: ProfileData["status"] = {};
+  const statusAt: Record<string, number> = {};
+  const statusIds = new Set([
+    ...Object.keys(a.status ?? {}),
+    ...Object.keys(b.status ?? {}),
+    ...Object.keys(a.statusAt ?? {}),
+    ...Object.keys(b.statusAt ?? {}),
+  ]);
+  for (const id of statusIds) {
+    const aAt = a.statusAt?.[id] ?? 0;
+    const bAt = b.statusAt?.[id] ?? 0;
+    const aStatus = a.status?.[id];
+    const bStatus = b.status?.[id];
+    let winner: "a" | "b";
+    if (aAt !== bAt) winner = bAt > aAt ? "b" : "a";
+    else winner = (rank[bStatus ?? "new"] ?? 0) > (rank[aStatus ?? "new"] ?? 0) ? "b" : "a";
+
+    const selected = winner === "a" ? aStatus : bStatus;
+    const timestamp = Math.max(aAt, bAt);
+    if (timestamp) statusAt[id] = timestamp;
+    // Missing status with a timestamp means an explicit reset to “new”.
+    if (selected) status[id] = selected;
+  }
 
   const stats = { ...a.stats };
   for (const [id, s] of Object.entries(b.stats ?? {})) {
@@ -48,7 +77,7 @@ export function mergeData(a: ProfileData, b: Partial<ProfileData>): ProfileData 
     };
   }
 
-  return { meta, custom, status, stats, book, log };
+  return { meta, custom, status, statusAt, stats, book, log };
 }
 
 function mergeCustom(a: Word[], b: Word[], deleted: Set<string>): Word[] {
@@ -62,4 +91,10 @@ function mergeCustom(a: Word[], b: Word[], deleted: Set<string>): Word[] {
   return out;
 }
 
-export const sameData = (a: unknown, b: unknown) => JSON.stringify(a) === JSON.stringify(b);
+function stable(value: unknown): unknown {
+  if (Array.isArray(value)) return value.map(stable);
+  if (!value || typeof value !== "object") return value;
+  return Object.fromEntries(Object.entries(value).sort(([a], [b]) => a.localeCompare(b)).map(([key, item]) => [key, stable(item)]));
+}
+
+export const sameData = (a: unknown, b: unknown) => JSON.stringify(stable(a)) === JSON.stringify(stable(b));
