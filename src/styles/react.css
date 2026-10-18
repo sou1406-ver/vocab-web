@@ -504,3 +504,30 @@ select option:disabled {
     }
   }
 }
+
+/* Trang Kiến thức trên điện thoại: thẻ từ loại 1 cột; khối "Cấu tạo từ" xuống dòng (icon + chữ, nút ở dưới)
+   — trước đây 3 cột icon | chữ | nút ép cột chữ còn ~50px */
+@media (max-width: 640px) {
+  .knowledge-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .knowledge-tip,
+  .knowledge-affix {
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 18px;
+  }
+  .knowledge-affix > div:nth-child(2) {
+    flex: 1 1 calc(100% - 64px);
+    min-width: 0;
+  }
+  .knowledge-tip > *,
+  .knowledge-affix > .btn {
+    flex: 1 1 100%;
+    min-width: 0;
+  }
+  .knowledge-affix > .btn {
+    justify-content: center;
+  }
+}
