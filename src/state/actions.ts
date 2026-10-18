@@ -125,6 +125,14 @@ export function useActions() {
       startQuiz();
       navigate("/quiz");
     },
+    quizMastered() {
+      const { catalog, status, srs } = useProfile.getState();
+      const count = catalog.all.filter((word) => displayedStatus(word.id, status, srs ?? {}) === "mastered").length;
+      if (!count) return;
+      ui().setQuiz({ mode: "auto", type: "mixed", unit: "all", lesson: "all", only: "mastered", forWord: null });
+      startQuiz();
+      navigate("/quiz");
+    },
     /** Flashcard gồm các từ hay làm sai nhất */
     reviewWeak() {
       const { stats, status, catalog } = useProfile.getState();

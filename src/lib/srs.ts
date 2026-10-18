@@ -38,11 +38,11 @@ export function scheduleFor(
   if (!state || state === "new") return undefined;
   if (state === "confirming") {
     const at = statusAt[id] ?? 0;
-    return { box: 1, at, due: dueAfterDays(at || now, 1), confirming: true, confirmations: 0 };
+    return { box: 1, at, due: at ? dueAfterDays(at, 1) : now, confirming: true, confirmations: 0 };
   }
   const box = state === "mastered" ? 5 : 1;
   const at = statusAt[id] ?? 0;
-  return { box, at, due: dueAfterDays(at || now, REVIEW_INTERVAL_DAYS[box - 1]), confirmations: 0 };
+  return { box, at, due: at ? dueAfterDays(at, REVIEW_INTERVAL_DAYS[box - 1]) : now, confirmations: 0 };
 }
 
 export function scheduleRating(
@@ -72,8 +72,7 @@ export function scheduleAnswer(
   now = Date.now(),
 ): ReviewSchedule {
   const current = scheduleFor(id, status, schedules, statusAt, now);
-  if (status[id] === "mastered")
-    return current ?? { box: 5, at: statusAt[id] ?? now, due: Number.POSITIVE_INFINITY, confirmations: 0 };
+  if (current && current.due > now && correct) return current;
   if (current?.confirming) {
     if (!correct) {
       const at = stamp(now, current.at);
@@ -82,7 +81,7 @@ export function scheduleAnswer(
     // Only a test taken on or after its scheduled day counts toward real mastery.
     if (current.due > now) return current;
     const confirmations = (current.confirmations ?? 0) + 1;
-    const box = Math.min(REVIEW_INTERVAL_DAYS.length, current.box + 1);
+    const box = confirmations >= 3 ? 5 : Math.min(REVIEW_INTERVAL_DAYS.length, current.box + 1);
     const at = stamp(now, current.at);
     return {
       box,
@@ -94,7 +93,7 @@ export function scheduleAnswer(
   }
   const box = correct ? Math.min(REVIEW_INTERVAL_DAYS.length, (current?.box ?? 0) + 1) : 1;
   const at = stamp(now, current?.at);
-  return { box, at, due: dueAfterDays(now, REVIEW_INTERVAL_DAYS[box - 1]), confirmations: 0 };
+  return { box, at, due: dueAfterDays(now, REVIEW_INTERVAL_DAYS[box - 1]), confirming: false, confirmations: 0 };
 }
 
 export function dueReviewIds(
@@ -116,7 +115,7 @@ export function dueReviewIds(
     .map((id) => ({ id, schedule: scheduleFor(id, status, schedules, statusAt, now) }))
     .filter(
       (entry): entry is { id: string; schedule: ReviewSchedule } =>
-        !!entry.schedule && status[entry.id] !== "mastered" && entry.schedule.due <= now && !reviewed.has(entry.id),
+        !!entry.schedule && entry.schedule.due <= now && !reviewed.has(entry.id),
     )
     .sort((a, b) => a.schedule.due - b.schedule.due || a.id.localeCompare(b.id))
     .slice(0, remaining)
@@ -142,7 +141,7 @@ export function mergeSchedules(
 ): Record<string, ReviewSchedule> {
   const merged = { ...a };
   for (const [id, incoming] of Object.entries(b)) {
-    if (!merged[id] || incoming.at > merged[id].at) merged[id] = incoming;
+    if (!merged[id] || incoming.at >= merged[id].at) merged[id] = incoming;
   }
   return merged;
 }

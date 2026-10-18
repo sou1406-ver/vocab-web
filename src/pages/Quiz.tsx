@@ -460,6 +460,7 @@ function AutoQuiz() {
                   <option value="unmastered">Từ chưa thuộc</option>
                   <option value="learning">Từ đang học</option>
                   <option value="confirming">Từ đang xác nhận</option>
+                  <option value="mastered">Từ đã thuộc thật</option>
                 </select>
               </label>
             </>

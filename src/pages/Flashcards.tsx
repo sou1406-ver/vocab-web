@@ -67,7 +67,18 @@ export function FlashcardsPage() {
       return;
     }
     if (currentState.status[id] === "mastered") {
-      toast(`${catalog.byId[id].word}: đã xác nhận thuộc, không cần kiểm tra lại`);
+      const due = scheduleFor(id, currentState.status, currentState.srs ?? {}, currentState.statusAt)?.due ?? Infinity;
+      if (due > Date.now()) {
+        toast("Từ này chưa đến ngày ôn lại");
+        return;
+      }
+      recordAnswer(id, s === "mastered");
+      logActivity("card");
+      toast(
+        s === "mastered"
+          ? `${catalog.byId[id].word}: đã thuộc, hẹn ôn lại sau`
+          : `${catalog.byId[id].word}: quay lại Đang học`,
+      );
       move(1);
       return;
     }

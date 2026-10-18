@@ -147,7 +147,7 @@ export function WordCanvas({ w, prev, next, lesson }: { w: Word; prev?: Word; ne
             >
               {Object.entries(STATUS_INFO).map(([k, v]) => (
                 <option key={k} value={k}>
-                  {k === "mastered" ? "Đã nhớ" : v.label}
+                  {k === "mastered" ? (displayStatus === "mastered" ? "Đã thuộc thật" : "Đã nhớ") : v.label}
                 </option>
               ))}
             </select>

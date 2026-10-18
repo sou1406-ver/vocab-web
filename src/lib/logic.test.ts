@@ -66,6 +66,32 @@ describe("mergeData", () => {
   it("không hạ trạng thái đã thuộc", () => {
     expect(mergeData({ ...base, status: { x: "mastered" } }, { status: { x: "learning" } }).status.x).toBe("mastered");
   });
+  it("đồng bộ lại lịch khi trạng thái thuộc thắng nhưng lịch cũ ở hộp thấp", () => {
+    const merged = mergeData(
+      { ...base, status: { x: "mastered" as const }, statusAt: { x: 100 }, srs: { x: { box: 2, due: 200, at: 150 } } },
+      {},
+    );
+    expect(merged.status.x).toBe("mastered");
+    expect(merged.srs?.x.box).toBe(5);
+    expect(merged.srs?.x.confirming).toBe(false);
+  });
+  it("khi cùng timestamp, trạng thái và lịch cùng theo cập nhật mới nhận", () => {
+    const merged = mergeData(
+      {
+        ...base,
+        status: { x: "mastered" as const },
+        statusAt: { x: 100 },
+        srs: { x: { box: 5, due: 200, at: 100 } },
+      },
+      {
+        status: { x: "learning" as const },
+        statusAt: { x: 100 },
+        srs: { x: { box: 1, due: 300, at: 100 } },
+      },
+    );
+    expect(merged.status.x).toBe("learning");
+    expect(merged.srs?.x.box).toBe(1);
+  });
   it("trạng thái đang xác nhận không được ghi vào status chính khi đồng bộ", () => {
     const merged = mergeData(
       { ...base },
@@ -118,7 +144,8 @@ describe("lịch ôn Leitner", () => {
       expect(current.confirming).toBe(pass < 3);
       if (pass < 3) answeredAt = current.due;
     }
-    expect(current.box).toBe(4);
+    expect(current.box).toBe(5);
+    expect(current.confirmations).toBe(3);
   });
   it("không tính câu đúng sớm và câu sai làm lại giai đoạn từ hộp 1", () => {
     const current = { x: scheduleRating("x", "confirming", {}, {}, {}, now) };
@@ -142,14 +169,34 @@ describe("lịch ôn Leitner", () => {
     const oldMasteredAt = dueAfterDays(now, -45);
     expect(scheduleFor("x", { x: "mastered" }, {}, { x: oldMasteredAt }, now)?.due).toBeLessThan(now);
   });
+  it("tiến độ cũ không có timestamp được đưa ra ôn ngay", () => {
+    expect(scheduleFor("x", { x: "mastered" }, {}, {}, now)?.due).toBe(now);
+    expect(dueReviewIds(["x"], { x: "mastered" }, {}, {}, now)).toEqual(["x"]);
+  });
   it("hiển thị đang xác nhận từ lịch riêng, không cần đổi trạng thái chính", () => {
     expect(displayedStatus("x", { x: "learning" }, { x: { box: 1, due: 10, at: 1, confirming: true } })).toBe(
       "confirming",
     );
     expect(displayedStatus("x", { x: "learning" }, { x: { box: 1, due: 10, at: 1 } })).toBe("learning");
   });
-  it("không đưa từ đã thuộc thật trở lại hàng đợi ôn tự động", () => {
-    expect(dueReviewIds(["x"], { x: "mastered" }, { x: { box: 3, due: now - 1, at: now - 100 } }, {}, now)).toEqual([]);
+  it("đưa từ đã thuộc trở lại hàng đợi sau 30 ngày", () => {
+    expect(
+      dueReviewIds(["x"], { x: "mastered" }, { x: { box: 5, due: now - 1, at: now - 31 * 86400000 } }, {}, now),
+    ).toEqual(["x"]);
+  });
+  it("không tăng hộp khi trả lời đúng trước ngày đến hạn", () => {
+    const current = { x: { box: 2, due: dueAfterDays(now, 3), at: now } };
+    expect(scheduleAnswer("x", true, { x: "learning" }, current, {}, now)).toBe(current.x);
+  });
+  it("trả lời sai từ đã thuộc đưa lịch về hộp 1", () => {
+    const next = scheduleAnswer("x", false, { x: "mastered" }, { x: { box: 5, due: now, at: now } }, {}, now);
+    expect(next.box).toBe(1);
+    expect(next.confirming).toBe(false);
+  });
+  it("trả lời đúng từ đã thuộc chuyển lần ôn tiếp theo sang 60 ngày", () => {
+    const next = scheduleAnswer("x", true, { x: "mastered" }, { x: { box: 5, due: now, at: now } }, {}, now);
+    expect(next.box).toBe(6);
+    expect(next.due).toBe(dueAfterDays(now, 60));
   });
   it("hàng đợi chỉ lấy từ đến hạn, xếp quá hạn trước và giới hạn 20 từ", () => {
     const schedules = Object.fromEntries(

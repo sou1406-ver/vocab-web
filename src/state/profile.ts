@@ -200,10 +200,10 @@ export const useProfile = create<ProfileState>()((set, get) => {
       const status = { ...get().status };
       const timestamps = get().statusAt ?? {};
       const now = Date.now();
-      const statusAt = { ...timestamps, [id]: Math.max(now, (timestamps[id] ?? 0) + 1) };
       const srs = { ...(get().srs ?? {}) };
       const previousSchedule = scheduleFor(id, status, srs, timestamps, now);
       srs[id] = scheduleRating(id, s, status, srs, timestamps, now);
+      const statusAt = { ...timestamps, [id]: srs[id].at };
       const patch: Partial<ProfileData> = {};
       if (!id.startsWith("everyday:") && previousSchedule && previousSchedule.due <= now)
         patch.reviewedToday = markReviewedToday(get().reviewedToday, id, now);
@@ -234,7 +234,7 @@ export const useProfile = create<ProfileState>()((set, get) => {
       const now = Date.now();
       const previousSchedule = scheduleFor(id, currentStatus, srs, currentStatusAt, now);
       const nextSchedule = scheduleAnswer(id, ok, currentStatus, srs, currentStatusAt, now);
-      if (currentStatus[id] !== "mastered") srs[id] = nextSchedule;
+      srs[id] = nextSchedule;
       const stats = { ...get().stats };
       const st = { ...(stats[id] ?? { c: 0, w: 0 }) };
       if (ok) st.c++;
@@ -247,9 +247,9 @@ export const useProfile = create<ProfileState>()((set, get) => {
       const patch: Partial<ProfileData> = { stats, log, srs };
       if (!id.startsWith("everyday:") && previousSchedule && previousSchedule.due <= now)
         patch.reviewedToday = markReviewedToday(get().reviewedToday, id, now);
-      if (!ok && currentStatus[id] !== "mastered" && currentStatus[id] !== "learning") {
+      if (!ok) {
         patch.status = { ...currentStatus, [id]: "learning" };
-        patch.statusAt = { ...currentStatusAt, [id]: Math.max(now, (currentStatusAt[id] ?? 0) + 1) };
+        patch.statusAt = { ...currentStatusAt, [id]: nextSchedule.at };
       } else if (
         ok &&
         previousSchedule?.confirming &&
@@ -257,8 +257,10 @@ export const useProfile = create<ProfileState>()((set, get) => {
         (nextSchedule.confirmations ?? 0) >= 3
       ) {
         patch.status = { ...currentStatus, [id]: "mastered" };
-        patch.statusAt = { ...currentStatusAt, [id]: Math.max(now, (currentStatusAt[id] ?? 0) + 1) };
+        patch.statusAt = { ...currentStatusAt, [id]: nextSchedule.at };
         patch.log = bumpLog((e) => e.m++);
+      } else if (ok && currentStatus[id] === "mastered" && nextSchedule !== previousSchedule) {
+        patch.statusAt = { ...currentStatusAt, [id]: nextSchedule.at };
       }
       save(patch);
     },

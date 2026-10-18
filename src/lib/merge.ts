@@ -1,5 +1,5 @@
 import type { DailyReviewLog, DayLog, ProfileData, ReviewSchedule, Word } from "./types";
-import { mergeDailyReviews, mergeSchedules } from "./srs";
+import { dueAfterDays, mergeDailyReviews, mergeSchedules, scheduleFor } from "./srs";
 
 /** Gộp hai bản dữ liệu học (máy này + đám mây / máy khác) mà không mất tiến độ:
     - tiến độ: giữ phần tiến bộ hơn (trạng thái cao hơn, số lần đúng/sai lớn hơn, điểm bài tập cao hơn);
@@ -17,19 +17,30 @@ export function mergeData(a: ProfileData, b: Partial<ProfileData>): ProfileData 
   const custom = mergeCustom(a.custom ?? [], b.custom ?? [], new Set(deleted));
 
   // Một bên vừa xoá tiến độ sau lần xoá của bên kia → tiến độ của bên đó là bản đúng
-  if (resetB > resetA)
+  if (resetB > resetA) {
+    const status = cleanStatus(b.status);
+    const statusAt = { ...b.statusAt };
+    const srs = { ...b.srs };
+    reconcileSchedules(status, statusAt, srs);
     return {
       meta,
       custom,
-      status: cleanStatus(b.status),
-      statusAt: { ...b.statusAt },
-      srs: { ...b.srs },
+      status,
+      statusAt,
+      srs,
       reviewedToday: b.reviewedToday,
       stats: { ...b.stats },
       book: { ...b.book },
       log: { ...b.log },
     };
-  if (resetA > resetB) return { ...a, meta, custom };
+  }
+  if (resetA > resetB) {
+    const status = cleanStatus(a.status);
+    const statusAt = { ...a.statusAt };
+    const srs = { ...a.srs };
+    reconcileSchedules(status, statusAt, srs);
+    return { ...a, meta, custom, status, statusAt, srs };
+  }
 
   const rank: Record<string, number> = { mastered: 3, confirming: 2, learning: 1 };
   const status: ProfileData["status"] = {};
@@ -47,6 +58,7 @@ export function mergeData(a: ProfileData, b: Partial<ProfileData>): ProfileData 
     const bStatus = b.status?.[id];
     let winner: "a" | "b";
     if (aAt !== bAt) winner = bAt > aAt ? "b" : "a";
+    else if (bAt > 0) winner = "b";
     else winner = (rank[bStatus ?? "new"] ?? 0) > (rank[aStatus ?? "new"] ?? 0) ? "b" : "a";
 
     const selected = winner === "a" ? aStatus : bStatus;
@@ -82,6 +94,7 @@ export function mergeData(a: ProfileData, b: Partial<ProfileData>): ProfileData 
 
   const srs: Record<string, ReviewSchedule> = mergeSchedules(a.srs, b.srs);
   const reviewedToday: DailyReviewLog | undefined = mergeDailyReviews(a.reviewedToday, b.reviewedToday);
+  reconcileSchedules(status, statusAt, srs);
 
   return { meta, custom, status, statusAt, srs, reviewedToday, stats, book, log };
 }
@@ -90,6 +103,39 @@ function cleanStatus(status: ProfileData["status"] = {}) {
   return Object.fromEntries(
     Object.entries(status).map(([id, value]) => [id, value === "confirming" ? "learning" : value]),
   );
+}
+
+function reconcileSchedules(
+  status: ProfileData["status"],
+  statusAt: Record<string, number>,
+  schedules: Record<string, ReviewSchedule>,
+) {
+  const now = Date.now();
+  for (const [id, state] of Object.entries(status)) {
+    let schedule = schedules[id] ?? scheduleFor(id, status, schedules, statusAt, now);
+    if (!schedule) continue;
+    if (state === "mastered") {
+      const at = statusAt[id] ?? 0;
+      if (schedule.confirming && schedule.at > at) {
+        status[id] = "learning";
+        statusAt[id] = schedule.at;
+        continue;
+      }
+      if (schedule.confirming || schedule.box < 5) {
+        const reconciledAt = Math.max(schedule.at, at);
+        statusAt[id] = reconciledAt;
+        schedule = {
+          ...schedule,
+          box: 5,
+          at: reconciledAt,
+          due: reconciledAt ? dueAfterDays(reconciledAt, 30) : now,
+          confirming: false,
+          confirmations: 3,
+        };
+      } else if (schedule.at > at) statusAt[id] = schedule.at;
+    }
+    schedules[id] = schedule;
+  }
 }
 
 function mergeCustom(a: Word[], b: Word[], deleted: Set<string>): Word[] {

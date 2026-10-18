@@ -231,9 +231,14 @@ export function Dashboard() {
             </p>
           </div>
         </div>
-        <button className="btn primary" onClick={act.reviewDue} disabled={!dueToday.length}>
-          <Icon name="repeat" size="sm" /> {dueToday.length ? "Bắt đầu ôn" : "Đã xong"}
-        </button>
+        <div className="row" style={{ gap: 8, flexWrap: "wrap", justifyContent: "flex-end" }}>
+          <button className="btn" onClick={act.quizMastered} disabled={!mastered}>
+            <Icon name="check" size="sm" /> Test {mastered} từ đã thuộc
+          </button>
+          <button className="btn primary" onClick={act.reviewDue} disabled={!dueToday.length}>
+            <Icon name="repeat" size="sm" /> {dueToday.length ? "Bắt đầu ôn" : "Đã xong"}
+          </button>
+        </div>
       </DCard>
 
       <div className="d-grid">
