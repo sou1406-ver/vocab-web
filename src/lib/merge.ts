@@ -21,7 +21,7 @@ export function mergeData(a: ProfileData, b: Partial<ProfileData>): ProfileData 
     return {
       meta,
       custom,
-      status: { ...b.status },
+      status: cleanStatus(b.status),
       statusAt: { ...b.statusAt },
       srs: { ...b.srs },
       reviewedToday: b.reviewedToday,
@@ -53,7 +53,7 @@ export function mergeData(a: ProfileData, b: Partial<ProfileData>): ProfileData 
     const timestamp = Math.max(aAt, bAt);
     if (timestamp) statusAt[id] = timestamp;
     // Missing status with a timestamp means an explicit reset to “new”.
-    if (selected) status[id] = selected;
+    if (selected) status[id] = selected === "confirming" ? "learning" : selected;
   }
 
   const stats = { ...a.stats };
@@ -84,6 +84,12 @@ export function mergeData(a: ProfileData, b: Partial<ProfileData>): ProfileData 
   const reviewedToday: DailyReviewLog | undefined = mergeDailyReviews(a.reviewedToday, b.reviewedToday);
 
   return { meta, custom, status, statusAt, srs, reviewedToday, stats, book, log };
+}
+
+function cleanStatus(status: ProfileData["status"] = {}) {
+  return Object.fromEntries(
+    Object.entries(status).map(([id, value]) => [id, value === "confirming" ? "learning" : value]),
+  );
 }
 
 function mergeCustom(a: Word[], b: Word[], deleted: Set<string>): Word[] {

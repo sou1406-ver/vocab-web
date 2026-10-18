@@ -5,7 +5,7 @@ import { Icon } from "@/components/Icon";
 import { FreqMeter } from "@/components/FreqMeter";
 import { LessonNav, ScopeSelects } from "@/components/LessonNav";
 import { familyOf, lessonLabel, POS_COLS, STATUS_INFO, termInfo, TOPIC_BY_ID, unitOf } from "@/lib/data";
-import { scheduleFor } from "@/lib/srs";
+import { displayedStatus, scheduleFor } from "@/lib/srs";
 import { speak } from "@/lib/speech";
 import type { Status } from "@/lib/types";
 import { cx, same } from "@/lib/util";
@@ -46,7 +46,7 @@ export function FlashcardsPage() {
     const id = f.deck[f.i];
     if (!id) return;
     const currentState = useProfile.getState();
-    if (currentState.status[id] === "confirming") {
+    if (displayedStatus(id, currentState.status, currentState.srs ?? {}) === "confirming") {
       const due = scheduleFor(id, currentState.status, currentState.srs ?? {}, currentState.statusAt)?.due ?? Infinity;
       if (due > Date.now()) {
         toast("Từ này chưa đến ngày kiểm tra lại");
@@ -67,18 +67,7 @@ export function FlashcardsPage() {
       return;
     }
     if (currentState.status[id] === "mastered") {
-      const due = scheduleFor(id, currentState.status, currentState.srs ?? {}, currentState.statusAt)?.due ?? Infinity;
-      if (due > Date.now()) {
-        toast("Từ này chưa đến ngày ôn lại");
-        return;
-      }
-      recordAnswer(id, s === "mastered");
-      logActivity("card");
-      toast(
-        s === "mastered"
-          ? `${catalog.byId[id].word}: tiếp tục giãn lịch ôn`
-          : `${catalog.byId[id].word}: quay lại Đang học`,
-      );
+      toast(`${catalog.byId[id].word}: đã xác nhận thuộc, không cần kiểm tra lại`);
       move(1);
       return;
     }
@@ -175,7 +164,7 @@ export function FlashcardsPage() {
 
   const fam = familyOf(w).filter((f) => !same(f.w, w.word));
   const counts = POS_COLS.map((c) => [c, fam.filter((f) => f.pos === c.k).length] as const).filter(([, n]) => n);
-  const s: Status = statusMap[w.id] ?? "new";
+  const s: Status = displayedStatus(w.id, statusMap, srs ?? {});
   const confirmations = srs?.[w.id]?.confirmations ?? 0;
 
   return (

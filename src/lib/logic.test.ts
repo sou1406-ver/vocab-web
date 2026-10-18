@@ -4,6 +4,7 @@ import { mergeData } from "./merge";
 import {
   dueAfterDays,
   dueReviewIds,
+  displayedStatus,
   markReviewedToday,
   mergeDailyReviews,
   mergeSchedules,
@@ -64,6 +65,14 @@ describe("mergeData", () => {
   });
   it("không hạ trạng thái đã thuộc", () => {
     expect(mergeData({ ...base, status: { x: "mastered" } }, { status: { x: "learning" } }).status.x).toBe("mastered");
+  });
+  it("trạng thái đang xác nhận không được ghi vào status chính khi đồng bộ", () => {
+    const merged = mergeData(
+      { ...base },
+      { status: { x: "confirming" }, srs: { x: { box: 1, due: 2, at: 1, confirming: true } } },
+    );
+    expect(merged.status.x).toBe("learning");
+    expect(merged.srs?.x.confirming).toBe(true);
   });
   it("trạng thái mới hơn thắng dù bậc thấp hơn", () => {
     const merged = mergeData(
@@ -132,6 +141,15 @@ describe("lịch ôn Leitner", () => {
   it("dùng trạng thái cũ để lên lịch kiểm tra lại từ mốc đổi trạng thái", () => {
     const oldMasteredAt = dueAfterDays(now, -45);
     expect(scheduleFor("x", { x: "mastered" }, {}, { x: oldMasteredAt }, now)?.due).toBeLessThan(now);
+  });
+  it("hiển thị đang xác nhận từ lịch riêng, không cần đổi trạng thái chính", () => {
+    expect(displayedStatus("x", { x: "learning" }, { x: { box: 1, due: 10, at: 1, confirming: true } })).toBe(
+      "confirming",
+    );
+    expect(displayedStatus("x", { x: "learning" }, { x: { box: 1, due: 10, at: 1 } })).toBe("learning");
+  });
+  it("không đưa từ đã thuộc thật trở lại hàng đợi ôn tự động", () => {
+    expect(dueReviewIds(["x"], { x: "mastered" }, { x: { box: 3, due: now - 1, at: now - 100 } }, {}, now)).toEqual([]);
   });
   it("hàng đợi chỉ lấy từ đến hạn, xếp quá hạn trước và giới hạn 20 từ", () => {
     const schedules = Object.fromEntries(

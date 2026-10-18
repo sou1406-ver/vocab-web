@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { LESSON_BY_N } from "@/lib/data";
 import { makeQuiz } from "@/lib/quiz";
 import { resumeLesson } from "@/lib/progress";
-import { dueReviewIds } from "@/lib/srs";
+import { displayedStatus, dueReviewIds } from "@/lib/srs";
 import { shuffle } from "@/lib/util";
 import { useProfile } from "./profile";
 import { NET_DEFAULT, useUI } from "./ui";
@@ -12,17 +12,17 @@ import { NET_DEFAULT, useUI } from "./ui";
 /** Dựng lại bộ flashcard theo bộ lọc hiện tại */
 export function buildDeck() {
   const { fc, setFc } = useUI.getState();
-  const { catalog, status } = useProfile.getState();
+  const { catalog, status, srs } = useProfile.getState();
   let deck = catalog.scope(fc.unit, fc.lesson);
-  if (fc.status === "unmastered") deck = deck.filter((w) => status[w.id] !== "mastered");
-  else if (fc.status !== "all") deck = deck.filter((w) => (status[w.id] ?? "new") === fc.status);
+  if (fc.status === "unmastered") deck = deck.filter((w) => displayedStatus(w.id, status, srs ?? {}) !== "mastered");
+  else if (fc.status !== "all") deck = deck.filter((w) => displayedStatus(w.id, status, srs ?? {}) === fc.status);
   setFc({ deck: deck.map((w) => w.id), i: 0, flipped: false, stale: false });
 }
 
 /** Tạo đề tự luyện mới theo bộ lọc hiện tại */
 export function startQuiz() {
   const { quiz, setQuiz } = useUI.getState();
-  const { catalog, status } = useProfile.getState();
+  const { catalog, status, srs } = useProfile.getState();
   const roots =
     quiz.forWord && catalog.byId[quiz.forWord]
       ? [catalog.byId[quiz.forWord]]
@@ -31,7 +31,9 @@ export function startQuiz() {
           .filter(
             (w) =>
               quiz.only === "all" ||
-              (quiz.only === "unmastered" ? status[w.id] !== "mastered" : (status[w.id] ?? "new") === quiz.only),
+              (quiz.only === "unmastered"
+                ? displayedStatus(w.id, status, srs ?? {}) !== "mastered"
+                : displayedStatus(w.id, status, srs ?? {}) === quiz.only),
           );
   setQuiz({
     qs: makeQuiz(catalog, quiz.type, roots),

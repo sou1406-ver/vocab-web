@@ -16,9 +16,10 @@ import {
   type Catalog,
 } from "@/lib/data";
 import { matchReason } from "@/lib/search";
-import type { Status, Word } from "@/lib/types";
+import type { ReviewSchedule, Status, Word } from "@/lib/types";
 import { cx, fold, lower, scrollBehavior } from "@/lib/util";
 import { useProfile } from "@/state/profile";
+import { displayedStatus } from "@/lib/srs";
 import { NET_DEFAULT, useUI, type NetState } from "@/state/ui";
 import { WordCanvas } from "./WordCanvas";
 
@@ -64,9 +65,10 @@ export function networkList(
   n: NetState,
   status: Record<string, Status>,
   stats: Record<string, { w: number }>,
+  srs: Record<string, ReviewSchedule> = {},
 ): Word[] {
   const matches = (w: Word) => {
-    const s = status[w.id] ?? "new";
+    const s = displayedStatus(w.id, status, srs);
     if (n.status === "unmastered" ? s === "mastered" : n.status !== "all" && s !== n.status) return false;
     if (n.pos === "phr" ? !isPhrase(w) : n.pos !== "all" && (isPhrase(w) || w.pos !== n.pos)) return false;
     if (n.affix !== "all" && !familyOf(w).some((f) => f.parts?.includes(n.affix))) return false;
@@ -138,14 +140,14 @@ function FilterRow({ net, onChange }: { net: NetState; onChange: (p: Partial<Net
 export function NetworkPage() {
   const navigate = useNavigate();
   const { id: paramId, form } = useParams();
-  const { catalog, status, stats } = useProfile();
+  const { catalog, status, stats, srs } = useProfile();
   const net = useUI((s) => s.net);
   const setNet = useUI((s) => s.setNet);
   const [q, setQ] = useState(net.q);
   const listRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLDivElement>(null);
 
-  const list = useMemo(() => networkList(catalog, net, status, stats), [catalog, net, status, stats]);
+  const list = useMemo(() => networkList(catalog, net, status, stats, srs ?? {}), [catalog, net, status, stats, srs]);
 
   // Từ đang mở (theo link) có thể nằm ngoài bộ lọc hiện tại: vẫn hiện từ đó, GIỮ NGUYÊN bộ lọc và danh sách
   const linked = paramId ? catalog.byId[paramId] : undefined;

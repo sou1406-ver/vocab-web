@@ -3,6 +3,7 @@ import { useSearchParams } from "react-router-dom";
 import { Icon } from "@/components/Icon";
 import { EVERYDAY_ENTRIES, EVERYDAY_KIND_LABEL, type EverydayKind, type UsageLevel } from "@/data/everyday";
 import { STATUS_INFO } from "@/lib/data";
+import { displayedStatus } from "@/lib/srs";
 import type { Status } from "@/lib/types";
 import { fold, shuffle } from "@/lib/util";
 import { useProfile } from "@/state/profile";
@@ -48,13 +49,13 @@ export function EverydayPage() {
   const [quizIndex, setQuizIndex] = useState(0);
   const [quizChoice, setQuizChoice] = useState<string | null>(null);
   const [quizCorrect, setQuizCorrect] = useState(0);
-  const { status, setStatus, logActivity, recordAnswer } = useProfile();
+  const { status, srs, setStatus, logActivity, recordAnswer } = useProfile();
   const visible = useMemo(() => {
     const q = fold(query.trim());
     return EVERYDAY_ENTRIES.filter((entry) => {
       const matchesKind = filter === "all" || entry.kind === filter;
       const matchesUsage = usageFilter === "all" || entry.usageLevel === usageFilter;
-      const entryStatus: Status = status[statusId(entry.id)] ?? "new";
+      const entryStatus = displayedStatus(statusId(entry.id), status, srs ?? {});
       const matchesStatus = statusFilter === "all" || entryStatus === statusFilter;
       const senseText =
         entry.otherSenses?.map((sense) => `${sense.meaning} ${sense.definition} ${sense.example}`).join(" ") ?? "";
@@ -63,9 +64,11 @@ export function EverydayPage() {
         fold(`${entry.text} ${entry.meaning} ${entry.definition} ${entry.example ?? ""} ${senseText}`).includes(q);
       return matchesKind && matchesUsage && matchesStatus && matchesQuery;
     });
-  }, [filter, usageFilter, statusFilter, query, status]);
+  }, [filter, usageFilter, statusFilter, query, status, srs]);
   const displayed = visible.slice(0, displayLimit);
-  const studied = EVERYDAY_ENTRIES.filter((entry) => status[statusId(entry.id)] === "mastered").length;
+  const studied = EVERYDAY_ENTRIES.filter(
+    (entry) => displayedStatus(statusId(entry.id), status, srs ?? {}) === "mastered",
+  ).length;
   const current = studyIds ? EVERYDAY_ENTRIES.find((entry) => entry.id === studyIds[studyIndex]) : null;
   const quizCurrent = quiz ? EVERYDAY_ENTRIES.find((entry) => entry.id === quiz[quizIndex]?.id) : null;
   const setKindFilter = (kind: (typeof FILTERS)[number]) => {
@@ -79,13 +82,16 @@ export function EverydayPage() {
   useEffect(() => {
     if (!reviewMode || reviewStarted.current) return;
     reviewStarted.current = true;
-    const ids = EVERYDAY_ENTRIES.filter((entry) => status[statusId(entry.id)] === "learning").map((entry) => entry.id);
+    const ids = EVERYDAY_ENTRIES.filter((entry) => {
+      const state = displayedStatus(statusId(entry.id), status, srs ?? {});
+      return state === "learning" || state === "confirming";
+    }).map((entry) => entry.id);
     if (ids.length) {
       setStudyIds(ids);
       setStudyIndex(0);
       setRevealed(false);
     }
-  }, [reviewMode, status]);
+  }, [reviewMode, status, srs]);
 
   const startStudy = () => {
     if (!visible.length) return;
@@ -408,7 +414,7 @@ export function EverydayPage() {
 
           <section className="everyday-grid" aria-label="Các cụm từ đời thường">
             {displayed.map((entry) => {
-              const learned: Status = status[statusId(entry.id)] ?? "new";
+              const learned: Status = displayedStatus(statusId(entry.id), status, srs ?? {});
               return (
                 <article className="card everyday-item" key={entry.id}>
                   <div className="row between">

@@ -4,6 +4,7 @@ import { Chips, Ipa, Morph, PosTag, SpeakBtn } from "@/components/bits";
 import { Icon } from "@/components/Icon";
 import { FreqMeter } from "@/components/FreqMeter";
 import { familyOf, lessonLabel, LESSON_BY_N, POS_COLS, STATUS_INFO, termInfo, TOPIC_BY_ID, unitOf } from "@/lib/data";
+import { displayedStatus } from "@/lib/srs";
 import type { FamilyEntry, Status, Word } from "@/lib/types";
 import { lower, same } from "@/lib/util";
 import { goLesson, useActions } from "@/state/actions";
@@ -64,7 +65,7 @@ export function WordCanvas({ w, prev, next, lesson }: { w: Word; prev?: Word; ne
   const act = useActions();
   const { catalog, setStatus, markRemembered, srs } = useProfile();
   const st: Status = useProfile((s) => s.status[w.id] ?? "new");
-  const displayStatus: Status = srs?.[w.id]?.confirming ? "confirming" : st;
+  const displayStatus: Status = displayedStatus(w.id, { [w.id]: st }, srs ?? {});
   const setModal = useUI((s) => s.setModal);
 
   const fam = familyOf(w);
@@ -146,7 +147,7 @@ export function WordCanvas({ w, prev, next, lesson }: { w: Word; prev?: Word; ne
             >
               {Object.entries(STATUS_INFO).map(([k, v]) => (
                 <option key={k} value={k}>
-                  {v.label}
+                  {k === "mastered" ? "Đã nhớ" : v.label}
                 </option>
               ))}
             </select>

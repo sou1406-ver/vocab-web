@@ -4,6 +4,7 @@ import type { BookScore, DayLog, Profile, ProfileData, Status, Word } from "@/li
 import { dayKey, storage } from "@/lib/util";
 import {
   markReviewedToday,
+  displayedStatus,
   mergeDailyReviews,
   mergeSchedules,
   scheduleAnswer,
@@ -54,6 +55,14 @@ export function readProfileData(pid: string): ProfileData {
   const d = emptyData();
   for (const k of PROFILE_KEYS)
     (d as unknown as Record<string, unknown>)[FIELD[k]] = storage.get(`${k}@${pid}`, d[FIELD[k]]);
+  // Older builds stored the pending marker in status. Keep its review schedule,
+  // but restore the underlying state until the third spaced test passes.
+  for (const [id, value] of Object.entries(d.status)) {
+    if (value !== "confirming") continue;
+    const schedule = scheduleFor(id, d.status, d.srs ?? {}, d.statusAt);
+    if (schedule) (d.srs ??= {})[id] = schedule;
+    d.status[id] = "learning";
+  }
   return d;
 }
 export function writeProfileData(pid: string, d: ProfileData) {
@@ -181,9 +190,13 @@ export const useProfile = create<ProfileState>()((set, get) => {
     catalog: buildCatalog(initData.custom),
 
     profile: () => get().profiles.find((p) => p.id === get().current) ?? get().profiles[0],
-    statusOf: (id) => get().status[id] ?? "new",
+    statusOf: (id) => displayedStatus(id, get().status, get().srs ?? {}),
 
     setStatus: (id, s) => {
+      if (s === "mastered" || s === "confirming") {
+        get().markRemembered(id);
+        return;
+      }
       const status = { ...get().status };
       const timestamps = get().statusAt ?? {};
       const now = Date.now();
@@ -196,21 +209,18 @@ export const useProfile = create<ProfileState>()((set, get) => {
         patch.reviewedToday = markReviewedToday(get().reviewedToday, id, now);
       if (s === "new") delete status[id];
       else status[id] = s;
-      if (s === "mastered" && get().status[id] !== "mastered") patch.log = bumpLog((e) => e.m++);
       save({ ...patch, status, statusAt, srs });
     },
     markRemembered: (id) => {
-      const status = { ...get().status, [id]: "confirming" as const };
+      if (get().status[id] === "mastered") return;
+      const status = { ...get().status };
       const timestamps = get().statusAt ?? {};
       const now = Date.now();
-      const statusAt = { ...timestamps, [id]: Math.max(now, (timestamps[id] ?? 0) + 1) };
       const existingSchedules = get().srs ?? {};
       const previousSchedule = scheduleFor(id, get().status, existingSchedules, timestamps, now);
       const srs = { ...existingSchedules };
       srs[id] = scheduleRating(id, "confirming", status, srs, timestamps, now);
       save({
-        status,
-        statusAt,
         srs,
         ...(!id.startsWith("everyday:") && previousSchedule && previousSchedule.due <= now
           ? { reviewedToday: markReviewedToday(get().reviewedToday, id, now) }
@@ -224,7 +234,7 @@ export const useProfile = create<ProfileState>()((set, get) => {
       const now = Date.now();
       const previousSchedule = scheduleFor(id, currentStatus, srs, currentStatusAt, now);
       const nextSchedule = scheduleAnswer(id, ok, currentStatus, srs, currentStatusAt, now);
-      srs[id] = nextSchedule;
+      if (currentStatus[id] !== "mastered") srs[id] = nextSchedule;
       const stats = { ...get().stats };
       const st = { ...(stats[id] ?? { c: 0, w: 0 }) };
       if (ok) st.c++;
@@ -237,12 +247,11 @@ export const useProfile = create<ProfileState>()((set, get) => {
       const patch: Partial<ProfileData> = { stats, log, srs };
       if (!id.startsWith("everyday:") && previousSchedule && previousSchedule.due <= now)
         patch.reviewedToday = markReviewedToday(get().reviewedToday, id, now);
-      if (!ok && currentStatus[id] !== "learning") {
+      if (!ok && currentStatus[id] !== "mastered" && currentStatus[id] !== "learning") {
         patch.status = { ...currentStatus, [id]: "learning" };
         patch.statusAt = { ...currentStatusAt, [id]: Math.max(now, (currentStatusAt[id] ?? 0) + 1) };
       } else if (
         ok &&
-        currentStatus[id] === "confirming" &&
         previousSchedule?.confirming &&
         !nextSchedule.confirming &&
         (nextSchedule.confirmations ?? 0) >= 3
@@ -316,7 +325,7 @@ export const useProfile = create<ProfileState>()((set, get) => {
       const status = { ...cur.status };
       for (const [id, value] of Object.entries(d.status ?? {})) {
         if (value === "new") delete status[id];
-        else status[id] = value;
+        else status[id] = value === "confirming" ? "learning" : value;
         // Import is an explicit user action; make imported states newer than the current local copy.
         statusAt[id] = importedAt;
         if (!d.srs?.[id]) srs[id] = scheduleRating(id, value, status, srs, statusAt, importedAt);

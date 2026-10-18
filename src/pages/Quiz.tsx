@@ -381,7 +381,8 @@ function AutoQuiz() {
       wrong: s.wrong + (ok ? 0 : 1),
       missed: ok ? s.missed : [...new Set([...s.missed, q.root.id])],
     });
-    const wasConfirming = useProfile.getState().status[q.root.id] === "confirming";
+    const before = useProfile.getState();
+    const wasConfirming = Boolean(before.srs?.[q.root.id]?.confirming || before.status[q.root.id] === "confirming");
     recordAnswer(q.root.id, ok);
     if (ok && wasConfirming && useProfile.getState().status[q.root.id] === "mastered")
       toast(`${q.root.word}: Đã xác nhận thuộc sau 3 lượt đúng cách quãng!`);

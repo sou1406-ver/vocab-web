@@ -8,7 +8,7 @@ import CountUp from "@/components/reactbits/CountUp";
 import SpotlightCard from "@/components/reactbits/SpotlightCard";
 import { LESSONS, targetInfo, termInfo, TOPICS, unitOf, WORDS } from "@/lib/data";
 import { lessonBookDone, lessonProgress, pct, resumeLesson } from "@/lib/progress";
-import { DAILY_REVIEW_LIMIT, dueReviewIds } from "@/lib/srs";
+import { DAILY_REVIEW_LIMIT, displayedStatus, dueReviewIds } from "@/lib/srs";
 import type { DayLog } from "@/lib/types";
 import { cx, dayKey } from "@/lib/util";
 import { useActions } from "@/state/actions";
@@ -138,8 +138,11 @@ export function Dashboard() {
   const done = today.a + today.f;
   const goal = p.goal || 20;
   const streak = streakOf(log);
-  const mastered = WORDS.filter((w) => status[w.id] === "mastered").length;
-  const learning = WORDS.filter((w) => status[w.id] === "learning" || status[w.id] === "confirming").length;
+  const mastered = WORDS.filter((w) => displayedStatus(w.id, status, srs ?? {}) === "mastered").length;
+  const learning = WORDS.filter((w) => {
+    const state = displayedStatus(w.id, status, srs ?? {});
+    return state === "learning" || state === "confirming";
+  }).length;
   const dueToday = dueReviewIds(
     Object.keys(catalog.byId),
     status,
@@ -164,7 +167,7 @@ export function Dashboard() {
   const next = resumeLesson(catalog, status);
   const np = lessonProgress(catalog, status, next.n);
   const weak = Object.entries(stats)
-    .filter(([id, s]) => catalog.byId[id] && s.w > 0 && status[id] !== "mastered")
+    .filter(([id, s]) => catalog.byId[id] && s.w > 0 && displayedStatus(id, status, srs ?? {}) !== "mastered")
     .sort((a, b) => b[1].w - a[1].w || a[1].c - b[1].c)
     .slice(0, 8);
   const recent = Object.entries(book)
@@ -325,7 +328,7 @@ export function Dashboard() {
           <ul className="d-unit-list">
             {TOPICS.map((tp, i) => {
               const ws = WORDS.filter((w) => unitOf(w) === tp.id);
-              const m = ws.filter((w) => status[w.id] === "mastered").length;
+              const m = ws.filter((w) => displayedStatus(w.id, status, srs ?? {}) === "mastered").length;
               return (
                 <li key={tp.id}>
                   <button className="d-unit" onClick={() => act.openUnit(tp.id, "network")}>

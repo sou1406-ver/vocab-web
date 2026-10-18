@@ -5,6 +5,7 @@ import { Icon } from "@/components/Icon";
 import BlurText from "@/components/reactbits/BlurText";
 import { LESSONS, termInfo, unitOf } from "@/lib/data";
 import { lessonBookDone, lessonProgress, pct, resumeLesson } from "@/lib/progress";
+import { displayedStatus } from "@/lib/srs";
 import type { Topic } from "@/lib/types";
 import { cx } from "@/lib/util";
 import { useActions } from "@/state/actions";
@@ -13,9 +14,9 @@ import { useUI } from "@/state/ui";
 
 function UnitBlock({ t, i }: { t: Topic; i: number }) {
   const act = useActions();
-  const { catalog, status, book } = useProfile();
+  const { catalog, status, book, srs } = useProfile();
   const words = catalog.all.filter((w) => unitOf(w) === t.id);
-  const m = words.filter((w) => status[w.id] === "mastered").length;
+  const m = words.filter((w) => displayedStatus(w.id, status, srs ?? {}) === "mastered").length;
   const lessons = t.id === "custom" ? [] : LESSONS.filter((l) => l.unit === t.id);
   return (
     <section className="unit">
@@ -75,11 +76,11 @@ function UnitBlock({ t, i }: { t: Topic; i: number }) {
 export function TopicsPage() {
   const act = useActions();
   const setModal = useUI((s) => s.setModal);
-  const { catalog, status } = useProfile();
+  const { catalog, status, srs } = useProfile();
   const total = catalog.all.length;
-  const mastered = catalog.all.filter((w) => status[w.id] === "mastered").length;
-  const learning = catalog.all.filter((w) => status[w.id] === "learning").length;
-  const confirming = catalog.all.filter((w) => status[w.id] === "confirming").length;
+  const mastered = catalog.all.filter((w) => displayedStatus(w.id, status, srs ?? {}) === "mastered").length;
+  const learning = catalog.all.filter((w) => displayedStatus(w.id, status, srs ?? {}) === "learning").length;
+  const confirming = catalog.all.filter((w) => displayedStatus(w.id, status, srs ?? {}) === "confirming").length;
   const next = resumeLesson(catalog, status);
   const np = lessonProgress(catalog, status, next.n);
 

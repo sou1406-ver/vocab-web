@@ -5,23 +5,29 @@ import { Icon } from "@/components/Icon";
 import { FreqMeter } from "@/components/FreqMeter";
 import { EVERYDAY_ENTRIES, EVERYDAY_KIND_LABEL } from "@/data/everyday";
 import { lessonLabel, termInfo } from "@/lib/data";
+import { displayedStatus } from "@/lib/srs";
 import { useActions } from "@/state/actions";
 import { useProfile } from "@/state/profile";
 
 export function ReviewPage() {
   const [filter, setFilter] = useState<"all" | "weak" | "learning">("all");
   const [collection, setCollection] = useState<"toeic" | "everyday">("toeic");
-  const { catalog, status, stats } = useProfile();
+  const { catalog, status, stats, srs } = useProfile();
   const act = useActions();
   const words = catalog
     .scope("all", "all")
     .map((word) => ({
       word,
       misses: stats[word.id]?.w ?? 0,
-      learning: status[word.id] === "learning" || status[word.id] === "confirming",
-      confirming: status[word.id] === "confirming",
+      learning:
+        displayedStatus(word.id, status, srs ?? {}) === "learning" ||
+        displayedStatus(word.id, status, srs ?? {}) === "confirming",
+      confirming: displayedStatus(word.id, status, srs ?? {}) === "confirming",
     }))
-    .filter(({ word, misses, learning }) => learning || (misses > 0 && status[word.id] !== "mastered"))
+    .filter(
+      ({ word, misses, learning }) =>
+        learning || (misses > 0 && displayedStatus(word.id, status, srs ?? {}) !== "mastered"),
+    )
     .sort(
       (a, b) =>
         b.misses - a.misses || Number(b.learning) - Number(a.learning) || a.word.word.localeCompare(b.word.word),

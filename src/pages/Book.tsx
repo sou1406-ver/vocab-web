@@ -138,7 +138,10 @@ function useCheck() {
       if (r.ok) right++;
       const fam = familyLookup(catalog, r.answer);
       if (fam) {
-        const wasConfirming = useProfile.getState().status[fam.root.id] === "confirming";
+        const before = useProfile.getState();
+        const wasConfirming = Boolean(
+          before.srs?.[fam.root.id]?.confirming || before.status[fam.root.id] === "confirming",
+        );
         recordAnswer(fam.root.id, r.ok);
         if (wasConfirming && useProfile.getState().status[fam.root.id] === "mastered") confirmed++;
       }
