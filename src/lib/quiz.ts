@@ -1,5 +1,6 @@
 import { AFFIX_GROUPS, AFFIXES, familyOf, RARE_AFFIXES, unitOf, type Catalog } from "./data";
-import type { FamilyEntry, Word } from "./types";
+import { scheduleFor } from "./srs";
+import type { FamilyEntry, ReviewSchedule, Status, Word } from "./types";
 import { escRe, lower, pick, same, shuffle, uniq } from "./util";
 
 /* Sinh câu hỏi tự luyện từ dữ liệu trường từ. Hàm thuần — không đụng tới giao diện. */
@@ -42,7 +43,45 @@ export interface ListeningQ {
   kind: "listening";
   root: Word;
 }
-export type Question = FormationQ | SynonymQ | MeaningQ | BuildQ | RecallQ | ListeningQ;
+export interface AdaptiveChoiceQ {
+  kind: "adaptive-choice";
+  root: Word;
+  level: 1 | 2;
+  options: string[];
+}
+export interface AdaptiveClozeQ {
+  kind: "adaptive-cloze";
+  root: Word;
+  s: string;
+  m: { index: number; text: string };
+  entry: FamilyEntry;
+  options: string[];
+}
+export interface AdaptiveHintQ {
+  kind: "adaptive-hint";
+  root: Word;
+  s: string;
+  m: { index: number; text: string };
+  translation: string;
+  alternatives: string[];
+}
+export interface AdaptiveRecallQ {
+  kind: "adaptive-recall";
+  root: Word;
+  listening: boolean;
+  alternatives: string[];
+}
+export type Question =
+  | FormationQ
+  | SynonymQ
+  | MeaningQ
+  | BuildQ
+  | RecallQ
+  | ListeningQ
+  | AdaptiveChoiceQ
+  | AdaptiveClozeQ
+  | AdaptiveHintQ
+  | AdaptiveRecallQ;
 
 export const QUIZ_LEN = 10;
 
@@ -112,6 +151,39 @@ export function typedAnswerMatches(answer: string, expected: string) {
   return lower(answer) === lower(expected);
 }
 
+/** A one-character typo or another form from the same family is close, not a failed review. */
+export function typedAnswerQuality(answer: string, expected: string, alternatives: string[] = []) {
+  const normalize = (value: string) => lower(value).replace(/\s+/g, " ");
+  const actual = normalize(answer);
+  const accepted = normalize(expected);
+  if (actual === accepted) return "correct" as const;
+  const candidates = [expected, ...alternatives].map(normalize).filter(Boolean);
+  if (candidates.some((candidate) => actual === candidate || withinOneEdit(actual, candidate))) return "close" as const;
+  return "wrong" as const;
+}
+
+function withinOneEdit(a: string, b: string) {
+  if (!a || !b || Math.abs(a.length - b.length) > 1) return false;
+  let i = 0;
+  let j = 0;
+  let edits = 0;
+  while (i < a.length && j < b.length) {
+    if (a[i] === b[j]) {
+      i++;
+      j++;
+    } else {
+      if (++edits > 1) return false;
+      if (a.length > b.length) i++;
+      else if (b.length > a.length) j++;
+      else {
+        i++;
+        j++;
+      }
+    }
+  }
+  return edits + Number(i < a.length || j < b.length) <= 1;
+}
+
 export function listeningQs(roots: Word[]): ListeningQ[] {
   return roots.map((root) => ({ kind: "listening", root }));
 }
@@ -162,7 +234,100 @@ export function buildQs(roots: Word[]): BuildQ[] {
   });
 }
 
-export function makeQuiz(cat: Catalog, type: string, roots: Word[]): Question[] {
+function choicesFor(correct: string, preferred: string[], fallback: string[]) {
+  const options = uniq([correct, ...shuffle(preferred), ...shuffle(fallback)]).slice(0, 4);
+  return shuffle(options);
+}
+
+function familyAlternatives(root: Word, expected = "") {
+  return uniq(
+    familyOf(root)
+      .map((entry) => entry.w)
+      .filter((word) => !same(word, expected)),
+  );
+}
+
+function distractors(cat: Catalog, root: Word, level: 1 | 2, n = 3) {
+  const pool = cat.all.filter((word) => word.id !== root.id);
+  const near = (word: Word) => word.lesson === root.lesson || word.pos === root.pos;
+  const primary =
+    level === 1
+      ? pool.filter((word) => !near(word) && lower(word.word)[0] !== lower(root.word)[0])
+      : pool.filter((word) => word.lesson === root.lesson && word.pos === root.pos);
+  const secondary = pool.filter((word) => !primary.includes(word));
+  return shuffle(uniq([...primary, ...secondary].map((word) => word.word))).slice(0, n);
+}
+
+function clozeExamples(root: Word) {
+  const family = familyOf(root);
+  const self = family.find((entry) => same(entry.w, root.word)) ?? family[0];
+  const candidates = [
+    ...family.flatMap((entry) => (entry.ex ? [{ entry, sentence: entry.ex, translation: entry.exVi ?? "" }] : [])),
+    ...(root.ex ?? []).map((sentence, index) => ({
+      entry: self,
+      sentence,
+      translation: root.exVi?.[index] ?? "",
+    })),
+  ];
+  return uniq(candidates, (candidate) => candidate.sentence.toLocaleLowerCase()).flatMap((candidate) => {
+    const match = findForm(candidate.sentence, candidate.entry.w);
+    return match ? [{ ...candidate, match }] : [];
+  });
+}
+
+function adaptiveQuestion(cat: Catalog, root: Word, box: number): Question {
+  const family = familyOf(root);
+  const closeForms = familyAlternatives(root);
+  if (box <= 1 || box === 2) {
+    const level = box <= 1 ? 1 : 2;
+    const options = choicesFor(root.word, distractors(cat, root, level), distractors(cat, root, level === 1 ? 2 : 1));
+    return { kind: "adaptive-choice", root, level, options };
+  }
+  if (box === 3) {
+    const example = pick(clozeExamples(root));
+    if (!example)
+      return { kind: "adaptive-choice", root, level: 2, options: choicesFor(root.word, [], distractors(cat, root, 2)) };
+    const siblings = family.map((entry) => entry.w).filter((word) => !same(word, example.match.text));
+    return {
+      kind: "adaptive-cloze",
+      root,
+      s: example.sentence,
+      m: example.match,
+      entry: example.entry,
+      options: choicesFor(example.match.text, siblings, distractors(cat, root, 2)),
+    };
+  }
+  if (box === 4) {
+    const example = pick(clozeExamples(root));
+    if (!example) return { kind: "adaptive-recall", root, listening: false, alternatives: closeForms };
+    return {
+      kind: "adaptive-hint",
+      root,
+      s: example.sentence,
+      m: example.match,
+      translation: example.translation,
+      alternatives: familyAlternatives(root, example.match.text),
+    };
+  }
+  return { kind: "adaptive-recall", root, listening: box >= 6 || Math.random() < 0.5, alternatives: closeForms };
+}
+
+export function makeQuiz(
+  cat: Catalog,
+  type: string,
+  roots: Word[],
+  schedules: Record<string, ReviewSchedule> = {},
+  status: Record<string, Status> = {},
+  statusAt: Record<string, number> = {},
+): Question[] {
+  if (type === "mixed") {
+    return shuffle(roots)
+      .slice(0, QUIZ_LEN)
+      .map((root) => {
+        const box = scheduleFor(root.id, status, schedules, statusAt)?.box ?? 1;
+        return adaptiveQuestion(cat, root, box);
+      });
+  }
   const gen: Record<string, () => Question[]> = {
     formation: () => formationQs(roots),
     synonym: () => synonymQs(cat, roots),
@@ -171,14 +336,15 @@ export function makeQuiz(cat: Catalog, type: string, roots: Word[]): Question[] 
     recall: () => recallQs(roots),
     listening: () => listeningQs(roots),
   };
-  const qs =
-    type === "mixed" ? shuffle(Object.values(gen).flatMap((g) => shuffle(g()).slice(0, 4))) : (gen[type]?.() ?? []);
+  const qs = gen[type]?.() ?? [];
   return shuffle(qs).slice(0, QUIZ_LEN);
 }
 
 /** Đáp án đúng cho câu chọn đáp án */
 export function isRightChoice(q: Question, i: number) {
   if (q.kind === "formation") return same(q.options[i], q.m.text);
+  if (q.kind === "adaptive-choice") return same(q.options[i], q.root.word);
+  if (q.kind === "adaptive-cloze") return same(q.options[i], q.m.text);
   if (q.kind === "synonym") return same(q.options[i], q.correct);
   if (q.kind === "meaning") return q.options[i] === q.root;
   return false;

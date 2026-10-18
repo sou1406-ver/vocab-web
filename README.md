@@ -31,13 +31,17 @@ flashcard, và đồng bộ tiến độ qua tài khoản Google.
 **Luyện & ôn tập**
 
 - **Flashcard 3D** — lật thẻ, tự chấm Chưa nhớ / Đang học / Đã thuộc (phím `Space`, `1` `2` `3`, `←` `→`).
+  Hộp 1–2 có câu ví dụ trên mặt trước; từ hộp 4 trở lên chỉ hiện nghĩa tiếng Việt để tự nhớ từ.
 - **Bài tập trong sách** — Words in Context (50 đoạn, 600 chỗ trống), Part 5 (300 câu), Part 6 (50 đoạn, 150 chỗ trống),
   Word Review (10 bài × 19 câu):
   chấm điểm, chỉ đáp án đúng, dẫn về trường từ liên quan, lưu điểm cao nhất.
 - **Tự luyện** — biến đổi từ loại (chọn đáp án hoặc tự gõ), đồng nghĩa / trái nghĩa, nghĩa của từ, ghép tiền tố + gốc + hậu tố,
-  điền từ vào câu và nghe phát âm rồi gõ lại. Đáp án gõ được chuẩn hoá chữ thường và khoảng trắng đầu/cuối.
+  điền từ vào câu và nghe phát âm rồi gõ lại. Chế độ **Theo bậc** tự chọn câu hỏi từ nhận diện đến tự gõ theo hộp ôn;
+  các dạng bài cố định vẫn có thể chọn riêng. Đáp án gõ được chuẩn hoá chữ thường và khoảng trắng đầu/cuối.
 - **Ôn tập ngắt quãng** — các hộp ôn cách nhau 1, 3, 7, 14, 30 và 60 ngày; trang chủ gom từ đến hạn, tối đa 20 từ mỗi ngày.
+  Bậc câu hỏi đi theo hộp: chọn đáp án dễ → phân biệt → điền câu → tự gõ có gợi ý → tự nhớ / nghe rồi gõ.
   Từ người học tự đánh dấu “Đã thuộc” được kiểm tra lại qua 3 lượt đúng theo lịch cách quãng mới thành thuộc hẳn; từ đã thuộc vẫn quay lại lịch ôn.
+  Gõ gần đúng ở bậc 4–5 không tăng/giảm hộp và không tính là sai.
 - **Giới hạn từ mới** — mặc định 10 từ TOEIC mỗi ngày, có thể đổi trong hồ sơ. Giới hạn chỉ áp dụng khi bắt đầu học từ mới;
   bài kiểm tra vẫn ghi nhận kết quả. Bộ cụm từ đời thường có tiến độ riêng và không dùng quota TOEIC.
 

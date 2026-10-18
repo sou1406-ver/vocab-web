@@ -50,7 +50,8 @@ export interface QuizState {
   missed: string[];
   answered: boolean;
   picked: number[];
-  last: { ok: boolean; pick?: number } | null;
+  last: { ok: boolean; pick?: number; close?: boolean } | null;
+  close: number;
   stale: boolean;
 }
 
@@ -101,7 +102,7 @@ export const useUI = create<UIState>()((set, get) => ({
   fc: { unit: "all", lesson: "1", status: "all", deck: [], i: 0, flipped: false, stale: true },
   quiz: {
     mode: "book",
-    type: "formation",
+    type: "mixed",
     unit: "all",
     lesson: "1",
     only: "all",
@@ -111,6 +112,7 @@ export const useUI = create<UIState>()((set, get) => ({
     i: 0,
     right: 0,
     wrong: 0,
+    close: 0,
     missed: [],
     answered: false,
     picked: [],

@@ -22,7 +22,7 @@ export function buildDeck() {
 /** Tạo đề tự luyện mới theo bộ lọc hiện tại */
 export function startQuiz() {
   const { quiz, setQuiz } = useUI.getState();
-  const { catalog, status, srs } = useProfile.getState();
+  const { catalog, status, statusAt, srs } = useProfile.getState();
   const roots =
     quiz.forWord && catalog.byId[quiz.forWord]
       ? [catalog.byId[quiz.forWord]]
@@ -36,10 +36,11 @@ export function startQuiz() {
                 : displayedStatus(w.id, status, srs ?? {}) === quiz.only),
           );
   setQuiz({
-    qs: makeQuiz(catalog, quiz.type, roots),
+    qs: makeQuiz(catalog, quiz.type, roots, srs ?? {}, status, statusAt ?? {}),
     i: 0,
     right: 0,
     wrong: 0,
+    close: 0,
     missed: [],
     answered: false,
     picked: [],

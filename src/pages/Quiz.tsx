@@ -6,7 +6,7 @@ import { FreqMeter } from "@/components/FreqMeter";
 import { LessonNav, ScopeSelects } from "@/components/LessonNav";
 import ClickSpark, { type ClickSparkHandle } from "@/components/reactbits/ClickSpark";
 import { affixType, familyOf, LESSON_BY_N, POS_LABEL, termInfo } from "@/lib/data";
-import { isRightChoice, typedAnswerMatches, type Question } from "@/lib/quiz";
+import { isRightChoice, typedAnswerMatches, typedAnswerQuality, type Question } from "@/lib/quiz";
 import { speak } from "@/lib/speech";
 import type { FamilyEntry, Word } from "@/lib/types";
 import { cx, lower, same, scrollBehavior } from "@/lib/util";
@@ -22,7 +22,7 @@ const QUIZ_TYPES: Record<QuizType, { label: string; icon: IconName }> = {
   build: { label: "Ghép từ", icon: "puzzle" },
   recall: { label: "Điền từ vào câu", icon: "book" },
   listening: { label: "Nghe & gõ từ", icon: "volume" },
-  mixed: { label: "Tổng hợp", icon: "layers" },
+  mixed: { label: "Theo bậc", icon: "layers" },
 };
 
 export function QuizPage() {
@@ -58,12 +58,14 @@ export function QuizPage() {
 
 function Explain({
   ok,
+  close = false,
   entry,
   root,
   extra,
   onNext,
 }: {
   ok: boolean;
+  close?: boolean;
   entry?: FamilyEntry | null;
   root: Word;
   extra?: ReactNode;
@@ -78,9 +80,9 @@ function Explain({
       box.current.scrollIntoView({ block: "nearest", behavior: scrollBehavior() });
   }, []);
   return (
-    <div className={cx("explain", ok ? "ok" : "bad")} ref={box}>
+    <div className={cx("explain", close ? "close" : ok ? "ok" : "bad")} ref={box}>
       <div style={{ flex: "1 1 300px" }}>
-        <h4>{ok ? "✅ Đúng rồi!" : "❌ Chưa đúng"}</h4>
+        <h4>{close ? "💡 Gần đúng — giữ nguyên bậc" : ok ? "✅ Đúng rồi!" : "❌ Chưa đúng"}</h4>
         {entry && entry.parts && entry.parts.length > 1 && (
           <div className="row" style={{ gap: 4, marginTop: 8 }}>
             <Chips parts={entry.parts} />
@@ -90,7 +92,11 @@ function Explain({
           </div>
         )}
         <p>
-          {extra}
+          {close ? (
+            <>Sai một ký tự hoặc dùng dạng khác trong họ từ nên lượt này không tăng hay giảm hộp ôn. {extra}</>
+          ) : (
+            extra
+          )}
           {entry && (
             <>
               {" "}
@@ -121,7 +127,7 @@ function QuestionView({
   onNext,
 }: {
   q: Question;
-  onAnswer: (ok: boolean, pick?: number) => void;
+  onAnswer: (ok: boolean, pick?: number, close?: boolean) => void;
   onNext: () => void;
 }) {
   const st = useUI((s) => s.quiz);
@@ -150,6 +156,199 @@ function QuestionView({
       })}
     </div>
   );
+
+  if (q.kind === "adaptive-choice") {
+    const title = q.level === 1 ? "Nhận mặt từ" : "Phân biệt từ";
+    return (
+      <>
+        <div className="q-box">
+          <div className="eyebrow">
+            Bậc {q.level} · {title} · Chọn từ khớp với nghĩa:
+          </div>
+          <div className="q-big" style={{ fontSize: "1.5rem", marginTop: 8 }}>
+            {q.root.vi}
+          </div>
+        </div>
+        {choices(
+          q.options,
+          (option) => option,
+          (option) => same(option, q.root.word),
+        )}
+        {st.answered && st.last && (
+          <Explain
+            ok={st.last.ok}
+            root={q.root}
+            extra={
+              st.last.ok ? null : (
+                <>
+                  Đáp án: <b>{q.root.word}</b>.
+                </>
+              )
+            }
+            onNext={onNext}
+          />
+        )}
+      </>
+    );
+  }
+
+  if (q.kind === "adaptive-cloze") {
+    const before = q.s.slice(0, q.m.index);
+    const after = q.s.slice(q.m.index + q.m.text.length);
+    return (
+      <>
+        <div className="q-box">
+          <div className="eyebrow">Bậc 3 · Điền dạng từ đúng vào câu:</div>
+          <div className="q-text">
+            {before}
+            <span className="blank">{st.answered ? q.m.text : "______"}</span>
+            {after}
+          </div>
+          {q.entry.vi && <div className="q-hint">Nghĩa của dạng từ: {q.entry.vi}</div>}
+        </div>
+        {choices(
+          q.options,
+          (option) => option,
+          (option) => same(option, q.m.text),
+        )}
+        {st.answered && st.last && (
+          <Explain
+            ok={st.last.ok}
+            root={q.root}
+            entry={q.entry}
+            extra={
+              st.last.ok ? null : (
+                <>
+                  Đáp án: <b>{q.m.text}</b>.
+                </>
+              )
+            }
+            onNext={onNext}
+          />
+        )}
+      </>
+    );
+  }
+
+  if (q.kind === "adaptive-hint") {
+    const before = q.s.slice(0, q.m.index);
+    const after = q.s.slice(q.m.index + q.m.text.length);
+    return (
+      <>
+        <div className="q-box">
+          <div className="eyebrow">Bậc 4 · Tự điền từ — có gợi ý:</div>
+          <div className="q-text">
+            {before}
+            <span className="blank">{st.answered ? q.m.text : "______"}</span>
+            {after}
+          </div>
+          {q.translation && <div className="q-hint">{q.translation}</div>}
+          <div className="q-hint">
+            Bắt đầu bằng <b>{q.m.text[0]?.toLocaleLowerCase()}</b> · {q.m.text.replace(/\s/g, "").length} chữ cái
+          </div>
+        </div>
+        {!st.answered && (
+          <form
+            className="type-row"
+            onSubmit={(event) => {
+              event.preventDefault();
+              const answer = inputRef.current?.value ?? "";
+              if (!answer.trim()) return;
+              const quality = typedAnswerQuality(answer, q.m.text, q.alternatives);
+              onAnswer(quality === "correct", undefined, quality === "close");
+            }}
+          >
+            <label className="eyebrow" htmlFor="quiz-input">
+              Từ còn thiếu
+            </label>
+            <input
+              ref={inputRef}
+              className="input"
+              id="quiz-input"
+              autoComplete="off"
+              spellCheck={false}
+              placeholder="Nhập từ còn thiếu…"
+            />
+            <button className="btn primary">Kiểm tra</button>
+          </form>
+        )}
+        {st.answered && st.last && (
+          <Explain
+            ok={st.last.ok}
+            close={st.last.close}
+            root={q.root}
+            extra={
+              st.last.ok ? null : (
+                <>
+                  Đáp án: <b>{q.m.text}</b>.
+                </>
+              )
+            }
+            onNext={onNext}
+          />
+        )}
+      </>
+    );
+  }
+
+  if (q.kind === "adaptive-recall") {
+    return (
+      <>
+        <div className="q-box">
+          <div className="eyebrow">Bậc 5–6 · Tự nhớ từ và gõ đáp án:</div>
+          {q.listening ? (
+            <button className="btn soft" type="button" onClick={() => speak(q.root.word)}>
+              <Icon name="volume" size="sm" /> Nghe từ
+            </button>
+          ) : (
+            <div className="q-big" style={{ fontSize: "1.5rem", marginTop: 8 }}>
+              {q.root.vi}
+            </div>
+          )}
+        </div>
+        {!st.answered && (
+          <form
+            className="type-row"
+            onSubmit={(event) => {
+              event.preventDefault();
+              const answer = inputRef.current?.value ?? "";
+              if (!answer.trim()) return;
+              const quality = typedAnswerQuality(answer, q.root.word, q.alternatives);
+              onAnswer(quality === "correct", undefined, quality === "close");
+            }}
+          >
+            <label className="eyebrow" htmlFor="quiz-input">
+              Từ tiếng Anh
+            </label>
+            <input
+              ref={inputRef}
+              className="input"
+              id="quiz-input"
+              autoComplete="off"
+              spellCheck={false}
+              placeholder="Gõ từ bạn nhớ…"
+            />
+            <button className="btn primary">Kiểm tra</button>
+          </form>
+        )}
+        {st.answered && st.last && (
+          <Explain
+            ok={st.last.ok}
+            close={st.last.close}
+            root={q.root}
+            extra={
+              st.last.ok ? null : (
+                <>
+                  Đáp án: <b>{q.root.word}</b>.
+                </>
+              )
+            }
+            onNext={onNext}
+          />
+        )}
+      </>
+    );
+  }
 
   if (q.kind === "listening") {
     return (
@@ -486,18 +685,19 @@ function AutoQuiz() {
 
   const q = st.qs[st.i];
 
-  const answer = (ok: boolean, pick?: number) => {
+  const answer = (ok: boolean, pick?: number, close = false) => {
     const s = useUI.getState().quiz;
     if (s.answered || !q) return;
     const before = useProfile.getState();
     const wasConfirming = Boolean(before.srs?.[q.root.id]?.confirming || before.status[q.root.id] === "confirming");
-    recordAnswer(q.root.id, ok);
+    if (!close) recordAnswer(q.root.id, ok);
     setQuiz({
       answered: true,
-      last: { ok, pick },
+      last: { ok, pick, close },
       right: s.right + (ok ? 1 : 0),
-      wrong: s.wrong + (ok ? 0 : 1),
-      missed: ok ? s.missed : [...new Set([...s.missed, q.root.id])],
+      wrong: s.wrong + (!ok && !close ? 1 : 0),
+      close: s.close + (close ? 1 : 0),
+      missed: ok || close ? s.missed : [...new Set([...s.missed, q.root.id])],
     });
     if (ok && wasConfirming && useProfile.getState().status[q.root.id] === "mastered")
       toast(`${q.root.word}: Đã xác nhận thuộc sau 3 lượt đúng cách quãng!`);
@@ -526,7 +726,11 @@ function AutoQuiz() {
       if (!cur) return;
       const n = parseInt(e.key, 10);
       const typing =
-        cur.kind === "recall" || cur.kind === "listening" || (cur.kind === "formation" && s.style === "typing");
+        cur.kind === "recall" ||
+        cur.kind === "listening" ||
+        cur.kind === "adaptive-hint" ||
+        cur.kind === "adaptive-recall" ||
+        (cur.kind === "formation" && s.style === "typing");
       if (!s.answered && !typing && cur.kind !== "build" && n >= 1 && n <= cur.options.length)
         answer(isRightChoice(cur, n - 1), n - 1);
       else if (s.answered && e.key === "Enter" && (e.target as HTMLElement).id !== "quiz-next") {
@@ -598,6 +802,9 @@ function AutoQuiz() {
         </div>
       </div>
       {!st.forWord && <LessonNav unit={st.unit} lesson={st.lesson} where="quiz" />}
+      {st.type === "mixed" && (
+        <p className="muted">Câu hỏi tự đổi độ khó theo hộp ôn của từng từ, từ trắc nghiệm đến tự gõ đáp án.</p>
+      )}
     </>
   );
 
@@ -609,14 +816,15 @@ function AutoQuiz() {
           Các từ trong phạm vi này không có dữ liệu cho dạng bài đó.
           <br />
           <button className="btn" onClick={() => restart({ type: "mixed" })}>
-            Làm dạng Tổng hợp
+            Làm dạng Theo bậc
           </button>
         </Empty>
       </div>
     );
 
   if (st.i >= st.qs.length) {
-    const p = Math.round((st.right / st.qs.length) * 100);
+    const graded = st.right + st.wrong;
+    const p = graded ? Math.round((st.right / graded) * 100) : 0;
     const nextLesson = !st.forWord && st.lesson !== "all" ? LESSON_BY_N[+st.lesson + 1] : undefined;
     return (
       <div className="stack">
@@ -628,12 +836,12 @@ function AutoQuiz() {
           <h3 style={{ fontSize: "1.5rem", marginTop: 14 }}>Hoàn thành lượt luyện!</h3>
           <p className="muted" style={{ marginTop: 4 }}>
             {st.missed.length > 0
-              ? `Có ${st.missed.length} từ cần ôn lại. Hãy xem lại trước khi tiếp tục nhé.`
+              ? `Có ${st.missed.length} từ cần ôn lại. ${st.close ? `${st.close} câu gần đúng được giữ nguyên bậc. ` : ""}Hãy xem lại trước khi tiếp tục nhé.`
               : p >= 80
-                ? "Rất tốt! Bạn đang nắm khá vững phần này."
+                ? `${st.close ? `${st.close} câu gần đúng được giữ nguyên bậc. ` : ""}Rất tốt! Bạn đang nắm khá vững phần này.`
                 : p >= 50
-                  ? "Bạn làm khá tốt. Hãy xem lại những câu còn nhầm nhé."
-                  : "Hãy xem lại các từ và phần giải thích, rồi thử lại nhé."}
+                  ? `${st.close ? `${st.close} câu gần đúng được giữ nguyên bậc. ` : ""}Bạn làm khá tốt. Hãy xem lại những câu còn nhầm nhé.`
+                  : `${st.close ? `${st.close} câu gần đúng được giữ nguyên bậc. ` : ""}Hãy xem lại các từ và phần giải thích, rồi thử lại nhé.`}
           </p>
           <div
             className="grid grid-2"
@@ -641,10 +849,10 @@ function AutoQuiz() {
           >
             <div>
               <div className="muted" style={{ fontSize: ".78rem" }}>
-                Số câu đúng
+                Đúng / câu đã chấm
               </div>
               <div className="q-big" style={{ color: "var(--indigo)" }}>
-                {st.right} / {st.qs.length}
+                {st.right} / {graded}
               </div>
             </div>
             <div>
@@ -652,7 +860,7 @@ function AutoQuiz() {
                 Tỷ lệ chính xác
               </div>
               <div className="q-big" style={{ color: "var(--emerald)" }}>
-                {p}%
+                {graded ? `${p}%` : "—"}
               </div>
             </div>
           </div>
@@ -689,7 +897,12 @@ function AutoQuiz() {
     build: "Ghép từ",
     recall: "Điền từ vào câu",
     listening: "Nghe & gõ từ",
+    "adaptive-choice": `Bậc ${q.kind === "adaptive-choice" ? q.level : ""}`,
+    "adaptive-cloze": "Bậc 3 · Điền câu",
+    "adaptive-hint": "Bậc 4 · Gõ có gợi ý",
+    "adaptive-recall": "Bậc 5–6 · Tự nhớ",
   }[q.kind];
+  const adaptive = q.kind.startsWith("adaptive-");
 
   return (
     <div className="stack">
@@ -714,7 +927,7 @@ function AutoQuiz() {
                 Câu {st.i + 1} / {st.qs.length}
               </span>
               <span className="badge b-sky">{kindLabel}</span>
-              <span className="badge b-violet mono">Gốc: {q.root.word.toUpperCase()}</span>
+              {!adaptive && <span className="badge b-violet mono">Gốc: {q.root.word.toUpperCase()}</span>}
             </div>
             <div className="row">
               <span className="score-pill" style={{ color: "var(--emerald)" }}>
@@ -723,6 +936,11 @@ function AutoQuiz() {
               <span className="score-pill" style={{ color: "var(--rose)" }}>
                 <Icon name="x" size="sm" /> {st.wrong}
               </span>
+              {st.close > 0 && (
+                <span className="score-pill" style={{ color: "var(--amber-text)" }}>
+                  ~ {st.close}
+                </span>
+              )}
             </div>
           </div>
           <QuestionView key={st.i} q={q} onAnswer={answer} onNext={nextQ} />

@@ -26,7 +26,7 @@ export function FlashcardsPage() {
   const act = useActions();
   const fc = useUI((s) => s.fc);
   const setFc = useUI((s) => s.setFc);
-  const { catalog, setStatus, markRemembered, logActivity, recordAnswer, srs } = useProfile();
+  const { catalog, setStatus, markRemembered, logActivity, recordAnswer, srs, statusAt } = useProfile();
   const statusMap = useProfile((s) => s.status);
 
   useEffect(() => {
@@ -176,6 +176,7 @@ export function FlashcardsPage() {
   const fam = familyOf(w).filter((f) => !same(f.w, w.word));
   const counts = POS_COLS.map((c) => [c, fam.filter((f) => f.pos === c.k).length] as const).filter(([, n]) => n);
   const s: Status = displayedStatus(w.id, statusMap, srs ?? {});
+  const box = scheduleFor(w.id, statusMap, srs ?? {}, statusAt ?? {})?.box ?? 1;
   const confirmations = srs?.[w.id]?.confirmations ?? 0;
 
   return (
@@ -216,28 +217,47 @@ export function FlashcardsPage() {
                 </span>
               </div>
               <div style={{ textAlign: "center" }} className="stack-sm">
-                <div className="row" style={{ justifyContent: "center", gap: 10 }}>
-                  <FreqMeter z={termInfo(w.word).z} />
-                  <div className="fc-word">{w.word}</div>
-                </div>
-                <Ipa ipa={w.ipa} className="fc-ipa" />
-                <div>
-                  <button className="btn sm soft" onClick={() => speak(w.word)}>
-                    <Icon name="volume" size="sm" /> Nghe phát âm
-                  </button>
-                </div>
-                <p className="muted" style={{ fontSize: ".86rem", marginTop: 14 }}>
-                  Nhẩm nghĩa và các dạng từ trước khi lật thẻ:
-                </p>
-                <div className="row" style={{ justifyContent: "center", gap: 6 }}>
-                  {counts.map(([c, n]) => (
-                    <span key={c.k} className={`badge ${c.cls}`}>
-                      {n} {c.title.split(" (")[0].toLowerCase()}
-                    </span>
-                  ))}
-                  {w.syn.length > 0 && <span className="badge b-teal">{w.syn.length} đồng nghĩa</span>}
-                  {w.ant.length > 0 && <span className="badge b-rose">{w.ant.length} trái nghĩa</span>}
-                </div>
+                {box >= 4 ? (
+                  <>
+                    <p className="muted" style={{ fontSize: ".86rem" }}>
+                      Tự nhớ từ tiếng Anh:
+                    </p>
+                    <div className="fc-vi" style={{ fontSize: "clamp(1.5rem, 4vw, 2.3rem)" }}>
+                      {w.vi}
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div className="row" style={{ justifyContent: "center", gap: 10 }}>
+                      <FreqMeter z={termInfo(w.word).z} />
+                      <div className="fc-word">{w.word}</div>
+                    </div>
+                    <Ipa ipa={w.ipa} className="fc-ipa" />
+                    <div>
+                      <button className="btn sm soft" onClick={() => speak(w.word)}>
+                        <Icon name="volume" size="sm" /> Nghe phát âm
+                      </button>
+                    </div>
+                    {box <= 2 && w.ex[0] && (
+                      <div className="fc-front-example">
+                        <p>“{w.ex[0]}”</p>
+                        {w.exVi?.[0] && <small>{w.exVi[0]}</small>}
+                      </div>
+                    )}
+                    <p className="muted" style={{ fontSize: ".86rem", marginTop: 14 }}>
+                      Nhẩm nghĩa và các dạng từ trước khi lật thẻ:
+                    </p>
+                    <div className="row" style={{ justifyContent: "center", gap: 6 }}>
+                      {counts.map(([c, n]) => (
+                        <span key={c.k} className={`badge ${c.cls}`}>
+                          {n} {c.title.split(" (")[0].toLowerCase()}
+                        </span>
+                      ))}
+                      {w.syn.length > 0 && <span className="badge b-teal">{w.syn.length} đồng nghĩa</span>}
+                      {w.ant.length > 0 && <span className="badge b-rose">{w.ant.length} trái nghĩa</span>}
+                    </div>
+                  </>
+                )}
               </div>
               <div className="fc-hint">
                 <Icon name="repeat" size="sm" /> Nhấn vào thẻ hoặc phím <kbd>Space</kbd> để lật xem Sơ đồ Trường từ

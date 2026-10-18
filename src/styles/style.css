@@ -1500,6 +1500,22 @@ a.morph:hover,
   letter-spacing: -0.02em;
   line-height: 1.1;
 }
+.fc-front-example {
+  max-width: 680px;
+  margin: 4px auto 0;
+  padding: 12px 16px;
+  border-left: 2px solid var(--indigo);
+  color: var(--text-2);
+  text-align: left;
+  font-style: italic;
+  line-height: 1.55;
+}
+.fc-front-example small {
+  display: block;
+  margin-top: 4px;
+  color: var(--muted);
+  font-style: normal;
+}
 .fc-hint {
   display: flex;
   justify-content: center;
@@ -1774,6 +1790,10 @@ a.morph:hover,
   background: var(--rose-soft);
   border-color: var(--rose);
 }
+.explain.close {
+  background: var(--amber-soft);
+  border-color: var(--amber);
+}
 .explain h4 {
   font-family: var(--font);
   font-size: 1rem;
@@ -1784,6 +1804,9 @@ a.morph:hover,
 }
 .explain.bad h4 {
   color: var(--rose-text);
+}
+.explain.close h4 {
+  color: var(--amber-text);
 }
 .explain p {
   font-size: 0.9rem;
