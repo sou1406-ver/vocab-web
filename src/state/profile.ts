@@ -213,7 +213,11 @@ export const useProfile = create<ProfileState>()((set, get) => {
       const isEveryday = id.startsWith("everyday:");
       const isFirstStart = s !== "new" && !isEveryday && !get().status[id] && !introduced.includes(id);
       const limit = get().profile().newWordLimit ?? DEFAULT_NEW_WORD_LIMIT;
-      if (s !== "new" && !canStartNewWord(id, status, daily, limit, now)) return false;
+      if (s !== "new" && !canStartNewWord(id, status, daily, limit, now)) {
+        // báo rõ thay vì im lặng (trước đây bấm "Đang học" ở thẻ thứ 11 không có phản hồi gì)
+        toast(`Đã dùng hết giới hạn ${limit} từ mới hôm nay`);
+        return false;
+      }
       const srs = { ...(get().srs ?? {}) };
       const previousSchedule = scheduleFor(id, status, srs, timestamps, now);
       srs[id] = scheduleRating(id, s, status, srs, timestamps, now);

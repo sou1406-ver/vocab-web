@@ -66,7 +66,7 @@ test("trường từ: link có dạng từ thì nháy thẻ đó, lọc + tìm k
   await page.fill("#net-search", "huỷ");
   await expect(page.locator(".root-item").first()).toContainText("cancellation");
   await page.fill("#net-search", "");
-  await page.getByRole("button", { name: "Văn phòng" }).click();
+  await page.locator(".pill-btn", { hasText: "Văn phòng" }).click();
   await expect(page.locator(".lesson-nav")).toBeVisible();
 });
 
@@ -110,9 +110,12 @@ test("tự luyện: trả lời đủ 10 câu tới màn kết quả", async ({ 
 });
 
 test("bài tập sách: điền Words in Context và Part 5 rồi chấm điểm", async ({ page }) => {
+  test.setTimeout(90_000);
   await page.goto("#/quiz");
   await page.locator(".select").nth(1).selectOption("1");
   const chips = page.locator(".bank-chip:not([disabled])");
+  // trang tải theo file riêng: đợi bảng từ hiện ra rồi mới điền (tránh vòng lặp chạy khi chưa có chip nào)
+  await expect(chips.first()).toBeVisible();
   while ((await chips.count()) > 0) await chips.first().click();
   await page.locator("#sec-wic .ex-actions .btn.primary").click();
   await expect(page.locator("#sec-wic .ex-score .badge")).toContainText("đúng");
@@ -184,40 +187,40 @@ test("mở từ ngoài danh sách đang lọc: giữ nguyên bộ lọc, có nú
   await expect(page.locator(".root-item.active")).toContainText("agreement");
 });
 
-// Kiểm tra truy cập tự động (axe · WCAG 2 AA): tương phản màu, nhãn, vai trò ARIA — cả giao diện sáng và tối
+// Kiểm tra truy cập tự động (axe · WCAG 2 AA): tương phản màu, nhãn, vai trò ARIA — cả giao diện sáng và tối.
+// Mỗi trang × giao diện là một test riêng để chạy song song, không dồn thành một test quá lâu.
+const A11Y_PAGES = [
+  "#/",
+  "#/topics",
+  "#/network/agreement-1",
+  "#/flashcards",
+  "#/quiz",
+  "#/affixes/-ment",
+  "#/term/program",
+  "#/practice",
+  "#/review",
+  "#/knowledge",
+  "#/everyday",
+];
 for (const theme of ["light", "dark"])
-  test(`không có lỗi truy cập WCAG AA (${theme})`, async ({ page }) => {
-    test.setTimeout(90_000);
-    const pages = [
-      "#/",
-      "#/topics",
-      "#/network/agreement-1",
-      "#/flashcards",
-      "#/quiz",
-      "#/affixes/-ment",
-      "#/term/program",
-      "#/practice",
-      "#/review",
-      "#/knowledge",
-      "#/everyday",
-    ];
-    const found: string[] = [];
-    for (const p of pages) {
+  for (const p of A11Y_PAGES)
+    test(`không có lỗi truy cập WCAG AA: ${p} (${theme})`, async ({ page }) => {
+      // trang Trường từ có danh sách 600 từ: axe mất ~20s, chạy song song với các test khác thì lâu hơn
+      test.setTimeout(90_000);
       await page.goto(p);
       await page.evaluate((t) => document.documentElement.setAttribute("data-theme", t), theme);
       // đợi hiệu ứng chữ (BlurText) chạy xong — chữ đang mờ dần không phải trạng thái cuối
       await page.waitForTimeout(1500);
       const r = await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa"]).analyze();
-      for (const v of r.violations)
-        found.push(
-          `${p} ${v.id}: ${v.nodes
+      const found = r.violations.map(
+        (v) =>
+          `${v.id}: ${v.nodes
             .map((n) => n.target.join(" "))
             .slice(0, 3)
             .join(" | ")}`,
-        );
-    }
-    expect(found).toEqual([]);
-  });
+      );
+      expect(found).toEqual([]);
+    });
 
 test("thanh tiêu đề không bị cắt tab ở mọi bề ngang 1024–1920px, kể cả tên tài khoản rất dài", async ({
   page,
