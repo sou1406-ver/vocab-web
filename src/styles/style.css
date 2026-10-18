@@ -3305,6 +3305,9 @@ input[type="search"]::-webkit-search-cancel-button {
   border-radius: var(--r);
   box-shadow: var(--shadow-lg);
   padding: 8px;
+  max-height: calc(100dvh - 84px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
   animation: rise 0.18s var(--ease-expo);
 }
 .pm-head {
@@ -3348,6 +3351,78 @@ input[type="search"]::-webkit-search-cancel-button {
   text-transform: uppercase;
   color: var(--muted);
   padding: 10px 10px 4px;
+}
+.pm-voice {
+  padding: 0 8px 9px;
+  border-bottom: 1px solid var(--border);
+}
+.pm-voice .pm-label {
+  padding: 10px 2px 7px;
+}
+.pm-voice-field {
+  display: grid;
+  gap: 5px;
+  min-width: 0;
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+.pm-voice-field .select {
+  width: 100%;
+  min-width: 0;
+  font-size: 0.82rem;
+}
+.pm-voice-row {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 9px;
+}
+.pm-rates {
+  display: flex;
+  gap: 4px;
+  padding: 3px;
+  border-radius: 9px;
+  background: var(--surface-2);
+}
+.pm-rate {
+  min-width: 42px;
+  min-height: 36px;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: var(--muted);
+  font-size: 0.8rem;
+  font-weight: 650;
+}
+.pm-rate.active {
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: var(--shadow-sm);
+}
+.pm-preview {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 40px;
+  padding: 0 10px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: transparent;
+  color: var(--text);
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+.pm-preview:hover {
+  background: var(--surface-2);
+}
+.pm-voice-note {
+  margin: 7px 0 0;
+  color: var(--muted);
+  font-size: 0.72rem;
+  line-height: 1.45;
 }
 .pm-theme {
   display: flex;

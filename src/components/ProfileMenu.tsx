@@ -1,6 +1,15 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { targetInfo } from "@/lib/data";
+import {
+  getEnglishVoices,
+  getSpeechSettings,
+  saveSpeechSettings,
+  speak,
+  speechVoiceId,
+  type SpeechRate,
+  type SpeechSettings,
+} from "@/lib/speech";
 import { applyTheme, THEMES, useThemePref } from "@/lib/theme";
 import type { Profile } from "@/lib/types";
 import type { ReviewSchedule, Status } from "@/lib/types";
@@ -150,6 +159,79 @@ function CloudBlock() {
   );
 }
 
+function VoiceSettings() {
+  const [settings, setSettings] = useState<SpeechSettings>(getSpeechSettings);
+  const [voices, setVoices] = useState<SpeechSynthesisVoice[]>(getEnglishVoices);
+
+  useEffect(() => {
+    if (!("speechSynthesis" in window)) return;
+    const refresh = () => setVoices(getEnglishVoices());
+    refresh();
+    speechSynthesis.addEventListener("voiceschanged", refresh);
+    return () => speechSynthesis.removeEventListener("voiceschanged", refresh);
+  }, []);
+
+  const update = (next: SpeechSettings) => {
+    setSettings(next);
+    saveSpeechSettings(next);
+  };
+
+  return (
+    <section className="pm-voice" role="group" aria-labelledby="pm-voice-label">
+      <div className="pm-label" id="pm-voice-label">
+        Giọng đọc
+      </div>
+      <label className="pm-voice-field">
+        <span>Giọng tiếng Anh</span>
+        <select
+          className="select"
+          value={settings.voiceId}
+          onChange={(event) => update({ ...settings, voiceId: event.target.value })}
+        >
+          <option value="">Tự chọn giọng tốt nhất</option>
+          {voices.map((voice) => (
+            <option key={speechVoiceId(voice)} value={speechVoiceId(voice)}>
+              {voice.name} · {voice.lang}
+              {voice.default ? " · mặc định" : ""}
+            </option>
+          ))}
+        </select>
+      </label>
+      <div className="pm-voice-row">
+        <div className="pm-voice-field">
+          <span id="pm-rate-label">Tốc độ</span>
+          <div className="pm-rates" role="group" aria-labelledby="pm-rate-label">
+            {([0.6, 0.8, 1] as const).map((rate) => (
+              <button
+                key={rate}
+                type="button"
+                className={cx("pm-rate", settings.rate === rate && "active")}
+                aria-pressed={settings.rate === rate}
+                onClick={() => update({ ...settings, rate: rate as SpeechRate })}
+              >
+                {rate}×
+              </button>
+            ))}
+          </div>
+        </div>
+        <button
+          type="button"
+          className="pm-preview"
+          onClick={() => speak("This is a preview of your selected English voice.", settings)}
+        >
+          <Icon name="volume" size="sm" /> Nghe thử
+        </button>
+      </div>
+      <p className="pm-voice-note">
+        {voices.length
+          ? `${voices.length} giọng tiếng Anh có trên thiết bị này.`
+          : "Trình duyệt chưa cung cấp giọng tiếng Anh."}{" "}
+        Bấm loa lần nữa trong 3 giây để nghe chậm.
+      </p>
+    </section>
+  );
+}
+
 /** Nút avatar + menu hồ sơ (chuyển hồ sơ, giao diện sáng/tối, đăng nhập Google) */
 export function ProfileMenu() {
   const navigate = useNavigate();
@@ -261,6 +343,7 @@ export function ProfileMenu() {
               <Icon name="layers" size="sm" /> Tạo / làm mới hồ sơ demo
             </button>
           )}
+          <VoiceSettings />
           <div className="pm-label">Giao diện</div>
           <div className="pm-theme" role="radiogroup" aria-label="Giao diện">
             {THEMES.map(([k, ic, label]) => (
