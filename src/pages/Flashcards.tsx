@@ -82,9 +82,9 @@ export function FlashcardsPage() {
       move(1);
       return;
     }
+    const accepted = s === "mastered" ? markRemembered(id) : setStatus(id, s);
+    if (!accepted) return;
     logActivity("card");
-    if (s === "mastered") markRemembered(id);
-    else setStatus(id, s);
     toast(
       s === "mastered"
         ? `${catalog.byId[id].word}: Đã nhớ — cần 3 lượt đúng cách quãng để xác nhận`

@@ -34,7 +34,7 @@ export interface FcState {
   stale: boolean;
 }
 
-export type QuizType = "formation" | "synonym" | "meaning" | "build" | "mixed";
+export type QuizType = "formation" | "synonym" | "meaning" | "build" | "recall" | "listening" | "mixed";
 export interface QuizState {
   mode: "book" | "auto";
   type: QuizType;

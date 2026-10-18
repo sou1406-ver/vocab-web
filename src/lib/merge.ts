@@ -29,6 +29,7 @@ export function mergeData(a: ProfileData, b: Partial<ProfileData>): ProfileData 
       statusAt,
       srs,
       reviewedToday: b.reviewedToday,
+      newWordsToday: b.newWordsToday,
       stats: { ...b.stats },
       book: { ...b.book },
       log: { ...b.log },
@@ -94,9 +95,10 @@ export function mergeData(a: ProfileData, b: Partial<ProfileData>): ProfileData 
 
   const srs: Record<string, ReviewSchedule> = mergeSchedules(a.srs, b.srs);
   const reviewedToday: DailyReviewLog | undefined = mergeDailyReviews(a.reviewedToday, b.reviewedToday);
+  const newWordsToday: DailyReviewLog | undefined = mergeDailyReviews(a.newWordsToday, b.newWordsToday);
   reconcileSchedules(status, statusAt, srs);
 
-  return { meta, custom, status, statusAt, srs, reviewedToday, stats, book, log };
+  return { meta, custom, status, statusAt, srs, reviewedToday, newWordsToday, stats, book, log };
 }
 
 function cleanStatus(status: ProfileData["status"] = {}) {

@@ -32,7 +32,17 @@ export interface BuildQ {
   f: FamilyEntry;
   tiles: string[];
 }
-export type Question = FormationQ | SynonymQ | MeaningQ | BuildQ;
+export interface RecallQ {
+  kind: "recall";
+  root: Word;
+  s: string;
+  m: { index: number; text: string };
+}
+export interface ListeningQ {
+  kind: "listening";
+  root: Word;
+}
+export type Question = FormationQ | SynonymQ | MeaningQ | BuildQ | RecallQ | ListeningQ;
 
 export const QUIZ_LEN = 10;
 
@@ -75,6 +85,35 @@ export function formationQs(roots: Word[]): FormationQ[] {
     }
   }
   return qs;
+}
+
+/** Câu điền khuyết lấy từ ví dụ có sẵn; đáp án được so không phân biệt hoa thường. */
+export function recallQs(roots: Word[]): RecallQ[] {
+  return roots.flatMap((root) => {
+    const family = familyOf(root);
+    const examples = [
+      ...family.flatMap((entry) => (entry.ex ? [{ entry, sentence: entry.ex }] : [])),
+      ...(root.ex ?? []).map((sentence) => ({
+        entry: family.find((entry) => same(entry.w, root.word))!,
+        sentence,
+      })),
+    ];
+    const candidates = uniq(examples, (example) => example.sentence.toLocaleLowerCase()).flatMap(
+      ({ entry, sentence }) => {
+        const match = findForm(sentence, entry.w);
+        return match ? [{ kind: "recall" as const, root, s: sentence, m: match }] : [];
+      },
+    );
+    return candidates.length ? [pick(candidates)] : [];
+  });
+}
+
+export function typedAnswerMatches(answer: string, expected: string) {
+  return lower(answer) === lower(expected);
+}
+
+export function listeningQs(roots: Word[]): ListeningQ[] {
+  return roots.map((root) => ({ kind: "listening", root }));
 }
 
 export function synonymQs(cat: Catalog, roots: Word[]): SynonymQ[] {
@@ -129,6 +168,8 @@ export function makeQuiz(cat: Catalog, type: string, roots: Word[]): Question[] 
     synonym: () => synonymQs(cat, roots),
     meaning: () => meaningQs(cat, roots),
     build: () => buildQs(roots),
+    recall: () => recallQs(roots),
+    listening: () => listeningQs(roots),
   };
   const qs =
     type === "mixed" ? shuffle(Object.values(gen).flatMap((g) => shuffle(g()).slice(0, 4))) : (gen[type]?.() ?? []);

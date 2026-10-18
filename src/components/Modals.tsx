@@ -14,6 +14,12 @@ const GOALS: [number, string][] = [
   [40, "Tăng tốc"],
   [60, "Cấp tốc"],
 ];
+const NEW_WORD_LIMITS: [number, string][] = [
+  [5, "Nhẹ"],
+  [10, "Vừa"],
+  [15, "Nhiều"],
+  [20, "Rất nhiều"],
+];
 
 export function ProfileModal({ isNew }: { isNew: boolean }) {
   const navigate = useNavigate();
@@ -25,6 +31,7 @@ export function ProfileModal({ isNew }: { isNew: boolean }) {
         name: "",
         color: PROFILE_COLORS[prof.profiles.length % PROFILE_COLORS.length],
         goal: 20,
+        newWordLimit: 10,
         target: 600,
         setup: false,
       }
@@ -38,6 +45,7 @@ export function ProfileModal({ isNew }: { isNew: boolean }) {
       color: String(fd.get("color") || PROFILE_COLORS[0]),
       target: +(fd.get("target") ?? 600) || 600,
       goal: +(fd.get("goal") ?? 20) || 20,
+      newWordLimit: +(fd.get("newWordLimit") ?? 10) || 10,
       setup: true,
     };
     if (isNew) {
@@ -90,6 +98,28 @@ export function ProfileModal({ isNew }: { isNew: boolean }) {
               </label>
             ))}
           </div>
+        </div>
+        <div className="field" style={{ marginTop: 14 }}>
+          <span>Từ mới tối đa mỗi ngày</span>
+          <div className="choice-row">
+            {NEW_WORD_LIMITS.map(([limit, label]) => (
+              <label key={limit}>
+                <input
+                  type="radio"
+                  name="newWordLimit"
+                  value={limit}
+                  defaultChecked={(p.newWordLimit ?? 10) === limit}
+                />
+                <span>
+                  <b>{limit} từ</b>
+                  <small>{label}</small>
+                </span>
+              </label>
+            ))}
+          </div>
+          <p className="muted" style={{ fontSize: ".8rem", marginTop: 6 }}>
+            Tính khi bạn bắt đầu học từ lần đầu; ôn từ cũ không bị giới hạn.
+          </p>
         </div>
         <div className="field" style={{ marginTop: 14 }}>
           <span>Mục tiêu điểm TOEIC</span>

@@ -134,6 +134,7 @@ function useCheck() {
     const { book, setBook } = useUI.getState();
     let right = 0;
     let confirmed = 0;
+    const blocked = new Set<string>();
     for (const r of results) {
       if (r.ok) right++;
       const fam = familyLookup(catalog, r.answer);
@@ -142,7 +143,7 @@ function useCheck() {
         const wasConfirming = Boolean(
           before.srs?.[fam.root.id]?.confirming || before.status[fam.root.id] === "confirming",
         );
-        recordAnswer(fam.root.id, r.ok);
+        if (!recordAnswer(fam.root.id, r.ok)) blocked.add(fam.root.id);
         if (wasConfirming && useProfile.getState().status[fam.root.id] === "mastered") confirmed++;
       }
     }
@@ -156,6 +157,7 @@ function useCheck() {
         ? `Xuất sắc! Đúng cả ${total}/${total} 🎉${confirmed ? ` · ${confirmed} từ đã được xác nhận thuộc` : ""}`
         : `Đúng ${right}/${total} — xem lại những chỗ đánh dấu đỏ${confirmed ? ` · ${confirmed} từ đã được xác nhận thuộc` : ""}`,
     );
+    if (blocked.size) toast(`Có ${blocked.size} từ mới chưa được ghi nhận vì đã đạt giới hạn hôm nay`);
   };
 }
 

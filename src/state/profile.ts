@@ -2,6 +2,7 @@ import { create } from "zustand";
 import { buildCatalog, type Catalog } from "@/lib/data";
 import type { BookScore, DayLog, Profile, ProfileData, Status, Word } from "@/lib/types";
 import { dayKey, storage } from "@/lib/util";
+import { toast } from "./ui";
 import {
   markReviewedToday,
   displayedStatus,
@@ -11,6 +12,7 @@ import {
   scheduleFor,
   scheduleRating,
   shouldPromoteToMastered,
+  DEFAULT_NEW_WORD_LIMIT,
 } from "@/lib/srs";
 
 /* Hồ sơ học tập (nhiều người dùng chung một máy) + dữ liệu của hồ sơ đang mở.
@@ -22,6 +24,7 @@ export const PROFILE_KEYS = [
   "vn-status-at",
   "vn-srs",
   "vn-review-day",
+  "vn-new-words-day",
   "vn-stats",
   "vn-book",
   "vn-log",
@@ -34,6 +37,7 @@ const FIELD: Record<(typeof PROFILE_KEYS)[number], keyof ProfileData> = {
   "vn-status-at": "statusAt",
   "vn-srs": "srs",
   "vn-review-day": "reviewedToday",
+  "vn-new-words-day": "newWordsToday",
   "vn-stats": "stats",
   "vn-book": "book",
   "vn-log": "log",
@@ -47,6 +51,7 @@ export const emptyData = (): ProfileData => ({
   statusAt: {},
   srs: {},
   reviewedToday: { day: "", ids: [] },
+  newWordsToday: { day: "", ids: [] },
   stats: {},
   book: {},
   log: {},
@@ -86,6 +91,7 @@ function initProfiles(): { profiles: Profile[]; current: string } {
       name: "Đại ca",
       color: PROFILE_COLORS[0],
       goal: 20,
+      newWordLimit: DEFAULT_NEW_WORD_LIMIT,
       target: 600,
       created: Date.now(),
       setup: false,
@@ -132,9 +138,9 @@ interface ProfileState extends ProfileData {
   profile: () => Profile;
   statusOf: (id: string) => Status;
 
-  setStatus: (id: string, s: Status) => void;
-  markRemembered: (id: string) => void;
-  recordAnswer: (id: string, ok: boolean) => void;
+  setStatus: (id: string, s: Status) => boolean;
+  markRemembered: (id: string) => boolean;
+  recordAnswer: (id: string, ok: boolean) => boolean;
   logActivity: (kind: "answer" | "card" | "mastered", ok?: boolean) => void;
   saveBookScore: (key: string, right: number, total: number) => void;
   saveCustomWord: (w: Word) => void;
@@ -195,12 +201,17 @@ export const useProfile = create<ProfileState>()((set, get) => {
 
     setStatus: (id, s) => {
       if (s === "mastered" || s === "confirming") {
-        get().markRemembered(id);
-        return;
+        return get().markRemembered(id);
       }
       const status = { ...get().status };
       const timestamps = get().statusAt ?? {};
       const now = Date.now();
+      const today = dayKey(new Date(now));
+      const daily = get().newWordsToday;
+      const introduced = daily?.day === today ? daily.ids : [];
+      const isFirstStart = s !== "new" && !get().status[id] && !introduced.includes(id);
+      const limit = get().profile().newWordLimit ?? DEFAULT_NEW_WORD_LIMIT;
+      if (isFirstStart && introduced.length >= limit) return false;
       const srs = { ...(get().srs ?? {}) };
       const previousSchedule = scheduleFor(id, status, srs, timestamps, now);
       srs[id] = scheduleRating(id, s, status, srs, timestamps, now);
@@ -212,29 +223,53 @@ export const useProfile = create<ProfileState>()((set, get) => {
         delete status[id];
         delete srs[id];
       } else status[id] = s;
-      save({ ...patch, status, statusAt, srs });
+      save({
+        ...patch,
+        status,
+        statusAt,
+        srs,
+        ...(isFirstStart ? { newWordsToday: markReviewedToday(get().newWordsToday, id, now) } : {}),
+      });
+      return true;
     },
     markRemembered: (id) => {
-      if (get().status[id] === "mastered") return;
+      if (get().status[id] === "mastered") return true;
       const status = { ...get().status };
       const timestamps = get().statusAt ?? {};
       const now = Date.now();
+      const today = dayKey(new Date(now));
+      const daily = get().newWordsToday;
+      const introduced = daily?.day === today ? daily.ids : [];
+      const isFirstStart = !get().status[id] && !introduced.includes(id);
+      const limit = get().profile().newWordLimit ?? DEFAULT_NEW_WORD_LIMIT;
+      if (isFirstStart && introduced.length >= limit) {
+        toast(`Đã dùng hết giới hạn ${limit} từ mới hôm nay`);
+        return false;
+      }
       const existingSchedules = get().srs ?? {};
       const previousSchedule = scheduleFor(id, get().status, existingSchedules, timestamps, now);
       const srs = { ...existingSchedules };
       srs[id] = scheduleRating(id, "confirming", status, srs, timestamps, now);
       save({
         srs,
+        ...(isFirstStart ? { newWordsToday: markReviewedToday(get().newWordsToday, id, now) } : {}),
         ...(!id.startsWith("everyday:") && previousSchedule && previousSchedule.due <= now
           ? { reviewedToday: markReviewedToday(get().reviewedToday, id, now) }
           : {}),
       });
+      return true;
     },
     recordAnswer: (id, ok) => {
       const currentStatus = get().status;
       const currentStatusAt = get().statusAt ?? {};
       const srs = { ...(get().srs ?? {}) };
       const now = Date.now();
+      const today = dayKey(new Date(now));
+      const daily = get().newWordsToday;
+      const introduced = daily?.day === today ? daily.ids : [];
+      const isFirstStart = !currentStatus[id] && !introduced.includes(id);
+      const limit = get().profile().newWordLimit ?? DEFAULT_NEW_WORD_LIMIT;
+      if (isFirstStart && introduced.length >= limit) return false;
       const previousSchedule = scheduleFor(id, currentStatus, srs, currentStatusAt, now);
       const nextSchedule = scheduleAnswer(id, ok, currentStatus, srs, currentStatusAt, now);
       srs[id] = nextSchedule;
@@ -247,10 +282,15 @@ export const useProfile = create<ProfileState>()((set, get) => {
         e.a++;
         if (ok) e.c++;
       });
-      const patch: Partial<ProfileData> = { stats, log, srs };
+      const patch: Partial<ProfileData> = {
+        stats,
+        log,
+        srs,
+        ...(isFirstStart ? { newWordsToday: markReviewedToday(get().newWordsToday, id, now) } : {}),
+      };
       if (!id.startsWith("everyday:") && previousSchedule && previousSchedule.due <= now)
         patch.reviewedToday = markReviewedToday(get().reviewedToday, id, now);
-      if (!ok) {
+      if (!ok || !currentStatus[id]) {
         patch.status = { ...currentStatus, [id]: "learning" };
         patch.statusAt = { ...currentStatusAt, [id]: nextSchedule.at };
       } else if (ok && currentStatus[id] !== "mastered" && shouldPromoteToMastered(previousSchedule, nextSchedule)) {
@@ -261,6 +301,7 @@ export const useProfile = create<ProfileState>()((set, get) => {
         patch.statusAt = { ...currentStatusAt, [id]: nextSchedule.at };
       }
       save(patch);
+      return true;
     },
     logActivity: (kind, ok) =>
       save({
@@ -300,6 +341,7 @@ export const useProfile = create<ProfileState>()((set, get) => {
         statusAt: {},
         srs: {},
         reviewedToday: { day: "", ids: [] },
+        newWordsToday: { day: "", ids: [] },
         stats: {},
         book: {},
         log: {},
@@ -322,6 +364,7 @@ export const useProfile = create<ProfileState>()((set, get) => {
       );
       const srs = mergeSchedules(cur.srs, importedSchedules);
       const reviewedToday = mergeDailyReviews(cur.reviewedToday, d.reviewedToday);
+      const newWordsToday = mergeDailyReviews(cur.newWordsToday, d.newWordsToday);
       const status = { ...cur.status };
       for (const [id, value] of Object.entries(d.status ?? {})) {
         if (value === "new") {
@@ -338,6 +381,7 @@ export const useProfile = create<ProfileState>()((set, get) => {
         statusAt,
         srs,
         reviewedToday,
+        newWordsToday,
         stats: { ...cur.stats, ...d.stats },
         book: { ...cur.book, ...d.book },
         log,

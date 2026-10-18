@@ -7,6 +7,7 @@ import { displayedStatus } from "@/lib/srs";
 import type { Status } from "@/lib/types";
 import { fold, shuffle } from "@/lib/util";
 import { useProfile } from "@/state/profile";
+import { toast } from "@/state/ui";
 
 const FILTERS: ("all" | EverydayKind)[] = ["all", "phrase", "phrasal", "idiom", "slang"];
 const FILTER_LABEL: Record<(typeof FILTERS)[number], string> = {
@@ -122,11 +123,14 @@ export function EverydayPage() {
   };
   const answerQuiz = (choice: string) => {
     if (!quizCurrent || quizChoice !== null) return;
-    setQuizChoice(choice);
     const correct = choice === quizCurrent.meaning;
+    if (!correct && !setStatus(statusId(quizCurrent.id), "learning")) return;
+    if (!recordAnswer(statusId(quizCurrent.id), correct)) {
+      toast("Đã dùng hết giới hạn từ mới hôm nay. Ngày mai học tiếp nhé.");
+      return;
+    }
+    setQuizChoice(choice);
     if (correct) setQuizCorrect((value) => value + 1);
-    else setStatus(statusId(quizCurrent.id), "learning");
-    recordAnswer(statusId(quizCurrent.id), correct);
   };
   const nextQuizQuestion = () => {
     setQuizChoice(null);
@@ -135,7 +139,7 @@ export function EverydayPage() {
   const rate = (value: Status) => {
     if (!current) return;
     // “Chưa nhớ” vẫn cần quay lại Ôn tập, nên giữ mục ở trạng thái đang học.
-    setStatus(statusId(current.id), value === "new" ? "learning" : value);
+    if (!setStatus(statusId(current.id), value === "new" ? "learning" : value)) return;
     logActivity("card");
     setRevealed(false);
     setStudyIndex((i) => i + 1);

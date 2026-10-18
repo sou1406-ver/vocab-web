@@ -3,6 +3,7 @@ import { dayKey } from "./util";
 
 export const REVIEW_INTERVAL_DAYS = [1, 3, 7, 14, 30, 60] as const;
 export const DAILY_REVIEW_LIMIT = 20;
+export const DEFAULT_NEW_WORD_LIMIT = 10;
 
 export function shouldPromoteToMastered(previous: ReviewSchedule | undefined, next: ReviewSchedule) {
   return !next.confirming && next.box >= 5 && next.at > (previous?.at ?? -1);

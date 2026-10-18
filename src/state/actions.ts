@@ -2,8 +2,8 @@ import { useNavigate } from "react-router-dom";
 import { LESSON_BY_N } from "@/lib/data";
 import { makeQuiz } from "@/lib/quiz";
 import { resumeLesson } from "@/lib/progress";
-import { displayedStatus, dueReviewIds } from "@/lib/srs";
-import { shuffle } from "@/lib/util";
+import { DEFAULT_NEW_WORD_LIMIT, displayedStatus, dueReviewIds } from "@/lib/srs";
+import { dayKey, shuffle } from "@/lib/util";
 import { useProfile } from "./profile";
 import { NET_DEFAULT, useUI } from "./ui";
 
@@ -22,7 +22,8 @@ export function buildDeck() {
 /** Tạo đề tự luyện mới theo bộ lọc hiện tại */
 export function startQuiz() {
   const { quiz, setQuiz } = useUI.getState();
-  const { catalog, status, srs } = useProfile.getState();
+  const { catalog, status, srs, newWordsToday } = useProfile.getState();
+  const profile = useProfile.getState().profile();
   const roots =
     quiz.forWord && catalog.byId[quiz.forWord]
       ? [catalog.byId[quiz.forWord]]
@@ -35,8 +36,18 @@ export function startQuiz() {
                 ? displayedStatus(w.id, status, srs ?? {}) !== "mastered"
                 : displayedStatus(w.id, status, srs ?? {}) === quiz.only),
           );
+  const today = dayKey();
+  const introduced = newWordsToday?.day === today ? new Set(newWordsToday.ids) : new Set<string>();
+  const remaining = Math.max(0, (profile.newWordLimit ?? DEFAULT_NEW_WORD_LIMIT) - introduced.size);
+  const alreadyLearning = roots.filter(
+    (word) => displayedStatus(word.id, status, srs ?? {}) !== "new" || introduced.has(word.id),
+  );
+  const unseen = roots.filter(
+    (word) => displayedStatus(word.id, status, srs ?? {}) === "new" && !introduced.has(word.id),
+  );
+  const eligibleRoots = [...alreadyLearning, ...unseen.slice(0, remaining)];
   setQuiz({
-    qs: makeQuiz(catalog, quiz.type, roots),
+    qs: makeQuiz(catalog, quiz.type, eligibleRoots),
     i: 0,
     right: 0,
     wrong: 0,
@@ -132,6 +143,20 @@ export function useActions() {
       ui().setQuiz({ mode: "auto", type: "mixed", unit: "all", lesson: "all", only: "mastered", forWord: null });
       startQuiz();
       navigate("/quiz");
+    },
+    learnNewWords() {
+      const profile = useProfile.getState();
+      const { catalog, status, newWordsToday } = profile;
+      const today = dayKey();
+      const introduced = newWordsToday?.day === today ? new Set(newWordsToday.ids) : new Set<string>();
+      const remaining = Math.max(0, (profile.profile().newWordLimit ?? DEFAULT_NEW_WORD_LIMIT) - introduced.size);
+      const ids = catalog.all
+        .filter((word) => displayedStatus(word.id, status, profile.srs ?? {}) === "new" && !introduced.has(word.id))
+        .slice(0, remaining)
+        .map((word) => word.id);
+      if (!ids.length) return;
+      ui().setFc({ unit: "all", lesson: "all", status: "all", deck: ids, i: 0, flipped: false, stale: false });
+      navigate("/flashcards");
     },
     /** Flashcard gồm các từ hay làm sai nhất */
     reviewWeak() {

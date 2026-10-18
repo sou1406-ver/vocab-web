@@ -6,7 +6,8 @@ import { FreqMeter } from "@/components/FreqMeter";
 import { LessonNav, ScopeSelects } from "@/components/LessonNav";
 import ClickSpark, { type ClickSparkHandle } from "@/components/reactbits/ClickSpark";
 import { affixType, familyOf, LESSON_BY_N, POS_LABEL, termInfo } from "@/lib/data";
-import { isRightChoice, type Question } from "@/lib/quiz";
+import { isRightChoice, typedAnswerMatches, type Question } from "@/lib/quiz";
+import { speak } from "@/lib/speech";
 import type { FamilyEntry, Word } from "@/lib/types";
 import { cx, lower, same, scrollBehavior } from "@/lib/util";
 import { ensureBookLesson, startQuiz, useActions } from "@/state/actions";
@@ -19,6 +20,8 @@ const QUIZ_TYPES: Record<QuizType, { label: string; icon: IconName }> = {
   synonym: { label: "Đồng nghĩa & Trái nghĩa", icon: "compare" },
   meaning: { label: "Nghĩa của từ", icon: "book" },
   build: { label: "Ghép từ", icon: "puzzle" },
+  recall: { label: "Điền từ vào câu", icon: "book" },
+  listening: { label: "Nghe & gõ từ", icon: "volume" },
   mixed: { label: "Tổng hợp", icon: "layers" },
 };
 
@@ -148,6 +151,118 @@ function QuestionView({
     </div>
   );
 
+  if (q.kind === "listening") {
+    return (
+      <>
+        <div className="q-box">
+          <div className="eyebrow">Nghe phát âm rồi tự gõ lại từ:</div>
+          <div className="row" style={{ marginTop: 12 }}>
+            <button className="btn soft" type="button" onClick={() => speak(q.root.word)}>
+              <Icon name="volume" size="sm" /> Nghe lại
+            </button>
+            <Ipa ipa={q.root.ipa} />
+          </div>
+        </div>
+        {!st.answered && (
+          <form
+            className="type-row"
+            onSubmit={(e) => {
+              e.preventDefault();
+              const answer = inputRef.current?.value ?? "";
+              if (!answer.trim()) return;
+              onAnswer(typedAnswerMatches(answer, q.root.word));
+            }}
+          >
+            <label className="eyebrow" htmlFor="quiz-input">
+              Từ bạn nghe được
+            </label>
+            <input
+              ref={inputRef}
+              className="input"
+              id="quiz-input"
+              autoComplete="off"
+              spellCheck={false}
+              placeholder="Gõ từ vừa nghe…"
+              aria-label="Từ vừa nghe"
+            />
+            <button className="btn primary">Kiểm tra</button>
+          </form>
+        )}
+        {st.answered && st.last && (
+          <Explain
+            ok={st.last.ok}
+            root={q.root}
+            extra={
+              st.last.ok ? null : (
+                <>
+                  Đáp án: <b>{q.root.word}</b>.
+                </>
+              )
+            }
+            onNext={onNext}
+          />
+        )}
+      </>
+    );
+  }
+
+  if (q.kind === "recall") {
+    const before = q.s.slice(0, q.m.index);
+    const after = q.s.slice(q.m.index + q.m.text.length);
+    return (
+      <>
+        <div className="q-box">
+          <div className="eyebrow">Gõ từ còn thiếu trong câu ví dụ:</div>
+          <div className="q-text">
+            {before}
+            <span className="blank">{st.answered ? q.m.text : "______"}</span>
+            {after}
+          </div>
+          <div className="q-hint">Nghĩa: {q.root.vi}</div>
+        </div>
+        {!st.answered && (
+          <form
+            className="type-row"
+            onSubmit={(e) => {
+              e.preventDefault();
+              const answer = inputRef.current?.value ?? "";
+              if (!answer.trim()) return;
+              onAnswer(typedAnswerMatches(answer, q.m.text));
+            }}
+          >
+            <label className="eyebrow" htmlFor="quiz-input">
+              Từ còn thiếu
+            </label>
+            <input
+              ref={inputRef}
+              className="input"
+              id="quiz-input"
+              autoComplete="off"
+              spellCheck={false}
+              placeholder="Nhập từ còn thiếu…"
+              aria-label="Từ còn thiếu trong câu ví dụ"
+            />
+            <button className="btn primary">Kiểm tra</button>
+          </form>
+        )}
+        {st.answered && st.last && (
+          <Explain
+            ok={st.last.ok}
+            root={q.root}
+            extra={
+              st.last.ok ? null : (
+                <>
+                  Đáp án: <b>{q.m.text}</b>.
+                </>
+              )
+            }
+            onNext={onNext}
+          />
+        )}
+      </>
+    );
+  }
+
   if (q.kind === "formation") {
     const before = q.s.slice(0, q.m.index);
     const after = q.s.slice(q.m.index + q.m.text.length);
@@ -172,7 +287,7 @@ function QuestionView({
               e.preventDefault();
               const v = lower(inputRef.current?.value ?? "");
               if (!v || st.answered) return;
-              onAnswer(v === lower(q.m.text) || v === lower(q.f.w));
+              onAnswer(typedAnswerMatches(v, q.m.text) || typedAnswerMatches(v, q.f.w));
             }}
           >
             <input
@@ -374,6 +489,12 @@ function AutoQuiz() {
   const answer = (ok: boolean, pick?: number) => {
     const s = useUI.getState().quiz;
     if (s.answered || !q) return;
+    const before = useProfile.getState();
+    const wasConfirming = Boolean(before.srs?.[q.root.id]?.confirming || before.status[q.root.id] === "confirming");
+    if (!recordAnswer(q.root.id, ok)) {
+      toast("Đã dùng hết giới hạn từ mới hôm nay. Ngày mai học tiếp nhé.");
+      return;
+    }
     setQuiz({
       answered: true,
       last: { ok, pick },
@@ -381,9 +502,6 @@ function AutoQuiz() {
       wrong: s.wrong + (ok ? 0 : 1),
       missed: ok ? s.missed : [...new Set([...s.missed, q.root.id])],
     });
-    const before = useProfile.getState();
-    const wasConfirming = Boolean(before.srs?.[q.root.id]?.confirming || before.status[q.root.id] === "confirming");
-    recordAnswer(q.root.id, ok);
     if (ok && wasConfirming && useProfile.getState().status[q.root.id] === "mastered")
       toast(`${q.root.word}: Đã xác nhận thuộc sau 3 lượt đúng cách quãng!`);
     // Trả lời đúng: bắn tia sáng (React Bits · ClickSpark) từ nút vừa chọn
@@ -410,7 +528,8 @@ function AutoQuiz() {
       const cur = s.qs[s.i];
       if (!cur) return;
       const n = parseInt(e.key, 10);
-      const typing = cur.kind === "formation" && s.style === "typing";
+      const typing =
+        cur.kind === "recall" || cur.kind === "listening" || (cur.kind === "formation" && s.style === "typing");
       if (!s.answered && !typing && cur.kind !== "build" && n >= 1 && n <= cur.options.length)
         answer(isRightChoice(cur, n - 1), n - 1);
       else if (s.answered && e.key === "Enter" && (e.target as HTMLElement).id !== "quiz-next") {
@@ -571,6 +690,8 @@ function AutoQuiz() {
     synonym: q.kind === "synonym" && q.ant ? "Trái nghĩa" : "Đồng nghĩa",
     meaning: "Nghĩa của từ",
     build: "Ghép từ",
+    recall: "Điền từ vào câu",
+    listening: "Nghe & gõ từ",
   }[q.kind];
 
   return (

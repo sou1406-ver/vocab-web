@@ -187,6 +187,7 @@ async function attach(u: User) {
         name: u.displayName || before.name,
         color: before.color || PROFILE_COLORS[0],
         goal: before.goal,
+        newWordLimit: before.newWordLimit,
         target: before.target,
       };
       p = {
@@ -209,6 +210,7 @@ async function attach(u: User) {
       name: rp?.name || p.name,
       color: rp?.color || p.color,
       goal: rp?.goal || p.goal,
+      newWordLimit: rp?.newWordLimit || p.newWordLimit || 10,
       target: rp?.target || p.target,
       cloud: { uid: u.uid, email: u.email ?? "", photo: u.photoURL ?? "" },
     };
@@ -271,6 +273,7 @@ function detach() {
         name: "Đại ca",
         color: PROFILE_COLORS[0],
         goal: 20,
+        newWordLimit: 10,
         target: 600,
         created: Date.now(),
         setup: false,
@@ -305,7 +308,13 @@ async function pushOnce() {
       const profile = useProfile.getState().profiles.find((x) => x.id === pid);
       if (!profile) throw new Error("Profile disappeared during sync");
       transaction.set(ref, {
-        profile: { name: profile.name, color: profile.color, goal: profile.goal, target: profile.target },
+        profile: {
+          name: profile.name,
+          color: profile.color,
+          goal: profile.goal,
+          newWordLimit: profile.newWordLimit ?? 10,
+          target: profile.target,
+        },
         data: next,
         updatedAt: Date.now(),
       });

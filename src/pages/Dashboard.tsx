@@ -8,7 +8,7 @@ import CountUp from "@/components/reactbits/CountUp";
 import SpotlightCard from "@/components/reactbits/SpotlightCard";
 import { LESSONS, targetInfo, termInfo, TOPICS, unitOf, WORDS } from "@/lib/data";
 import { lessonBookDone, lessonProgress, pct, resumeLesson } from "@/lib/progress";
-import { DAILY_REVIEW_LIMIT, displayedStatus, dueReviewIds } from "@/lib/srs";
+import { DAILY_REVIEW_LIMIT, DEFAULT_NEW_WORD_LIMIT, displayedStatus, dueReviewIds } from "@/lib/srs";
 import type { DayLog } from "@/lib/types";
 import { cx, dayKey } from "@/lib/util";
 import { useActions } from "@/state/actions";
@@ -131,7 +131,7 @@ const Stat = ({ num, label, sub }: { num: ReactNode; label: string; sub?: string
 export function Dashboard() {
   const act = useActions();
   const setModal = useUI((s) => s.setModal);
-  const { catalog, status, stats, book, log, srs, statusAt, reviewedToday } = useProfile();
+  const { catalog, status, stats, book, log, srs, statusAt, reviewedToday, newWordsToday } = useProfile();
   const p = useProfile((s) => s.profile());
 
   const today = log[dayKey()] ?? EMPTY_DAY;
@@ -154,6 +154,10 @@ export function Dashboard() {
   );
   const reviewedCount = reviewedToday?.day === dayKey() ? reviewedToday.ids.length : 0;
   const reviewLimitReached = reviewedCount >= DAILY_REVIEW_LIMIT;
+  const introducedToday = newWordsToday?.day === dayKey() ? newWordsToday.ids.length : 0;
+  const newWordLimit = p.newWordLimit ?? DEFAULT_NEW_WORD_LIMIT;
+  const newWordsRemaining = Math.max(0, newWordLimit - introducedToday);
+  const unseenWords = catalog.all.filter((word) => displayedStatus(word.id, status, srs ?? {}) === "new").length;
   const week = Array.from({ length: 7 }, (_, i) => {
     const d = new Date();
     d.setDate(d.getDate() - i);
@@ -239,6 +243,31 @@ export function Dashboard() {
             <Icon name="repeat" size="sm" /> {dueToday.length ? "Bắt đầu ôn" : "Đã xong"}
           </button>
         </div>
+      </DCard>
+
+      <DCard className="d-new-words">
+        <div className="d-card-head">
+          <div>
+            <div className="eyebrow">Nhịp học vừa sức</div>
+            <h3>Từ mới hôm nay</h3>
+          </div>
+          <span className="badge b-indigo">
+            {introducedToday}/{newWordLimit}
+          </span>
+        </div>
+        <Progress value={pct(introducedToday, newWordLimit)} />
+        <p className="muted">
+          {unseenWords === 0
+            ? "Bạn đã bắt đầu học hết kho từ mới."
+            : newWordsRemaining
+              ? "Còn " +
+                Math.min(newWordsRemaining, unseenWords) +
+                " từ mới có thể bắt đầu hôm nay. Từ cũ vẫn ôn bình thường."
+              : "Đã đạt giới hạn hôm nay. Ngày mai bạn có thể bắt đầu tối đa " + newWordLimit + " từ mới nữa."}
+        </p>
+        <button className="btn primary" onClick={act.learnNewWords} disabled={!newWordsRemaining || !unseenWords}>
+          <Icon name="book" size="sm" /> Học từ mới
+        </button>
       </DCard>
 
       <div className="d-grid">

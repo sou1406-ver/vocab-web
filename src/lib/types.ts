@@ -153,6 +153,8 @@ export interface ProfileData {
   /** Leitner review schedule, merged by the latest per-word update. */
   srs?: Record<string, ReviewSchedule>;
   reviewedToday?: DailyReviewLog;
+  /** Words first introduced today, shared across devices. */
+  newWordsToday?: DailyReviewLog;
   stats: Record<string, WordStat>;
   book: Record<string, BookScore>;
   log: Record<string, DayLog>;
@@ -163,6 +165,7 @@ export interface Profile {
   name: string;
   color: string;
   goal: number;
+  newWordLimit?: number;
   target: number;
   created: number;
   setup: boolean;

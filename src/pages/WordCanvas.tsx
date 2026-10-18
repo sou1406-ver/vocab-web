@@ -137,10 +137,10 @@ export function WordCanvas({ w, prev, next, lesson }: { w: Word; prev?: Word; ne
               onChange={(e) => {
                 const v = e.target.value as Status;
                 if (v === "mastered") {
-                  markRemembered(w.id);
+                  if (!markRemembered(w.id)) return;
                   toast("Đã nhớ — cần 3 lượt đúng cách quãng để xác nhận");
                 } else {
-                  setStatus(w.id, v);
+                  if (!setStatus(w.id, v)) return;
                   toast(`Đã đánh dấu: ${STATUS_INFO[v].label}`);
                 }
               }}

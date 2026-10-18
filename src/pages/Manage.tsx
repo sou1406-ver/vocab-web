@@ -29,6 +29,7 @@ export function ManagePage() {
       statusAt: prof.statusAt,
       srs: prof.srs,
       reviewedToday: prof.reviewedToday,
+      newWordsToday: prof.newWordsToday,
       stats: prof.stats,
       book: prof.book,
       log: prof.log,
