@@ -337,7 +337,7 @@ def senses_of(entry, head):
         marker = POS_PREFIX.match(clause)
         if marker:
             current_pos = marker.group(1).lower()
-            clause = clause[marker.end():].strip()
+            clause = clause[marker.end() :].strip()
         if clause:
             clauses.append((current_pos, clause))
 
@@ -354,26 +354,25 @@ def senses_of(entry, head):
             tagged_translations[match.group(1).lower()] = match.group(2).strip()
         base_pos = set(groups) - {match.group(1).lower() for match in tagged_matches}
         if len(base_pos) == 1:
-            tagged_translations[next(iter(base_pos))] = head["vi"][:tagged_matches[0].start()].strip(" ;")
+            tagged_translations[next(iter(base_pos))] = head["vi"][: tagged_matches[0].start()].strip(" ;")
         elif clauses[0][0] not in tagged_translations:
-            tagged_translations[clauses[0][0]] = head["vi"][:tagged_matches[0].start()].strip(" ;")
+            tagged_translations[clauses[0][0]] = head["vi"][: tagged_matches[0].start()].strip(" ;")
 
     senses = []
     for index, (pos, definitions) in enumerate(groups.items()):
-        root_forms = [
-            item for item in head["family"]
-            if norm(item["w"]) == norm(head["word"]) and item["pos"] == pos
-        ]
+        root_forms = [item for item in head["family"] if norm(item["w"]) == norm(head["word"]) and item["pos"] == pos]
         meaning = root_forms[0]["vi"] if root_forms else tagged_translations.get(pos)
         if not meaning and len(groups) == 1:
             meaning = head["vi"]
         elif not meaning and pos == clauses[0][0] and not re.search(r";|,", head["vi"]):
             meaning = head["vi"]
-        senses.append({
-            "pos": pos,
-            **({"meaning": meaning} if meaning else {}),
-            "definitions": definitions,
-        })
+        senses.append(
+            {
+                "pos": pos,
+                **({"meaning": meaning} if meaning else {}),
+                "definitions": definitions,
+            }
+        )
 
     if senses:
         senses[0]["ex"] = [fix(x) for x in entry["ex"]]

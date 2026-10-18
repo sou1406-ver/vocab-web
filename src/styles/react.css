@@ -486,3 +486,21 @@ select option:disabled {
 .bottom-nav :is(button, a) span {
   line-height: 1.2;
 }
+
+/* Thanh điều hướng nổi ở đáy (điện thoại / máy tính bảng): giữ kiểu nổi không viền, nhưng có nền kính mờ
+   để chữ không chìm vào nội dung cuộn phía sau (trước đây nền trong suốt → thiếu tương phản trên thẻ màu) */
+@media (max-width: 1023px) {
+  .bottom-nav {
+    background: color-mix(in oklch, var(--surface) 86%, transparent);
+    -webkit-backdrop-filter: blur(14px) saturate(1.2);
+    backdrop-filter: blur(14px) saturate(1.2);
+    box-shadow: var(--shadow-sm);
+  }
+}
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  @media (max-width: 1023px) {
+    .bottom-nav {
+      background: var(--surface);
+    }
+  }
+}

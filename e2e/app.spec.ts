@@ -22,6 +22,11 @@ const ROUTES = [
   "#/affixes",
   "#/affixes/-ment",
   "#/manage",
+  "#/practice",
+  "#/review",
+  "#/knowledge",
+  "#/everyday",
+  "#/term/program",
 ];
 
 for (const r of ROUTES) {
@@ -44,7 +49,7 @@ test("trường từ: cụm từ ẩn mục cấu tạo + họ từ, đánh số
   const heads = page.locator("#canvas .branch-head h3");
   await expect(heads).toHaveText(["Đồng nghĩa & trái nghĩa", "Luyện riêng họ từ này"]);
   await expect(page.locator("#canvas .branch-no")).toHaveText(["01", "02"]);
-  await expect(page.locator(".book-ex .ex-vi").first()).toContainText("Hai bên đồng ý");
+  await expect(page.locator(".root-banner .ex-vi").first()).toContainText("Hai bên đồng ý");
 });
 
 test("trường từ: chỉ hiện cột từ loại có dữ liệu", async ({ page }) => {
@@ -76,12 +81,13 @@ test("tìm toàn trang bằng phím / và Enter", async ({ page, isMobile }) => 
   await expect(page.locator(".root-banner h2")).toHaveText("assurance");
 });
 
-test("flashcard: lật thẻ, chấm Đã thuộc ghi vào tổng quan", async ({ page }) => {
+test("flashcard: lật thẻ, chấm Đã nhớ ghi vào tổng quan", async ({ page }) => {
   await page.goto("#/flashcards");
   const word = await page.locator(".fc-front .fc-word").innerText();
-  await page.locator("#fc-card").click();
+  // chạm vào chữ (giữa thẻ trên điện thoại là nút "Nghe phát âm", chạm vào đó chỉ phát âm)
+  await page.locator(".fc-front .fc-word").click();
   await expect(page.locator("#fc-card")).toHaveClass(/flipped/);
-  await page.getByRole("button", { name: /Đã thuộc/ }).click();
+  await page.getByRole("button", { name: /Đã nhớ/ }).click();
   await expect(page.locator(".toast").first()).toContainText(word);
   await page.goto("#/");
   await expect(page.locator(".d-today-list li").nth(1)).toContainText("1");
@@ -90,12 +96,17 @@ test("flashcard: lật thẻ, chấm Đã thuộc ghi vào tổng quan", async (
 test("tự luyện: trả lời đủ 10 câu tới màn kết quả", async ({ page }) => {
   await page.goto("#/quiz");
   await page.getByRole("tab", { name: /Tự luyện/ }).click();
-  await page.getByRole("button", { name: /Nghĩa của từ/ }).click();
-  for (let i = 0; i < 10; i++) {
-    await page.locator(".choice").first().click();
-    await page.locator("#quiz-next").click();
+  await page.locator(".quiz-scope", { hasText: "Tất cả" }).click();
+  await page.locator(".quiz-custom-types summary").click();
+  await page.locator(".quiz-type-option", { hasText: "Nghĩa của từ" }).click();
+  // chọn đáp án tới khi được sang câu tiếp (sai được thử lại tối đa 3 lần)
+  for (let step = 0; step < 60; step++) {
+    if (await page.getByText("Hoàn thành lượt luyện!").isVisible()) break;
+    const next = page.locator("#quiz-next");
+    if (await next.isVisible()) await next.click();
+    else await page.locator(".choice:not([disabled])").first().click();
   }
-  await expect(page.getByText("Hoàn thành bài luyện tập!")).toBeVisible();
+  await expect(page.getByText("Hoàn thành lượt luyện!")).toBeVisible();
 });
 
 test("bài tập sách: điền Words in Context và Part 5 rồi chấm điểm", async ({ page }) => {
@@ -185,6 +196,10 @@ for (const theme of ["light", "dark"])
       "#/quiz",
       "#/affixes/-ment",
       "#/term/program",
+      "#/practice",
+      "#/review",
+      "#/knowledge",
+      "#/everyday",
     ];
     const found: string[] = [];
     for (const p of pages) {
@@ -230,11 +245,11 @@ test("thanh tiêu đề không bị cắt tab ở mọi bề ngang 1024–1920px
   expect(bad).toEqual([]);
 });
 
-test("thanh điều hướng dưới đáy (điện thoại): 6 mục trên một hàng, icon trên chữ dưới", async ({ page, isMobile }) => {
+test("thanh điều hướng dưới đáy (điện thoại): 5 mục trên một hàng, icon trên chữ dưới", async ({ page, isMobile }) => {
   test.skip(!isMobile, "chỉ có trên điện thoại");
   await page.goto("#/");
   const items = page.locator(".bottom-nav a");
-  await expect(items).toHaveCount(6);
+  await expect(items).toHaveCount(5);
   const boxes = await items.evaluateAll((els) =>
     els.map((e) => {
       const r = e.getBoundingClientRect();

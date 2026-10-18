@@ -1259,10 +1259,18 @@ function AutoQuiz() {
         <button
           className="btn primary"
           onClick={() =>
-            restart({ type: "mixed", scope: "due", unit: "all", lesson: "all", only: "all", forWord: null })
+            // chưa có từ nào cần ôn (người mới) → luyện trên toàn bộ từ thay vì ra đề rỗng
+            restart({
+              type: "mixed",
+              scope: dueCount + learningCount ? "due" : "all",
+              unit: "all",
+              lesson: "all",
+              only: "all",
+              forWord: null,
+            })
           }
         >
-          <Icon name="layers" size="sm" /> Bắt đầu luyện
+          <Icon name="layers" size="sm" /> {dueCount + learningCount ? "Bắt đầu luyện" : "Luyện từ mới"}
         </button>
       </section>
       <div className="quiz-controls card">
@@ -1335,6 +1343,26 @@ function AutoQuiz() {
     </>
   );
 
+  // Phạm vi "Từ cần ôn" nhưng hôm nay chưa có từ nào đến hạn → chỉ lối khác, không báo lỗi dạng bài
+  if (!st.qs.length && st.scope === "due" && !st.forWord)
+    return (
+      <div className="stack">
+        {header}
+        <Empty title="Hôm nay chưa có từ nào cần ôn">
+          Từ bạn đã học sẽ quay lại đây khi đến hạn ôn. Trong lúc chờ, luyện thêm từ mới nhé.
+          <br />
+          <div className="row" style={{ justifyContent: "center" }}>
+            <button className="btn primary" onClick={() => restart({ scope: "all", unit: "all", lesson: "all" })}>
+              Luyện tất cả từ
+            </button>
+            <button className="btn" onClick={() => restart({ scope: "lesson" })}>
+              Luyện theo bài
+            </button>
+          </div>
+        </Empty>
+      </div>
+    );
+
   if (!st.qs.length)
     return (
       <div className="stack">
@@ -1342,9 +1370,18 @@ function AutoQuiz() {
         <Empty title={`Chưa có câu hỏi dạng “${QUIZ_TYPES[st.type].label}” ở phạm vi này`}>
           Các từ trong phạm vi này không có dữ liệu cho dạng bài đó.
           <br />
-          <button className="btn" onClick={() => restart({ type: "mixed" })}>
-            Làm dạng Theo bậc
-          </button>
+          {st.type !== "mixed" ? (
+            <button className="btn" onClick={() => restart({ type: "mixed" })}>
+              Làm dạng Theo bậc
+            </button>
+          ) : (
+            <button
+              className="btn"
+              onClick={() => restart({ scope: "all", unit: "all", lesson: "all", forWord: null })}
+            >
+              Luyện tất cả từ
+            </button>
+          )}
         </Empty>
       </div>
     );

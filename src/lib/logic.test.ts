@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { buildCatalog, familyLookup, freqLevel, termInfo, WORDS } from "./data";
-import { mergeData } from "./merge";
+import { mergeData, sameData } from "./merge";
 import {
   dueAfterDays,
   dueReviewIds,
@@ -70,6 +70,16 @@ describe("giới hạn từ mới TOEIC", () => {
 });
 
 describe("mergeData", () => {
+  it("gộp lặp lại cho kết quả ổn định (không gây vòng lặp đẩy lên Firestore)", async () => {
+    const base0 = { meta: {}, custom: [], status: {}, statusAt: {}, srs: {}, stats: {}, book: {}, log: {} };
+    // dữ liệu kiểu bản cũ: có trạng thái nhưng chưa có mốc thời gian / lịch ôn
+    const old = { ...base0, status: { "agreement-1": "mastered" as const, "assurance-1": "learning" as const } };
+    const m1 = mergeData(old, {});
+    await new Promise((r) => setTimeout(r, 15));
+    const m2 = mergeData(m1, m1);
+    await new Promise((r) => setTimeout(r, 15));
+    expect(sameData(mergeData(m2, m1), m2)).toBe(true);
+  });
   const base = { meta: {}, custom: [], status: {}, stats: {}, book: {}, log: {} };
   it("giữ trạng thái tiến bộ hơn và điểm cao hơn", () => {
     const a = {
