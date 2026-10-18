@@ -143,6 +143,10 @@ export async function signIn() {
 export async function signOut() {
   if (!auth || !fb || !useCloud.getState().user) return;
   await flush();
+  if (needsPush) {
+    toast("Chưa đồng bộ xong, kết nối mạng rồi đăng xuất");
+    return;
+  }
   await fb.auth.signOut(auth);
 }
 
@@ -319,6 +323,8 @@ async function pushOnce() {
     if (localAtTransaction && !sameData(latest, localAtTransaction)) pushAgain = true;
     setCloud({ status: "synced", lastSync: new Date() });
   } catch (e) {
+    // Keep the local account data if this write could not be confirmed.
+    needsPush = true;
     fail(e);
   }
 }
