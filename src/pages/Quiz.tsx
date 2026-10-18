@@ -189,6 +189,17 @@ function QuestionView({
   const [hintPenalty, setHintPenalty] = useState(false);
   const [typedValue, setTypedValue] = useState("");
   const [typingError, setTypingError] = useState(false);
+  const [wrongAttempts, setWrongAttempts] = useState(0);
+  const [missRecorded, setMissRecorded] = useState(false);
+  const wrongAttemptsRef = useRef(0);
+  const missRecordedRef = useRef(false);
+
+  const markMissOnce = () => {
+    if (missRecordedRef.current) return;
+    missRecordedRef.current = true;
+    setMissRecorded(true);
+    onTypingWrong();
+  };
 
   const submitTypedAnswer = (answer: string, target: string, alternatives?: string[]) => {
     if (!answer.trim()) return;
@@ -200,7 +211,10 @@ function QuestionView({
     }
     setTypingError(true);
     setTypedValue("");
-    onTypingWrong();
+    const attempts = wrongAttemptsRef.current + 1;
+    wrongAttemptsRef.current = attempts;
+    setWrongAttempts(attempts);
+    if (attempts >= 3) onAnswer(false, undefined, false, !missRecordedRef.current);
   };
 
   const revealNextLetter = (word: string) => {
@@ -211,7 +225,7 @@ function QuestionView({
     if (nextCount > 2 && !hintPenalty) {
       setHintPenalty(true);
       setTypingError(true);
-      onTypingWrong();
+      markMissOnce();
     }
   };
 
@@ -301,6 +315,7 @@ function QuestionView({
               st.last.ok ? null : (
                 <>
                   Đáp án: <b>{q.m.text}</b>.
+                  {wrongAttempts >= 3 && " Từ này đã được đánh dấu chưa thuộc; bạn có thể ôn lại sau."}
                 </>
               )
             }
@@ -353,7 +368,9 @@ function QuestionView({
             />
             {typingError && (
               <div className="typing-error" role="alert">
-                Chưa đúng, thử lại nhé.
+                {missRecorded
+                  ? "Đã đánh dấu chưa thuộc; cứ thử tiếp đến khi đúng."
+                  : `Chưa đúng, còn ${3 - wrongAttempts} lượt.`}
               </div>
             )}
             {answerComplete && <button className="btn primary">Kiểm tra</button>}
@@ -437,7 +454,9 @@ function QuestionView({
               <div className="typing-error" role="alert">
                 {hintPenalty
                   ? "Dùng quá 2 gợi ý; lượt này đã tính sai. Nhập đúng để tiếp tục."
-                  : "Chưa đúng, thử lại nhé."}
+                  : missRecorded
+                    ? "Đã đánh dấu chưa thuộc; cứ thử tiếp đến khi đúng."
+                    : `Chưa đúng, còn ${3 - wrongAttempts} lượt.`}
               </div>
             )}
             {answerComplete && <button className="btn primary">Kiểm tra</button>}
@@ -452,6 +471,8 @@ function QuestionView({
               st.last.ok ? null : (
                 <>
                   Đáp án: <b>{q.root.word}</b>.
+                  {(wrongAttempts >= 3 || missRecorded) &&
+                    " Từ này đã được đánh dấu chưa thuộc; bạn có thể ôn lại sau."}
                 </>
               )
             }
@@ -510,7 +531,9 @@ function QuestionView({
               <div className="typing-error" role="alert">
                 {hintPenalty
                   ? "Dùng quá 2 gợi ý; lượt này đã tính sai. Nhập đúng để tiếp tục."
-                  : "Chưa đúng, thử lại nhé."}
+                  : missRecorded
+                    ? "Đã đánh dấu chưa thuộc; cứ thử tiếp đến khi đúng."
+                    : `Chưa đúng, còn ${3 - wrongAttempts} lượt.`}
               </div>
             )}
             {answerComplete && <button className="btn primary">Kiểm tra</button>}
@@ -524,6 +547,8 @@ function QuestionView({
               st.last.ok ? null : (
                 <>
                   Đáp án: <b>{q.root.word}</b>.
+                  {(wrongAttempts >= 3 || missRecorded) &&
+                    " Từ này đã được đánh dấu chưa thuộc; bạn có thể ôn lại sau."}
                 </>
               )
             }
@@ -819,14 +844,14 @@ function AutoQuiz() {
     if (s.answered || !q) return;
     const before = useProfile.getState();
     const wasConfirming = Boolean(before.srs?.[q.root.id]?.confirming || before.status[q.root.id] === "confirming");
-    if (!close && (!ok || masteryCredit)) recordAnswer(q.root.id, ok);
+    if (!close && masteryCredit) recordAnswer(q.root.id, ok);
     setQuiz({
       answered: true,
       last: { ok, pick, close },
       right: s.right + (ok ? 1 : 0),
-      wrong: s.wrong + (!ok && !close ? 1 : 0),
+      wrong: s.wrong + (!ok && !close && masteryCredit ? 1 : 0),
       close: s.close + (close ? 1 : 0),
-      missed: ok || close ? s.missed : [...new Set([...s.missed, q.root.id])],
+      missed: ok || close || !masteryCredit ? s.missed : [...new Set([...s.missed, q.root.id])],
     });
     if (ok && wasConfirming && useProfile.getState().status[q.root.id] === "mastered")
       toast(`${q.root.word}: Đã xác nhận thuộc sau 3 lượt đúng cách quãng!`);
