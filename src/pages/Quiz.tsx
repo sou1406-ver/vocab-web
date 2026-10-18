@@ -11,7 +11,7 @@ import type { FamilyEntry, Word } from "@/lib/types";
 import { cx, lower, same, scrollBehavior } from "@/lib/util";
 import { ensureBookLesson, startQuiz, useActions } from "@/state/actions";
 import { useProfile } from "@/state/profile";
-import { useUI, type QuizType } from "@/state/ui";
+import { toast, useUI, type QuizType } from "@/state/ui";
 import { BookExercises } from "./Book";
 
 const QUIZ_TYPES: Record<QuizType, { label: string; icon: IconName }> = {
@@ -381,7 +381,10 @@ function AutoQuiz() {
       wrong: s.wrong + (ok ? 0 : 1),
       missed: ok ? s.missed : [...new Set([...s.missed, q.root.id])],
     });
+    const wasConfirming = useProfile.getState().status[q.root.id] === "confirming";
     recordAnswer(q.root.id, ok);
+    if (ok && wasConfirming && useProfile.getState().status[q.root.id] === "mastered")
+      toast(`${q.root.word}: Đã xác nhận thuộc sau 3 lượt đúng cách quãng!`);
     // Trả lời đúng: bắn tia sáng (React Bits · ClickSpark) từ nút vừa chọn
     if (ok && spark.current && cardRef.current) {
       const target =
@@ -455,6 +458,7 @@ function AutoQuiz() {
                   <option value="all">Tất cả từ</option>
                   <option value="unmastered">Từ chưa thuộc</option>
                   <option value="learning">Từ đang học</option>
+                  <option value="confirming">Từ đang xác nhận</option>
                 </select>
               </label>
             </>

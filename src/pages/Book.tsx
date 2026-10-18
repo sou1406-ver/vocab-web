@@ -133,10 +133,15 @@ function useCheck() {
   return (sec: string, results: { ok: boolean; answer: string }[]) => {
     const { book, setBook } = useUI.getState();
     let right = 0;
+    let confirmed = 0;
     for (const r of results) {
       if (r.ok) right++;
       const fam = familyLookup(catalog, r.answer);
-      if (fam) recordAnswer(fam.root.id, r.ok);
+      if (fam) {
+        const wasConfirming = useProfile.getState().status[fam.root.id] === "confirming";
+        recordAnswer(fam.root.id, r.ok);
+        if (wasConfirming && useProfile.getState().status[fam.root.id] === "mastered") confirmed++;
+      }
     }
     const total = results.length;
     setBook({ checked: { ...book.checked, [sec]: { right, total } }, active: null });
@@ -145,8 +150,8 @@ function useCheck() {
     if (el && el.getBoundingClientRect().top < 60) el.scrollIntoView({ behavior: scrollBehavior(), block: "start" });
     toast(
       right === total
-        ? `Xuất sắc! Đúng cả ${total}/${total} 🎉`
-        : `Đúng ${right}/${total} — xem lại những chỗ đánh dấu đỏ`,
+        ? `Xuất sắc! Đúng cả ${total}/${total} 🎉${confirmed ? ` · ${confirmed} từ đã được xác nhận thuộc` : ""}`
+        : `Đúng ${right}/${total} — xem lại những chỗ đánh dấu đỏ${confirmed ? ` · ${confirmed} từ đã được xác nhận thuộc` : ""}`,
     );
   };
 }

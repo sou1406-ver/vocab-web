@@ -15,7 +15,12 @@ export function ReviewPage() {
   const act = useActions();
   const words = catalog
     .scope("all", "all")
-    .map((word) => ({ word, misses: stats[word.id]?.w ?? 0, learning: status[word.id] === "learning" }))
+    .map((word) => ({
+      word,
+      misses: stats[word.id]?.w ?? 0,
+      learning: status[word.id] === "learning" || status[word.id] === "confirming",
+      confirming: status[word.id] === "confirming",
+    }))
     .filter(({ word, misses, learning }) => learning || (misses > 0 && status[word.id] !== "mastered"))
     .sort(
       (a, b) =>
@@ -73,7 +78,7 @@ export function ReviewPage() {
           </div>
           <div className="d-stat">
             <b>{learningCount}</b>
-            <span>đang học</span>
+            <span>đang học / xác nhận</span>
           </div>
         </section>
       ) : (
@@ -132,7 +137,7 @@ export function ReviewPage() {
               [
                 ["all", `Tất cả (${words.length})`],
                 ["weak", `Hay sai (${weakCount})`],
-                ["learning", `Đang học (${learningCount})`],
+                ["learning", `Đang học / xác nhận (${learningCount})`],
               ] as const
             ).map(([key, label]) => (
               <button
@@ -148,7 +153,7 @@ export function ReviewPage() {
           </div>
           {visibleWords.length ? (
             <section className="review-list" aria-label="Danh sách từ cần ôn">
-              {visibleWords.map(({ word, misses, learning }) => (
+              {visibleWords.map(({ word, misses, learning, confirming }) => (
                 <article className="card review-item" key={word.id}>
                   <div className="review-word">
                     <Link to={`/network/${word.id}`}>
@@ -160,7 +165,11 @@ export function ReviewPage() {
                   </div>
                   <div className="review-flags">
                     {misses > 0 && <span className="badge b-rose">Sai {misses} lần</span>}
-                    {learning && <span className="badge b-amber">Đang học</span>}
+                    {learning && (
+                      <span className={`badge ${confirming ? "b-sky" : "b-amber"}`}>
+                        {confirming ? "Đang xác nhận" : "Đang học"}
+                      </span>
+                    )}
                   </div>
                 </article>
               ))}

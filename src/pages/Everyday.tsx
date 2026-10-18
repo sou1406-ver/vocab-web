@@ -380,6 +380,7 @@ export function EverydayPage() {
                   <option value="all">Mọi trạng thái</option>
                   <option value="new">Chưa học</option>
                   <option value="learning">Đang học</option>
+                  <option value="confirming">Đang xác nhận</option>
                   <option value="mastered">Đã thuộc</option>
                 </select>
               </label>
@@ -415,7 +416,7 @@ export function EverydayPage() {
                     <div className="row everyday-badges">
                       <UsageMeter level={entry.usageLevel} />
                       <span
-                        className={`badge ${learned === "mastered" ? "b-emerald" : learned === "learning" ? "b-amber" : "b-slate"}`}
+                        className={`badge ${learned === "mastered" ? "b-emerald" : learned === "confirming" ? "b-sky" : learned === "learning" ? "b-amber" : "b-slate"}`}
                       >
                         {STATUS_INFO[learned].label}
                       </span>

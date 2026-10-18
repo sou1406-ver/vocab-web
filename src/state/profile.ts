@@ -2,6 +2,14 @@ import { create } from "zustand";
 import { buildCatalog, type Catalog } from "@/lib/data";
 import type { BookScore, DayLog, Profile, ProfileData, Status, Word } from "@/lib/types";
 import { dayKey, storage } from "@/lib/util";
+import {
+  markReviewedToday,
+  mergeDailyReviews,
+  mergeSchedules,
+  scheduleAnswer,
+  scheduleFor,
+  scheduleRating,
+} from "@/lib/srs";
 
 /* Hồ sơ học tập (nhiều người dùng chung một máy) + dữ liệu của hồ sơ đang mở.
    Khoá localStorage giữ nguyên như bản HTML cũ: "vn-status@<id hồ sơ>"… → nâng cấp không mất tiến độ. */
@@ -10,6 +18,8 @@ export const PROFILE_KEYS = [
   "vn-custom",
   "vn-status",
   "vn-status-at",
+  "vn-srs",
+  "vn-review-day",
   "vn-stats",
   "vn-book",
   "vn-log",
@@ -20,6 +30,8 @@ const FIELD: Record<(typeof PROFILE_KEYS)[number], keyof ProfileData> = {
   "vn-custom": "custom",
   "vn-status": "status",
   "vn-status-at": "statusAt",
+  "vn-srs": "srs",
+  "vn-review-day": "reviewedToday",
   "vn-stats": "stats",
   "vn-book": "book",
   "vn-log": "log",
@@ -31,6 +43,8 @@ export const emptyData = (): ProfileData => ({
   custom: [],
   status: {},
   statusAt: {},
+  srs: {},
+  reviewedToday: { day: "", ids: [] },
   stats: {},
   book: {},
   log: {},
@@ -109,6 +123,7 @@ interface ProfileState extends ProfileData {
   statusOf: (id: string) => Status;
 
   setStatus: (id: string, s: Status) => void;
+  markRemembered: (id: string) => void;
   recordAnswer: (id: string, ok: boolean) => void;
   logActivity: (kind: "answer" | "card" | "mastered", ok?: boolean) => void;
   saveBookScore: (key: string, right: number, total: number) => void;
@@ -171,14 +186,45 @@ export const useProfile = create<ProfileState>()((set, get) => {
     setStatus: (id, s) => {
       const status = { ...get().status };
       const timestamps = get().statusAt ?? {};
-      const statusAt = { ...timestamps, [id]: Math.max(Date.now(), (timestamps[id] ?? 0) + 1) };
+      const now = Date.now();
+      const statusAt = { ...timestamps, [id]: Math.max(now, (timestamps[id] ?? 0) + 1) };
+      const srs = { ...(get().srs ?? {}) };
+      const previousSchedule = scheduleFor(id, status, srs, timestamps, now);
+      srs[id] = scheduleRating(id, s, status, srs, timestamps, now);
       const patch: Partial<ProfileData> = {};
-      if (s === "mastered" && status[id] !== "mastered") patch.log = bumpLog((e) => e.m++);
+      if (!id.startsWith("everyday:") && previousSchedule && previousSchedule.due <= now)
+        patch.reviewedToday = markReviewedToday(get().reviewedToday, id, now);
       if (s === "new") delete status[id];
       else status[id] = s;
-      save({ ...patch, status, statusAt });
+      if (s === "mastered" && get().status[id] !== "mastered") patch.log = bumpLog((e) => e.m++);
+      save({ ...patch, status, statusAt, srs });
+    },
+    markRemembered: (id) => {
+      const status = { ...get().status, [id]: "confirming" as const };
+      const timestamps = get().statusAt ?? {};
+      const now = Date.now();
+      const statusAt = { ...timestamps, [id]: Math.max(now, (timestamps[id] ?? 0) + 1) };
+      const existingSchedules = get().srs ?? {};
+      const previousSchedule = scheduleFor(id, get().status, existingSchedules, timestamps, now);
+      const srs = { ...existingSchedules };
+      srs[id] = scheduleRating(id, "confirming", status, srs, timestamps, now);
+      save({
+        status,
+        statusAt,
+        srs,
+        ...(!id.startsWith("everyday:") && previousSchedule && previousSchedule.due <= now
+          ? { reviewedToday: markReviewedToday(get().reviewedToday, id, now) }
+          : {}),
+      });
     },
     recordAnswer: (id, ok) => {
+      const currentStatus = get().status;
+      const currentStatusAt = get().statusAt ?? {};
+      const srs = { ...(get().srs ?? {}) };
+      const now = Date.now();
+      const previousSchedule = scheduleFor(id, currentStatus, srs, currentStatusAt, now);
+      const nextSchedule = scheduleAnswer(id, ok, currentStatus, srs, currentStatusAt, now);
+      srs[id] = nextSchedule;
       const stats = { ...get().stats };
       const st = { ...(stats[id] ?? { c: 0, w: 0 }) };
       if (ok) st.c++;
@@ -188,11 +234,22 @@ export const useProfile = create<ProfileState>()((set, get) => {
         e.a++;
         if (ok) e.c++;
       });
-      const patch: Partial<ProfileData> = { stats, log };
-      if (!ok && !get().status[id]) {
-        patch.status = { ...get().status, [id]: "learning" };
-        const timestamps = get().statusAt ?? {};
-        patch.statusAt = { ...timestamps, [id]: Math.max(Date.now(), (timestamps[id] ?? 0) + 1) };
+      const patch: Partial<ProfileData> = { stats, log, srs };
+      if (!id.startsWith("everyday:") && previousSchedule && previousSchedule.due <= now)
+        patch.reviewedToday = markReviewedToday(get().reviewedToday, id, now);
+      if (!ok && currentStatus[id] !== "learning") {
+        patch.status = { ...currentStatus, [id]: "learning" };
+        patch.statusAt = { ...currentStatusAt, [id]: Math.max(now, (currentStatusAt[id] ?? 0) + 1) };
+      } else if (
+        ok &&
+        currentStatus[id] === "confirming" &&
+        previousSchedule?.confirming &&
+        !nextSchedule.confirming &&
+        (nextSchedule.confirmations ?? 0) >= 3
+      ) {
+        patch.status = { ...currentStatus, [id]: "mastered" };
+        patch.statusAt = { ...currentStatusAt, [id]: Math.max(now, (currentStatusAt[id] ?? 0) + 1) };
+        patch.log = bumpLog((e) => e.m++);
       }
       save(patch);
     },
@@ -229,7 +286,16 @@ export const useProfile = create<ProfileState>()((set, get) => {
       });
     },
     resetProgress: () =>
-      save({ status: {}, statusAt: {}, stats: {}, book: {}, log: {}, meta: { ...get().meta, resetAt: Date.now() } }),
+      save({
+        status: {},
+        statusAt: {},
+        srs: {},
+        reviewedToday: { day: "", ids: [] },
+        stats: {},
+        book: {},
+        log: {},
+        meta: { ...get().meta, resetAt: Date.now() },
+      }),
     importData: (d) => {
       const cur = get();
       const custom = cur.custom.slice();
@@ -241,18 +307,26 @@ export const useProfile = create<ProfileState>()((set, get) => {
       const log = { ...cur.log };
       for (const [k, v] of Object.entries(d.log ?? {})) log[k] ??= v;
       const statusAt = { ...cur.statusAt, ...d.statusAt };
-      const status = { ...cur.status };
       const importedAt = Date.now();
+      const importedSchedules = Object.fromEntries(
+        Object.entries(d.srs ?? {}).map(([id, schedule]) => [id, { ...schedule, at: importedAt }]),
+      );
+      const srs = mergeSchedules(cur.srs, importedSchedules);
+      const reviewedToday = mergeDailyReviews(cur.reviewedToday, d.reviewedToday);
+      const status = { ...cur.status };
       for (const [id, value] of Object.entries(d.status ?? {})) {
         if (value === "new") delete status[id];
         else status[id] = value;
         // Import is an explicit user action; make imported states newer than the current local copy.
         statusAt[id] = importedAt;
+        if (!d.srs?.[id]) srs[id] = scheduleRating(id, value, status, srs, statusAt, importedAt);
       }
       save({
         custom,
         status,
         statusAt,
+        srs,
+        reviewedToday,
         stats: { ...cur.stats, ...d.stats },
         book: { ...cur.book, ...d.book },
         log,

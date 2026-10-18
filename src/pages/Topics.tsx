@@ -79,6 +79,7 @@ export function TopicsPage() {
   const total = catalog.all.length;
   const mastered = catalog.all.filter((w) => status[w.id] === "mastered").length;
   const learning = catalog.all.filter((w) => status[w.id] === "learning").length;
+  const confirming = catalog.all.filter((w) => status[w.id] === "confirming").length;
   const next = resumeLesson(catalog, status);
   const np = lessonProgress(catalog, status, next.n);
 
@@ -122,7 +123,9 @@ export function TopicsPage() {
         <span>
           <b>{mastered}</b> / {total} từ đã thuộc
         </span>
-        <span>{learning} đang học</span>
+        <span>
+          {learning} đang học · {confirming} đang xác nhận
+        </span>
         <Progress value={pct(mastered, total)} title={`${Math.round(pct(mastered, total))}%`} />
       </div>
 

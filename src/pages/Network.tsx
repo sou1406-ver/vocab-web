@@ -29,6 +29,7 @@ const NET_FILTERS: Record<"status" | "pos" | "sort", { label: string; options: [
       ["all", "Mọi trạng thái"],
       ["new", "Chưa học"],
       ["learning", "Đang học"],
+      ["confirming", "Đang xác nhận"],
       ["mastered", "Đã thuộc"],
       ["unmastered", "Chưa thuộc"],
     ],

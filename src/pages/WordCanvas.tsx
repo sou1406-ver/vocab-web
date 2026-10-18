@@ -62,8 +62,9 @@ function WordCard({ f, root }: { f: FamilyEntry; root: Word }) {
 
 export function WordCanvas({ w, prev, next, lesson }: { w: Word; prev?: Word; next?: Word; lesson: string }) {
   const act = useActions();
-  const { catalog, setStatus } = useProfile();
+  const { catalog, setStatus, markRemembered, srs } = useProfile();
   const st: Status = useProfile((s) => s.status[w.id] ?? "new");
+  const displayStatus: Status = srs?.[w.id]?.confirming ? "confirming" : st;
   const setModal = useUI((s) => s.setModal);
 
   const fam = familyOf(w);
@@ -129,13 +130,18 @@ export function WordCanvas({ w, prev, next, lesson }: { w: Word; prev?: Word; ne
           </div>
           <div className="stack-sm" style={{ textAlign: "right" }}>
             <select
-              className={`status-select ${st}`}
+              className={`status-select ${displayStatus}`}
               aria-label="Trạng thái học"
-              value={st}
+              value={displayStatus}
               onChange={(e) => {
                 const v = e.target.value as Status;
-                setStatus(w.id, v);
-                toast(`Đã đánh dấu: ${STATUS_INFO[v].label}`);
+                if (v === "mastered") {
+                  markRemembered(w.id);
+                  toast("Đã nhớ — cần 3 lượt đúng cách quãng để xác nhận");
+                } else {
+                  setStatus(w.id, v);
+                  toast(`Đã đánh dấu: ${STATUS_INFO[v].label}`);
+                }
               }}
             >
               {Object.entries(STATUS_INFO).map(([k, v]) => (

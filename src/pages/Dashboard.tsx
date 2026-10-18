@@ -8,6 +8,7 @@ import CountUp from "@/components/reactbits/CountUp";
 import SpotlightCard from "@/components/reactbits/SpotlightCard";
 import { LESSONS, targetInfo, termInfo, TOPICS, unitOf, WORDS } from "@/lib/data";
 import { lessonBookDone, lessonProgress, pct, resumeLesson } from "@/lib/progress";
+import { DAILY_REVIEW_LIMIT, dueReviewIds } from "@/lib/srs";
 import type { DayLog } from "@/lib/types";
 import { cx, dayKey } from "@/lib/util";
 import { useActions } from "@/state/actions";
@@ -130,7 +131,7 @@ const Stat = ({ num, label, sub }: { num: ReactNode; label: string; sub?: string
 export function Dashboard() {
   const act = useActions();
   const setModal = useUI((s) => s.setModal);
-  const { catalog, status, stats, book, log } = useProfile();
+  const { catalog, status, stats, book, log, srs, statusAt, reviewedToday } = useProfile();
   const p = useProfile((s) => s.profile());
 
   const today = log[dayKey()] ?? EMPTY_DAY;
@@ -138,7 +139,18 @@ export function Dashboard() {
   const goal = p.goal || 20;
   const streak = streakOf(log);
   const mastered = WORDS.filter((w) => status[w.id] === "mastered").length;
-  const learning = WORDS.filter((w) => status[w.id] === "learning").length;
+  const learning = WORDS.filter((w) => status[w.id] === "learning" || status[w.id] === "confirming").length;
+  const dueToday = dueReviewIds(
+    Object.keys(catalog.byId),
+    status,
+    srs ?? {},
+    statusAt,
+    Date.now(),
+    undefined,
+    reviewedToday,
+  );
+  const reviewedCount = reviewedToday?.day === dayKey() ? reviewedToday.ids.length : 0;
+  const reviewLimitReached = reviewedCount >= DAILY_REVIEW_LIMIT;
   const week = Array.from({ length: 7 }, (_, i) => {
     const d = new Date();
     d.setDate(d.getDate() - i);
@@ -198,6 +210,28 @@ export function Dashboard() {
           </button>
         </section>
       )}
+
+      <DCard className="d-review">
+        <div className="d-review-copy">
+          <div className="d-review-count" aria-label={`${dueToday.length} từ đến hạn ôn hôm nay`}>
+            <Icon name="repeat" /> <b>{dueToday.length}</b>
+          </div>
+          <div>
+            <div className="eyebrow">Ôn tập ngắt quãng</div>
+            <h3>Ôn hôm nay</h3>
+            <p className="muted">
+              {dueToday.length
+                ? `Có ${dueToday.length} từ đến hạn. Mỗi ngày tối đa 20 từ; từ đã nhớ cần 3 lượt đúng cách quãng để thành Đã thuộc.`
+                : reviewLimitReached
+                  ? `Đã ôn đủ ${DAILY_REVIEW_LIMIT} từ hôm nay. Các từ còn lại sẽ vào hàng đợi ngày mai.`
+                  : "Chưa có từ nào đến hạn. Từ đã đánh dấu nhớ sẽ được kiểm tra lại theo lịch."}
+            </p>
+          </div>
+        </div>
+        <button className="btn primary" onClick={act.reviewDue} disabled={!dueToday.length}>
+          <Icon name="repeat" size="sm" /> {dueToday.length ? "Bắt đầu ôn" : "Đã xong"}
+        </button>
+      </DCard>
 
       <div className="d-grid">
         <DCard className="d-today">
@@ -264,7 +298,7 @@ export function Dashboard() {
           </p>
           <div className="d-stats">
             <Stat num={<CountUp to={mastered} duration={1} />} label="đã thuộc" sub={`/ ${WORDS.length} từ`} />
-            <Stat num={<CountUp to={learning} duration={1} />} label="đang học" />
+            <Stat num={<CountUp to={learning} duration={1} />} label="đang học / xác nhận" />
             <Stat
               num={acc == null ? "—" : <CountUp to={acc} suffix="%" duration={1} />}
               label="chính xác"

@@ -102,11 +102,25 @@ export interface Exercises {
 
 // ---------------------------------------------------------------- dữ liệu học tập của một hồ sơ
 
-export type Status = "new" | "learning" | "mastered";
+export type Status = "new" | "learning" | "confirming" | "mastered";
 
 export interface WordStat {
   c: number; // số lần đúng
   w: number; // số lần sai
+}
+
+export interface ReviewSchedule {
+  box: number;
+  due: number;
+  at: number;
+  /** A manual “Đã nhớ” starts a three-test spaced confirmation phase. */
+  confirming?: boolean;
+  confirmations?: number;
+}
+
+export interface DailyReviewLog {
+  day: string;
+  ids: string[];
 }
 
 export interface DayLog {
@@ -136,6 +150,9 @@ export interface ProfileData {
   status: Record<string, Status>;
   /** Timestamp of the most recent learning-state change for each word. */
   statusAt?: Record<string, number>;
+  /** Leitner review schedule, merged by the latest per-word update. */
+  srs?: Record<string, ReviewSchedule>;
+  reviewedToday?: DailyReviewLog;
   stats: Record<string, WordStat>;
   book: Record<string, BookScore>;
   log: Record<string, DayLog>;

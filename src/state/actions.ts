@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { LESSON_BY_N } from "@/lib/data";
 import { makeQuiz } from "@/lib/quiz";
 import { resumeLesson } from "@/lib/progress";
+import { dueReviewIds } from "@/lib/srs";
 import { shuffle } from "@/lib/util";
 import { useProfile } from "./profile";
 import { NET_DEFAULT, useUI } from "./ui";
@@ -138,6 +139,21 @@ export function useActions() {
       const deck = [...new Set(ids)].filter((id) => catalog.byId[id]);
       if (!deck.length) return;
       ui().setFc({ unit: "all", lesson: "all", status: "all", deck, i: 0, flipped: false, stale: false });
+      navigate("/flashcards");
+    },
+    reviewDue() {
+      const { catalog, status, srs, statusAt, reviewedToday } = useProfile.getState();
+      const ids = dueReviewIds(
+        Object.keys(catalog.byId),
+        status,
+        srs ?? {},
+        statusAt,
+        Date.now(),
+        undefined,
+        reviewedToday,
+      );
+      if (!ids.length) return;
+      ui().setFc({ unit: "all", lesson: "all", status: "all", deck: ids, i: 0, flipped: false, stale: false });
       navigate("/flashcards");
     },
     netByAffix(affix: string) {

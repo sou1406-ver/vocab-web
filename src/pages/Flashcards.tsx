@@ -5,6 +5,7 @@ import { Icon } from "@/components/Icon";
 import { FreqMeter } from "@/components/FreqMeter";
 import { LessonNav, ScopeSelects } from "@/components/LessonNav";
 import { familyOf, lessonLabel, POS_COLS, STATUS_INFO, termInfo, TOPIC_BY_ID, unitOf } from "@/lib/data";
+import { scheduleFor } from "@/lib/srs";
 import { speak } from "@/lib/speech";
 import type { Status } from "@/lib/types";
 import { cx, same } from "@/lib/util";
@@ -17,6 +18,7 @@ const STATUS_FILTER: [string, string][] = [
   ["unmastered", "Chưa thuộc"],
   ["new", "Chưa học"],
   ["learning", "Đang học"],
+  ["confirming", "Đang xác nhận"],
   ["mastered", "Đã thuộc"],
 ];
 
@@ -24,7 +26,7 @@ export function FlashcardsPage() {
   const act = useActions();
   const fc = useUI((s) => s.fc);
   const setFc = useUI((s) => s.setFc);
-  const { catalog, setStatus, logActivity } = useProfile();
+  const { catalog, setStatus, markRemembered, logActivity, recordAnswer, srs } = useProfile();
   const statusMap = useProfile((s) => s.status);
 
   useEffect(() => {
@@ -43,9 +45,51 @@ export function FlashcardsPage() {
     const { fc: f } = useUI.getState();
     const id = f.deck[f.i];
     if (!id) return;
+    const currentState = useProfile.getState();
+    if (currentState.status[id] === "confirming") {
+      const due = scheduleFor(id, currentState.status, currentState.srs ?? {}, currentState.statusAt)?.due ?? Infinity;
+      if (due > Date.now()) {
+        toast("Từ này chưa đến ngày kiểm tra lại");
+        return;
+      }
+      recordAnswer(id, s === "mastered");
+      logActivity("card");
+      const updated = useProfile.getState();
+      if (s === "mastered") {
+        const passed = updated.srs?.[id]?.confirmations ?? 0;
+        toast(
+          updated.status[id] === "mastered"
+            ? `${catalog.byId[id].word}: Đã xác nhận thuộc!`
+            : `Đúng rồi — còn ${3 - passed} lượt đúng cách quãng`,
+        );
+      } else toast(`${catalog.byId[id].word}: quay lại Đang học`);
+      move(1);
+      return;
+    }
+    if (currentState.status[id] === "mastered") {
+      const due = scheduleFor(id, currentState.status, currentState.srs ?? {}, currentState.statusAt)?.due ?? Infinity;
+      if (due > Date.now()) {
+        toast("Từ này chưa đến ngày ôn lại");
+        return;
+      }
+      recordAnswer(id, s === "mastered");
+      logActivity("card");
+      toast(
+        s === "mastered"
+          ? `${catalog.byId[id].word}: tiếp tục giãn lịch ôn`
+          : `${catalog.byId[id].word}: quay lại Đang học`,
+      );
+      move(1);
+      return;
+    }
     logActivity("card");
-    setStatus(id, s);
-    toast(`${catalog.byId[id].word}: ${STATUS_INFO[s].label}`);
+    if (s === "mastered") markRemembered(id);
+    else setStatus(id, s);
+    toast(
+      s === "mastered"
+        ? `${catalog.byId[id].word}: Đã nhớ — cần 3 lượt đúng cách quãng để xác nhận`
+        : `${catalog.byId[id].word}: ${STATUS_INFO[s].label}`,
+    );
     move(1);
   };
 
@@ -132,6 +176,7 @@ export function FlashcardsPage() {
   const fam = familyOf(w).filter((f) => !same(f.w, w.word));
   const counts = POS_COLS.map((c) => [c, fam.filter((f) => f.pos === c.k).length] as const).filter(([, n]) => n);
   const s: Status = statusMap[w.id] ?? "new";
+  const confirmations = srs?.[w.id]?.confirmations ?? 0;
 
   return (
     <div className="stack">
@@ -155,9 +200,19 @@ export function FlashcardsPage() {
                   <PosTag pos={w.pos} />
                 </div>
                 <span
-                  className={cx("badge", s === "mastered" ? "b-emerald" : s === "learning" ? "b-amber" : "b-slate")}
+                  className={cx(
+                    "badge",
+                    s === "mastered"
+                      ? "b-emerald"
+                      : s === "confirming"
+                        ? "b-sky"
+                        : s === "learning"
+                          ? "b-amber"
+                          : "b-slate",
+                  )}
                 >
                   {STATUS_INFO[s].emoji} {STATUS_INFO[s].label}
+                  {s === "confirming" ? ` · ${confirmations}/3` : ""}
                 </span>
               </div>
               <div style={{ textAlign: "center" }} className="stack-sm">
@@ -249,13 +304,13 @@ export function FlashcardsPage() {
         </div>
         <div className="rate-grid">
           <button className="rate-btn r1" onClick={() => rate("new")}>
-            <Icon name="undo" size="sm" /> Chưa nhớ<small>Học lại (phím 1)</small>
+            <Icon name="undo" size="sm" /> Chưa nhớ<small>Ôn lại ngày mai (phím 1)</small>
           </button>
           <button className="rate-btn r2" onClick={() => rate("learning")}>
-            <Icon name="target" size="sm" /> Đang học<small>Nhớ một phần (phím 2)</small>
+            <Icon name="target" size="sm" /> Đang học<small>Giữ hộp, ôn ngày mai (phím 2)</small>
           </button>
           <button className="rate-btn r3" onClick={() => rate("mastered")}>
-            <Icon name="check" size="sm" /> Đã thuộc<small>Thuộc cả họ từ (phím 3)</small>
+            <Icon name="check" size="sm" /> Đã nhớ<small>3 lượt đúng cách quãng để xác nhận (phím 3)</small>
           </button>
         </div>
         <div className="row between" style={{ marginTop: 12 }}>

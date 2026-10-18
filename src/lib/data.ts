@@ -57,6 +57,7 @@ export const POS_COLS = [
 export const STATUS_INFO = {
   new: { label: "Chưa học", emoji: "⚪" },
   learning: { label: "Đang học", emoji: "🟡" },
+  confirming: { label: "Đang xác nhận", emoji: "🔵" },
   mastered: { label: "Đã thuộc", emoji: "🟢" },
 } as const;
 

@@ -783,6 +783,9 @@ label.field > span {
 .dot.learning {
   background: var(--amber);
 }
+.dot.confirming {
+  background: var(--sky);
+}
 .dot.mastered {
   background: var(--emerald);
 }
@@ -1239,6 +1242,11 @@ a.morph:hover,
   background: var(--amber-soft);
   color: var(--amber-text);
   border-color: var(--amber-line);
+}
+.status-select.confirming {
+  background: var(--sky-soft);
+  color: var(--sky-text);
+  border-color: var(--sky-line);
 }
 .status-select.mastered {
   background: var(--emerald-soft);
@@ -3446,6 +3454,63 @@ input[type="search"]::-webkit-search-cancel-button {
   font-size: 0.9rem;
   max-width: 60ch;
   margin-top: 2px;
+}
+
+.d-review {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 18px;
+  border-color: var(--indigo-line);
+  background: linear-gradient(115deg, var(--indigo-soft), var(--surface) 72%);
+}
+.d-review-copy {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-width: 0;
+}
+.d-review-copy h3 {
+  font-size: 1.12rem;
+  margin-top: 2px;
+}
+.d-review-copy p {
+  font-size: 0.88rem;
+  margin-top: 3px;
+}
+.d-review-count {
+  width: 52px;
+  height: 52px;
+  flex: none;
+  display: grid;
+  place-items: center;
+  position: relative;
+  border: 1px solid var(--indigo-line);
+  border-radius: 15px;
+  color: var(--indigo);
+  background: var(--surface);
+}
+.d-review-count .icon {
+  position: absolute;
+  inset: 8px auto auto 8px;
+  width: 14px;
+  height: 14px;
+}
+.d-review-count b {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  line-height: 1;
+  margin: 8px 0 0 8px;
+}
+@media (max-width: 520px) {
+  .d-review {
+    align-items: stretch;
+    flex-direction: column;
+  }
+  .d-review > .btn {
+    width: 100%;
+  }
 }
 
 .d-grid {

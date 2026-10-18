@@ -1,4 +1,5 @@
-import type { DayLog, ProfileData, Word } from "./types";
+import type { DailyReviewLog, DayLog, ProfileData, ReviewSchedule, Word } from "./types";
+import { mergeDailyReviews, mergeSchedules } from "./srs";
 
 /** Gộp hai bản dữ liệu học (máy này + đám mây / máy khác) mà không mất tiến độ:
     - tiến độ: giữ phần tiến bộ hơn (trạng thái cao hơn, số lần đúng/sai lớn hơn, điểm bài tập cao hơn);
@@ -22,13 +23,15 @@ export function mergeData(a: ProfileData, b: Partial<ProfileData>): ProfileData 
       custom,
       status: { ...b.status },
       statusAt: { ...b.statusAt },
+      srs: { ...b.srs },
+      reviewedToday: b.reviewedToday,
       stats: { ...b.stats },
       book: { ...b.book },
       log: { ...b.log },
     };
   if (resetA > resetB) return { ...a, meta, custom };
 
-  const rank: Record<string, number> = { mastered: 2, learning: 1 };
+  const rank: Record<string, number> = { mastered: 3, confirming: 2, learning: 1 };
   const status: ProfileData["status"] = {};
   const statusAt: Record<string, number> = {};
   const statusIds = new Set([
@@ -77,7 +80,10 @@ export function mergeData(a: ProfileData, b: Partial<ProfileData>): ProfileData 
     };
   }
 
-  return { meta, custom, status, statusAt, stats, book, log };
+  const srs: Record<string, ReviewSchedule> = mergeSchedules(a.srs, b.srs);
+  const reviewedToday: DailyReviewLog | undefined = mergeDailyReviews(a.reviewedToday, b.reviewedToday);
+
+  return { meta, custom, status, statusAt, srs, reviewedToday, stats, book, log };
 }
 
 function mergeCustom(a: Word[], b: Word[], deleted: Set<string>): Word[] {
