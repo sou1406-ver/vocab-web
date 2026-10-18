@@ -1829,6 +1829,17 @@ a.morph:hover,
 .type-row .letter-slot-input {
   min-height: 58px;
 }
+.type-row-slots {
+  flex-direction: column;
+  align-items: stretch;
+}
+.type-row-slots .letter-slot-input {
+  width: 100%;
+  flex: 0 0 auto;
+}
+.type-row-slots > .btn {
+  align-self: flex-end;
+}
 @media (max-width: 600px) {
   .type-row {
     flex-direction: column;

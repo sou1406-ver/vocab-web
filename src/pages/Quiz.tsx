@@ -41,7 +41,8 @@ function LetterSlotsInput({
   placeholder: string;
 }) {
   const letters = Array.from(word);
-  const typed = Array.from(value.toLocaleLowerCase());
+  const typed = Array.from(value.toLocaleLowerCase().replace(/\s/g, ""));
+  let typedIndex = 0;
   return (
     <div className="letter-slot-input" aria-label={`${letters.filter((char) => char !== " ").length} ô chữ cái`}>
       <div className="letter-slots" aria-hidden="true">
@@ -49,7 +50,7 @@ function LetterSlotsInput({
           if (char === " ") {
             return <span className="letter-slot-space" key={`space-${index}`} />;
           }
-          const typedChar = typed[index] === " " ? "" : typed[index];
+          const typedChar = typed[typedIndex++];
           const revealedLetters = Array.from(word.slice(0, index)).filter((letter) => letter !== " ").length;
           const shown = typedChar || (revealedLetters < revealCount ? char.toLocaleLowerCase() : "");
           return (
@@ -313,6 +314,7 @@ function QuestionView({
   if (q.kind === "adaptive-hint") {
     const before = q.s.slice(0, q.m.index);
     const after = q.s.slice(q.m.index + q.m.text.length);
+    const answerComplete = typedValue.replace(/\s/g, "").length >= q.m.text.replace(/\s/g, "").length;
     return (
       <>
         <div className="q-box">
@@ -329,7 +331,7 @@ function QuestionView({
         </div>
         {!st.answered && (
           <form
-            className="type-row"
+            className="type-row type-row-slots"
             onSubmit={(event) => {
               event.preventDefault();
               submitTypedAnswer(typedValue, q.m.text, q.alternatives);
@@ -354,7 +356,7 @@ function QuestionView({
                 Chưa đúng, thử lại nhé.
               </div>
             )}
-            <button className="btn primary">Kiểm tra</button>
+            {answerComplete && <button className="btn primary">Kiểm tra</button>}
           </form>
         )}
         {st.answered && st.last && (
@@ -378,6 +380,7 @@ function QuestionView({
 
   if (q.kind === "adaptive-recall") {
     const hintTotal = Array.from(q.root.word).filter((letter) => letter !== " ").length;
+    const answerComplete = typedValue.replace(/\s/g, "").length >= hintTotal;
     return (
       <>
         <div className="q-box">
@@ -410,7 +413,7 @@ function QuestionView({
         </div>
         {!st.answered && (
           <form
-            className="type-row"
+            className="type-row type-row-slots"
             onSubmit={(event) => {
               event.preventDefault();
               submitTypedAnswer(typedValue, q.root.word, q.alternatives);
@@ -437,7 +440,7 @@ function QuestionView({
                   : "Chưa đúng, thử lại nhé."}
               </div>
             )}
-            <button className="btn primary">Kiểm tra</button>
+            {answerComplete && <button className="btn primary">Kiểm tra</button>}
           </form>
         )}
         {st.answered && st.last && (
@@ -461,6 +464,7 @@ function QuestionView({
 
   if (q.kind === "listening") {
     const hintTotal = Array.from(q.root.word).filter((letter) => letter !== " ").length;
+    const answerComplete = typedValue.replace(/\s/g, "").length >= hintTotal;
     return (
       <>
         <div className="q-box">
@@ -482,7 +486,7 @@ function QuestionView({
         </div>
         {!st.answered && (
           <form
-            className="type-row"
+            className="type-row type-row-slots"
             onSubmit={(e) => {
               e.preventDefault();
               submitTypedAnswer(typedValue, q.root.word);
@@ -509,7 +513,7 @@ function QuestionView({
                   : "Chưa đúng, thử lại nhé."}
               </div>
             )}
-            <button className="btn primary">Kiểm tra</button>
+            {answerComplete && <button className="btn primary">Kiểm tra</button>}
           </form>
         )}
         {st.answered && st.last && (
