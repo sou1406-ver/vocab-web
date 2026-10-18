@@ -28,28 +28,41 @@ function page(element: ReactNode) {
 }
 
 // Hash router: giữ nguyên dạng link của bản cũ (#/network/agreement-1/agree) và chạy được trên GitHub Pages.
-const router = createHashRouter([
+const router = createHashRouter(
+  [
+    {
+      path: "/",
+      element: <Layout />,
+      children: [
+        { index: true, element: page(<Dashboard />) },
+        { path: "topics", element: page(<TopicsPage />) },
+        { path: "network/:id?/:form?", element: page(<NetworkPage />) },
+        { path: "term/:term", element: page(<TermPage />) },
+        { path: "flashcards", element: page(<FlashcardsPage />) },
+        { path: "quiz", element: page(<QuizPage />) },
+        { path: "practice", element: page(<PracticePage />) },
+        { path: "everyday", element: page(<EverydayPage />) },
+        { path: "review", element: page(<ReviewPage />) },
+        { path: "affixes/:affix?", element: page(<AffixesPage />) },
+        { path: "knowledge", element: page(<KnowledgePage />) },
+        { path: "manage", element: page(<ManagePage />) },
+        { path: "*", element: <Navigate to="/" replace /> },
+      ],
+    },
+  ],
   {
-    path: "/",
-    element: <Layout />,
-    children: [
-      { index: true, element: page(<Dashboard />) },
-      { path: "topics", element: page(<TopicsPage />) },
-      { path: "network/:id?/:form?", element: page(<NetworkPage />) },
-      { path: "term/:term", element: page(<TermPage />) },
-      { path: "flashcards", element: page(<FlashcardsPage />) },
-      { path: "quiz", element: page(<QuizPage />) },
-      { path: "practice", element: page(<PracticePage />) },
-      { path: "everyday", element: page(<EverydayPage />) },
-      { path: "review", element: page(<ReviewPage />) },
-      { path: "affixes/:affix?", element: page(<AffixesPage />) },
-      { path: "knowledge", element: page(<KnowledgePage />) },
-      { path: "manage", element: page(<ManagePage />) },
-      { path: "*", element: <Navigate to="/" replace /> },
-    ],
+    // Bật sẵn các thay đổi của React Router v7 (hết cảnh báo "Future Flag" trong console, dễ nâng cấp sau này).
+    // Web không dùng form action / fetcher / splat route lồng nhau nên các cờ này không đổi hành vi.
+    future: {
+      v7_relativeSplatPath: true,
+      v7_fetcherPersist: true,
+      v7_normalizeFormMethod: true,
+      v7_partialHydration: true,
+      v7_skipActionErrorRevalidation: true,
+    },
   },
-]);
+);
 
 export function App() {
-  return <RouterProvider router={router} />;
+  return <RouterProvider router={router} future={{ v7_startTransition: true }} />;
 }
