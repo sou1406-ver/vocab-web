@@ -1,4 +1,4 @@
-import { useEffect, useRef, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode, type RefObject } from "react";
 import { Link } from "react-router-dom";
 import { Chips, Empty, Ipa, netHref, PosTag, SpeakBtn } from "@/components/bits";
 import { Icon, type IconName } from "@/components/Icon";
@@ -24,6 +24,54 @@ const QUIZ_TYPES: Record<QuizType, { label: string; icon: IconName }> = {
   listening: { label: "Nghe & gõ từ", icon: "volume" },
   mixed: { label: "Theo bậc", icon: "layers" },
 };
+
+function LetterSlotsInput({
+  word,
+  value,
+  onChange,
+  inputRef,
+  revealAnswer = false,
+  placeholder,
+}: {
+  word: string;
+  value: string;
+  onChange: (value: string) => void;
+  inputRef: RefObject<HTMLInputElement>;
+  revealAnswer?: boolean;
+  placeholder: string;
+}) {
+  const letters = Array.from(word);
+  const typed = Array.from(value.toLocaleLowerCase());
+  return (
+    <div className="letter-slot-input" aria-label={`${letters.filter((char) => char !== " ").length} ô chữ cái`}>
+      <div className="letter-slots" aria-hidden="true">
+        {letters.map((char, index) => {
+          if (char === " ") {
+            return <span className="letter-slot-space" key={`space-${index}`} />;
+          }
+          const typedChar = typed[index] === " " ? "" : typed[index];
+          const shown = typedChar || (revealAnswer ? char.toLocaleLowerCase() : "");
+          return (
+            <span className={cx("letter-slot", shown && "filled")} key={`${char}-${index}`}>
+              {shown || "_"}
+            </span>
+          );
+        })}
+      </div>
+      <input
+        ref={inputRef}
+        className="letter-slot-native-input"
+        value={value}
+        onChange={(event) => onChange(event.target.value.slice(0, word.length))}
+        maxLength={word.length}
+        autoComplete="off"
+        spellCheck={false}
+        placeholder={placeholder}
+        aria-label={placeholder}
+      />
+    </div>
+  );
+}
 
 export function QuizPage() {
   const mode = useUI((s) => s.quiz.mode);
@@ -124,15 +172,40 @@ function Explain({
 function QuestionView({
   q,
   onAnswer,
+  onTypingWrong,
   onNext,
 }: {
   q: Question;
   onAnswer: (ok: boolean, pick?: number, close?: boolean) => void;
+  onTypingWrong: () => void;
   onNext: () => void;
 }) {
   const st = useUI((s) => s.quiz);
   const setQuiz = useUI((s) => s.setQuiz);
   const inputRef = useRef<HTMLInputElement>(null);
+  const [hintVisible, setHintVisible] = useState(false);
+  const [typedValue, setTypedValue] = useState("");
+  const [typingError, setTypingError] = useState(false);
+
+  const submitTypedAnswer = (answer: string, target: string, alternatives?: string[]) => {
+    if (!answer.trim()) return;
+    const quality = typedAnswerQuality(answer, target, alternatives);
+    if (quality === "correct") {
+      setTypingError(false);
+      onAnswer(true);
+      return;
+    }
+    setTypingError(true);
+    setTypedValue("");
+    onTypingWrong();
+  };
+
+  const revealAnswerHint = () => {
+    if (hintVisible) return;
+    setHintVisible(true);
+    setTypingError(true);
+    onTypingWrong();
+  };
 
   useEffect(() => {
     inputRef.current?.focus();
@@ -252,23 +325,28 @@ function QuestionView({
             className="type-row"
             onSubmit={(event) => {
               event.preventDefault();
-              const answer = inputRef.current?.value ?? "";
-              if (!answer.trim()) return;
-              const quality = typedAnswerQuality(answer, q.m.text, q.alternatives);
-              onAnswer(quality === "correct", undefined, quality === "close");
+              submitTypedAnswer(typedValue, q.m.text, q.alternatives);
             }}
           >
             <label className="eyebrow" htmlFor="quiz-input">
               Từ còn thiếu
             </label>
-            <input
-              ref={inputRef}
-              className="input"
-              id="quiz-input"
-              autoComplete="off"
-              spellCheck={false}
-              placeholder="Nhập từ còn thiếu…"
+            <LetterSlotsInput
+              word={q.m.text}
+              value={typedValue}
+              onChange={(value) => {
+                setTypedValue(value);
+                setTypingError(false);
+              }}
+              inputRef={inputRef}
+              revealAnswer
+              placeholder="Nhập từ còn thiếu"
             />
+            {typingError && (
+              <div className="typing-error" role="alert">
+                Chưa đúng, thử lại nhé.
+              </div>
+            )}
             <button className="btn primary">Kiểm tra</button>
           </form>
         )}
@@ -297,37 +375,61 @@ function QuestionView({
         <div className="q-box">
           <div className="eyebrow">Bậc 5–6 · Tự nhớ từ và gõ đáp án:</div>
           {q.listening ? (
-            <button className="btn soft" type="button" onClick={() => speak(q.root.word)}>
-              <Icon name="volume" size="sm" /> Nghe từ
-            </button>
-          ) : (
-            <div className="q-big" style={{ fontSize: "1.5rem", marginTop: 8 }}>
-              {q.root.vi}
+            <div className="row" style={{ marginTop: 10 }}>
+              <button className="btn soft" type="button" onClick={() => speak(q.root.word)}>
+                <Icon name="volume" size="sm" /> Nghe từ
+              </button>
+              <Ipa ipa={q.root.ipa} />
             </div>
+          ) : (
+            <>
+              <div className="q-big" style={{ fontSize: "1.5rem", marginTop: 8 }}>
+                {q.root.vi}
+              </div>
+              <div style={{ marginTop: 8 }}>
+                <Ipa ipa={q.root.ipa} />
+              </div>
+            </>
           )}
+          <div className="row" style={{ gap: 10, marginTop: 12, flexWrap: "wrap" }}>
+            {!hintVisible ? (
+              <button className="btn sm soft" type="button" onClick={revealAnswerHint}>
+                <Icon name="book" size="sm" /> Gợi ý đáp án
+              </button>
+            ) : (
+              <span className="badge b-indigo">Đã dùng gợi ý · lượt này không tính là đã thuộc</span>
+            )}
+          </div>
         </div>
         {!st.answered && (
           <form
             className="type-row"
             onSubmit={(event) => {
               event.preventDefault();
-              const answer = inputRef.current?.value ?? "";
-              if (!answer.trim()) return;
-              const quality = typedAnswerQuality(answer, q.root.word, q.alternatives);
-              onAnswer(quality === "correct", undefined, quality === "close");
+              submitTypedAnswer(typedValue, q.root.word, q.alternatives);
             }}
           >
             <label className="eyebrow" htmlFor="quiz-input">
               Từ tiếng Anh
             </label>
-            <input
-              ref={inputRef}
-              className="input"
-              id="quiz-input"
-              autoComplete="off"
-              spellCheck={false}
-              placeholder="Gõ từ bạn nhớ…"
+            <LetterSlotsInput
+              word={q.root.word}
+              value={typedValue}
+              onChange={(value) => {
+                setTypedValue(value);
+                setTypingError(false);
+              }}
+              inputRef={inputRef}
+              revealAnswer={hintVisible}
+              placeholder="Gõ từ bạn nhớ"
             />
+            {typingError && (
+              <div className="typing-error" role="alert">
+                {hintVisible
+                  ? "Đã mở đáp án. Lượt này không tính là đã thuộc; gõ đúng để tiếp tục."
+                  : "Chưa đúng, thử lại nhé."}
+              </div>
+            )}
             <button className="btn primary">Kiểm tra</button>
           </form>
         )}
@@ -361,29 +463,45 @@ function QuestionView({
             </button>
             <Ipa ipa={q.root.ipa} />
           </div>
+          <div className="row" style={{ gap: 10, marginTop: 12, flexWrap: "wrap" }}>
+            {!hintVisible ? (
+              <button className="btn sm soft" type="button" onClick={revealAnswerHint}>
+                <Icon name="book" size="sm" /> Gợi ý đáp án
+              </button>
+            ) : (
+              <span className="badge b-indigo">Đã dùng gợi ý · lượt này không tính là đã thuộc</span>
+            )}
+          </div>
         </div>
         {!st.answered && (
           <form
             className="type-row"
             onSubmit={(e) => {
               e.preventDefault();
-              const answer = inputRef.current?.value ?? "";
-              if (!answer.trim()) return;
-              onAnswer(typedAnswerMatches(answer, q.root.word));
+              submitTypedAnswer(typedValue, q.root.word);
             }}
           >
             <label className="eyebrow" htmlFor="quiz-input">
               Từ bạn nghe được
             </label>
-            <input
-              ref={inputRef}
-              className="input"
-              id="quiz-input"
-              autoComplete="off"
-              spellCheck={false}
-              placeholder="Gõ từ vừa nghe…"
-              aria-label="Từ vừa nghe"
+            <LetterSlotsInput
+              word={q.root.word}
+              value={typedValue}
+              onChange={(value) => {
+                setTypedValue(value);
+                setTypingError(false);
+              }}
+              inputRef={inputRef}
+              revealAnswer={hintVisible}
+              placeholder="Gõ từ vừa nghe"
             />
+            {typingError && (
+              <div className="typing-error" role="alert">
+                {hintVisible
+                  ? "Đã mở đáp án. Lượt này không tính là đã thuộc; gõ đúng để tiếp tục."
+                  : "Chưa đúng, thử lại nhé."}
+              </div>
+            )}
             <button className="btn primary">Kiểm tra</button>
           </form>
         )}
@@ -943,7 +1061,21 @@ function AutoQuiz() {
               )}
             </div>
           </div>
-          <QuestionView key={st.i} q={q} onAnswer={answer} onNext={nextQ} />
+          <QuestionView
+            key={st.i}
+            q={q}
+            onAnswer={answer}
+            onTypingWrong={() => {
+              if (!q) return;
+              const current = useUI.getState().quiz;
+              recordAnswer(q.root.id, false);
+              setQuiz({
+                wrong: current.wrong + 1,
+                missed: [...new Set([...current.missed, q.root.id])],
+              });
+            }}
+            onNext={nextQ}
+          />
         </div>
       </ClickSpark>
     </div>
