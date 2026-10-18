@@ -345,6 +345,7 @@ function adaptiveSynonymSentence(cat: Catalog, root: Word): AdaptiveSynonymSente
   const sentence = pick(candidates);
   const match = findForm(sentence, root.word)!;
   const synonym = pick(synonyms);
+  const rootSynonyms = new Set(root.syn.flatMap((value) => value.split(/[;,]/).map((item) => lower(item.trim()))));
   const distractors = shuffle(cat.all.flatMap((word) => [...word.syn, ...word.ant, word.word])).flatMap((value) =>
     value.split(/[;,]/).map((item) => item.trim()),
   );
@@ -355,7 +356,7 @@ function adaptiveSynonymSentence(cat: Catalog, root: Word): AdaptiveSynonymSente
     synonym,
     options: choicesFor(
       synonym,
-      distractors.filter((item) => !same(item, synonym)),
+      distractors.filter((item) => !same(item, synonym) && !rootSynonyms.has(lower(item))),
       [root.word],
     ),
   };

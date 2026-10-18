@@ -29,7 +29,12 @@ export function getSpeechSettings(): SpeechSettings {
 }
 
 export function saveSpeechSettings(settings: SpeechSettings) {
-  if (typeof window !== "undefined") localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
+  if (typeof window === "undefined") return;
+  try {
+    localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
+  } catch {
+    // Keep speech usable even when browser storage is unavailable (for example, private mode).
+  }
 }
 
 export function getEnglishVoices(): SpeechSynthesisVoice[] {
