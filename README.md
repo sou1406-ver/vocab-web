@@ -3,7 +3,7 @@
 <h1 align="center">Vocab Learn</h1>
 
 <p align="center">
-  Học <b>600 Essential Words for the TOEIC</b> theo trường từ — học một từ, nhớ cả họ từ.<br>
+  Học <b>600 Essential Words for the TOEIC</b> theo trường từ, ôn theo lịch và mở rộng vốn cụm từ đời thường.<br>
   <a href="https://vocab-web-a0d13.web.app"><b>vocab-web-a0d13.web.app</b></a>
 </p>
 
@@ -28,13 +28,24 @@ flashcard, và đồng bộ tiến độ qua tài khoản Google.
 - **Tiền tố · Hậu tố** — 92 phụ tố chia theo chức năng (tạo danh từ, tính từ…), mỗi phụ tố liệt kê các từ dùng nó.
 - **Tìm kiếm** (phím `/`) — tìm từ gốc, họ từ, đồng nghĩa, cả nghĩa tiếng Việt, gõ không dấu cũng được.
 
-**Luyện**
+**Luyện & ôn tập**
 
 - **Flashcard 3D** — lật thẻ, tự chấm Chưa nhớ / Đang học / Đã thuộc (phím `Space`, `1` `2` `3`, `←` `→`).
 - **Bài tập trong sách** — Words in Context (50 đoạn, 600 chỗ trống), Part 5 (300 câu), Part 6 (50 đoạn, 150 chỗ trống),
   Word Review (10 bài × 19 câu):
   chấm điểm, chỉ đáp án đúng, dẫn về trường từ liên quan, lưu điểm cao nhất.
-- **Tự luyện** — biến đổi từ loại (chọn đáp án hoặc tự gõ), đồng nghĩa / trái nghĩa, nghĩa của từ, ghép tiền tố + gốc + hậu tố.
+- **Tự luyện** — biến đổi từ loại (chọn đáp án hoặc tự gõ), đồng nghĩa / trái nghĩa, nghĩa của từ, ghép tiền tố + gốc + hậu tố,
+  điền từ vào câu và nghe phát âm rồi gõ lại. Đáp án gõ được chuẩn hoá chữ thường và khoảng trắng đầu/cuối.
+- **Ôn tập ngắt quãng** — các hộp ôn cách nhau 1, 3, 7, 14, 30 và 60 ngày; trang chủ gom từ đến hạn, tối đa 20 từ mỗi ngày.
+  Từ người học tự đánh dấu “Đã thuộc” được kiểm tra lại qua 3 lượt đúng theo lịch cách quãng mới thành thuộc hẳn; từ đã thuộc vẫn quay lại lịch ôn.
+- **Giới hạn từ mới** — mặc định 10 từ TOEIC mỗi ngày, có thể đổi trong hồ sơ. Giới hạn chỉ áp dụng khi bắt đầu học từ mới;
+  bài kiểm tra vẫn ghi nhận kết quả. Bộ cụm từ đời thường có tiến độ riêng và không dùng quota TOEIC.
+
+**Mở rộng vốn từ**
+
+- **Cụm từ đời thường** — cụm từ, phrasal verbs, thành ngữ và từ lóng; có nghĩa tiếng Anh / tiếng Việt, ví dụ, mức độ sử dụng,
+  bộ lọc theo loại và trạng thái, cùng các nghĩa khác cho một số cụm đa nghĩa.
+- **Ôn tập theo bộ** — xem riêng các từ TOEIC yếu/đang học và các cụm đời thường đang học.
 
 **Cá nhân hoá**
 
@@ -47,14 +58,15 @@ flashcard, và đồng bộ tiến độ qua tài khoản Google.
 
 ## Dữ liệu
 
-| Nội dung                                          | Số lượng |
-| ------------------------------------------------- | -------- |
-| Từ gốc (50 bài)                                   | 600      |
-| Từ trong họ từ                                    | 1 444    |
-| Câu ví dụ có bản dịch tiếng Việt                  | 1 900    |
-| Từ đồng nghĩa / trái nghĩa có nghĩa + độ phổ biến | 1 903    |
-| Tiền tố, hậu tố                                   | 92       |
-| Câu / chỗ trống bài tập trong sách                | 1 240    |
+| Nội dung                                          | Số lượng                                                                      |
+| ------------------------------------------------- | ----------------------------------------------------------------------------- |
+| Từ gốc (50 bài)                                   | 600                                                                           |
+| Từ trong họ từ                                    | 1 444                                                                         |
+| Câu ví dụ có bản dịch tiếng Việt                  | 1 900                                                                         |
+| Từ đồng nghĩa / trái nghĩa có nghĩa + độ phổ biến | 2 228                                                                         |
+| Tiền tố, hậu tố                                   | 92                                                                            |
+| Câu / chỗ trống bài tập trong sách                | 1 240                                                                         |
+| Cụm từ đời thường                                 | Nguồn dữ liệu được lọc theo độ phổ biến; số lượng thay đổi theo dữ liệu nguồn |
 
 Nội dung từ vựng và bài tập trích từ sách _600 Essential Words for the TOEIC Test_ (Barron's) bằng OCR, dùng cho mục đích học tập.
 File PDF gốc **không** nằm trong repo.
@@ -87,11 +99,14 @@ Dùng `localhost`, không dùng `127.0.0.1`, để đăng nhập Google chạy �
 | `npm run typecheck`    | Kiểm tra kiểu TypeScript                                        |
 | `npm run lint`         | ESLint                                                          |
 | `npm run format`       | Prettier (web) · `npm run format:py` cho Python (ruff)          |
+| `npm run format:check` | Kiểm tra định dạng — cũng được chạy trong CI                    |
 | `npm test`             | Unit test: dữ liệu, gộp đồng bộ, sinh câu hỏi, tìm kiếm         |
 | `npm run e2e`          | Test giao diện — lần đầu chạy `npx playwright install chromium` |
 | `npm run data`         | Dựng lại `src/data/*.json` từ thư mục `data/`                   |
 | `npm run deploy`       | Build + đưa lên Firebase Hosting                                |
 | `npm run deploy:rules` | Cập nhật Firestore Rules                                        |
+
+GitHub Actions chạy typecheck, lint, format check, unit test và build khi có push lên `main` hoặc mở pull request.
 
 Muốn chạy test giao diện bằng Microsoft Edge của máy thay vì Chromium: `PW_CHANNEL=msedge npm run e2e`.
 
@@ -128,8 +143,8 @@ src/
   pages/          Dashboard, Topics, Network + WordCanvas, Relations, Term, Flashcards, Quiz + Book, Affixes, Manage
   components/     khung trang, tìm kiếm, menu hồ sơ, modal, thanh chuyển bài, reactbits/ (mã React Bits)
   state/          profile (hồ sơ & tiến độ, localStorage), ui (bộ lọc từng trang), cloud (Firebase), actions
-  lib/            logic thuần: types, data, quiz, search, merge, progress, speech, theme
-  data/           *.json do tools/build_data.py tạo ra — không sửa tay
+  lib/            logic thuần: types, data, quiz, search, merge, progress, speech, theme, lịch ôn
+  data/           *.json và dữ liệu cụm từ — không sửa tay các file được sinh tự động
   styles/         style.css (giao diện), react.css (bổ sung)
 data/             dữ liệu nguồn (xem bên dưới)
 tools/            script Python dựng dữ liệu
@@ -141,17 +156,21 @@ public/           logo, favicon
 
 Mọi chỉnh sửa nằm trong `data/`, sau đó chạy `npm run data` để dựng lại `src/data/*.json`.
 
-| File                                   | Nội dung                                                               |
-| -------------------------------------- | ---------------------------------------------------------------------- |
-| `data/enrich/*.txt`                    | Nghĩa tiếng Việt, đồng nghĩa, trái nghĩa, cấu tạo và họ từ — sửa ở đây |
-| `data/translations/*.txt`              | Bản dịch 1 900 câu ví dụ                                               |
-| `data/relations.txt`                   | Nghĩa của từ đồng nghĩa / trái nghĩa không có trong sách               |
-| `data/source/book.json`                | 600 từ, định nghĩa, câu ví dụ (OCR)                                    |
-| `data/source/families.json`            | Bảng _Word Families_ từng bài (OCR)                                    |
-| `data/source/exercises.json`           | Bài tập trong sách (OCR)                                               |
-| `data/source/exercises_overrides.json` | Sửa tay chỗ OCR sai (đã đối chiếu ảnh trang)                           |
-| `data/source/ipa.json`                 | Phiên âm — `python tools/make_ipa.py` (CMU Pronouncing Dictionary)     |
-| `data/source/freq.json`                | Độ phổ biến thang Zipf — `python tools/make_freq.py` (cần `msgpack`)   |
+| File                                        | Nội dung                                                               |
+| ------------------------------------------- | ---------------------------------------------------------------------- |
+| `data/enrich/*.txt`                         | Nghĩa tiếng Việt, đồng nghĩa, trái nghĩa, cấu tạo và họ từ — sửa ở đây |
+| `data/translations/*.txt`                   | Bản dịch 1 900 câu ví dụ                                               |
+| `data/relations.txt`                        | Nghĩa của từ đồng nghĩa / trái nghĩa không có trong sách               |
+| `data/source/book.json`                     | 600 từ, định nghĩa, câu ví dụ (OCR)                                    |
+| `data/source/families.json`                 | Bảng _Word Families_ từng bài (OCR)                                    |
+| `data/source/exercises.json`                | Bài tập trong sách (OCR)                                               |
+| `data/source/exercises_overrides.json`      | Sửa tay chỗ OCR sai (đã đối chiếu ảnh trang)                           |
+| `data/source/ipa.json`                      | Phiên âm — `python tools/make_ipa.py` (CMU Pronouncing Dictionary)     |
+| `data/source/freq.json`                     | Độ phổ biến thang Zipf — `python tools/make_freq.py` (cần `msgpack`)   |
+| `src/data/idioms-en.txt`, `idioms-vi.txt`   | Nghĩa tiếng Anh và tiếng Việt cho thành ngữ nguồn                      |
+| `src/data/phrasal-en.txt`, `phrasal-vi.txt` | Nghĩa tiếng Anh và tiếng Việt cho phrasal verbs nguồn                  |
+
+Các cụm nguồn chỉ được đưa vào bộ học khi qua bước lọc mức độ sử dụng; nội dung biên tập riêng nằm trong `src/data/everyday.ts`.
 
 **`data/enrich/*.txt`**
 
