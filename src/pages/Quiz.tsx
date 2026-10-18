@@ -195,12 +195,10 @@ function Explain({
 function QuestionView({
   q,
   onAnswer,
-  onTypingWrong,
   onNext,
 }: {
   q: Question;
   onAnswer: (ok: boolean, pick?: number, close?: boolean, masteryCredit?: boolean) => void;
-  onTypingWrong: () => void;
   onNext: () => void;
 }) {
   const st = useUI((s) => s.quiz);
@@ -211,16 +209,7 @@ function QuestionView({
   const [typedValue, setTypedValue] = useState("");
   const [typingError, setTypingError] = useState(false);
   const [wrongAttempts, setWrongAttempts] = useState(0);
-  const [missRecorded, setMissRecorded] = useState(false);
   const wrongAttemptsRef = useRef(0);
-  const missRecordedRef = useRef(false);
-
-  const markMissOnce = () => {
-    if (missRecordedRef.current) return;
-    missRecordedRef.current = true;
-    setMissRecorded(true);
-    onTypingWrong();
-  };
 
   const submitTypedAnswer = (answer: string, target: string, alternatives?: string[]) => {
     if (!answer.trim()) return;
@@ -230,12 +219,17 @@ function QuestionView({
       onAnswer(true, undefined, false, !hintPenalty);
       return;
     }
+    if (quality === "close") {
+      setTypingError(false);
+      onAnswer(false, undefined, true);
+      return;
+    }
     setTypingError(true);
     setTypedValue("");
     const attempts = wrongAttemptsRef.current + 1;
     wrongAttemptsRef.current = attempts;
     setWrongAttempts(attempts);
-    if (attempts >= 3) onAnswer(false, undefined, false, !missRecordedRef.current);
+    if (attempts >= 3) onAnswer(false);
   };
 
   const revealNextLetter = (word: string) => {
@@ -248,7 +242,6 @@ function QuestionView({
     if (nextCount > 2 && !hintPenalty) {
       setHintPenalty(true);
       setTypingError(true);
-      markMissOnce();
     }
   };
 
@@ -392,8 +385,8 @@ function QuestionView({
             />
             {typingError && (
               <div className="typing-error" role="alert">
-                {missRecorded
-                  ? "Đã đánh dấu chưa thuộc; cứ thử tiếp đến khi đúng."
+                {hintPenalty && wrongAttempts === 0
+                  ? "Lượt này không tăng hay giảm hộp ôn vì đã dùng quá 2 gợi ý."
                   : `Chưa đúng, còn ${3 - wrongAttempts} lượt.`}
               </div>
             )}
@@ -449,7 +442,7 @@ function QuestionView({
                 <Icon name="book" size="sm" /> Gợi ý chữ tiếp theo
               </button>
             )}
-            {hintPenalty && <span className="badge b-amber">Quá 2 gợi ý · lượt này tính sai</span>}
+            {hintPenalty && <span className="badge b-amber">Quá 2 gợi ý · hộp ôn không đổi</span>}
           </div>
         </div>
         {!st.answered && (
@@ -477,11 +470,9 @@ function QuestionView({
             />
             {typingError && (
               <div className="typing-error" role="alert">
-                {hintPenalty
-                  ? "Dùng quá 2 gợi ý; lượt này đã tính sai. Nhập đúng để tiếp tục."
-                  : missRecorded
-                    ? "Đã đánh dấu chưa thuộc; cứ thử tiếp đến khi đúng."
-                    : `Chưa đúng, còn ${3 - wrongAttempts} lượt.`}
+                {hintPenalty && wrongAttempts === 0
+                  ? "Lượt này không tăng hay giảm hộp ôn vì đã dùng quá 2 gợi ý."
+                  : `Chưa đúng, còn ${3 - wrongAttempts} lượt.`}
               </div>
             )}
             {answerComplete && <button className="btn primary">Kiểm tra</button>}
@@ -493,11 +484,14 @@ function QuestionView({
             close={st.last.close}
             root={q.root}
             extra={
-              st.last.ok ? null : (
+              st.last.ok ? (
+                hintPenalty ? (
+                  "Đúng, nhưng lượt này không thay đổi hộp ôn vì đã dùng quá 2 gợi ý."
+                ) : null
+              ) : (
                 <>
                   Đáp án: <b>{q.root.word}</b>.
-                  {(wrongAttempts >= 3 || missRecorded) &&
-                    " Từ này đã được đánh dấu chưa thuộc; bạn có thể ôn lại sau."}
+                  {wrongAttempts >= 3 && " Từ này đã được đánh dấu chưa thuộc; bạn có thể ôn lại sau."}
                 </>
               )
             }
@@ -527,7 +521,7 @@ function QuestionView({
                 <Icon name="book" size="sm" /> Gợi ý chữ tiếp theo
               </button>
             )}
-            {hintPenalty && <span className="badge b-amber">Quá 2 gợi ý · lượt này tính sai</span>}
+            {hintPenalty && <span className="badge b-amber">Quá 2 gợi ý · hộp ôn không đổi</span>}
           </div>
         </div>
         {!st.answered && (
@@ -555,11 +549,9 @@ function QuestionView({
             />
             {typingError && (
               <div className="typing-error" role="alert">
-                {hintPenalty
-                  ? "Dùng quá 2 gợi ý; lượt này đã tính sai. Nhập đúng để tiếp tục."
-                  : missRecorded
-                    ? "Đã đánh dấu chưa thuộc; cứ thử tiếp đến khi đúng."
-                    : `Chưa đúng, còn ${3 - wrongAttempts} lượt.`}
+                {hintPenalty && wrongAttempts === 0
+                  ? "Lượt này không tăng hay giảm hộp ôn vì đã dùng quá 2 gợi ý."
+                  : `Chưa đúng, còn ${3 - wrongAttempts} lượt.`}
               </div>
             )}
             {answerComplete && <button className="btn primary">Kiểm tra</button>}
@@ -570,11 +562,14 @@ function QuestionView({
             ok={st.last.ok}
             root={q.root}
             extra={
-              st.last.ok ? null : (
+              st.last.ok ? (
+                hintPenalty ? (
+                  "Đúng, nhưng lượt này không thay đổi hộp ôn vì đã dùng quá 2 gợi ý."
+                ) : null
+              ) : (
                 <>
                   Đáp án: <b>{q.root.word}</b>.
-                  {(wrongAttempts >= 3 || missRecorded) &&
-                    " Từ này đã được đánh dấu chưa thuộc; bạn có thể ôn lại sau."}
+                  {wrongAttempts >= 3 && " Từ này đã được đánh dấu chưa thuộc; bạn có thể ôn lại sau."}
                 </>
               )
             }
@@ -1123,21 +1118,7 @@ function AutoQuiz() {
               )}
             </div>
           </div>
-          <QuestionView
-            key={st.i}
-            q={q}
-            onAnswer={answer}
-            onTypingWrong={() => {
-              if (!q) return;
-              const current = useUI.getState().quiz;
-              recordAnswer(q.root.id, false);
-              setQuiz({
-                wrong: current.wrong + 1,
-                missed: [...new Set([...current.missed, q.root.id])],
-              });
-            }}
-            onNext={nextQ}
-          />
+          <QuestionView key={st.i} q={q} onAnswer={answer} onNext={nextQ} />
         </div>
       </ClickSpark>
     </div>

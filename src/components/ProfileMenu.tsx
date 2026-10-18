@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { targetInfo } from "@/lib/data";
 import { applyTheme, THEMES, useThemePref } from "@/lib/theme";
 import type { Profile } from "@/lib/types";
+import type { ReviewSchedule, Status } from "@/lib/types";
 import { cx } from "@/lib/util";
 import { push, signIn, signOut, useCloud } from "@/state/cloud";
 import { useProfile } from "@/state/profile";
@@ -20,6 +21,63 @@ export function Avatar({ p, size = "" }: { p: Profile; size?: "" | "sm" | "lg" }
       {initials(p.name)}
     </span>
   );
+}
+
+function createDemoProfile() {
+  const before = useProfile.getState();
+  const words = before.catalog.all;
+  const existing = before.profiles.find((profile) => profile.name === "Demo kiểm thử");
+  if (existing) before.switchProfile(existing.id);
+  else
+    before.addProfile({
+      name: "Demo kiểm thử",
+      color: "#6b3f87",
+      goal: 20,
+      newWordLimit: 10,
+      target: 600,
+      setup: true,
+    });
+
+  // Re-seeding the demo should be deterministic and must not keep old demo progress.
+  useProfile.getState().resetProgress();
+
+  const now = Date.now();
+  const status: Record<string, Status> = {};
+  const statusAt: Record<string, number> = {};
+  const srs: Record<string, ReviewSchedule> = {};
+  const stats: Record<string, { c: number; w: number }> = {};
+  const lessonPositions = new Map<number, number>();
+
+  for (const word of words) {
+    const position = lessonPositions.get(word.lesson) ?? 0;
+    lessonPositions.set(word.lesson, position + 1);
+    // Leave one new word per lesson and spread the rest across all six boxes.
+    if (position === 0) continue;
+    const box = ((position - 1) % 6) + 1;
+    const confirming = box === 1;
+    const at = now - (box + 1) * 86_400_000;
+    status[word.id] = box >= 5 ? "mastered" : "learning";
+    statusAt[word.id] = at;
+    srs[word.id] = {
+      box,
+      at,
+      due: now - 60_000,
+      ...(confirming ? { confirming: true, confirmations: 1 } : {}),
+    };
+    stats[word.id] = { c: (position % 5) + 1, w: position % 3 };
+  }
+
+  useProfile.getState().importData({ status, statusAt, srs, stats });
+  useUI.getState().setQuiz({
+    mode: "auto",
+    type: "mixed",
+    unit: "all",
+    lesson: "all",
+    only: "all",
+    forWord: null,
+  });
+  useUI.getState().setMenuOpen(false);
+  toast("Đã mở hồ sơ demo với từ ở các hộp 1–6");
 }
 
 const GoogleG = () => (
@@ -187,6 +245,17 @@ export function ProfileMenu() {
           ))}
           <button className="pm-item" role="menuitem" onClick={() => setModal({ kind: "profile", isNew: true })}>
             <Icon name="plus" size="sm" /> Thêm hồ sơ mới
+          </button>
+          <button
+            className="pm-item"
+            role="menuitem"
+            onClick={() => {
+              createDemoProfile();
+              resetSession();
+              navigate("/quiz");
+            }}
+          >
+            <Icon name="layers" size="sm" /> Tạo / làm mới hồ sơ demo
           </button>
           <div className="pm-label">Giao diện</div>
           <div className="pm-theme" role="radiogroup" aria-label="Giao diện">

@@ -158,7 +158,9 @@ export function typedAnswerQuality(answer: string, expected: string, alternative
   const accepted = normalize(expected);
   if (actual === accepted) return "correct" as const;
   const candidates = [expected, ...alternatives].map(normalize).filter(Boolean);
-  if (candidates.some((candidate) => actual === candidate || withinOneEdit(actual, candidate))) return "close" as const;
+  if (candidates.some((candidate) => actual === candidate)) return "close" as const;
+  if (candidates.some((candidate) => actual.length >= 5 && candidate.length >= 5 && withinOneEdit(actual, candidate)))
+    return "close" as const;
   return "wrong" as const;
 }
 
