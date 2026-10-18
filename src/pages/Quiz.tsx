@@ -1134,7 +1134,7 @@ function AutoQuiz() {
   const act = useActions();
   const st = useUI((s) => s.quiz);
   const setQuiz = useUI((s) => s.setQuiz);
-  const { catalog, recordAnswer, status, statusAt, srs } = useProfile();
+  const { catalog, recordAnswer, status, statusAt, srs, reviewedToday } = useProfile();
   const spark = useRef<ClickSparkHandle>(null);
   const cardRef = useRef<HTMLDivElement>(null);
 
@@ -1193,7 +1193,15 @@ function AutoQuiz() {
     startQuiz();
   };
 
-  const dueCount = dueReviewIds(Object.keys(catalog.byId), status, srs ?? {}, statusAt).length;
+  const dueCount = dueReviewIds(
+    Object.keys(catalog.byId),
+    status,
+    srs ?? {},
+    statusAt,
+    Date.now(),
+    undefined,
+    reviewedToday,
+  ).length;
   const learningCount = catalog.all.filter((word) => {
     const current = displayedStatus(word.id, status, srs ?? {});
     return current === "learning" || current === "confirming";

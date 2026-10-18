@@ -22,7 +22,7 @@ export function buildDeck() {
 /** Tạo đề tự luyện mới theo bộ lọc hiện tại */
 export function startQuiz() {
   const { quiz, setQuiz } = useUI.getState();
-  const { catalog, status, statusAt, srs } = useProfile.getState();
+  const { catalog, status, statusAt, srs, reviewedToday } = useProfile.getState();
   let roots =
     quiz.forWord && catalog.byId[quiz.forWord]
       ? [catalog.byId[quiz.forWord]]
@@ -35,6 +35,9 @@ export function startQuiz() {
       status,
       srs ?? {},
       statusAt,
+      Date.now(),
+      undefined,
+      reviewedToday,
     );
     const dueSet = new Set(dueIds);
     const dueWords = dueIds.map((id) => catalog.byId[id]).filter(Boolean);
