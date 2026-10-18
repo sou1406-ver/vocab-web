@@ -31,13 +31,6 @@ const ways: { to: string; title: string; icon: IconName; description: string; ac
     description: "Mở rộng vốn từ với cụm từ, phrasal verbs, thành ngữ và tiếng lóng có ghi chú ngữ cảnh.",
     action: "Khám phá bộ sưu tập",
   },
-  {
-    to: "/everyday?kind=idiom",
-    title: "Học idiom",
-    icon: "quote",
-    description: "Vào thẳng danh sách thành ngữ thông dụng, có nghĩa Anh–Việt và bộ lọc theo mức độ sử dụng.",
-    action: "Mở thành ngữ",
-  },
 ];
 
 export function PracticePage() {
