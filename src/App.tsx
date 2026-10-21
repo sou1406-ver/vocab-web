@@ -2,18 +2,20 @@ import { lazy, Suspense, type ReactNode } from "react";
 import { createHashRouter, Navigate, RouterProvider } from "react-router-dom";
 import { Layout } from "./components/Layout";
 
-const AffixesPage = lazy(() => import("./pages/Affixes").then((m) => ({ default: m.AffixesPage })));
-const Dashboard = lazy(() => import("./pages/Dashboard").then((m) => ({ default: m.Dashboard })));
-const EverydayPage = lazy(() => import("./pages/Everyday").then((m) => ({ default: m.EverydayPage })));
-const FlashcardsPage = lazy(() => import("./pages/Flashcards").then((m) => ({ default: m.FlashcardsPage })));
-const KnowledgePage = lazy(() => import("./pages/Knowledge").then((m) => ({ default: m.KnowledgePage })));
-const ManagePage = lazy(() => import("./pages/Manage").then((m) => ({ default: m.ManagePage })));
-const NetworkPage = lazy(() => import("./pages/Network").then((m) => ({ default: m.NetworkPage })));
-const PracticePage = lazy(() => import("./pages/Practice").then((m) => ({ default: m.PracticePage })));
-const QuizPage = lazy(() => import("./pages/Quiz").then((m) => ({ default: m.QuizPage })));
-const ReviewPage = lazy(() => import("./pages/Review").then((m) => ({ default: m.ReviewPage })));
-const TermPage = lazy(() => import("./pages/Term").then((m) => ({ default: m.TermPage })));
-const TopicsPage = lazy(() => import("./pages/Topics").then((m) => ({ default: m.TopicsPage })));
+const AffixesPage = lazy(() => import("./features/vocabulary/Affixes").then((m) => ({ default: m.AffixesPage })));
+const Dashboard = lazy(() => import("./features/dashboard/Dashboard").then((m) => ({ default: m.Dashboard })));
+const EverydayPage = lazy(() => import("./features/everyday/Everyday").then((m) => ({ default: m.EverydayPage })));
+const FlashcardsPage = lazy(() =>
+  import("./features/learning/Flashcards").then((m) => ({ default: m.FlashcardsPage })),
+);
+const KnowledgePage = lazy(() => import("./features/vocabulary/Knowledge").then((m) => ({ default: m.KnowledgePage })));
+const ManagePage = lazy(() => import("./features/account/Manage").then((m) => ({ default: m.ManagePage })));
+const NetworkPage = lazy(() => import("./features/vocabulary/Network").then((m) => ({ default: m.NetworkPage })));
+const PracticePage = lazy(() => import("./features/learning/Practice").then((m) => ({ default: m.PracticePage })));
+const QuizPage = lazy(() => import("./features/learning/Quiz").then((m) => ({ default: m.QuizPage })));
+const ReviewPage = lazy(() => import("./features/learning/Review").then((m) => ({ default: m.ReviewPage })));
+const TermPage = lazy(() => import("./features/vocabulary/Term").then((m) => ({ default: m.TermPage })));
+const TopicsPage = lazy(() => import("./features/vocabulary/Topics").then((m) => ({ default: m.TopicsPage })));
 
 function PageLoading() {
   return (

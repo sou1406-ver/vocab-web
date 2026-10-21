@@ -144,8 +144,14 @@ Các khoá trong `firebase-config.ts` là khoá công khai phía trình duyệt,
 
 ```
 src/
-  pages/          Dashboard, Topics, Network + WordCanvas, Relations, Term, Flashcards, Quiz + Book, Affixes, Manage
-  components/     khung trang, tìm kiếm, menu hồ sơ, modal, thanh chuyển bài, reactbits/ (mã React Bits)
+  App.tsx         khai báo route và tải trang theo nhu cầu
+  features/       màn hình được nhóm theo nghiệp vụ:
+    dashboard/    trang chủ và tiến độ
+    learning/     luyện tập, flashcard, bài tập sách, ôn tập
+    vocabulary/   chủ đề, trường từ, từ loại, cấu tạo từ
+    everyday/     idiom, phrasal verb và cụm từ đời thường
+    account/      quản lý hồ sơ và sao lưu
+  components/     thành phần dùng chung: khung trang, tìm kiếm, menu hồ sơ, modal, thanh chuyển bài, reactbits/
   state/          profile (hồ sơ & tiến độ, localStorage), ui (bộ lọc từng trang), cloud (Firebase), actions
   lib/            logic thuần: types, data, quiz, search, merge, progress, speech, theme, lịch ôn
   data/           *.json và dữ liệu cụm từ — không sửa tay các file được sinh tự động
