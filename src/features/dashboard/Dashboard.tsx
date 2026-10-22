@@ -271,6 +271,22 @@ export function Dashboard() {
         </button>
       </DCard>
 
+      <DCard className="d-course-path">
+        <div className="d-card-head">
+          <div>
+            <div className="eyebrow">Lộ trình có kiểm tra</div>
+            <h3>Học theo từng chặng</h3>
+          </div>
+          <Icon name="award" />
+        </div>
+        <p className="muted">
+          Qua bài kiểm tra cuối bài để mở chặng kế tiếp. Mỗi tuần và tháng có mini test ôn lại từ đã học.
+        </p>
+        <Link className="btn" to="/course">
+          Xem lộ trình <Icon name="right" size="sm" />
+        </Link>
+      </DCard>
+
       <div className="d-grid">
         <DCard className="d-today">
           <div className="d-card-head">

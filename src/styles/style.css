@@ -3586,6 +3586,169 @@ input[type="search"]::-webkit-search-cancel-button {
 .match-choice.paired {
   border-color: color-mix(in srgb, var(--indigo) 30%, var(--border));
 }
+.course-path {
+  padding-bottom: 32px;
+}
+.pathway-overview {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 22px;
+  background: linear-gradient(110deg, color-mix(in srgb, var(--indigo) 10%, var(--surface)), var(--surface) 70%);
+}
+.pathway-overview h2,
+.section-head h2 {
+  margin: 4px 0;
+  font-family: var(--font-display);
+}
+.pathway-overview p {
+  margin: 5px 0 0;
+}
+.pathway-count {
+  display: grid;
+  justify-items: center;
+  min-width: 84px;
+  color: var(--muted);
+}
+.pathway-count b {
+  color: var(--text);
+  font-size: 1.8rem;
+}
+.pathway-section {
+  gap: 16px;
+}
+.section-head {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 16px;
+}
+.section-head h2 {
+  font-size: 1.5rem;
+}
+.pathway-unit {
+  display: grid;
+  gap: 10px;
+}
+.pathway-unit > h3 {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-transform: capitalize;
+}
+.pathway-lessons {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+.pathway-lesson {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--surface);
+}
+.pathway-lesson.locked {
+  background: var(--surface-2);
+  color: var(--muted);
+}
+.pathway-lesson.passed {
+  border-color: color-mix(in srgb, var(--emerald) 45%, var(--border));
+}
+.pathway-lesson-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.pathway-number {
+  color: var(--indigo);
+  font-size: 0.83rem;
+  font-weight: 800;
+}
+.pathway-lesson.locked .pathway-number,
+.pathway-state {
+  color: var(--muted);
+  font-size: 0.73rem;
+  font-weight: 650;
+}
+.pathway-lesson h4 {
+  margin: 10px 0 3px;
+  font-size: 0.96rem;
+  line-height: 1.4;
+}
+.pathway-lesson p {
+  min-height: 2.6em;
+  margin: 0 0 10px;
+  font-size: 0.8rem;
+}
+.pathway-lesson .progress {
+  margin-top: auto;
+}
+.pathway-result {
+  display: block;
+  margin-top: 7px;
+  color: var(--muted);
+  font-size: 0.75rem;
+}
+.pathway-lesson-actions {
+  display: flex;
+  gap: 7px;
+  margin-top: 12px;
+}
+.pathway-lesson-actions .btn {
+  flex: 1;
+  justify-content: center;
+  padding-inline: 8px;
+}
+.pathway-tests {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+.pathway-test {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 17px;
+}
+.pathway-test-icon {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  flex: none;
+  border-radius: 11px;
+  background: color-mix(in srgb, var(--indigo) 12%, var(--surface));
+  color: var(--indigo);
+}
+.pathway-test-copy {
+  flex: 1;
+  min-width: 0;
+}
+.pathway-test-copy h3 {
+  margin: 3px 0;
+  font-size: 1rem;
+}
+.pathway-test-copy p {
+  margin: 4px 0;
+  font-size: 0.84rem;
+}
+.d-course-path {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.d-course-path > p {
+  margin: 0;
+  font-size: 0.88rem;
+}
+.d-course-path .btn {
+  width: fit-content;
+}
 @media (max-width: 640px) {
   .quiz-start-card {
     align-items: stretch;
@@ -3604,6 +3767,19 @@ input[type="search"]::-webkit-search-cancel-button {
   .match-choice {
     padding: 8px;
     font-size: 0.84rem;
+  }
+  .pathway-overview {
+    align-items: flex-start;
+  }
+  .pathway-lessons,
+  .pathway-tests {
+    grid-template-columns: 1fr;
+  }
+  .pathway-test {
+    flex-wrap: wrap;
+  }
+  .pathway-test .btn {
+    width: 100%;
   }
 }
 @media (max-width: 520px) {

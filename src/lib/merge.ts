@@ -15,6 +15,7 @@ export function mergeData(a: ProfileData, b: Partial<ProfileData>): ProfileData 
   };
 
   const custom = mergeCustom(a.custom ?? [], b.custom ?? [], new Set(deleted));
+  const checkpoints = mergeCheckpoints(a.checkpoints, b.checkpoints);
 
   // Một bên vừa xoá tiến độ sau lần xoá của bên kia → tiến độ của bên đó là bản đúng
   if (resetB > resetA) {
@@ -32,6 +33,8 @@ export function mergeData(a: ProfileData, b: Partial<ProfileData>): ProfileData 
       newWordsToday: b.newWordsToday,
       stats: { ...b.stats },
       book: { ...b.book },
+      checkpoints: { ...(b.checkpoints ?? {}) },
+      courseThrough: b.courseThrough ?? 0,
       log: { ...b.log },
     };
   }
@@ -40,7 +43,16 @@ export function mergeData(a: ProfileData, b: Partial<ProfileData>): ProfileData 
     const statusAt = { ...a.statusAt };
     const srs = { ...a.srs };
     reconcileSchedules(status, statusAt, srs);
-    return { ...a, meta, custom, status, statusAt, srs };
+    return {
+      ...a,
+      meta,
+      custom,
+      status,
+      statusAt,
+      srs,
+      checkpoints: { ...(a.checkpoints ?? {}) },
+      courseThrough: a.courseThrough ?? 0,
+    };
   }
 
   const rank: Record<string, number> = { mastered: 3, confirming: 2, learning: 1 };
@@ -98,7 +110,41 @@ export function mergeData(a: ProfileData, b: Partial<ProfileData>): ProfileData 
   const newWordsToday: DailyReviewLog | undefined = mergeDailyReviews(a.newWordsToday, b.newWordsToday);
   reconcileSchedules(status, statusAt, srs);
 
-  return { meta, custom, status, statusAt, srs, reviewedToday, newWordsToday, stats, book, log };
+  return {
+    meta,
+    custom,
+    status,
+    statusAt,
+    srs,
+    reviewedToday,
+    newWordsToday,
+    stats,
+    book,
+    checkpoints,
+    courseThrough: Math.max(a.courseThrough ?? 0, b.courseThrough ?? 0),
+    log,
+  };
+}
+
+function mergeCheckpoints(
+  a: ProfileData["checkpoints"] = {},
+  b: Partial<ProfileData>["checkpoints"] = {},
+): ProfileData["checkpoints"] {
+  const merged = { ...a };
+  for (const [key, incoming] of Object.entries(b ?? {})) {
+    const current = merged[key];
+    if (!current) merged[key] = incoming;
+    else
+      merged[key] = {
+        attempts: Math.max(current.attempts, incoming.attempts),
+        best: Math.max(current.best, incoming.best),
+        latest: incoming.at >= current.at ? incoming.latest : current.latest,
+        total: incoming.at >= current.at ? incoming.total : current.total,
+        passed: current.passed || incoming.passed,
+        at: Math.max(current.at, incoming.at),
+      };
+  }
+  return merged;
 }
 
 function cleanStatus(status: ProfileData["status"] = {}) {

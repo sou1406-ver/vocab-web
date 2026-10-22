@@ -4,6 +4,9 @@ import { Layout } from "./components/Layout";
 
 const AffixesPage = lazy(() => import("./features/vocabulary/Affixes").then((m) => ({ default: m.AffixesPage })));
 const Dashboard = lazy(() => import("./features/dashboard/Dashboard").then((m) => ({ default: m.Dashboard })));
+const CoursePathPage = lazy(() =>
+  import("./features/learning/CoursePath").then((m) => ({ default: m.CoursePathPage })),
+);
 const EverydayPage = lazy(() => import("./features/everyday/Everyday").then((m) => ({ default: m.EverydayPage })));
 const FlashcardsPage = lazy(() =>
   import("./features/learning/Flashcards").then((m) => ({ default: m.FlashcardsPage })),
@@ -43,6 +46,7 @@ const router = createHashRouter(
         { path: "flashcards", element: page(<FlashcardsPage />) },
         { path: "quiz", element: page(<QuizPage />) },
         { path: "practice", element: page(<PracticePage />) },
+        { path: "course", element: page(<CoursePathPage />) },
         { path: "everyday", element: page(<EverydayPage />) },
         { path: "review", element: page(<ReviewPage />) },
         { path: "affixes/:affix?", element: page(<AffixesPage />) },

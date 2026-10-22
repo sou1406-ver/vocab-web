@@ -1,11 +1,11 @@
 import { useNavigate } from "react-router-dom";
 import { LESSON_BY_N } from "@/lib/data";
 import { makeQuiz } from "@/lib/quiz";
-import { resumeLesson } from "@/lib/progress";
+import { isLessonUnlocked, legacyLessonThrough, resumeLesson } from "@/lib/progress";
 import { DEFAULT_NEW_WORD_LIMIT, displayedStatus, dueReviewIds } from "@/lib/srs";
 import { dayKey, shuffle } from "@/lib/util";
 import { useProfile } from "./profile";
-import { NET_DEFAULT, useUI } from "./ui";
+import { NET_DEFAULT, type QuizCheckpoint, useUI } from "./ui";
 
 /* Thao tác dùng chung giữa các trang: đổi bộ lọc của trang đích rồi điều hướng tới đó. */
 
@@ -29,6 +29,11 @@ export function startQuiz() {
       : quiz.scope !== "lesson"
         ? catalog.all
         : catalog.scope(quiz.unit, quiz.lesson);
+  if (quiz.checkpoint?.lesson) roots = roots.filter((word) => word.lesson === quiz.checkpoint?.lesson);
+  if (quiz.checkpoint?.ids) {
+    const allowed = new Set(quiz.checkpoint.ids);
+    roots = roots.filter((word) => allowed.has(word.id));
+  }
   if (!quiz.forWord && quiz.scope === "due") {
     const dueIds = dueReviewIds(
       roots.map((word) => word.id),
@@ -103,21 +108,30 @@ export function goLesson(where: LessonWhere, n: string) {
 export function useActions() {
   const navigate = useNavigate();
   const ui = useUI.getState;
+  const canOpenLesson = (n: number) => {
+    const { catalog, status, checkpoints, courseThrough } = useProfile.getState();
+    if (isLessonUnlocked(n, courseThrough ?? legacyLessonThrough(catalog, status), checkpoints ?? {})) return true;
+    ui().toast("Hoàn thành bài kiểm tra cuối chặng trước để mở bài này.");
+    return false;
+  };
 
   return {
     navigate,
     openLesson(n: number) {
+      if (!canOpenLesson(n)) return;
       const l = LESSON_BY_N[n];
       ui().setNet({ ...NET_DEFAULT, unit: l.unit, lesson: String(l.n) });
       navigate("/network");
     },
     openLessonFlash(n: number) {
+      if (!canOpenLesson(n)) return;
       const l = LESSON_BY_N[n];
       ui().setFc({ unit: l.unit, lesson: String(l.n), status: "all" });
       buildDeck();
       navigate("/flashcards");
     },
     openLessonBook(n: number) {
+      if (!canOpenLesson(n)) return;
       const l = LESSON_BY_N[n];
       ui().setBook({ unit: l.unit, lesson: String(l.n), touched: true });
       ui().resetBook();
@@ -143,6 +157,20 @@ export function useActions() {
     },
     quizForWord(id: string, type: string) {
       ui().setQuiz({ forWord: id, type: type as never, mode: "auto" });
+      startQuiz();
+      navigate("/quiz");
+    },
+    startCheckpoint(checkpoint: QuizCheckpoint) {
+      ui().setQuiz({
+        mode: "auto",
+        type: "mixed",
+        scope: checkpoint.lesson ? "lesson" : "all",
+        unit: "all",
+        lesson: checkpoint.lesson ? String(checkpoint.lesson) : "all",
+        only: "all",
+        forWord: null,
+        checkpoint,
+      });
       startQuiz();
       navigate("/quiz");
     },

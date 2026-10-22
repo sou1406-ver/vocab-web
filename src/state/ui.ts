@@ -35,6 +35,13 @@ export interface FcState {
 }
 
 export type QuizType = "formation" | "synonym" | "meaning" | "build" | "recall" | "listening" | "mixed";
+export interface QuizCheckpoint {
+  key: string;
+  title: string;
+  kind: "lesson" | "weekly" | "monthly";
+  lesson?: number;
+  ids?: string[];
+}
 export interface QuizState {
   mode: "book" | "auto";
   type: QuizType;
@@ -44,6 +51,7 @@ export interface QuizState {
   only: string;
   style: "choice" | "typing";
   forWord: string | null;
+  checkpoint: QuizCheckpoint | null;
   qs: Question[];
   i: number;
   right: number;
@@ -110,6 +118,7 @@ export const useUI = create<UIState>()((set, get) => ({
     only: "all",
     style: "choice",
     forWord: null,
+    checkpoint: null,
     qs: [],
     i: 0,
     right: 0,

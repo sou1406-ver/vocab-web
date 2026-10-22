@@ -1134,13 +1134,20 @@ function AutoQuiz() {
   const act = useActions();
   const st = useUI((s) => s.quiz);
   const setQuiz = useUI((s) => s.setQuiz);
-  const { catalog, recordAnswer, status, statusAt, srs, reviewedToday } = useProfile();
+  const { catalog, recordAnswer, status, statusAt, srs, reviewedToday, saveCheckpoint } = useProfile();
   const spark = useRef<ClickSparkHandle>(null);
   const cardRef = useRef<HTMLDivElement>(null);
+  const savedCheckpointSession = useRef<Question[] | null>(null);
 
   useEffect(() => {
     if (st.stale) startQuiz();
   }, [st.stale]);
+
+  useEffect(() => {
+    if (!st.checkpoint || !st.qs.length || st.i < st.qs.length || savedCheckpointSession.current === st.qs) return;
+    savedCheckpointSession.current = st.qs;
+    saveCheckpoint(st.checkpoint.key, st.right, st.qs.length);
+  }, [st.i, st.qs, st.checkpoint, st.right, st.wrong, saveCheckpoint]);
 
   const q = st.qs[st.i];
 
@@ -1250,94 +1257,101 @@ function AutoQuiz() {
     <>
       <section className="card quiz-start-card">
         <div>
-          <p className="eyebrow">Luyện hôm nay</p>
-          <h2>Ôn đúng những từ cần nhớ</h2>
+          <p className="eyebrow">{st.checkpoint ? "BÀI KIỂM TRA CUỐI CHẶNG" : "Luyện hôm nay"}</p>
+          <h2>{st.checkpoint?.title ?? "Ôn đúng những từ cần nhớ"}</h2>
           <p className="muted">
-            {Math.min(10, dueCount + learningCount)} câu · {dueCount} từ đến hạn · {learningCount} từ đang học
+            {st.checkpoint
+              ? "Cần đạt ít nhất 80% để xác nhận hoàn thành chặng."
+              : `${Math.min(10, dueCount + learningCount)} câu · ${dueCount} từ đến hạn · ${learningCount} từ đang học`}
           </p>
         </div>
-        <button
-          className="btn primary"
-          onClick={() =>
-            // chưa có từ nào cần ôn (người mới) → luyện trên toàn bộ từ thay vì ra đề rỗng
-            restart({
-              type: "mixed",
-              scope: dueCount + learningCount ? "due" : "all",
-              unit: "all",
-              lesson: "all",
-              only: "all",
-              forWord: null,
-            })
-          }
-        >
-          <Icon name="layers" size="sm" /> {dueCount + learningCount ? "Bắt đầu luyện" : "Luyện từ mới"}
-        </button>
-      </section>
-      <div className="quiz-controls card">
-        <div className="quiz-scope-row" role="group" aria-label="Phạm vi luyện tập">
-          {(
-            [
-              ["due", "Từ cần ôn"],
-              ["lesson", "Theo bài…"],
-              ["all", "Tất cả"],
-            ] as const
-          ).map(([scope, label]) => (
-            <button
-              key={scope}
-              className={cx("quiz-scope", st.scope === scope && "active")}
-              aria-pressed={st.scope === scope}
-              onClick={() =>
-                restart({
-                  scope,
-                  only: "all",
-                  forWord: null,
-                  ...(scope === "all" ? { unit: "all", lesson: "all" } : {}),
-                })
-              }
-            >
-              {label}
-            </button>
-          ))}
-        </div>
-        {st.forWord && catalog.byId[st.forWord] ? (
-          <span className="badge b-violet">Trường từ: {catalog.byId[st.forWord].word}</span>
-        ) : st.scope === "lesson" ? (
-          <>
-            <ScopeSelects
-              unit={st.unit}
-              lesson={st.lesson}
-              onUnit={(v) => restart({ unit: v, lesson: "all" })}
-              onLesson={(v) => restart({ lesson: v })}
-            />
-            <LessonNav unit={st.unit} lesson={st.lesson} where="quiz" />
-          </>
-        ) : null}
-        <div className="quiz-control-actions">
-          <details className="quiz-custom-types">
-            <summary>▸ Luyện riêng một dạng</summary>
-            <div className="quiz-type-groups">
-              {practiceGroups.map((group) => (
-                <div key={group.title} className="quiz-type-group">
-                  <span className="eyebrow">{group.title}</span>
-                  {group.types.map((type) => (
-                    <button
-                      key={type}
-                      className={cx("quiz-type-option", st.type === type && "active")}
-                      onClick={() => restart({ type })}
-                    >
-                      <Icon name={QUIZ_TYPES[type].icon} size="sm" /> {QUIZ_TYPES[type].label}
-                    </button>
-                  ))}
-                </div>
-              ))}
-            </div>
-          </details>
-          <button className="btn sm soft" onClick={() => restart()}>
-            <Icon name="repeat" size="sm" /> Đề mới
+        {!st.checkpoint && (
+          <button
+            className="btn primary"
+            onClick={() =>
+              // chưa có từ nào cần ôn (người mới) → luyện trên toàn bộ từ thay vì ra đề rỗng
+              restart({
+                type: "mixed",
+                scope: dueCount + learningCount ? "due" : "all",
+                unit: "all",
+                lesson: "all",
+                only: "all",
+                forWord: null,
+                checkpoint: null,
+              })
+            }
+          >
+            <Icon name="layers" size="sm" /> {dueCount + learningCount ? "Bắt đầu luyện" : "Luyện từ mới"}
           </button>
+        )}
+      </section>
+      {!st.checkpoint && (
+        <div className="quiz-controls card">
+          <div className="quiz-scope-row" role="group" aria-label="Phạm vi luyện tập">
+            {(
+              [
+                ["due", "Từ cần ôn"],
+                ["lesson", "Theo bài…"],
+                ["all", "Tất cả"],
+              ] as const
+            ).map(([scope, label]) => (
+              <button
+                key={scope}
+                className={cx("quiz-scope", st.scope === scope && "active")}
+                aria-pressed={st.scope === scope}
+                onClick={() =>
+                  restart({
+                    scope,
+                    only: "all",
+                    forWord: null,
+                    ...(scope === "all" ? { unit: "all", lesson: "all" } : {}),
+                  })
+                }
+              >
+                {label}
+              </button>
+            ))}
+          </div>
+          {st.forWord && catalog.byId[st.forWord] ? (
+            <span className="badge b-violet">Trường từ: {catalog.byId[st.forWord].word}</span>
+          ) : st.scope === "lesson" ? (
+            <>
+              <ScopeSelects
+                unit={st.unit}
+                lesson={st.lesson}
+                onUnit={(v) => restart({ unit: v, lesson: "all" })}
+                onLesson={(v) => restart({ lesson: v })}
+              />
+              <LessonNav unit={st.unit} lesson={st.lesson} where="quiz" />
+            </>
+          ) : null}
+          <div className="quiz-control-actions">
+            <details className="quiz-custom-types">
+              <summary>▸ Luyện riêng một dạng</summary>
+              <div className="quiz-type-groups">
+                {practiceGroups.map((group) => (
+                  <div key={group.title} className="quiz-type-group">
+                    <span className="eyebrow">{group.title}</span>
+                    {group.types.map((type) => (
+                      <button
+                        key={type}
+                        className={cx("quiz-type-option", st.type === type && "active")}
+                        onClick={() => restart({ type })}
+                      >
+                        <Icon name={QUIZ_TYPES[type].icon} size="sm" /> {QUIZ_TYPES[type].label}
+                      </button>
+                    ))}
+                  </div>
+                ))}
+              </div>
+            </details>
+            <button className="btn sm soft" onClick={() => restart()}>
+              <Icon name="repeat" size="sm" /> Đề mới
+            </button>
+          </div>
         </div>
-      </div>
-      {st.type === "mixed" && (
+      )}
+      {!st.checkpoint && st.type === "mixed" && (
         <p className="muted">Theo bậc sẽ tự đổi dạng và độ khó cho từng từ, từ nhận diện đến tự nhớ đáp án.</p>
       )}
     </>
@@ -1387,8 +1401,9 @@ function AutoQuiz() {
     );
 
   if (st.i >= st.qs.length) {
-    const graded = st.right + st.wrong;
+    const graded = st.checkpoint ? st.qs.length : st.right + st.wrong;
     const p = graded ? Math.round((st.right / graded) * 100) : 0;
+    const checkpointPassed = Boolean(st.checkpoint && p >= 80);
     const nextLesson = !st.forWord && st.lesson !== "all" ? LESSON_BY_N[+st.lesson + 1] : undefined;
     return (
       <div className="stack">
@@ -1399,13 +1414,17 @@ function AutoQuiz() {
           </div>
           <h3 style={{ fontSize: "1.5rem", marginTop: 14 }}>Hoàn thành lượt luyện!</h3>
           <p className="muted" style={{ marginTop: 4 }}>
-            {st.missed.length > 0
-              ? `Có ${st.missed.length} từ cần ôn lại. ${st.close ? `${st.close} câu gần đúng được giữ nguyên bậc. ` : ""}Hãy xem lại trước khi tiếp tục nhé.`
-              : p >= 80
-                ? `${st.close ? `${st.close} câu gần đúng được giữ nguyên bậc. ` : ""}Rất tốt! Bạn đang nắm khá vững phần này.`
-                : p >= 50
-                  ? `${st.close ? `${st.close} câu gần đúng được giữ nguyên bậc. ` : ""}Bạn làm khá tốt. Hãy xem lại những câu còn nhầm nhé.`
-                  : `${st.close ? `${st.close} câu gần đúng được giữ nguyên bậc. ` : ""}Hãy xem lại các từ và phần giải thích, rồi thử lại nhé.`}
+            {st.checkpoint
+              ? checkpointPassed
+                ? `Đạt ${p}% — chặng đã hoàn thành, bài tiếp theo đã mở.`
+                : `Đạt ${p}%. Cần 80% để hoàn thành chặng; thử lại để củng cố kiến thức.`
+              : st.missed.length > 0
+                ? `Có ${st.missed.length} từ cần ôn lại. ${st.close ? `${st.close} câu gần đúng được giữ nguyên bậc. ` : ""}Hãy xem lại trước khi tiếp tục nhé.`
+                : p >= 80
+                  ? `${st.close ? `${st.close} câu gần đúng được giữ nguyên bậc. ` : ""}Rất tốt! Bạn đang nắm khá vững phần này.`
+                  : p >= 50
+                    ? `${st.close ? `${st.close} câu gần đúng được giữ nguyên bậc. ` : ""}Bạn làm khá tốt. Hãy xem lại những câu còn nhầm nhé.`
+                    : `${st.close ? `${st.close} câu gần đúng được giữ nguyên bậc. ` : ""}Hãy xem lại các từ và phần giải thích, rồi thử lại nhé.`}
           </p>
           <div
             className="grid grid-2"
@@ -1429,12 +1448,24 @@ function AutoQuiz() {
             </div>
           </div>
           <div className="row" style={{ justifyContent: "center" }}>
-            {st.missed.length > 0 && (
+            {st.checkpoint && (
+              <>
+                {!checkpointPassed && (
+                  <button className="btn primary" onClick={() => act.startCheckpoint(st.checkpoint!)}>
+                    <Icon name="repeat" size="sm" /> Làm lại bài kiểm tra
+                  </button>
+                )}
+                <button className={cx("btn", checkpointPassed && "primary")} onClick={() => act.navigate("/course")}>
+                  <Icon name="layers" size="sm" /> Về lộ trình
+                </button>
+              </>
+            )}
+            {!st.checkpoint && st.missed.length > 0 && (
               <button className="btn primary" onClick={() => act.reviewWords(st.missed)}>
                 <Icon name="repeat" size="sm" /> Ôn {st.missed.length} từ vừa sai
               </button>
             )}
-            {nextLesson && (
+            {!st.checkpoint && nextLesson && (
               <button
                 className={cx("btn", st.missed.length === 0 && "primary")}
                 onClick={() => act.openLesson(nextLesson.n)}
@@ -1442,12 +1473,19 @@ function AutoQuiz() {
                 <Icon name="right" size="sm" /> Học tiếp bài {nextLesson.n}
               </button>
             )}
-            <button className={cx("btn", st.missed.length === 0 && !nextLesson && "primary")} onClick={() => restart()}>
-              <Icon name="undo" size="sm" /> Làm bài mới
-            </button>
-            <button className="btn" onClick={() => act.navigate("/network")}>
-              <Icon name="network" size="sm" /> Xem lại Sơ đồ
-            </button>
+            {!st.checkpoint && (
+              <button
+                className={cx("btn", st.missed.length === 0 && !nextLesson && "primary")}
+                onClick={() => restart()}
+              >
+                <Icon name="undo" size="sm" /> Làm bài mới
+              </button>
+            )}
+            {!st.checkpoint && (
+              <button className="btn" onClick={() => act.navigate("/network")}>
+                <Icon name="network" size="sm" /> Xem lại Sơ đồ
+              </button>
+            )}
           </div>
         </div>
       </div>

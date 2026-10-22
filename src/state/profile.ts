@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { buildCatalog, type Catalog } from "@/lib/data";
-import type { BookScore, DayLog, Profile, ProfileData, Status, Word } from "@/lib/types";
+import type { BookScore, CheckpointRecord, DayLog, Profile, ProfileData, Status, Word } from "@/lib/types";
 import { dayKey, storage } from "@/lib/util";
 import { toast } from "./ui";
 import {
@@ -28,6 +28,8 @@ export const PROFILE_KEYS = [
   "vn-new-words-day",
   "vn-stats",
   "vn-book",
+  "vn-checkpoints",
+  "vn-course-through",
   "vn-log",
   "vn-meta",
 ] as const;
@@ -41,6 +43,8 @@ const FIELD: Record<(typeof PROFILE_KEYS)[number], keyof ProfileData> = {
   "vn-new-words-day": "newWordsToday",
   "vn-stats": "stats",
   "vn-book": "book",
+  "vn-checkpoints": "checkpoints",
+  "vn-course-through": "courseThrough",
   "vn-log": "log",
   "vn-meta": "meta",
 };
@@ -55,6 +59,8 @@ export const emptyData = (): ProfileData => ({
   newWordsToday: { day: "", ids: [] },
   stats: {},
   book: {},
+  checkpoints: {},
+  courseThrough: 0,
   log: {},
 });
 
@@ -62,6 +68,15 @@ export function readProfileData(pid: string): ProfileData {
   const d = emptyData();
   for (const k of PROFILE_KEYS)
     (d as unknown as Record<string, unknown>)[FIELD[k]] = storage.get(`${k}@${pid}`, d[FIELD[k]]);
+  d.courseThrough = storage.get<number | null>(`vn-course-through@${pid}`, null) ?? undefined;
+  if (d.courseThrough == null) {
+    const catalog = buildCatalog(d.custom);
+    d.courseThrough = Object.entries(d.status).reduce((highest, [id, value]) => {
+      const lesson = catalog.byId[id]?.lesson ?? 0;
+      return value ? Math.max(highest, lesson) : highest;
+    }, 0);
+    storage.set(`vn-course-through@${pid}`, d.courseThrough);
+  }
   // Older builds stored the pending marker in status. Keep its review schedule,
   // but restore the underlying state until the third spaced test passes.
   for (const [id, value] of Object.entries(d.status)) {
@@ -144,6 +159,7 @@ interface ProfileState extends ProfileData {
   recordAnswer: (id: string, ok: boolean) => boolean;
   logActivity: (kind: "answer" | "card" | "mastered", ok?: boolean) => void;
   saveBookScore: (key: string, right: number, total: number) => void;
+  saveCheckpoint: (key: string, right: number, total: number) => void;
   saveCustomWord: (w: Word) => void;
   deleteCustomWord: (id: string) => void;
   resetProgress: () => void;
@@ -319,6 +335,21 @@ export const useProfile = create<ProfileState>()((set, get) => {
       if (!prev || right / total >= prev.right / prev.total) book[key] = { right, total, at: Date.now() };
       save({ book });
     },
+    saveCheckpoint: (key, right, total) => {
+      if (!total) return;
+      const checkpoints: Record<string, CheckpointRecord> = { ...(get().checkpoints ?? {}) };
+      const previous = checkpoints[key];
+      const score = right / total;
+      checkpoints[key] = {
+        attempts: (previous?.attempts ?? 0) + 1,
+        best: Math.max(previous?.best ?? 0, score),
+        latest: score,
+        total,
+        passed: Boolean(previous?.passed || score >= 0.8),
+        at: Date.now(),
+      };
+      save({ checkpoints });
+    },
     saveCustomWord: (word) => {
       const w = { ...word, updated: Date.now() };
       const custom = get().custom.slice();
@@ -344,6 +375,8 @@ export const useProfile = create<ProfileState>()((set, get) => {
         newWordsToday: { day: "", ids: [] },
         stats: {},
         book: {},
+        checkpoints: {},
+        courseThrough: 0,
         log: {},
         meta: { ...get().meta, resetAt: Date.now() },
       }),
@@ -384,6 +417,8 @@ export const useProfile = create<ProfileState>()((set, get) => {
         newWordsToday,
         stats: { ...cur.stats, ...d.stats },
         book: { ...cur.book, ...d.book },
+        checkpoints: { ...cur.checkpoints, ...d.checkpoints },
+        courseThrough: Math.max(cur.courseThrough ?? 0, d.courseThrough ?? 0),
         log,
       });
       const p = cur.profile();

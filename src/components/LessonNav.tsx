@@ -1,15 +1,16 @@
 import { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { LESSON_BY_N, LESSONS, TOPICS } from "@/lib/data";
-import { lessonProgress, pct } from "@/lib/progress";
+import { isLessonUnlocked, legacyLessonThrough, lessonProgress, pct } from "@/lib/progress";
 import { cx, scrollBehavior } from "@/lib/util";
 import { goLesson, type LessonWhere } from "@/state/actions";
 import { useProfile } from "@/state/profile";
+import { useUI } from "@/state/ui";
 import { Icon } from "./Icon";
 
 /** Thanh chuyển bài: bài trước / các bài cùng phần / bài sau */
 export function LessonNav({ unit, lesson, where }: { unit: string; lesson: string; where: LessonWhere }) {
-  const { catalog, status } = useProfile();
+  const { catalog, status, checkpoints, courseThrough } = useProfile();
   const navigate = useNavigate();
   const ref = useRef<HTMLElement>(null);
   const cur = lesson === "all" ? null : +lesson;
@@ -24,8 +25,14 @@ export function LessonNav({ unit, lesson, where }: { unit: string; lesson: strin
   const prev = cur ? LESSON_BY_N[cur - 1] : undefined;
   const next = cur ? LESSON_BY_N[cur + 1] : undefined;
   const unitIdx = TOPICS.findIndex((x) => x.id === unit);
+  const legacyThrough = courseThrough ?? legacyLessonThrough(catalog, status);
+  const unlocked = (n: number) => isLessonUnlocked(n, legacyThrough, checkpoints ?? {});
 
   const go = (n: string) => {
+    if (n !== "all" && !unlocked(+n)) {
+      useUI.getState().toast("Hoàn thành bài kiểm tra cuối chặng trước để mở bài này.");
+      return;
+    }
     goLesson(where, n);
     if (where === "net") navigate("/network", { replace: true });
     const nav = ref.current;
@@ -53,11 +60,19 @@ export function LessonNav({ unit, lesson, where }: { unit: string; lesson: strin
         {sib.map((l) => {
           const p = lessonProgress(catalog, status, l.n);
           const on = l.n === cur;
+          const canOpen = unlocked(l.n);
           return (
             <button
               key={l.n}
-              className={cx("step", on && "active", p.total > 0 && p.mastered === p.total && "done")}
+              className={cx(
+                "step",
+                on && "active",
+                p.total > 0 && p.mastered === p.total && "done",
+                !canOpen && "locked",
+              )}
               aria-current={on ? "page" : undefined}
+              disabled={!canOpen}
+              title={!canOpen ? "Hoàn thành bài kiểm tra của chặng trước để mở khóa" : undefined}
               onClick={() => go(String(l.n))}
             >
               <span className="step-n">Bài {l.n}</span>
@@ -71,7 +86,7 @@ export function LessonNav({ unit, lesson, where }: { unit: string; lesson: strin
       </div>
       <button
         className="btn sm ghost nav-edge"
-        disabled={!next}
+        disabled={!next || !unlocked(next.n)}
         aria-label="Bài sau"
         title={next ? `Bài ${next.n}: ${next.title}` : undefined}
         onClick={() => next && go(String(next.n))}
@@ -95,7 +110,9 @@ export function ScopeSelects({
   onUnit: (v: string) => void;
   onLesson: (v: string) => void;
 }) {
-  const topics = useProfile((s) => s.catalog.topics);
+  const { catalog, status, checkpoints, courseThrough } = useProfile();
+  const topics = catalog.topics;
+  const legacyThrough = courseThrough ?? legacyLessonThrough(catalog, status);
   const lessons = unit === "all" ? LESSONS : unit === "custom" ? [] : LESSONS.filter((l) => l.unit === unit);
   return (
     <>
@@ -116,7 +133,7 @@ export function ScopeSelects({
           <select className="select" value={lesson} onChange={(e) => onLesson(e.target.value)}>
             <option value="all">Tất cả bài</option>
             {lessons.map((l) => (
-              <option key={l.n} value={l.n}>
+              <option key={l.n} value={l.n} disabled={!isLessonUnlocked(l.n, legacyThrough, checkpoints ?? {})}>
                 {l.n}. {l.title}
               </option>
             ))}

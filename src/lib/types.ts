@@ -136,6 +136,15 @@ export interface BookScore {
   at: number;
 }
 
+export interface CheckpointRecord {
+  attempts: number;
+  best: number;
+  latest: number;
+  total: number;
+  passed: boolean;
+  at: number;
+}
+
 /** Thông tin phục vụ đồng bộ: thao tác xoá phải "thắng" khi gộp dữ liệu nhiều máy */
 export interface SyncMeta {
   /** lần cuối bấm "Xoá toàn bộ tiến độ" */
@@ -157,6 +166,9 @@ export interface ProfileData {
   newWordsToday?: DailyReviewLog;
   stats: Record<string, WordStat>;
   book: Record<string, BookScore>;
+  checkpoints?: Record<string, CheckpointRecord>;
+  /** Highest lesson already reached before checkpoint gating was introduced. */
+  courseThrough?: number;
   log: Record<string, DayLog>;
 }
 
