@@ -93,8 +93,8 @@ export function TopicsPage() {
             <BlurText text="Học một từ, nhớ cả họ từ." animateBy="words" delay={60} direction="bottom" />
           </h1>
           <p className="lede">
-            Mỗi từ trong sách được tách thành <b>tiền tố + gốc + hậu tố</b>. Nhìn cách ghép là thấy ngay danh từ, động
-            từ, tính từ, trạng từ của nó — đúng dạng bài điền từ trong TOEIC Part 5.
+            Học từ theo ý nghĩa cốt lõi và họ từ: xem một ý tưởng chuyển thành danh từ, động từ, tính từ hay trạng từ
+            trong câu TOEIC.
           </p>
         </div>
         <div className="resume">

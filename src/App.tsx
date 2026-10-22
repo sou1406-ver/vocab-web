@@ -2,7 +2,6 @@ import { lazy, Suspense, type ReactNode } from "react";
 import { createHashRouter, Navigate, RouterProvider } from "react-router-dom";
 import { Layout } from "./components/Layout";
 
-const AffixesPage = lazy(() => import("./features/vocabulary/Affixes").then((m) => ({ default: m.AffixesPage })));
 const Dashboard = lazy(() => import("./features/dashboard/Dashboard").then((m) => ({ default: m.Dashboard })));
 const CoursePathPage = lazy(() =>
   import("./features/learning/CoursePath").then((m) => ({ default: m.CoursePathPage })),
@@ -17,6 +16,7 @@ const NetworkPage = lazy(() => import("./features/vocabulary/Network").then((m) 
 const PracticePage = lazy(() => import("./features/learning/Practice").then((m) => ({ default: m.PracticePage })));
 const QuizPage = lazy(() => import("./features/learning/Quiz").then((m) => ({ default: m.QuizPage })));
 const ReviewPage = lazy(() => import("./features/learning/Review").then((m) => ({ default: m.ReviewPage })));
+const RootsPage = lazy(() => import("./features/vocabulary/Roots").then((m) => ({ default: m.RootsPage })));
 const TermPage = lazy(() => import("./features/vocabulary/Term").then((m) => ({ default: m.TermPage })));
 const TopicsPage = lazy(() => import("./features/vocabulary/Topics").then((m) => ({ default: m.TopicsPage })));
 
@@ -49,7 +49,8 @@ const router = createHashRouter(
         { path: "course", element: page(<CoursePathPage />) },
         { path: "everyday", element: page(<EverydayPage />) },
         { path: "review", element: page(<ReviewPage />) },
-        { path: "affixes/:affix?", element: page(<AffixesPage />) },
+        { path: "roots/:root?", element: page(<RootsPage />) },
+        { path: "affixes/:affix?", element: <Navigate to="/roots" replace /> },
         { path: "knowledge", element: page(<KnowledgePage />) },
         { path: "manage", element: page(<ManagePage />) },
         { path: "*", element: <Navigate to="/" replace /> },

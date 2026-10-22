@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { netHref, PosTag } from "@/components/bits";
 import { Icon } from "@/components/Icon";
+import { familyOf } from "@/lib/data";
+import { useProfile } from "@/state/profile";
 
 const parts = [
   {
@@ -43,13 +46,16 @@ const parts = [
 
 export function KnowledgePage() {
   const [section, setSection] = useState<"word-forms" | "grammar">("word-forms");
+  const catalog = useProfile((state) => state.catalog);
+  const agreement = catalog.all.find((word) => word.word === "agreement");
+  const exampleFamily = agreement ? familyOf(agreement) : [];
   return (
     <div className="knowledge-page">
       <header className="page-head">
         <p className="kicker">NGỮ PHÁP THỰC DỤNG · TOEIC</p>
         <h1>Kiến thức</h1>
         <p className="lede">
-          Nhìn vị trí chỗ trống để xác định từ loại cần điền. Sau đó mới dùng nghĩa và cấu tạo từ để chọn đáp án.
+          Hiểu một ý nghĩa cốt lõi trước, rồi xem từ loại quyết định cách ý nghĩa đó được dùng trong câu.
         </p>
       </header>
 
@@ -59,7 +65,7 @@ export function KnowledgePage() {
           className={section === "word-forms" ? "active" : ""}
           onClick={() => setSection("word-forms")}
         >
-          Từ loại & cấu tạo từ
+          Từ loại & gốc từ
         </button>
         <button
           aria-pressed={section === "grammar"}
@@ -102,28 +108,50 @@ export function KnowledgePage() {
 
           <section className="card knowledge-tip">
             <div>
-              <p className="eyebrow">MẸO LÀM PART 5</p>
-              <h2>Vị trí trước, nghĩa sau</h2>
+              <p className="eyebrow">HIỂU VAI TRÒ TRONG CÂU</p>
+              <h2>Từ loại là chức năng, không phải mẹo nhìn đuôi</h2>
               <p className="muted">
-                Xác định cấu trúc câu quanh chỗ trống trước. Đuôi từ như <b>-tion</b>, <b>-ive</b> hay <b>-ly</b> chỉ là
-                dấu hiệu gợi ý — vẫn cần kiểm tra cách dùng trong câu.
+                Một gốc nghĩa có thể tạo thành nhiều từ. Danh từ gọi tên sự việc, động từ diễn tả hành động, tính từ
+                miêu tả đặc điểm và trạng từ bổ nghĩa cho cách hành động diễn ra. Hình thức từ chỉ giúp nhận diện; hãy
+                hiểu nghĩa và vai trò của nó trong câu.
               </p>
+            </div>
+          </section>
+
+          <section className="card roots-sample" aria-labelledby="roots-sample-title">
+            <div className="roots-sample-intro">
+              <p className="eyebrow">NHÌN QUA MỘT HỌ TỪ</p>
+              <h2 id="roots-sample-title">Một ý tưởng, nhiều vai trò</h2>
+              <p className="muted">
+                Gốc <b>agree</b> mang ý “đồng ý”. Tùy từ loại và ngữ cảnh, ta có hành động đồng ý, một thỏa thuận, hay
+                tính chất sẵn lòng chấp thuận.
+              </p>
+            </div>
+            <div className="roots-sample-forms">
+              {agreement &&
+                exampleFamily.map((form) => (
+                  <Link className="roots-sample-form" key={form.w} to={netHref(agreement.id, form.w)}>
+                    <span className="roots-word">{form.w}</span>
+                    <PosTag pos={form.pos} />
+                    <span className="muted">{form.vi}</span>
+                  </Link>
+                ))}
             </div>
           </section>
 
           <section className="card knowledge-affix">
             <div className="knowledge-affix-icon">
-              <Icon name="puzzle" size="lg" />
+              <Icon name="branch" size="lg" />
             </div>
             <div>
-              <h2>Cấu tạo từ</h2>
+              <h2>Gốc từ và họ từ</h2>
               <p className="muted">
-                Tiền tố thường đổi nghĩa; hậu tố thường giúp nhận ra hoặc biến đổi từ loại. Khám phá các phụ tố trong bộ
-                từ TOEIC và xem những từ nào cùng sử dụng chúng.
+                Theo dõi một ý nghĩa cốt lõi qua các từ cùng họ, rồi so sánh cách ý nghĩa đó trở thành người/vật, hành
+                động hay đặc điểm. Bắt đầu từ các từ trong bộ TOEIC.
               </p>
             </div>
-            <Link className="btn" to="/affixes">
-              Mở thư viện phụ tố <Icon name="right" size="sm" />
+            <Link className="btn" to="/roots">
+              Khám phá gốc từ <Icon name="right" size="sm" />
             </Link>
           </section>
         </>

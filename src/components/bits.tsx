@@ -60,7 +60,7 @@ export function Chips({ parts }: { parts: string[] }) {
   );
 }
 
-/** Ô hình thái lớn trong công thức cấu tạo từ — bấm để đi tới phụ tố / từ gốc */
+/** Ô hình thái lớn — gốc từ mở họ từ; phụ tố chỉ là thông tin cấu tạo */
 export function Morph({ part, rootTarget }: { part: string; rootTarget?: string | null }) {
   const t = affixType(part);
   if (t === "root") {
@@ -71,7 +71,7 @@ export function Morph({ part, rootTarget }: { part: string; rootTarget?: string 
       </>
     );
     return rootTarget ? (
-      <Link className="morph root" to={netHref(rootTarget, part)}>
+      <Link className="morph root" to={`/roots/${encodeURIComponent(part)}`}>
         {inner}
       </Link>
     ) : (
@@ -80,10 +80,10 @@ export function Morph({ part, rootTarget }: { part: string; rootTarget?: string 
   }
   const a = AFFIXES[part];
   return (
-    <Link className={`morph ${t}`} to={`/affixes/${encodeURIComponent(part)}`} title={a?.fn ?? ""}>
+    <span className={`morph ${t}`} title={a?.fn ?? ""}>
       {part}
       <small>{a ? a.vi : t === "prefix" ? "Tiền tố" : "Hậu tố"}</small>
-    </Link>
+    </span>
   );
 }
 

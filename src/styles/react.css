@@ -531,3 +531,30 @@ select option:disabled {
     justify-content: center;
   }
 }
+
+@media (max-width: 760px) {
+  .roots-principle {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .roots-list,
+  .roots-family-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .roots-sample {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .roots-controls {
+    align-items: stretch;
+  }
+  .roots-search {
+    width: 100%;
+  }
+  .roots-pos-filter {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    padding: 2px 0 5px;
+  }
+  .roots-pos-filter button {
+    flex: 0 0 auto;
+  }
+}

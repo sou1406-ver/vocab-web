@@ -174,19 +174,18 @@ export function WordCanvas({ w, prev, next, lesson }: { w: Word; prev?: Word; ne
       </section>
 
       {formulas.length > 0 && (
-        <section className="card branch">
-          <Head
-            no={++no}
-            title="Cấu tạo từ"
-            sub="Bấm vào tiền tố / hậu tố để xem các từ khác dùng nó"
-            extra={
-              <div className="legend">
-                <span className="chip prefix">tiền tố</span>
-                <span className="chip root">gốc</span>
-                <span className="chip suffix">hậu tố</span>
-              </div>
-            }
-          />
+        <details className="card branch morph-details">
+          <summary>
+            <span>
+              <b>Xem cấu tạo từ</b>
+              <small>Gốc nghĩa và các phần cấu tạo là thông tin bổ sung</small>
+            </span>
+            <span className="legend">
+              <span className="chip root">gốc nghĩa</span>
+              <span className="chip prefix">phần thêm</span>
+            </span>
+            <Icon name="plus" size="sm" />
+          </summary>
           {formulas.map((f) => (
             <div className="formula" key={f.w}>
               <div className="formula-parts">
@@ -212,7 +211,7 @@ export function WordCanvas({ w, prev, next, lesson }: { w: Word; prev?: Word; ne
               </div>
             </div>
           ))}
-        </section>
+        </details>
       )}
 
       {fam.length > 1 && (

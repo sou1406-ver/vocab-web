@@ -2,7 +2,7 @@
   "name": "vocab-learn",
   "private": true,
   "version": "2.0.0",
-  "description": "Học 600 Essential Words for the TOEIC theo trường từ: tiền tố, hậu tố, họ từ, đồng nghĩa, trái nghĩa.",
+  "description": "Học 600 Essential Words for the TOEIC theo gốc nghĩa, họ từ, từ loại, đồng nghĩa và trái nghĩa.",
   "type": "module",
   "scripts": {
     "dev": "vite",

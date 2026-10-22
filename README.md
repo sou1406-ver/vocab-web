@@ -9,9 +9,9 @@
 
 ---
 
-Mỗi từ trong sách được tách thành **tiền tố + gốc + hậu tố**, nối với cả họ từ (danh từ, động từ, tính từ, trạng từ),
-từ đồng nghĩa và trái nghĩa — đúng dạng bài điền từ của TOEIC Part 5. Kèm toàn bộ bài tập trong sách có chấm điểm,
-flashcard, và đồng bộ tiến độ qua tài khoản Google.
+Học từ theo **ý nghĩa cốt lõi và họ từ**: xem cùng một ý tưởng xuất hiện dưới dạng danh từ, động từ, tính từ hay trạng từ,
+rồi hiểu vai trò của từng từ trong câu. Kèm trường từ, từ đồng nghĩa và trái nghĩa — đúng dạng bài điền từ của TOEIC
+Part 5. Có bài tập trong sách, flashcard và đồng bộ tiến độ qua tài khoản Google.
 
 ## Tính năng
 
@@ -20,12 +20,12 @@ flashcard, và đồng bộ tiến độ qua tài khoản Google.
 - **Chủ đề** — mục lục 10 phần × 50 bài theo sách, tiến độ từng bài, gợi ý bài nên học tiếp.
 - **Trường từ** — sơ đồ của mỗi từ:
   - phiên âm IPA, nghe phát âm, nghĩa tiếng Việt, câu ví dụ trong sách **kèm bản dịch**;
-  - công thức cấu tạo (bấm vào phụ tố để xem mọi từ dùng nó);
+  - cấu tạo từ để nhận ra gốc nghĩa và những dạng liên quan;
   - họ từ theo từ loại, câu ví dụ _Word Families_ của sách;
   - đồng nghĩa / trái nghĩa kèm nghĩa và **độ phổ biến** (từ thông dụng xếp trước, có nhãn nổi bật);
     bấm vào từ nào cũng đi tới đúng từ đó, các trường từ liên kết qua lại;
   - lọc theo trạng thái, từ loại, phụ tố; sắp xếp; thanh chuyển bài.
-- **Tiền tố · Hậu tố** — 92 phụ tố chia theo chức năng (tạo danh từ, tính từ…), mỗi phụ tố liệt kê các từ dùng nó.
+- **Gốc từ & họ từ** — tìm các từ cùng lõi nghĩa, xem chúng chuyển vai trò qua danh từ, động từ, tính từ và trạng từ.
 - **Tìm kiếm** (phím `/`) — tìm từ gốc, họ từ, đồng nghĩa, cả nghĩa tiếng Việt, gõ không dấu cũng được.
 
 **Luyện & ôn tập**

@@ -63,7 +63,7 @@ export function Layout() {
                 to={t.to}
                 end={t.end}
                 className={({ isActive }) =>
-                  `tab${isActive || (t.to === "/practice" && practiceActive) || (t.to === "/knowledge" && pathname.startsWith("/affixes")) ? " active" : ""}`
+                  `tab${isActive || (t.to === "/practice" && practiceActive) || (t.to === "/knowledge" && pathname.startsWith("/roots")) ? " active" : ""}`
                 }
               >
                 <Icon name={t.icon} size="sm" />
@@ -92,7 +92,7 @@ export function Layout() {
             className={({ isActive }) =>
               isActive ||
               (t.to === "/practice" && practiceActive) ||
-              (t.to === "/knowledge" && pathname.startsWith("/affixes"))
+              (t.to === "/knowledge" && pathname.startsWith("/roots"))
                 ? "active"
                 : ""
             }
