@@ -3,11 +3,46 @@ import lessonsJson from "@/data/lessons.json";
 import termsJson from "@/data/terms.json";
 import topicsJson from "@/data/topics.json";
 import wordsJson from "@/data/words.json";
-import type { Affix, FamilyEntry, Lesson, Topic, Word } from "./types";
+import type { Affix, FamilyEntry, Lesson, Topic, Word, WordDetails, WordMetadata } from "./types";
 import { lower, same } from "./util";
 
 // ---------------------------------------------------------------- dữ liệu sách
-export const WORDS = wordsJson as Word[];
+export const WORDS: Word[] = (wordsJson as WordMetadata[]).map((word) => ({
+  ...word,
+  ex: [],
+  syn: [],
+  ant: [],
+  parts: [word.word],
+  family: [],
+}));
+const wordById = new Map(WORDS.map((word) => [word.id, word]));
+const loadedLessonDetails = new Set<number>();
+const pendingLessonDetails = new Map<number, Promise<void>>();
+const lessonDetailLoaders = import.meta.glob("../data/word-details/*.json", {
+  import: "default",
+}) as Record<string, () => Promise<WordDetails[]>>;
+
+/** Nạp chi tiết của một bài; gọi lại cùng bài không tải hoặc áp dụng lần hai. */
+export async function loadLessonDetails(lesson: number): Promise<void> {
+  if (loadedLessonDetails.has(lesson)) return;
+  const pending = pendingLessonDetails.get(lesson);
+  if (pending) return pending;
+  const load = lessonDetailLoaders[`../data/word-details/${lesson}.json`];
+  if (!load) throw new Error(`Không tìm thấy dữ liệu chi tiết của bài ${lesson}`);
+  const task = load().then((details) => {
+    for (const detail of details) {
+      const word = wordById.get(detail.id);
+      if (word) Object.assign(word, detail);
+    }
+    loadedLessonDetails.add(lesson);
+  });
+  pendingLessonDetails.set(lesson, task);
+  try {
+    await task;
+  } finally {
+    pendingLessonDetails.delete(lesson);
+  }
+}
 export const LESSONS = lessonsJson as Lesson[];
 export const TOPICS = topicsJson as Topic[];
 export const AFFIXES = affixesJson as unknown as Record<string, Affix>;

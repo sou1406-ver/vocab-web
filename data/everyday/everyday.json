@@ -1,0 +1,1446 @@
+[
+  {
+    "id": "ev-make-a-decision",
+    "text": "make a decision",
+    "kind": "phrase",
+    "meaning": "đưa ra quyết định",
+    "example": "We need to make a decision by Friday.",
+    "exampleVi": "Chúng ta cần quyết định trước thứ Sáu.",
+    "usage": "Cụm động từ + danh từ thường gặp trong công việc.",
+    "definition": "to choose what to do after thinking about the options",
+    "usageLevel": 2
+  },
+  {
+    "id": "ev-meet-a-deadline",
+    "text": "meet a deadline",
+    "kind": "phrase",
+    "meaning": "hoàn thành đúng hạn",
+    "example": "The team worked late to meet the deadline.",
+    "exampleVi": "Cả nhóm làm đến muộn để kịp hạn chót.",
+    "definition": "to finish something by the time it must be finished",
+    "usageLevel": 2
+  },
+  {
+    "id": "ev-take-responsibility",
+    "text": "take responsibility for",
+    "kind": "phrase",
+    "meaning": "chịu trách nhiệm về",
+    "example": "She takes responsibility for the training program.",
+    "exampleVi": "Cô ấy phụ trách chương trình đào tạo.",
+    "definition": "to accept that you are accountable for something",
+    "usageLevel": 2
+  },
+  {
+    "id": "ev-keep-in-touch",
+    "text": "keep in touch",
+    "kind": "phrase",
+    "meaning": "giữ liên lạc",
+    "example": "Let's keep in touch after the conference.",
+    "exampleVi": "Hội nghị xong mình vẫn giữ liên lạc nhé.",
+    "definition": "to continue communicating with someone",
+    "usageLevel": 2
+  },
+  {
+    "id": "ev-raise-a-concern",
+    "text": "raise a concern",
+    "kind": "phrase",
+    "meaning": "nêu điều băn khoăn",
+    "example": "Several employees raised concerns about the new schedule.",
+    "exampleVi": "Một số nhân viên bày tỏ lo ngại về lịch làm việc mới.",
+    "definition": "to tell people about a worry or problem",
+    "usageLevel": 2
+  },
+  {
+    "id": "ev-in-advance",
+    "text": "in advance",
+    "kind": "phrase",
+    "meaning": "trước, từ trước",
+    "example": "Please book your seat in advance.",
+    "exampleVi": "Bạn nhớ đặt chỗ trước nhé.",
+    "definition": "before a particular time or event",
+    "usageLevel": 2
+  },
+  {
+    "id": "ev-look-into",
+    "text": "look into",
+    "kind": "phrasal",
+    "meaning": "xem xét, tìm hiểu kỹ",
+    "example": "The manager will look into the billing issue.",
+    "exampleVi": "Quản lý sẽ kiểm tra kỹ vấn đề thanh toán.",
+    "definition": "to examine a situation or problem to learn more about it",
+    "usageLevel": 3
+  },
+  {
+    "id": "ev-put-off",
+    "text": "put off",
+    "kind": "phrasal",
+    "meaning": "hoãn lại",
+    "example": "They put off the meeting until next week.",
+    "exampleVi": "Họ dời cuộc họp sang tuần sau.",
+    "definition": "to delay something until a later time",
+    "usageLevel": 2
+  },
+  {
+    "id": "ev-find-out",
+    "text": "find out",
+    "kind": "phrasal",
+    "meaning": "tìm hiểu, phát hiện ra",
+    "example": "I found out that the store closes at six.",
+    "exampleVi": "Tôi mới biết cửa hàng đóng cửa lúc sáu giờ.",
+    "definition": "to discover information or learn something you did not know",
+    "usageLevel": 3
+  },
+  {
+    "id": "ev-carry-out",
+    "text": "carry out",
+    "kind": "phrasal",
+    "meaning": "thực hiện",
+    "example": "The company carried out a customer survey.",
+    "exampleVi": "Công ty đã thực hiện một cuộc khảo sát khách hàng.",
+    "definition": "to do or complete a task, plan, or instruction",
+    "usageLevel": 2
+  },
+  {
+    "id": "ev-set-up",
+    "text": "set up",
+    "kind": "phrasal",
+    "meaning": "sắp xếp, thiết lập",
+    "example": "We set up a call with the supplier.",
+    "exampleVi": "Chúng tôi đã hẹn một cuộc gọi với nhà cung cấp.",
+    "definition": "to arrange or prepare something so it is ready to be used",
+    "usageLevel": 3
+  },
+  {
+    "id": "ev-come-across",
+    "text": "come across",
+    "kind": "phrasal",
+    "meaning": "tình cờ bắt gặp",
+    "example": "I came across an interesting article this morning.",
+    "exampleVi": "Sáng nay tôi tình cờ đọc được một bài báo thú vị.",
+    "definition": "to find or meet something by chance",
+    "usageLevel": 2
+  },
+  {
+    "id": "ev-run-out-of",
+    "text": "run out of",
+    "kind": "phrasal",
+    "meaning": "dùng hết, không còn",
+    "example": "We've run out of printer paper.",
+    "exampleVi": "Chúng ta hết giấy in rồi.",
+    "definition": "to use all of something so that none is left",
+    "usageLevel": 2
+  },
+  {
+    "id": "ev-follow-up",
+    "text": "follow up on",
+    "kind": "phrasal",
+    "meaning": "theo dõi, xử lý tiếp",
+    "example": "I'll follow up on your request tomorrow.",
+    "exampleVi": "Ngày mai tôi sẽ tiếp tục xử lý yêu cầu của bạn.",
+    "definition": "to take further action about something already discussed or requested",
+    "usageLevel": 2
+  },
+  {
+    "id": "ev-get-ball-rolling",
+    "text": "get the ball rolling",
+    "kind": "idiom",
+    "meaning": "bắt đầu khởi động một việc",
+    "example": "Let's get the ball rolling with a short introduction.",
+    "exampleVi": "Mình bắt đầu bằng phần giới thiệu ngắn nhé.",
+    "definition": "to start an activity, often so that others will join in",
+    "usageLevel": 2
+  },
+  {
+    "id": "ev-on-same-page",
+    "text": "be on the same page",
+    "kind": "idiom",
+    "meaning": "hiểu thống nhất với nhau",
+    "example": "Let's review the plan so we're on the same page.",
+    "exampleVi": "Cùng xem lại kế hoạch để mọi người hiểu giống nhau nhé.",
+    "definition": "to have the same understanding or opinion as other people",
+    "usageLevel": 2
+  },
+  {
+    "id": "ev-piece-of-cake",
+    "text": "a piece of cake",
+    "kind": "idiom",
+    "meaning": "dễ như chơi",
+    "example": "The setup was a piece of cake.",
+    "exampleVi": "Cài đặt cái này dễ như chơi.",
+    "definition": "something that is very easy to do",
+    "usageLevel": 2
+  },
+  {
+    "id": "ev-long-run",
+    "text": "in the long run",
+    "kind": "idiom",
+    "meaning": "về lâu dài",
+    "example": "The upgrade will save us time in the long run.",
+    "exampleVi": "Về lâu dài, bản nâng cấp này sẽ giúp ta tiết kiệm thời gian.",
+    "definition": "over a long period of time, especially when future effects matter",
+    "usageLevel": 2
+  },
+  {
+    "id": "ev-back-square-one",
+    "text": "back to square one",
+    "kind": "idiom",
+    "meaning": "quay về vạch xuất phát",
+    "example": "The deal fell through, so we're back to square one.",
+    "exampleVi": "Thỏa thuận đổ bể, vậy là mọi thứ lại quay về vạch xuất phát.",
+    "definition": "to return to the beginning after an attempt has failed",
+    "usageLevel": 2
+  },
+  {
+    "id": "ev-touch-base",
+    "text": "touch base",
+    "kind": "idiom",
+    "meaning": "liên hệ, trao đổi nhanh",
+    "example": "I'll touch base with you after the client meeting.",
+    "exampleVi": "Họp với khách xong tôi sẽ trao đổi nhanh với bạn nhé.",
+    "usage": "Thân mật vừa phải; thường dùng để cập nhật tình hình công việc.",
+    "definition": "to make brief contact with someone, usually to exchange information",
+    "usageLevel": 2
+  },
+  {
+    "id": "ev-under-weather",
+    "text": "under the weather",
+    "kind": "idiom",
+    "meaning": "hơi mệt, không được khỏe",
+    "example": "I'm feeling a little under the weather today.",
+    "exampleVi": "Hôm nay tôi thấy hơi mệt, không được khỏe lắm.",
+    "definition": "to feel slightly ill",
+    "usageLevel": 2
+  },
+  {
+    "id": "ev-no-big-deal",
+    "text": "no big deal",
+    "kind": "slang",
+    "meaning": "chuyện nhỏ thôi; không sao đâu",
+    "example": "Thanks for covering my shift. — No big deal!",
+    "exampleVi": "Cảm ơn bạn đã làm thay ca cho mình. — Có gì đâu!",
+    "usage": "Thân mật; dùng để nói việc gì đó không đáng lo hay không có gì to tát.",
+    "definition": "something that is not serious, important, or worth worrying about",
+    "usageLevel": 2
+  },
+  {
+    "id": "ev-my-bad",
+    "text": "my bad",
+    "kind": "slang",
+    "meaning": "lỗi mình rồi",
+    "example": "My bad—I sent you the old version.",
+    "exampleVi": "Lỗi mình rồi — mình gửi bạn bản cũ mất rồi.",
+    "usage": "Rất thân mật; dùng để nhận lỗi nhỏ trong hội thoại.",
+    "definition": "an informal way to admit that something was your fault",
+    "usageLevel": 2
+  },
+  {
+    "id": "ev-hang-out",
+    "text": "hang out",
+    "kind": "phrasal",
+    "meaning": "đi chơi, tụ tập",
+    "example": "Do you want to hang out after class?",
+    "exampleVi": "Tan học đi chơi với mình không?",
+    "usage": "Thân mật; nói về việc dành thời gian thư giãn cùng ai đó.",
+    "definition": "to spend relaxed time with someone or in a place",
+    "usageLevel": 2
+  },
+  {
+    "id": "ev-hit-me-up",
+    "text": "hit me up",
+    "kind": "slang",
+    "meaning": "ngỏ lời xin hoặc nhờ ai điều gì",
+    "example": "She hit me up for $20.",
+    "exampleVi": "Cô ấy ngỏ lời xin tôi 20 đô.",
+    "usage": "Tiếng lóng Mỹ, rất thân mật. Cambridge ghi nhận nghĩa xin/nhờ ai điều gì; đôi khi cách nói này còn được dùng với nghĩa liên hệ với ai.",
+    "definition": "US informal: to ask someone for something",
+    "usageLevel": 2
+  },
+  {
+    "id": "ev-no-biggie",
+    "text": "no biggie",
+    "kind": "slang",
+    "meaning": "không sao đâu; chuyện nhỏ ấy mà",
+    "example": "It's no biggie if you're a few minutes late.",
+    "exampleVi": "Bạn đến muộn vài phút cũng không sao đâu.",
+    "usage": "Thân mật, gần nghĩa với “no big deal”.",
+    "definition": "something small or unimportant that is not a problem",
+    "usageLevel": 2
+  },
+  {
+    "id": "ev-chill-out",
+    "text": "chill out",
+    "kind": "phrasal",
+    "meaning": "thư giãn; bình tĩnh lại",
+    "example": "Let's chill out at home this evening.",
+    "exampleVi": "Tối nay ở nhà thư giãn đi.",
+    "usage": "Thân mật; có thể nói về nghỉ ngơi hoặc bình tĩnh lại, tùy ngữ cảnh.",
+    "definition": "to relax or to become calm instead of upset or angry",
+    "usageLevel": 2
+  },
+  {
+    "id": "ev-come-up-with",
+    "text": "come up with",
+    "kind": "phrasal",
+    "meaning": "nghĩ ra (ý tưởng, kế hoạch)",
+    "example": "The team came up with a better way to organize the files.",
+    "exampleVi": "Cả nhóm nghĩ ra cách sắp xếp hồ sơ tốt hơn.",
+    "usage": "Thường đi với idea, plan, solution hoặc answer.",
+    "definition": "to think of or suggest an idea, plan, or solution",
+    "usageLevel": 3
+  },
+  {
+    "id": "ev-deal-with",
+    "text": "deal with",
+    "kind": "phrasal",
+    "meaning": "xử lý, giải quyết (vấn đề)",
+    "example": "Our support team will deal with the complaint.",
+    "exampleVi": "Đội hỗ trợ sẽ xử lý khiếu nại này.",
+    "usage": "Cũng dùng với nghĩa làm việc hoặc giao tiếp với một người; xem nghĩa khác.",
+    "otherSenses": [
+      {
+        "definition": "to talk to or work with a person, especially as part of your job",
+        "meaning": "làm việc, giao tiếp với (ai)",
+        "example": "She deals with customers from across the country.",
+        "exampleVi": "Cô ấy làm việc với khách hàng từ khắp cả nước."
+      }
+    ],
+    "definition": "to take action to solve or manage a problem",
+    "usageLevel": 3
+  },
+  {
+    "id": "ev-bring-up",
+    "text": "bring up",
+    "kind": "phrasal",
+    "meaning": "đề cập đến (một chủ đề)",
+    "example": "He brought up the budget during the meeting.",
+    "exampleVi": "Anh ấy đề cập đến ngân sách trong cuộc họp.",
+    "otherSenses": [
+      {
+        "definition": "to care for a child until they are an adult",
+        "meaning": "nuôi dạy (một đứa trẻ)",
+        "example": "She was brought up by her grandparents.",
+        "exampleVi": "Cô ấy được ông bà nuôi dạy."
+      }
+    ],
+    "definition": "to start talking about a particular subject",
+    "usageLevel": 3
+  },
+  {
+    "id": "ev-turn-down",
+    "text": "turn down",
+    "kind": "phrasal",
+    "meaning": "từ chối (lời mời, đề nghị)",
+    "example": "Mina turned down the job offer.",
+    "exampleVi": "Mina đã từ chối lời mời làm việc.",
+    "otherSenses": [
+      {
+        "definition": "to reduce the level, volume, or strength of something",
+        "meaning": "vặn nhỏ; giảm mức (âm lượng, nhiệt độ)",
+        "example": "Could you turn down the music a little?",
+        "exampleVi": "Bạn vặn nhỏ nhạc xuống một chút được không?"
+      }
+    ],
+    "definition": "to refuse an offer, request, or opportunity",
+    "usageLevel": 3
+  },
+  {
+    "id": "ev-take-off",
+    "text": "take off",
+    "kind": "phrasal",
+    "meaning": "cất cánh (máy bay)",
+    "example": "Our plane took off on time.",
+    "exampleVi": "Máy bay của chúng tôi cất cánh đúng giờ.",
+    "otherSenses": [
+      {
+        "definition": "to suddenly become successful or popular",
+        "meaning": "bỗng trở nên thành công hoặc nổi tiếng",
+        "example": "Her online shop really took off last year.",
+        "exampleVi": "Cửa hàng trực tuyến của cô ấy bỗng phát triển mạnh vào năm ngoái."
+      },
+      {
+        "definition": "to remove a piece of clothing",
+        "meaning": "cởi (quần áo)",
+        "example": "Please take off your shoes at the door.",
+        "exampleVi": "Vui lòng cởi giày ở cửa."
+      }
+    ],
+    "definition": "if an aircraft takes off, it leaves the ground and starts flying",
+    "usageLevel": 3
+  },
+  {
+    "id": "ev-work-out",
+    "text": "work out",
+    "kind": "phrasal",
+    "meaning": "tập thể dục",
+    "example": "I work out at the gym twice a week.",
+    "exampleVi": "Tôi tập ở phòng gym hai lần mỗi tuần.",
+    "otherSenses": [
+      {
+        "definition": "to find an answer or understand something by thinking",
+        "meaning": "tìm ra lời giải; hiểu ra",
+        "example": "We need to work out why the figures do not match.",
+        "exampleVi": "Chúng ta cần tìm hiểu vì sao các con số không khớp."
+      },
+      {
+        "definition": "if a situation works out, it develops successfully or satisfactorily",
+        "meaning": "diễn biến tốt đẹp; có kết quả ổn thỏa",
+        "example": "I hope everything works out for you.",
+        "exampleVi": "Mong mọi chuyện sẽ ổn thỏa với bạn."
+      }
+    ],
+    "definition": "to do physical exercise to improve your fitness",
+    "usageLevel": 3
+  },
+  {
+    "id": "ev-give-up",
+    "text": "give up",
+    "kind": "phrasal",
+    "meaning": "bỏ cuộc; từ bỏ",
+    "example": "Don't give up just because the first attempt failed.",
+    "exampleVi": "Đừng bỏ cuộc chỉ vì lần thử đầu tiên thất bại.",
+    "definition": "to stop trying to do something or stop doing something",
+    "usageLevel": 3
+  },
+  {
+    "id": "ev-pick-up",
+    "text": "pick up",
+    "kind": "phrasal",
+    "meaning": "đón (ai đó) bằng xe",
+    "example": "I'll pick you up outside the station.",
+    "exampleVi": "Tôi sẽ đón bạn bên ngoài nhà ga.",
+    "otherSenses": [
+      {
+        "definition": "to learn a new skill or language by practising it",
+        "meaning": "học được một cách tự nhiên",
+        "example": "He picked up some Spanish while travelling.",
+        "exampleVi": "Anh ấy học được chút tiếng Tây Ban Nha trong chuyến đi."
+      }
+    ],
+    "definition": "to collect someone in a vehicle and take them somewhere",
+    "usageLevel": 3
+  },
+  {
+    "id": "ev-look-forward-to",
+    "text": "look forward to",
+    "kind": "phrasal",
+    "meaning": "mong chờ, háo hức đón đợi",
+    "example": "We look forward to seeing you next week.",
+    "exampleVi": "Chúng tôi mong được gặp bạn vào tuần tới.",
+    "usage": "Sau “to” dùng danh từ hoặc động từ dạng -ing.",
+    "definition": "to feel pleased and excited about something that is going to happen",
+    "usageLevel": 3
+  },
+  {
+    "id": "ev-call-off",
+    "text": "call off",
+    "kind": "phrasal",
+    "meaning": "hủy bỏ (kế hoạch, sự kiện)",
+    "example": "They called off the match because of the rain.",
+    "exampleVi": "Họ hủy trận đấu vì trời mưa.",
+    "definition": "to cancel something that has been arranged",
+    "usageLevel": 2
+  },
+  {
+    "id": "ev-run-into",
+    "text": "run into",
+    "kind": "phrasal",
+    "meaning": "tình cờ gặp",
+    "example": "I ran into an old colleague at the market.",
+    "exampleVi": "Tôi tình cờ gặp một đồng nghiệp cũ ở chợ.",
+    "otherSenses": [
+      {
+        "definition": "to experience an unexpected problem",
+        "meaning": "gặp phải (khó khăn, vấn đề)",
+        "example": "We ran into a few technical problems.",
+        "exampleVi": "Chúng tôi gặp phải một vài vấn đề kỹ thuật."
+      }
+    ],
+    "definition": "to meet someone unexpectedly",
+    "usageLevel": 2
+  },
+  {
+    "id": "ev-point-out",
+    "text": "point out",
+    "kind": "phrasal",
+    "meaning": "chỉ ra; lưu ý cho ai thấy",
+    "example": "She pointed out a mistake in the report.",
+    "exampleVi": "Cô ấy chỉ ra một lỗi trong báo cáo.",
+    "definition": "to mention something to make people notice it",
+    "usageLevel": 2
+  },
+  {
+    "id": "ev-fill-in",
+    "text": "fill in",
+    "kind": "phrasal",
+    "meaning": "điền vào (biểu mẫu)",
+    "example": "Please fill in this form before your appointment.",
+    "exampleVi": "Vui lòng điền biểu mẫu này trước buổi hẹn.",
+    "otherSenses": [
+      {
+        "definition": "to give someone information they missed",
+        "meaning": "cập nhật thông tin cho ai",
+        "example": "Can you fill me in on what happened?",
+        "exampleVi": "Bạn cập nhật cho tôi chuyện đã xảy ra được không?"
+      }
+    ],
+    "definition": "to write information in the spaces on a form",
+    "usageLevel": 2
+  },
+  {
+    "id": "ev-find-out-about",
+    "text": "find out about",
+    "kind": "phrasal",
+    "meaning": "tìm hiểu thông tin về",
+    "example": "I called to find out about the course fees.",
+    "exampleVi": "Tôi gọi để hỏi thông tin về học phí khóa học.",
+    "definition": "to get information about something",
+    "usageLevel": 2
+  },
+  {
+    "id": "ev-put-up-with",
+    "text": "put up with",
+    "kind": "phrasal",
+    "meaning": "chịu đựng điều khó chịu",
+    "example": "I can't put up with the noise any longer.",
+    "exampleVi": "Tôi không thể chịu tiếng ồn này thêm nữa.",
+    "definition": "to accept an unpleasant situation or person without complaining",
+    "usageLevel": 2
+  },
+  {
+    "id": "ev-take-over",
+    "text": "take over",
+    "kind": "phrasal",
+    "meaning": "tiếp quản; đảm nhận quyền kiểm soát",
+    "example": "A new manager will take over next month.",
+    "exampleVi": "Một quản lý mới sẽ tiếp quản vào tháng tới.",
+    "definition": "to take control of something or become responsible for it",
+    "usageLevel": 2
+  },
+  {
+    "id": "ev-carry-on",
+    "text": "carry on",
+    "kind": "phrasal",
+    "meaning": "tiếp tục làm việc gì",
+    "example": "Please carry on with your work while I speak to her.",
+    "exampleVi": "Cứ tiếp tục công việc trong lúc tôi nói chuyện với cô ấy nhé.",
+    "definition": "to continue doing something",
+    "usageLevel": 2
+  },
+  {
+    "id": "ev-get-along",
+    "text": "get along",
+    "kind": "phrasal",
+    "meaning": "hòa thuận với ai",
+    "example": "Do you get along with your new colleagues?",
+    "exampleVi": "Bạn có hòa thuận với đồng nghiệp mới không?",
+    "usage": "Trong Anh-Anh thường dùng get on với cùng nghĩa.",
+    "definition": "to have a friendly relationship with someone",
+    "usageLevel": 2
+  },
+  {
+    "id": "ev-break-down",
+    "text": "break down",
+    "kind": "phrasal",
+    "meaning": "hỏng (máy móc, xe cộ)",
+    "example": "Our car broke down on the way home.",
+    "exampleVi": "Xe chúng tôi bị hỏng trên đường về nhà.",
+    "otherSenses": [
+      {
+        "definition": "to lose control of your emotions and start crying",
+        "meaning": "suy sụp cảm xúc, bật khóc",
+        "example": "He broke down when he heard the news.",
+        "exampleVi": "Anh ấy suy sụp và bật khóc khi nghe tin."
+      },
+      {
+        "definition": "to separate information or a process into smaller parts",
+        "meaning": "chia nhỏ, phân tích thành từng phần",
+        "example": "The report breaks down costs by department.",
+        "exampleVi": "Báo cáo phân tích chi phí theo từng phòng ban."
+      }
+    ],
+    "definition": "if a machine or vehicle breaks down, it stops working",
+    "usageLevel": 2
+  },
+  {
+    "id": "ev-make-progress",
+    "text": "make progress",
+    "kind": "phrase",
+    "meaning": "tiến bộ; đạt được tiến triển",
+    "example": "The team has made good progress on the new website.",
+    "exampleVi": "Nhóm đã đạt tiến triển tốt trong dự án trang web mới.",
+    "definition": "to move forward or improve in what you are doing",
+    "usageLevel": 2
+  },
+  {
+    "id": "ev-pay-attention",
+    "text": "pay attention (to)",
+    "kind": "phrase",
+    "meaning": "chú ý (đến)",
+    "example": "Please pay attention to the changes in the schedule.",
+    "exampleVi": "Vui lòng chú ý những thay đổi trong lịch trình.",
+    "definition": "to watch, listen to, or think about something carefully",
+    "usageLevel": 2
+  },
+  {
+    "id": "ev-take-a-break",
+    "text": "take a break",
+    "kind": "phrase",
+    "meaning": "nghỉ giải lao",
+    "example": "Let's take a short break before the next lesson.",
+    "exampleVi": "Mình nghỉ giải lao một chút trước bài tiếp theo nhé.",
+    "definition": "to stop working or doing an activity for a short time",
+    "usageLevel": 2
+  },
+  {
+    "id": "ev-keep-in-mind",
+    "text": "keep in mind",
+    "kind": "phrase",
+    "meaning": "ghi nhớ; lưu ý",
+    "example": "Keep in mind that the last train leaves at ten.",
+    "exampleVi": "Hãy nhớ là chuyến tàu cuối rời ga lúc mười giờ.",
+    "definition": "to remember or consider something important",
+    "usageLevel": 3
+  },
+  {
+    "id": "ev-make-a-difference",
+    "text": "make a difference",
+    "kind": "phrase",
+    "meaning": "tạo ra sự khác biệt; có tác động",
+    "example": "A few small changes can make a big difference.",
+    "exampleVi": "Một vài thay đổi nhỏ có thể tạo ra khác biệt lớn.",
+    "definition": "to have an important effect on a situation or person",
+    "usageLevel": 2
+  },
+  {
+    "id": "ev-take-part-in",
+    "text": "take part in",
+    "kind": "phrase",
+    "meaning": "tham gia vào",
+    "example": "More than 200 students took part in the competition.",
+    "exampleVi": "Hơn 200 học sinh đã tham gia cuộc thi.",
+    "definition": "to be involved in an activity or event",
+    "usageLevel": 3
+  },
+  {
+    "id": "ev-in-a-hurry",
+    "text": "in a hurry",
+    "kind": "phrase",
+    "meaning": "đang vội; vội vàng",
+    "example": "I left in a hurry and forgot my keys.",
+    "exampleVi": "Tôi đi vội nên quên mất chìa khóa.",
+    "definition": "doing something quickly because there is little time",
+    "usageLevel": 2
+  },
+  {
+    "id": "ev-by-mistake",
+    "text": "by mistake",
+    "kind": "phrase",
+    "meaning": "do nhầm; vô tình",
+    "example": "I sent the email to the wrong person by mistake.",
+    "exampleVi": "Tôi vô tình gửi email nhầm người.",
+    "definition": "in a way that is wrong because of an accident or error",
+    "usageLevel": 2
+  },
+  {
+    "id": "ev-in-charge-of",
+    "text": "in charge of",
+    "kind": "phrase",
+    "meaning": "phụ trách; chịu trách nhiệm quản lý",
+    "example": "Nora is in charge of the training session.",
+    "exampleVi": "Nora phụ trách buổi đào tạo.",
+    "definition": "having responsibility for controlling or organizing something",
+    "usageLevel": 2
+  },
+  {
+    "id": "ev-on-the-way",
+    "text": "on the way",
+    "kind": "phrase",
+    "meaning": "trên đường đến; đang trên đường",
+    "example": "I'll pick up some coffee on the way to work.",
+    "exampleVi": "Tôi sẽ mua cà phê trên đường đi làm.",
+    "definition": "while travelling to a place",
+    "usageLevel": 2
+  },
+  {
+    "id": "ev-as-soon-as",
+    "text": "as soon as",
+    "kind": "phrase",
+    "meaning": "ngay khi; sớm nhất có thể sau khi",
+    "example": "I'll call you as soon as I arrive.",
+    "exampleVi": "Tôi sẽ gọi cho bạn ngay khi đến nơi.",
+    "definition": "immediately after something happens",
+    "usageLevel": 2
+  },
+  {
+    "id": "ev-for-a-while",
+    "text": "for a while",
+    "kind": "phrase",
+    "meaning": "trong một khoảng thời gian",
+    "example": "We sat outside and talked for a while.",
+    "exampleVi": "Chúng tôi ngồi bên ngoài trò chuyện một lúc.",
+    "definition": "for a period of time, usually a fairly short one",
+    "usageLevel": 2
+  },
+  {
+    "id": "ev-spill-the-beans",
+    "text": "spill the beans",
+    "kind": "idiom",
+    "meaning": "lỡ tiết lộ bí mật",
+    "example": "Don't spill the beans about the surprise party.",
+    "exampleVi": "Đừng để lộ chuyện về bữa tiệc bất ngờ nhé.",
+    "definition": "to reveal secret information, often when you should not",
+    "usageLevel": 2
+  },
+  {
+    "id": "ev-break-the-ice",
+    "text": "break the ice",
+    "kind": "idiom",
+    "meaning": "phá tan sự ngượng ngùng ban đầu",
+    "example": "A quick game helped everyone break the ice.",
+    "exampleVi": "Một trò chơi ngắn giúp mọi người bớt ngại ngùng lúc đầu.",
+    "definition": "to make people feel more relaxed when they first meet",
+    "usageLevel": 2
+  },
+  {
+    "id": "ev-once-blue-moon",
+    "text": "once in a blue moon",
+    "kind": "idiom",
+    "meaning": "hiếm khi; rất ít khi",
+    "example": "We eat at that restaurant once in a blue moon.",
+    "exampleVi": "Chúng tôi hiếm khi ăn ở nhà hàng đó.",
+    "definition": "very rarely",
+    "usageLevel": 2
+  },
+  {
+    "id": "ev-ball-in-court",
+    "text": "the ball is in your court",
+    "kind": "idiom",
+    "meaning": "đến lượt bạn quyết định hoặc hành động",
+    "example": "I've sent you the proposal, so the ball is in your court now.",
+    "exampleVi": "Tôi đã gửi đề xuất cho bạn, giờ đến lượt bạn quyết định.",
+    "definition": "used to say that it is someone's responsibility to act next",
+    "usageLevel": 2
+  },
+  {
+    "id": "ev-cost-arm-leg",
+    "text": "cost an arm and a leg",
+    "kind": "idiom",
+    "meaning": "rất đắt; tốn cả đống tiền",
+    "example": "That downtown apartment would cost an arm and a leg.",
+    "exampleVi": "Căn hộ ở trung tâm đó chắc sẽ đắt khủng khiếp.",
+    "definition": "to be extremely expensive",
+    "usageLevel": 2
+  },
+  {
+    "id": "ev-let-cat-out",
+    "text": "let the cat out of the bag",
+    "kind": "idiom",
+    "meaning": "lỡ để lộ bí mật",
+    "example": "I wanted the news to be a surprise, but Leo let the cat out of the bag.",
+    "exampleVi": "Tôi muốn giữ tin đó làm bất ngờ, nhưng Leo lỡ để lộ mất rồi.",
+    "definition": "to reveal a secret, often without intending to",
+    "usageLevel": 2
+  },
+  {
+    "id": "ev-hit-nail-head",
+    "text": "hit the nail on the head",
+    "kind": "idiom",
+    "meaning": "nói đúng trọng tâm; nhận xét chính xác",
+    "example": "You hit the nail on the head when you said we need clearer instructions.",
+    "exampleVi": "Bạn nói đúng trọng tâm khi bảo rằng chúng ta cần hướng dẫn rõ hơn.",
+    "definition": "to describe exactly what is causing a situation or problem",
+    "usageLevel": 2
+  },
+  {
+    "id": "ev-cut-corners",
+    "text": "cut corners",
+    "kind": "idiom",
+    "meaning": "làm qua loa để tiết kiệm thời gian hoặc tiền, khiến chất lượng giảm",
+    "example": "The contractor cut corners, and the repairs did not last.",
+    "exampleVi": "Nhà thầu làm ẩu để tiết kiệm nên phần sửa chữa không bền.",
+    "definition": "to save time or money by leaving out steps or details, reducing quality",
+    "usageLevel": 2
+  },
+  {
+    "id": "ev-blessing-disguise",
+    "text": "a blessing in disguise",
+    "kind": "idiom",
+    "meaning": "điều tưởng là xui nhưng sau lại hóa tốt",
+    "example": "Missing that flight was a blessing in disguise; I met my future business partner at the airport.",
+    "exampleVi": "Lỡ chuyến bay hóa ra lại là điều may; tôi gặp người sau này trở thành cộng sự ở sân bay.",
+    "definition": "something that seems bad at first but later leads to a good result",
+    "usageLevel": 2
+  },
+  {
+    "id": "ev-hot-water",
+    "text": "be in hot water",
+    "kind": "idiom",
+    "meaning": "rơi vào tình thế rắc rối, có thể bị phê bình hoặc phạt",
+    "example": "He was in hot water after missing the client meeting.",
+    "exampleVi": "Anh ấy gặp rắc rối sau khi bỏ lỡ buổi họp với khách hàng.",
+    "definition": "to be in a difficult situation where you may be criticized or punished",
+    "usageLevel": 2
+  },
+  {
+    "id": "ev-out-of-hand",
+    "text": "get out of hand",
+    "kind": "idiom",
+    "meaning": "trở nên khó kiểm soát",
+    "example": "The discussion got out of hand, so the chair called a break.",
+    "exampleVi": "Cuộc thảo luận trở nên khó kiểm soát nên chủ tọa cho nghỉ giải lao.",
+    "definition": "to become difficult to control",
+    "usageLevel": 2
+  },
+  {
+    "id": "ev-across-board",
+    "text": "across the board",
+    "kind": "idiom",
+    "meaning": "áp dụng cho tất cả mọi người hoặc mọi lĩnh vực",
+    "example": "The company introduced a pay increase across the board.",
+    "exampleVi": "Công ty tăng lương đồng loạt cho tất cả nhân viên.",
+    "definition": "affecting or applying to everyone or everything in a group",
+    "usageLevel": 2
+  },
+  {
+    "id": "ev-above-board",
+    "text": "above board",
+    "kind": "idiom",
+    "meaning": "công khai, trung thực và hợp pháp",
+    "example": "All our dealings with the supplier have been above board.",
+    "exampleVi": "Mọi giao dịch của chúng tôi với nhà cung cấp đều minh bạch và hợp pháp.",
+    "definition": "honest, open, and legal",
+    "usageLevel": 2
+  },
+  {
+    "id": "source-phrasal-17",
+    "text": "attend to",
+    "kind": "phrasal",
+    "usageLevel": 2,
+    "definition": "to deal with or take care of someone or something that needs your attention.",
+    "meaning": "Xử lý hoặc chăm sóc ai đó hoặc điều gì đó cần sự chú ý của bạn."
+  },
+  {
+    "id": "source-phrasal-105",
+    "text": "branch out",
+    "kind": "phrasal",
+    "usageLevel": 2,
+    "definition": "to start doing something different from what you usually do, especially in work or hobbies",
+    "meaning": "bắt đầu làm điều gì đó khác với thói quen thường ngày, đặc biệt trong công việc hoặc sở thích"
+  },
+  {
+    "id": "source-phrasal-133",
+    "text": "bring in",
+    "kind": "phrasal",
+    "usageLevel": 3,
+    "definition": "to earn or make money for a business or organization",
+    "meaning": "kiếm hoặc tạo ra tiền cho doanh nghiệp hoặc tổ chức"
+  },
+  {
+    "id": "source-phrasal-154",
+    "text": "build up",
+    "kind": "phrasal",
+    "usageLevel": 3,
+    "definition": "to gradually increase in amount, size, or strength, or to make something do this; to prepare for an important event by gradually creating excitement or tension.",
+    "meaning": "Tăng dần về số lượng, kích thước hoặc sức mạnh, hoặc làm cho cái gì đó như vậy; chuẩn bị cho một sự kiện quan trọng bằng cách tạo ra sự phấn khích hoặc căng thẳng dần dần."
+  },
+  {
+    "id": "source-phrasal-185",
+    "text": "call for",
+    "kind": "phrasal",
+    "usageLevel": 3,
+    "definition": "To go to a place to collect or pick up someone or something, usually to take them somewhere else.",
+    "meaning": "Đến một nơi để đón ai đó hoặc lấy cái gì đó, thường để đưa họ hoặc nó đi nơi khác."
+  },
+  {
+    "id": "source-phrasal-187",
+    "text": "call in",
+    "kind": "phrasal",
+    "usageLevel": 3,
+    "definition": "to ask someone to come for help, advice, or a meeting",
+    "meaning": "yêu cầu ai đó đến để giúp đỡ, tư vấn hoặc tham dự cuộc họp"
+  },
+  {
+    "id": "source-phrasal-220",
+    "text": "catch up",
+    "kind": "phrasal",
+    "usageLevel": 2,
+    "definition": "to do something that you have not had time to do earlier, so that you reach the same level as others or as you should be.",
+    "meaning": "Làm điều gì đó mà bạn chưa có thời gian làm trước đó để kịp với người khác hoặc đúng như mong đợi."
+  },
+  {
+    "id": "source-phrasal-234",
+    "text": "check in",
+    "kind": "phrasal",
+    "usageLevel": 3,
+    "definition": "to register your arrival at a place, such as a hotel or airport",
+    "meaning": "đăng ký đến nơi, như khách sạn hoặc sân bay"
+  },
+  {
+    "id": "source-phrasal-237",
+    "text": "check out",
+    "kind": "phrasal",
+    "usageLevel": 3,
+    "definition": "to pay for your items at a store and finish your shopping; it can also mean to look at or examine something.",
+    "meaning": "trả tiền cho các món hàng của bạn tại cửa hàng và kết thúc việc mua sắm; nó cũng có thể có nghĩa là xem hoặc kiểm tra gì đó."
+  },
+  {
+    "id": "source-phrasal-286",
+    "text": "come about",
+    "kind": "phrasal",
+    "usageLevel": 3,
+    "definition": "to happen, especially by chance or as a result of something",
+    "meaning": "xảy ra, đặc biệt là bởi tình cờ hoặc như là kết quả của điều gì đó"
+  },
+  {
+    "id": "source-phrasal-353",
+    "text": "count on",
+    "kind": "phrasal",
+    "usageLevel": 2,
+    "definition": "to trust someone to do something or to depend on someone to help you",
+    "meaning": "tin tưởng ai đó làm điều gì hoặc dựa vào ai đó để giúp đỡ bạn"
+  },
+  {
+    "id": "source-phrasal-406",
+    "text": "double over",
+    "kind": "phrasal",
+    "usageLevel": 2,
+    "definition": "To suddenly bend your body forward at the waist, often because you are laughing very hard or feeling a lot of pain.",
+    "meaning": "Đột ngột cúi cong người về phía trước ở thắt lưng, thường là vì bạn đang cười rất to hoặc cảm thấy rất đau."
+  },
+  {
+    "id": "source-phrasal-444",
+    "text": "drop off",
+    "kind": "phrasal",
+    "usageLevel": 2,
+    "definition": "to become less in amount, level, or number; to decrease or decline",
+    "meaning": "giảm về số lượng, mức độ hoặc con số; giảm xuống"
+  },
+  {
+    "id": "source-phrasal-471",
+    "text": "fall behind",
+    "kind": "phrasal",
+    "usageLevel": 2,
+    "definition": "To not keep up with others or with a schedule; to not do or pay something on time.",
+    "meaning": "Không theo kịp người khác hoặc lịch trình; không làm hoặc trả đúng hạn."
+  },
+  {
+    "id": "source-phrasal-496",
+    "text": "figure out",
+    "kind": "phrasal",
+    "usageLevel": 3,
+    "definition": "to find the answer to something or understand how something works",
+    "meaning": "tìm ra câu trả lời cho điều gì đó hoặc hiểu cách nó hoạt động"
+  },
+  {
+    "id": "source-phrasal-501",
+    "text": "fill out",
+    "kind": "phrasal",
+    "usageLevel": 2,
+    "definition": "to complete a form or document by adding information; to write the necessary information in the spaces on a form.",
+    "meaning": "Điền thông tin vào mẫu đơn hoặc tài liệu; ghi các thông tin cần thiết vào các chỗ trống trên mẫu."
+  },
+  {
+    "id": "source-phrasal-531",
+    "text": "focus on",
+    "kind": "phrasal",
+    "usageLevel": 2,
+    "definition": "To give your full attention to a person or thing.",
+    "meaning": "Dành toàn bộ sự chú ý của bạn cho một người hoặc vật."
+  },
+  {
+    "id": "source-phrasal-574",
+    "text": "get off",
+    "kind": "phrasal",
+    "usageLevel": 3,
+    "definition": "to feel excited or experience a strong feeling, often from using drugs or something thrilling",
+    "meaning": "Cảm thấy phấn khích hoặc trải nghiệm cảm giác mạnh, thường là do dùng chất kích thích hoặc điều gì đó gây hồi hộp."
+  },
+  {
+    "id": "source-phrasal-576",
+    "text": "get on",
+    "kind": "phrasal",
+    "usageLevel": 3,
+    "definition": "to describe time moving forward or passing, especially faster than expected.",
+    "meaning": "Chỉ thời gian trôi qua, đặc biệt là khi nó trôi nhanh hơn mong đợi."
+  },
+  {
+    "id": "source-phrasal-589",
+    "text": "get to",
+    "kind": "phrasal",
+    "usageLevel": 3,
+    "definition": "to make someone upset, annoyed, or bothered",
+    "meaning": "làm ai đó buồn phiền, khó chịu hoặc bực bội"
+  },
+  {
+    "id": "source-phrasal-616",
+    "text": "go away",
+    "kind": "phrasal",
+    "usageLevel": 3,
+    "definition": "to disappear, leave, or stop existing",
+    "meaning": "biến mất, rời đi, hoặc không còn tồn tại"
+  },
+  {
+    "id": "source-phrasal-624",
+    "text": "go for",
+    "kind": "phrasal",
+    "usageLevel": 3,
+    "definition": "to choose or prefer someone or something because you like them or it.",
+    "meaning": "Chọn hoặc ưa thích ai đó hoặc điều gì vì bạn thích họ hoặc nó."
+  },
+  {
+    "id": "source-phrasal-631",
+    "text": "go on",
+    "kind": "phrasal",
+    "usageLevel": 3,
+    "definition": "to continue doing something, or to move forward to a place.",
+    "meaning": "Tiếp tục làm điều gì đó, hoặc đi tiếp đến một nơi nào đó."
+  },
+  {
+    "id": "source-phrasal-641",
+    "text": "go to",
+    "kind": "phrasal",
+    "usageLevel": 3,
+    "definition": "to attend or visit a place or event, such as a school, meeting, or other location.",
+    "meaning": "đi đến hoặc tham dự một nơi hoặc sự kiện, như trường học, cuộc họp, hoặc địa điểm khác."
+  },
+  {
+    "id": "source-phrasal-732",
+    "text": "keep away",
+    "kind": "phrasal",
+    "usageLevel": 3,
+    "definition": "To stay at a distance from someone or something, usually to avoid danger or trouble. Similar to 'stay away.'",
+    "meaning": "Giữ khoảng cách với ai đó hoặc điều gì đó, thường để tránh nguy hiểm hoặc rắc rối. Tương tự như 'tránh xa'."
+  },
+  {
+    "id": "source-phrasal-739",
+    "text": "keep up",
+    "kind": "phrasal",
+    "usageLevel": 3,
+    "definition": "to continue to do something at the same level, speed, or standard; to not stop or let it decrease",
+    "meaning": "tiếp tục làm điều gì đó ở cùng mức độ, tốc độ hoặc tiêu chuẩn; không dừng lại hay để nó giảm đi."
+  },
+  {
+    "id": "source-phrasal-790",
+    "text": "let down",
+    "kind": "phrasal",
+    "usageLevel": 3,
+    "definition": "to disappoint someone by not doing what they expected or hoped for",
+    "meaning": "làm ai đó thất vọng bằng cách không làm điều họ mong đợi hoặc hy vọng"
+  },
+  {
+    "id": "source-phrasal-791",
+    "text": "let in",
+    "kind": "phrasal",
+    "usageLevel": 3,
+    "definition": "to allow someone or something to enter a place",
+    "meaning": "cho phép ai đó hoặc cái gì đó vào một nơi"
+  },
+  {
+    "id": "source-phrasal-803",
+    "text": "light up",
+    "kind": "phrasal",
+    "usageLevel": 3,
+    "definition": "to make something start to burn or to switch on a light so that a place becomes brighter",
+    "meaning": "làm cho cái gì đó bắt đầu cháy hoặc bật đèn để nơi đó trở nên sáng hơn"
+  },
+  {
+    "id": "source-phrasal-826",
+    "text": "look for",
+    "kind": "phrasal",
+    "usageLevel": 3,
+    "definition": "to try to find someone or something",
+    "meaning": "cố gắng tìm ai đó hoặc thứ gì đó"
+  },
+  {
+    "id": "source-phrasal-831",
+    "text": "look to",
+    "kind": "phrasal",
+    "usageLevel": 3,
+    "definition": "to rely on or expect help, advice, or solutions from someone or something; to focus your attention on someone or something for support or guidance",
+    "meaning": "dựa vào hoặc mong đợi sự giúp đỡ, lời khuyên hoặc giải pháp từ ai/cái gì; tập trung sự chú ý vào ai/cái gì để nhờ hỗ trợ hay chỉ dẫn"
+  },
+  {
+    "id": "source-phrasal-833",
+    "text": "look up to",
+    "kind": "phrasal",
+    "usageLevel": 3,
+    "definition": "To admire or respect someone, often because you want to be like them.",
+    "meaning": "Ngưỡng mộ hoặc tôn trọng ai đó, thường vì bạn muốn giống như họ."
+  },
+  {
+    "id": "source-phrasal-842",
+    "text": "make up",
+    "kind": "phrasal",
+    "usageLevel": 3,
+    "definition": "to invent or create something, especially a story, excuse, or explanation that is not true; or to prepare or put something together",
+    "meaning": "Phát minh hoặc tạo ra điều gì đó, đặc biệt là một câu chuyện, lời bào chữa hoặc giải thích không đúng sự thật; hoặc chuẩn bị, tạo ra cái gì đó."
+  },
+  {
+    "id": "source-phrasal-879",
+    "text": "move up",
+    "kind": "phrasal",
+    "usageLevel": 3,
+    "definition": "to change the position of someone or something to a higher place or a higher level, or to advance forward",
+    "meaning": "di chuyển ai hoặc cái gì lên vị trí cao hơn hoặc tiến về phía trước"
+  },
+  {
+    "id": "source-phrasal-983",
+    "text": "pull out",
+    "kind": "phrasal",
+    "usageLevel": 2,
+    "definition": "to withdraw or remove people or things from a place, especially in an official or organized way.",
+    "meaning": "Rút lui hoặc rút người/vật ra khỏi một nơi nào đó, đặc biệt theo cách chính thức hoặc có tổ chức."
+  },
+  {
+    "id": "source-phrasal-1005",
+    "text": "put in",
+    "kind": "phrasal",
+    "usageLevel": 3,
+    "definition": "to submit something such as an application, request, or order formally",
+    "meaning": "nộp (chính thức) một thứ gì đó như đơn xin, yêu cầu, hoặc đơn đặt hàng"
+  },
+  {
+    "id": "source-phrasal-1089",
+    "text": "rule out",
+    "kind": "phrasal",
+    "usageLevel": 2,
+    "definition": "To decide that something is not possible or not suitable, or to reject an option or person from consideration.",
+    "meaning": "Quyết định rằng điều gì đó là không thể hoặc không phù hợp, hoặc loại bỏ một lựa chọn hoặc người khỏi xem xét."
+  },
+  {
+    "id": "source-phrasal-1104",
+    "text": "run out",
+    "kind": "phrasal",
+    "usageLevel": 3,
+    "definition": "to finish all of something so that none is left.",
+    "meaning": "Sử dụng hết sạch một thứ gì đó."
+  },
+  {
+    "id": "source-phrasal-1107",
+    "text": "run through",
+    "kind": "phrasal",
+    "usageLevel": 3,
+    "definition": "to use up or spend something, such as money or resources, very quickly",
+    "meaning": "dùng hết hoặc tiêu xài thứ gì đó, như tiền hay tài nguyên, rất nhanh chóng"
+  },
+  {
+    "id": "source-phrasal-1108",
+    "text": "run up",
+    "kind": "phrasal",
+    "usageLevel": 3,
+    "definition": "to cause a debt, bill, or cost to increase quickly, usually by spending a lot of money (especially on credit or bills)",
+    "meaning": "khiến khoản nợ, hóa đơn hoặc chi phí tăng lên nhanh chóng, thường là do tiêu nhiều tiền (đặc biệt bằng thẻ tín dụng hoặc hóa đơn)."
+  },
+  {
+    "id": "source-phrasal-1128",
+    "text": "sell out",
+    "kind": "phrasal",
+    "usageLevel": 2,
+    "definition": "To sell all of something so that there is none left.",
+    "meaning": "Bán hết sạch mọi thứ, không còn lại gì."
+  },
+  {
+    "id": "source-phrasal-1140",
+    "text": "set off",
+    "kind": "phrasal",
+    "usageLevel": 3,
+    "definition": "to start a journey or leave for a place.",
+    "meaning": "bắt đầu một chuyến đi hoặc rời đi đến một nơi nào đó."
+  },
+  {
+    "id": "source-phrasal-1162",
+    "text": "show up",
+    "kind": "phrasal",
+    "usageLevel": 3,
+    "definition": "to arrive at a place where you are expected, especially for an event, appointment, or meeting.",
+    "meaning": "Đến một nơi mà bạn được mong đợi, đặc biệt là cho một sự kiện, cuộc hẹn hoặc cuộc họp."
+  },
+  {
+    "id": "source-phrasal-1169",
+    "text": "shut down",
+    "kind": "phrasal",
+    "usageLevel": 2,
+    "definition": "to turn something off or stop it from working, usually a machine, computer, or business.",
+    "meaning": "Tắt hoặc ngừng một thiết bị/máy tính/doanh nghiệp hoạt động."
+  },
+  {
+    "id": "source-phrasal-1178",
+    "text": "sign in",
+    "kind": "phrasal",
+    "usageLevel": 3,
+    "definition": "to write your name or information to show you have arrived at a place, such as a hotel, office, or event. Synonym: 'check in'",
+    "meaning": "Viết tên hoặc thông tin của bạn để xác nhận bạn đã đến một nơi, như khách sạn, văn phòng hoặc sự kiện. Từ đồng nghĩa: 'đăng ký vào'"
+  },
+  {
+    "id": "source-phrasal-1181",
+    "text": "sign up",
+    "kind": "phrasal",
+    "usageLevel": 3,
+    "definition": "to officially put your name on a list to join or participate in something, such as a course, event, or membership.",
+    "meaning": "Chính thức đăng ký tên của bạn vào danh sách để tham gia một cái gì đó, như một khóa học, sự kiện hoặc tư cách thành viên."
+  },
+  {
+    "id": "source-phrasal-1233",
+    "text": "sort out",
+    "kind": "phrasal",
+    "usageLevel": 2,
+    "definition": "to organize, fix, or solve a problem or situation",
+    "meaning": "tổ chức, sửa chữa hoặc giải quyết một vấn đề hoặc tình huống"
+  },
+  {
+    "id": "source-phrasal-1270",
+    "text": "start up",
+    "kind": "phrasal",
+    "usageLevel": 3,
+    "definition": "to make something begin working, especially a machine, engine, or computer.",
+    "meaning": "Làm cho thứ gì đó bắt đầu hoạt động, đặc biệt là máy móc, động cơ hoặc máy tính."
+  },
+  {
+    "id": "source-phrasal-1277",
+    "text": "step down",
+    "kind": "phrasal",
+    "usageLevel": 3,
+    "definition": "to leave an important job or official position, usually so someone else can take over",
+    "meaning": "rời bỏ một công việc quan trọng hoặc vị trí chính thức, thường để người khác thay thế"
+  },
+  {
+    "id": "source-phrasal-1285",
+    "text": "stick to",
+    "kind": "phrasal",
+    "usageLevel": 2,
+    "definition": "To continue doing something or to keep using the same thing, without changing it.",
+    "meaning": "Tiếp tục làm một việc gì đó hoặc tiếp tục sử dụng cùng một thứ mà không thay đổi."
+  },
+  {
+    "id": "source-phrasal-1322",
+    "text": "take away",
+    "kind": "phrasal",
+    "usageLevel": 3,
+    "definition": "To buy prepared food or drink from a restaurant or café and take it with you to eat somewhere else. This is similar to 'take out.'",
+    "meaning": "Mua thức ăn hoặc đồ uống đã chuẩn bị từ nhà hàng hoặc quán cà phê và mang đi nơi khác để ăn. Tương tự như 'take out'."
+  },
+  {
+    "id": "source-phrasal-1340",
+    "text": "take on",
+    "kind": "phrasal",
+    "usageLevel": 3,
+    "definition": "to hire or give someone a job; to employ someone.",
+    "meaning": "Thuê hoặc nhận ai đó vào làm; tuyển dụng ai đó."
+  },
+  {
+    "id": "source-phrasal-1344",
+    "text": "take out",
+    "kind": "phrasal",
+    "usageLevel": 3,
+    "definition": "to remove something from a place or container.",
+    "meaning": "lấy thứ gì đó ra khỏi một nơi hoặc vật chứa."
+  },
+  {
+    "id": "source-phrasal-1348",
+    "text": "take up",
+    "kind": "phrasal",
+    "usageLevel": 3,
+    "definition": "to use or fill a particular amount of space, time, or attention.",
+    "meaning": "sử dụng hoặc chiếm một lượng không gian, thời gian hoặc sự chú ý nhất định."
+  },
+  {
+    "id": "source-phrasal-1366",
+    "text": "think of",
+    "kind": "phrasal",
+    "usageLevel": 3,
+    "definition": "to remember or have someone or something in your mind; to consider someone or something.",
+    "meaning": "Nhớ đến hoặc có ai đó/cái gì đó trong tâm trí; cân nhắc đến ai đó/cái gì đó."
+  },
+  {
+    "id": "source-phrasal-1373",
+    "text": "throw out",
+    "kind": "phrasal",
+    "usageLevel": 2,
+    "definition": "to make someone leave a place, such as a home, building, or event, often because they did something wrong",
+    "meaning": "buộc ai đó rời khỏi một nơi, như nhà, tòa nhà hoặc sự kiện, thường vì họ làm điều gì đó sai"
+  },
+  {
+    "id": "source-phrasal-1410",
+    "text": "turn in",
+    "kind": "phrasal",
+    "usageLevel": 3,
+    "definition": "To give something to someone in authority or to the proper place, or to report someone to the authorities.",
+    "meaning": "Đưa cái gì đó cho người có thẩm quyền hoặc đúng nơi, hoặc báo cáo ai đó cho cơ quan chức năng."
+  },
+  {
+    "id": "source-phrasal-1411",
+    "text": "turn off",
+    "kind": "phrasal",
+    "usageLevel": 3,
+    "definition": "to make someone lose interest in or dislike something or someone.",
+    "meaning": "Khiến ai đó mất hứng thú hoặc không thích cái gì đó hoặc ai đó."
+  },
+  {
+    "id": "source-phrasal-1414",
+    "text": "turn on",
+    "kind": "phrasal",
+    "usageLevel": 3,
+    "definition": "to make a device start working by switching a button or control; to start something such as a machine or light.",
+    "meaning": "Làm cho một thiết bị hoạt động bằng cách bật nút hoặc công tắc; khởi động thứ gì đó như máy móc hoặc đèn."
+  },
+  {
+    "id": "source-phrasal-1427",
+    "text": "turn to",
+    "kind": "phrasal",
+    "usageLevel": 3,
+    "definition": "To start doing or using something, especially when you need help or a solution.",
+    "meaning": "Bắt đầu làm hoặc sử dụng điều gì đó, đặc biệt khi bạn cần sự giúp đỡ hoặc giải pháp."
+  },
+  {
+    "id": "source-phrasal-1431",
+    "text": "use up",
+    "kind": "phrasal",
+    "usageLevel": 3,
+    "definition": "to finish or consume all of something so that nothing is left",
+    "meaning": "hoàn toàn sử dụng hết hoặc tiêu thụ hết thứ gì đó đến mức không còn gì"
+  },
+  {
+    "id": "source-idiom-46",
+    "text": "in hot water",
+    "kind": "idiom",
+    "usageLevel": 2,
+    "definition": "in a situation where people are angry with you or you are in trouble, especially because of something you have done.",
+    "meaning": "rơi vào rắc rối hoặc bị mọi người giận dữ, nhất là do việc mình đã làm."
+  },
+  {
+    "id": "source-idiom-49",
+    "text": "kill two birds with one stone",
+    "kind": "idiom",
+    "usageLevel": 2,
+    "definition": "to achieve two things with a single action",
+    "meaning": "một mũi tên trúng hai đích"
+  },
+  {
+    "id": "source-idiom-122",
+    "text": "call it a day",
+    "kind": "idiom",
+    "usageLevel": 2,
+    "definition": "To decide to stop working on something, usually because enough has been done or it's time to finish.",
+    "meaning": "Quyết định dừng làm việc gì đó vì đã làm đủ hoặc đã đến lúc kết thúc."
+  },
+  {
+    "id": "source-idiom-578",
+    "text": "bite the bullet",
+    "kind": "idiom",
+    "usageLevel": 2,
+    "definition": "To face a difficult or unpleasant situation with courage and determination, instead of avoiding it.",
+    "meaning": "Đối mặt với tình huống khó khăn hoặc không dễ chịu bằng sự dũng cảm và quyết tâm, thay vì né tránh."
+  },
+  {
+    "id": "source-idiom-612",
+    "text": "up in the air",
+    "kind": "idiom",
+    "usageLevel": 2,
+    "definition": "Not yet decided or settled; uncertain.",
+    "meaning": "Chưa quyết định hoặc chưa chắc chắn."
+  },
+  {
+    "id": "source-idiom-615",
+    "text": "out of the blue",
+    "kind": "idiom",
+    "usageLevel": 2,
+    "definition": "completely unexpectedly",
+    "meaning": "hoàn toàn bất ngờ"
+  },
+  {
+    "id": "source-idiom-785",
+    "text": "miss the boat",
+    "kind": "idiom",
+    "usageLevel": 2,
+    "definition": "be too late to get something you want",
+    "meaning": "quá trễ để có được điều mình muốn"
+  },
+  {
+    "id": "source-idiom-901",
+    "text": "keep an eye on",
+    "kind": "idiom",
+    "usageLevel": 2,
+    "definition": "To watch or monitor something or someone carefully.",
+    "meaning": "Theo dõi hoặc giám sát ai đó hoặc điều gì một cách cẩn thận."
+  },
+  {
+    "id": "source-idiom-904",
+    "text": "see eye to eye",
+    "kind": "idiom",
+    "usageLevel": 2,
+    "definition": "to agree with someone or have the same opinion as them",
+    "meaning": "đồng ý với ai đó hoặc có cùng quan điểm với họ"
+  },
+  {
+    "id": "source-idiom-976",
+    "text": "every cloud has a silver lining",
+    "kind": "idiom",
+    "usageLevel": 2,
+    "definition": "Even in a bad situation, there is something good.",
+    "meaning": "Ngay cả trong tình huống xấu, vẫn có điều gì đó tốt."
+  },
+  {
+    "id": "source-idiom-1021",
+    "text": "no pain no gain",
+    "kind": "idiom",
+    "usageLevel": 2,
+    "definition": "You must work hard and accept pain to get good results.",
+    "meaning": "Bạn phải làm việc chăm chỉ và chấp nhận đau đớn thì mới có kết quả tốt."
+  },
+  {
+    "id": "source-idiom-1046",
+    "text": "through thick and thin",
+    "kind": "idiom",
+    "usageLevel": 2,
+    "definition": "Stay loyal and support someone in good times and bad times.",
+    "meaning": "Luôn trung thành và ủng hộ ai đó khi thuận lợi lẫn khó khăn."
+  },
+  {
+    "id": "source-idiom-1056",
+    "text": "the tip of the iceberg",
+    "kind": "idiom",
+    "usageLevel": 2,
+    "definition": "A small, visible part of a much bigger problem or situation.",
+    "meaning": "Một phần nhỏ nhìn thấy được của một vấn đề hoặc tình huống lớn hơn nhiều."
+  },
+  {
+    "id": "source-idiom-1146",
+    "text": "burn the midnight oil",
+    "kind": "idiom",
+    "usageLevel": 2,
+    "definition": "to work or study late into the night.",
+    "meaning": "làm việc hoặc học đến khuya"
+  },
+  {
+    "id": "source-idiom-1444",
+    "text": "let sleeping dogs lie",
+    "kind": "idiom",
+    "usageLevel": 2,
+    "definition": "Do not talk about an old problem because it may cause trouble again.",
+    "meaning": "đừng nhắc lại một vấn đề cũ vì nó có thể gây rắc rối lại."
+  },
+  {
+    "id": "source-idiom-1700",
+    "text": "make ends meet",
+    "kind": "idiom",
+    "usageLevel": 2,
+    "definition": "To have just enough money to pay for basic needs.",
+    "meaning": "Chỉ vừa đủ tiền để trả các nhu cầu cơ bản."
+  },
+  {
+    "id": "source-idiom-1750",
+    "text": "it's not rocket science",
+    "kind": "idiom",
+    "usageLevel": 2,
+    "definition": "it is not very difficult to understand or do.",
+    "meaning": "không khó để hiểu hoặc làm"
+  },
+  {
+    "id": "source-idiom-1765",
+    "text": "go the extra mile",
+    "kind": "idiom",
+    "usageLevel": 2,
+    "definition": "Do more than is expected to help.",
+    "meaning": "làm nhiều hơn mức được mong đợi để giúp đỡ."
+  }
+]

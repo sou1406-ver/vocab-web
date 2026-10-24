@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { buildCatalog, familyLookup, freqLevel, termInfo, WORDS } from "./data";
+import { buildCatalog, familyLookup, freqLevel, loadLessonDetails, LESSONS, termInfo, WORDS } from "./data";
+import { beforeAll } from "vitest";
 import { mergeData, sameData } from "./merge";
 import {
   dueAfterDays,
@@ -18,7 +19,12 @@ import { buildQs, findForm, formationQs, listeningQs, makeQuiz, QUIZ_LEN, recall
 import { searchWords } from "./search";
 import { dayKey } from "./util";
 
-const cat = buildCatalog([]);
+let cat = buildCatalog([]);
+
+beforeAll(async () => {
+  await Promise.all(LESSONS.map((lesson) => loadLessonDetails(lesson.n)));
+  cat = buildCatalog([]);
+});
 
 describe("dữ liệu", () => {
   it("đủ 600 từ, mọi câu ví dụ đều có bản dịch", () => {

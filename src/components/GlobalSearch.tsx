@@ -5,6 +5,7 @@ import { lessonLabel, termInfo } from "@/lib/data";
 import { searchWords } from "@/lib/search";
 import { cx } from "@/lib/util";
 import { useProfile } from "@/state/profile";
+import { useLessonDetails } from "@/lib/useLessonDetails";
 import { Ipa, netHref, PosTag } from "./bits";
 import { Icon } from "./Icon";
 
@@ -16,6 +17,7 @@ export function GlobalSearch() {
   const [open, setOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [sel, setSel] = useState(0);
+  const detailsReady = useLessonDetails(open || mobileOpen ? null : []);
   const inputRef = useRef<HTMLInputElement>(null);
   const wrapRef = useRef<HTMLDivElement>(null);
   const results = useMemo(() => searchWords(catalog, q), [catalog, q]);
@@ -59,7 +61,7 @@ export function GlobalSearch() {
     navigate(e.kind === "syn" ? `/term/${encodeURIComponent(e.form)}` : netHref(e.root.id, e.form));
   };
 
-  const show = open && !!q.trim();
+  const show = open && !!q.trim() && detailsReady;
   return (
     <div className="gsearch-wrap" ref={wrapRef}>
       <div className="gsearch" id="gsearch">

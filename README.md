@@ -164,7 +164,7 @@ public/           logo, favicon
 
 ## Sửa dữ liệu
 
-Mọi chỉnh sửa nằm trong `data/`, sau đó chạy `npm run data` để dựng lại `src/data/*.json`.
+Mọi chỉnh sửa dữ liệu nằm trong `data/`, sau đó chạy `npm run data` để dựng lại dữ liệu sinh trong `src/data/`.
 
 | File                                        | Nội dung                                                               |
 | ------------------------------------------- | ---------------------------------------------------------------------- |
@@ -177,10 +177,14 @@ Mọi chỉnh sửa nằm trong `data/`, sau đó chạy `npm run data` để d�
 | `data/source/exercises_overrides.json`      | Sửa tay chỗ OCR sai (đã đối chiếu ảnh trang)                           |
 | `data/source/ipa.json`                      | Phiên âm — `python tools/make_ipa.py` (CMU Pronouncing Dictionary)     |
 | `data/source/freq.json`                     | Độ phổ biến thang Zipf — `python tools/make_freq.py` (cần `msgpack`)   |
-| `src/data/idioms-en.txt`, `idioms-vi.txt`   | Nghĩa tiếng Anh và tiếng Việt cho thành ngữ nguồn                      |
-| `src/data/phrasal-en.txt`, `phrasal-vi.txt` | Nghĩa tiếng Anh và tiếng Việt cho phrasal verbs nguồn                  |
+| `data/everyday/everyday.json`                | Nội dung biên tập riêng cho bộ cụm từ đời thường                       |
+| `data/everyday/*-en.txt`, `*-vi.txt`        | Nguồn nghĩa tiếng Anh và tiếng Việt cho idiom, phrasal verb            |
+| `data/ets/*.json`                            | Bộ câu hỏi ETS tuỳ chọn; ID từ được kiểm tra khi dựng dữ liệu           |
 
-Các cụm nguồn chỉ được đưa vào bộ học khi qua bước lọc mức độ sử dụng; nội dung biên tập riêng nằm trong `src/data/everyday.ts`.
+`src/data/words.json` chỉ chứa danh mục nhẹ. Ví dụ, họ từ, đồng/trái nghĩa được tách vào
+`src/data/word-details/<bài>.json` và tải khi trang cần. `src/data/everyday.json` và
+`src/data/ets.json` cũng là output sinh, không sửa trực tiếp. Các cụm nguồn đã qua bước lọc
+mức độ sử dụng trước khi được ghi vào bộ dữ liệu đời thường.
 
 **`data/enrich/*.txt`**
 

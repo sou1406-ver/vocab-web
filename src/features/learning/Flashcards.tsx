@@ -1,5 +1,5 @@
 import "./learning.css";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { Empty, Ipa, PosTag } from "@/components/bits";
 import { Icon } from "@/components/Icon";
@@ -12,6 +12,7 @@ import type { Status } from "@/lib/types";
 import { cx, same } from "@/lib/util";
 import { buildDeck, useActions } from "@/state/actions";
 import { useProfile } from "@/state/profile";
+import { useLessonDetails } from "@/lib/useLessonDetails";
 import { toast, useUI } from "@/state/ui";
 
 const STATUS_FILTER: [string, string][] = [
@@ -29,6 +30,12 @@ export function FlashcardsPage() {
   const setFc = useUI((s) => s.setFc);
   const { catalog, setStatus, markRemembered, logActivity, recordAnswer, srs, statusAt } = useProfile();
   const statusMap = useProfile((s) => s.status);
+
+  const requiredLessons = useMemo(
+    () => [...new Set(fc.deck.map((id) => catalog.byId[id]?.lesson).filter((lesson): lesson is number => !!lesson))],
+    [catalog, fc.deck],
+  );
+  const detailsReady = useLessonDetails(requiredLessons);
 
   useEffect(() => {
     if (fc.stale) buildDeck();
@@ -159,6 +166,13 @@ export function FlashcardsPage() {
       </div>
     </>
   );
+
+  if (!detailsReady)
+    return (
+      <div className="card" role="status">
+        Đang tải dữ liệu từ vựng…
+      </div>
+    );
 
   if (!w)
     return (

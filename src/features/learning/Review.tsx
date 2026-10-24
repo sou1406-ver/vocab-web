@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { Empty } from "@/components/bits";
 import { Icon } from "@/components/Icon";
 import { FreqMeter } from "@/components/FreqMeter";
-import { EVERYDAY_ENTRIES, EVERYDAY_KIND_LABEL } from "@/data/everyday";
+import { EVERYDAY_ENTRIES, EVERYDAY_KIND_LABEL } from "@/features/everyday/data";
 import { lessonLabel, termInfo } from "@/lib/data";
 import { displayedStatus } from "@/lib/srs";
 import { useActions } from "@/state/actions";

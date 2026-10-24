@@ -6,6 +6,7 @@ import { FreqMeter } from "@/components/FreqMeter";
 import { freqLevel, lessonLabel, termInfo } from "@/lib/data";
 import { cx, lower } from "@/lib/util";
 import { useProfile } from "@/state/profile";
+import { useLessonDetails } from "@/lib/useLessonDetails";
 import { termHref } from "./Relations";
 
 /** Trang của một từ đồng nghĩa / trái nghĩa KHÔNG có trong 600 từ của sách (vd "program"):
@@ -14,7 +15,15 @@ export function TermPage() {
   const navigate = useNavigate();
   const { term = "" } = useParams();
   const catalog = useProfile((s) => s.catalog);
+  const detailsReady = useLessonDetails();
   const t = term.trim();
+
+  if (!detailsReady)
+    return (
+      <div className="card" role="status">
+        Đang tải dữ liệu trường từ…
+      </div>
+    );
 
   // Từ có trong sách → mở thẳng trường từ của nó
   const own = catalog.rootIdFor(t);

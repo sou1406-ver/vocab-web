@@ -5,6 +5,7 @@ import { netHref, PosTag } from "@/components/bits";
 import { Icon } from "@/components/Icon";
 import { familyOf } from "@/lib/data";
 import { useProfile } from "@/state/profile";
+import { useLessonDetails } from "@/lib/useLessonDetails";
 
 const parts = [
   {
@@ -48,8 +49,15 @@ const parts = [
 export function KnowledgePage() {
   const [section, setSection] = useState<"word-forms" | "grammar">("word-forms");
   const catalog = useProfile((state) => state.catalog);
+  const detailsReady = useLessonDetails();
   const agreement = catalog.all.find((word) => word.word === "agreement");
   const exampleFamily = agreement ? familyOf(agreement) : [];
+  if (!detailsReady)
+    return (
+      <div className="card" role="status">
+        Đang tải dữ liệu kiến thức…
+      </div>
+    );
   return (
     <div className="knowledge-page">
       <header className="page-head">

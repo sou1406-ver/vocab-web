@@ -2,7 +2,7 @@ import "./everyday.css";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { Icon } from "@/components/Icon";
-import { EVERYDAY_ENTRIES, EVERYDAY_KIND_LABEL, type EverydayKind, type UsageLevel } from "@/data/everyday";
+import { EVERYDAY_ENTRIES, EVERYDAY_KIND_LABEL, type EverydayKind, type UsageLevel } from "./data";
 import { STATUS_INFO } from "@/lib/data";
 import { displayedStatus } from "@/lib/srs";
 import type { Status } from "@/lib/types";

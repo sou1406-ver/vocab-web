@@ -20,6 +20,7 @@ import { matchReason } from "@/lib/search";
 import type { ReviewSchedule, Status, Word } from "@/lib/types";
 import { cx, fold, lower, scrollBehavior } from "@/lib/util";
 import { useProfile } from "@/state/profile";
+import { useLessonDetails } from "@/lib/useLessonDetails";
 import { displayedStatus } from "@/lib/srs";
 import { NET_DEFAULT, useUI, type NetState } from "@/state/ui";
 import { WordCanvas } from "./WordCanvas";
@@ -148,6 +149,13 @@ export function NetworkPage() {
   const listRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLDivElement>(null);
 
+  const requiredLessons = useMemo(() => {
+    if (net.unit === "custom") return [];
+    const unitLessons = net.unit === "all" ? LESSONS : LESSONS.filter((lesson) => lesson.unit === net.unit);
+    return net.lesson === "all" ? unitLessons.map((lesson) => lesson.n) : [Number(net.lesson)];
+  }, [net.unit, net.lesson]);
+  const detailsReady = useLessonDetails(requiredLessons);
+
   const list = useMemo(() => networkList(catalog, net, status, stats, srs ?? {}), [catalog, net, status, stats, srs]);
 
   // Từ đang mở (theo link) có thể nằm ngoài bộ lọc hiện tại: vẫn hiện từ đó, GIỮ NGUYÊN bộ lọc và danh sách
@@ -211,6 +219,13 @@ export function NetworkPage() {
   const lessons = net.unit === "all" ? LESSONS : LESSONS.filter((l) => l.unit === net.unit);
   const qt = net.q.trim();
   const idx = cur ? list.indexOf(cur) : -1;
+
+  if (!detailsReady)
+    return (
+      <div className="card" role="status">
+        Đang tải dữ liệu bài học…
+      </div>
+    );
 
   return (
     <div className="stack">

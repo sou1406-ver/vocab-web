@@ -7,6 +7,7 @@ import { familyOf, POS_COLS, POS_LABEL } from "@/lib/data";
 import type { FamilyEntry, Word } from "@/lib/types";
 import { lower, same } from "@/lib/util";
 import { useProfile } from "@/state/profile";
+import { useLessonDetails } from "@/lib/useLessonDetails";
 
 type RootFamily = { root: string; meaning: string; forms: { form: FamilyEntry; source: Word }[] };
 
@@ -50,6 +51,7 @@ export function RootsPage() {
   const { root: rootParam } = useParams();
   const navigate = useNavigate();
   const catalog = useProfile((state) => state.catalog);
+  const detailsReady = useLessonDetails();
   const groups = useMemo(() => rootFamilies(catalog.all), [catalog]);
   const [query, setQuery] = useState("");
   const [pos, setPos] = useState("all");
@@ -64,6 +66,13 @@ export function RootsPage() {
     const matchesPos = pos === "all" || group.forms.some(({ form }) => form.pos === pos);
     return matchesQuery && matchesPos;
   });
+
+  if (!detailsReady)
+    return (
+      <div className="card" role="status">
+        Đang tải dữ liệu họ từ…
+      </div>
+    );
 
   return (
     <div className="roots-page stack">

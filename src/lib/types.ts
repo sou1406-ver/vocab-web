@@ -33,6 +33,12 @@ export interface Word {
   updated?: number;
 }
 
+/** Danh mục nhẹ dùng trước khi người học mở chi tiết của một bài. */
+export type WordMetadata = Pick<Word, "id" | "lesson" | "word" | "pos" | "ipa" | "vi" | "def">;
+
+/** Chi tiết được tải theo từng bài từ src/data/word-details/. */
+export type WordDetails = Pick<Word, "id" | "ex" | "exVi" | "syn" | "ant" | "parts" | "family" | "senses">;
+
 export interface WordSense {
   pos: string;
   meaning?: string;
@@ -71,6 +77,17 @@ export interface McqQuestion {
   text?: string;
   options: Record<OptionKey, string>;
   answer: OptionKey;
+}
+
+/** Question structure for optional ETS practice sets in data/ets/. */
+export interface EtsQuestion {
+  id: string;
+  source: string;
+  question: string;
+  options: Record<OptionKey, string>;
+  answer: OptionKey;
+  type: "vocab" | "word_form";
+  wordIds: string[];
 }
 
 export interface ClozeBlock {

@@ -517,7 +517,66 @@ def write_json(name, obj, one_per_line=False):
 write_json("topics", topics)
 write_json("lessons", out_lessons, one_per_line=True)
 write_json("affixes", affixes)
-write_json("words", out_words, one_per_line=True)
+
+# Keep the catalog needed for lists and search small. Detailed learning content
+# is emitted per lesson and loaded only when a feature needs it.
+word_details = {}
+word_metadata = []
+for word in out_words:
+    word_metadata.append({key: word[key] for key in ("id", "lesson", "word", "pos", "ipa", "vi", "def")})
+    word_details.setdefault(word["lesson"], []).append(
+        {key: word[key] for key in ("id", "ex", "exVi", "senses", "syn", "ant", "parts", "family") if key in word}
+    )
+write_json("words", word_metadata, one_per_line=True)
+details_dir = os.path.join(OUT_DIR, "word-details")
+os.makedirs(details_dir, exist_ok=True)
+for lesson in range(1, 51):
+    details_path = os.path.join(details_dir, f"{lesson}.json")
+    details = word_details.get(lesson, [])
+    text = "[\n" + ",\n".join(json.dumps(item, ensure_ascii=False) for item in details) + "\n]\n"
+    open(details_path, "w", encoding="utf-8", newline="\n").write(text)
+
+# Everyday vocabulary is maintained as authored JSON plus its source lists.
+everyday_path = os.path.join(ROOT, "data/everyday/everyday.json")
+if not os.path.exists(everyday_path):
+    sys.exit("Thiếu data/everyday/everyday.json")
+everyday = json.load(open(everyday_path, encoding="utf-8"))
+if not isinstance(everyday, list) or any(not isinstance(item, dict) or not item.get("id") for item in everyday):
+    sys.exit("data/everyday/everyday.json phải là danh sách mục có id")
+write_json("everyday", everyday)
+
+# Optional ETS question banks are checked against the stable vocabulary ids.
+ets_dir = os.path.join(ROOT, "data/ets")
+os.makedirs(ets_dir, exist_ok=True)
+known_word_ids = {word["id"] for word in out_words}
+ets_questions = []
+for ets_path in sorted(glob.glob(os.path.join(ets_dir, "*.json"))):
+    try:
+        batch = json.load(open(ets_path, encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as error:
+        sys.exit(f"{ets_path}: JSON không hợp lệ: {error}")
+    if not isinstance(batch, list):
+        sys.exit(f"{ets_path}: nội dung phải là một danh sách câu hỏi")
+    for question in batch:
+        if not isinstance(question, dict):
+            sys.exit(f"{ets_path}: câu hỏi phải là object")
+        required = ("id", "source", "question", "options", "answer", "type", "wordIds")
+        missing = [key for key in required if key not in question]
+        if missing:
+            sys.exit(f"{ets_path}: thiếu trường {', '.join(missing)}")
+        if not isinstance(question["wordIds"], list) or any(not isinstance(word_id, str) for word_id in question["wordIds"]):
+            sys.exit(f"{ets_path}: wordIds phải là danh sách ID từ dạng chuỗi")
+        if not isinstance(question["options"], dict) or set(question["options"]) != {"A", "B", "C", "D"}:
+            sys.exit(f"{ets_path}: options phải có đủ A, B, C, D")
+        if question["answer"] not in {"A", "B", "C", "D"}:
+            sys.exit(f"{ets_path}: answer phải là A, B, C hoặc D")
+        if question["type"] not in {"vocab", "word_form"}:
+            sys.exit(f"{ets_path}: type phải là vocab hoặc word_form")
+        unknown_ids = set(question["wordIds"]) - known_word_ids
+        if unknown_ids:
+            sys.exit(f"{ets_path}: wordIds không tồn tại: {', '.join(sorted(unknown_ids))}")
+    ets_questions.extend(batch)
+write_json("ets", ets_questions)
 
 # ---------- Từ đồng nghĩa / trái nghĩa: nghĩa + độ phổ biến → src/data/terms.json ----------
 # Nghĩa: lấy từ sách nếu từ đó có trong 600 từ (từ gốc / họ từ), không thì lấy data/relations.txt.
