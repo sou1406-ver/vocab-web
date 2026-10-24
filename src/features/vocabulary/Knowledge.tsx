@@ -1,3 +1,4 @@
+import "./vocabulary.css";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { netHref, PosTag } from "@/components/bits";

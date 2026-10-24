@@ -1,3 +1,4 @@
+import "./learning.css";
 import { Link } from "react-router-dom";
 import { Icon, type IconName } from "@/components/Icon";
 import SpotlightCard from "@/components/reactbits/SpotlightCard";

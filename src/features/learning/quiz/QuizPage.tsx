@@ -1,3 +1,4 @@
+import "../learning.css";
 import { useEffect } from "react";
 import { Icon } from "@/components/Icon";
 import { cx } from "@/lib/util";

@@ -2,7 +2,12 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { App } from "./App";
 import { initCloud } from "./state/cloud";
-import "./styles/style.css";
+import "./styles/base.css";
+import "./styles/layout.css";
+import "./features/dashboard/dashboard.css";
+import "./features/vocabulary/vocabulary.css";
+import "./features/learning/learning.css";
+import "./features/everyday/everyday.css";
 import "./styles/react.css";
 
 const PRELOAD_RELOAD_KEY = "vocab-preload-reload-at";

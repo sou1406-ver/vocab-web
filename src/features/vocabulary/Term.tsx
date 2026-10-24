@@ -1,3 +1,4 @@
+import "./vocabulary.css";
 import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 import { Empty, Ipa, netHref, SpeakBtn } from "@/components/bits";
 import { Icon } from "@/components/Icon";

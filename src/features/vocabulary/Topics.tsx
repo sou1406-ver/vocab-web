@@ -1,3 +1,4 @@
+import "./vocabulary.css";
 import { Link } from "react-router-dom";
 import { Progress } from "@/components/bits";
 import { FreqMeter } from "@/components/FreqMeter";

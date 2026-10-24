@@ -1,3 +1,4 @@
+import "./vocabulary.css";
 import { useMemo, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { netHref, PosTag, SpeakBtn } from "@/components/bits";

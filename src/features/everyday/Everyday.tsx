@@ -1,3 +1,4 @@
+import "./everyday.css";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { Icon } from "@/components/Icon";

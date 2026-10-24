@@ -1,3 +1,4 @@
+import "./learning.css";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Empty, Ipa, PosTag } from "@/components/bits";

@@ -1,3 +1,4 @@
+import "./learning.css";
 import { Link } from "react-router-dom";
 import { Progress } from "@/components/bits";
 import { Icon } from "@/components/Icon";

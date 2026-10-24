@@ -1,3 +1,4 @@
+import "./dashboard.css";
 import type { CSSProperties, ReactNode } from "react";
 import { Link } from "react-router-dom";
 import { Progress } from "@/components/bits";
