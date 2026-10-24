@@ -14,7 +14,7 @@ const KnowledgePage = lazy(() => import("./features/vocabulary/Knowledge").then(
 const ManagePage = lazy(() => import("./features/account/Manage").then((m) => ({ default: m.ManagePage })));
 const NetworkPage = lazy(() => import("./features/vocabulary/Network").then((m) => ({ default: m.NetworkPage })));
 const PracticePage = lazy(() => import("./features/learning/Practice").then((m) => ({ default: m.PracticePage })));
-const QuizPage = lazy(() => import("./features/learning/Quiz").then((m) => ({ default: m.QuizPage })));
+const QuizPage = lazy(() => import("./features/learning/quiz/QuizPage").then((m) => ({ default: m.QuizPage })));
 const ReviewPage = lazy(() => import("./features/learning/Review").then((m) => ({ default: m.ReviewPage })));
 const RootsPage = lazy(() => import("./features/vocabulary/Roots").then((m) => ({ default: m.RootsPage })));
 const TermPage = lazy(() => import("./features/vocabulary/Term").then((m) => ({ default: m.TermPage })));
