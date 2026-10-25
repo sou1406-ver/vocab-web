@@ -1,0 +1,14 @@
+[
+  {
+    "slug": "reading-at-work",
+    "title": "Đọc một thỏa thuận công việc",
+    "description": "Nhận ra ý chính, tra từ trong ngữ cảnh và giữ lại những từ bạn muốn nhớ.",
+    "version": "1",
+    "targetLanguage": "en",
+    "explanationLanguage": "vi",
+    "minutes": 5,
+    "published": true,
+    "itemIds": ["agreement-1", "establish-1", "determine-1", "provision-1", "abide-by-1", "resolve-1", "assurance-1"],
+    "source": "Bài đọc và giải thích do dự án tự biên soạn. Từ liên kết dùng bộ TOEIC hiện có."
+  }
+]

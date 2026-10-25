@@ -63,7 +63,7 @@ def main():
     table = load_table()
     words = [
         json.loads(line.rstrip(",\n"))
-        for line in open(os.path.join(ROOT, "src/data/words.json"), encoding="utf-8")
+        for line in open(os.path.join(ROOT, "data/generated/words.json"), encoding="utf-8")
         if line.startswith("{")
     ]
     terms = set()

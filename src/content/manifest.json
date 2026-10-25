@@ -1,0 +1,11 @@
+{
+  "id": "toeic-600",
+  "title": "600 Essential Words · TOEIC",
+  "targetLanguage": "en",
+  "explanationLanguage": "vi",
+  "uiLanguage": "vi",
+  "expectedLessons": 50,
+  "expectedEntries": 600,
+  "status": "local-preview",
+  "source": "Existing normalized project content; public release requires source/rights review."
+}

@@ -1,28 +1,29 @@
 import { defineConfig, devices } from "@playwright/test";
 
-// Mặc định chạy bằng Chromium của Playwright (cài: npx playwright install chromium).
-// Muốn dùng Microsoft Edge có sẵn của máy: PW_CHANNEL=msedge npm run e2e
 const channel = process.env.PW_CHANNEL || undefined;
-
 export default defineConfig({
   testDir: "e2e",
-  timeout: 30_000,
+  timeout: 45_000,
   fullyParallel: true,
-  reporter: [["list"]],
-  use: {
-    baseURL: "http://localhost:4173/",
-    channel,
-    trace: "retain-on-failure",
-  },
+  reporter: "list",
+  use: { baseURL: "http://127.0.0.1:5174", channel, trace: "retain-on-failure" },
   projects: [
-    { name: "desktop", use: { ...devices["Desktop Chrome"], channel, viewport: { width: 1280, height: 860 } } },
-    { name: "narrow", use: { ...devices["Desktop Chrome"], channel, viewport: { width: 1078, height: 800 } } },
-    { name: "mobile", use: { ...devices["Pixel 7"], channel } },
+    { name: "desktop", use: { ...devices["Desktop Chrome"], channel, viewport: { width: 1440, height: 1000 } } },
+    {
+      name: "mobile",
+      use: {
+        ...devices["Desktop Chrome"],
+        channel,
+        viewport: { width: 360, height: 800 },
+        isMobile: true,
+        hasTouch: true,
+      },
+    },
   ],
   webServer: {
-    command: "npx vite preview --port 4173 --strictPort",
-    url: "http://localhost:4173/",
-    reuseExistingServer: true,
+    command: process.env.E2E_PRODUCTION ? "npm run preview" : "npm run dev",
+    url: "http://127.0.0.1:5174",
+    reuseExistingServer: !process.env.CI,
     timeout: 60_000,
   },
 });

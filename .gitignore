@@ -11,8 +11,15 @@ Thumbs.db
 tools/.cache/
 
 node_modules/
+.next/
+out/
+next-env.d.ts
 dist/
-test-results/
+.env.local
+.env.*.local
+.env*
+!.env.example
+test-results*/
 playwright-report/
 *.tsbuildinfo
 .firebase/

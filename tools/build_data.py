@@ -1,4 +1,4 @@
-"""Ghép dữ liệu sách (data/source) + phần bổ sung tiếng Việt (data/enrich) thành src/data/*.json
+"""Ghép dữ liệu sách (data/source) + phần bổ sung tiếng Việt (data/enrich) thành data/generated/*.json
 
 Chạy:  python tools/build_data.py
 """
@@ -500,12 +500,12 @@ for l in book:
 topics = [{"id": u[0], "name": u[1], "en": u[2], "icon": u[3], "lessons": list(u[4])} for u in UNITS]
 affixes = {k: {"type": v[0], "makes": v[1], "vi": v[2], "fn": v[3]} for k, v in AFFIXES.items()}
 
-OUT_DIR = os.path.join(ROOT, "src/data")
+OUT_DIR = os.path.join(ROOT, "data/generated")
 os.makedirs(OUT_DIR, exist_ok=True)
 
 
 def write_json(name, obj, one_per_line=False):
-    """Ghi src/data/<name>.json (mảng lớn: mỗi phần tử một dòng để diff git dễ đọc)."""
+    """Ghi data/generated/<name>.json (mảng lớn: mỗi phần tử một dòng để diff git dễ đọc)."""
     path = os.path.join(OUT_DIR, name + ".json")
     if one_per_line and isinstance(obj, list):
         text = "[\n" + ",\n".join(json.dumps(x, ensure_ascii=False) for x in obj) + "\n]\n"
@@ -578,7 +578,7 @@ for ets_path in sorted(glob.glob(os.path.join(ets_dir, "*.json"))):
     ets_questions.extend(batch)
 write_json("ets", ets_questions)
 
-# ---------- Từ đồng nghĩa / trái nghĩa: nghĩa + độ phổ biến → src/data/terms.json ----------
+# ---------- Từ đồng nghĩa / trái nghĩa: nghĩa + độ phổ biến → data/generated/terms.json ----------
 # Nghĩa: lấy từ sách nếu từ đó có trong 600 từ (từ gốc / họ từ), không thì lấy data/relations.txt.
 # Độ phổ biến: thang Zipf từ data/source/freq.json (tools/make_freq.py).
 REL_VI = {}
@@ -630,7 +630,7 @@ if problems:
 
 
 # =====================================================================
-# BÀI TẬP TRONG SÁCH → src/data/exercises.json
+# BÀI TẬP TRONG SÁCH → data/generated/exercises.json
 # =====================================================================
 EX_PATH = os.path.join(ROOT, "data/source/exercises.json")
 OV_PATH = os.path.join(ROOT, "data/source/exercises_overrides.json")

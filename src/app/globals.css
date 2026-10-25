@@ -1,0 +1,139 @@
+@layer theme, reset, base, components, responsive, utilities;
+@import "tailwindcss" source(none);
+@import "tw-animate-css";
+@import "@fontsource-variable/noto-serif/index.css";
+@import "../shared/styles.css";
+@import "../shared/v2-layout.css";
+
+@source ".";
+@source "../components";
+@source "../features";
+@source "../shared";
+@source "../../content";
+
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+@theme inline {
+  --font-serif: "Noto Serif Variable", "Times New Roman", serif;
+  --color-background: var(--bg);
+  --color-foreground: var(--ink);
+  --color-card: var(--surface);
+  --color-card-foreground: var(--ink);
+  --color-popover: var(--surface);
+  --color-popover-foreground: var(--ink);
+  --color-primary: var(--green);
+  --color-primary-foreground: var(--surface);
+  --color-secondary: var(--surface-soft);
+  --color-secondary-foreground: var(--ink);
+  --color-muted: var(--surface-soft);
+  --color-muted-foreground: var(--muted);
+  --color-accent: var(--soft-green);
+  --color-accent-foreground: var(--green);
+  --color-destructive: var(--red);
+  --color-destructive-foreground: var(--surface);
+  --color-border: var(--line);
+  --color-input: var(--line);
+  --color-ring: var(--green);
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 4px);
+  --radius-sm: calc(var(--radius) - 8px);
+}
+
+@layer base {
+  :root {
+    --font-reading: "Noto Serif Variable", "Times New Roman", serif;
+  }
+}
+
+@layer components {
+  .reading-article {
+    max-width: 760px;
+    margin-inline: auto;
+  }
+  .reading-body {
+    font-size: 17px;
+    line-height: 1.85;
+  }
+  .reading-body p {
+    margin-block: 20px;
+  }
+  .reading-body h2 {
+    margin-top: 42px;
+    font-size: 25px;
+  }
+  .reading-body h3 {
+    margin-top: 28px;
+  }
+  .reading-body blockquote {
+    margin-block: 24px;
+    padding: 20px 24px;
+    background: var(--surface-soft);
+    border-left: 3px solid var(--green);
+    border-radius: 0 14px 14px 0;
+  }
+  .reading-body blockquote p {
+    margin: 0;
+  }
+  .reading-body li {
+    margin-block: 12px;
+  }
+  .reading-body ul {
+    padding-left: 24px;
+    list-style: disc;
+  }
+  .vocabulary-term {
+    color: var(--green);
+    border-bottom: 1px dashed currentColor;
+    font-weight: 600;
+    border-radius: 3px;
+    padding-inline: 1px;
+    text-underline-offset: 4px;
+  }
+  .vocabulary-term:hover {
+    background: var(--soft-green);
+  }
+  .reading-actions {
+    margin-top: 36px;
+    padding-top: 24px;
+    border-top: 1px solid var(--line);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .article-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+    margin-block: 20px 30px;
+  }
+  .saved-notice {
+    font-size: 14px;
+    color: var(--muted);
+    margin-top: 12px;
+  }
+  .word-save {
+    margin-top: 24px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+  }
+  .word-dialog {
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+  .reading-return {
+    display: block;
+    margin-top: 20px;
+    text-align: center;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+}
+@layer responsive {
+  @media (max-width: 760px) {
+    .reading-body {
+      font-size: 16px;
+    }
+  }
+}

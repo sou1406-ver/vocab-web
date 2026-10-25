@@ -1,10 +1,13 @@
 # Dữ liệu tự sinh (tools/build_data.py) — giữ dạng gọn
-src/data/
-data/
+src/content/
+/data/
 dist/
 node_modules/
+.next/
+next-env.d.ts
+.agents/
+.superpowers/
 package-lock.json
 *.pdf
 vocanetwork_*.html
-src/components/reactbits/
-test-results/
+test-results*/

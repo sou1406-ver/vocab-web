@@ -1,0 +1,190 @@
+"use client";
+import { useEffect, useState, useRef, type ReactNode } from "react";
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
+import { useApp } from "../state/provider";
+import { Icon, Logo, WordDialog, type IconName } from "../shared/ui";
+import { WordContext } from "./context";
+import type { Word } from "../domain/types";
+const links: { to: string; label: string; icon: IconName; end?: boolean }[] = [
+  { to: "/", label: "Hôm nay", icon: "home", end: true },
+  { to: "/lessons", label: "Bài học", icon: "book" },
+  { to: "/library", label: "Thư viện", icon: "search" },
+  { to: "/knowledge", label: "Kiến thức", icon: "leaf" },
+  { to: "/progress", label: "Tiến độ", icon: "chart" },
+];
+export function Shell({ children }: { children: ReactNode }) {
+  const { data, ready, error, busy, change, clearError } = useApp();
+  const pathname = usePathname();
+  const router = useRouter();
+  const [word, setWord] = useState<Word | null>(null);
+  const opener = useRef<HTMLElement | null>(null);
+  const [online, setOnline] = useState(true);
+  const [resolvedTheme, setResolvedTheme] = useState("light");
+  const studying = pathname === "/study";
+  useEffect(() => {
+    const sync = () => setOnline(navigator.onLine);
+    sync();
+    window.addEventListener("online", sync);
+    window.addEventListener("offline", sync);
+    return () => {
+      window.removeEventListener("online", sync);
+      window.removeEventListener("offline", sync);
+    };
+  }, []);
+  useEffect(() => {
+    document.querySelector<HTMLElement>("main h1")?.focus({ preventScroll: true });
+  }, [pathname]);
+  useEffect(() => {
+    const media = matchMedia("(prefers-color-scheme: dark)");
+    const apply = () => {
+      const theme = data.settings.theme === "system" ? (media.matches ? "dark" : "light") : data.settings.theme;
+      document.documentElement.dataset.theme = theme;
+      setResolvedTheme(theme);
+    };
+    apply();
+    media.addEventListener("change", apply);
+    return () => media.removeEventListener("change", apply);
+  }, [data.settings.theme]);
+  const inspect = async (selected: Word) => {
+    opener.current = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    const session = data.session;
+    if (session?.phase === "question" && session.questions[session.index].wordId === selected.id) {
+      const saved = await change((state) =>
+        state.session?.id === session.id && state.session.index === session.index
+          ? { ...state, session: { ...state.session, peeked: true } }
+          : state,
+      );
+      if (!saved) return;
+    }
+    setWord(selected);
+  };
+  const date = new Intl.DateTimeFormat("vi", {
+    day: "numeric",
+    month: "long",
+    timeZone: data.settings.timezone,
+  }).format();
+  return (
+    <WordContext.Provider value={(selected) => void inspect(selected)}>
+      <a className="skip-link" href="#main">
+        Đến nội dung chính
+      </a>
+      <div className={`app-shell${studying ? " is-studying" : ""}`}>
+        <aside className="sidebar">
+          <Link className="brand" href="/" aria-label="Vocab Learn — Hôm nay">
+            <Logo theme={resolvedTheme} compact />
+          </Link>
+          <div className="sidebar-caption">GÓC HỌC CỦA BẠN</div>
+          <nav className="main-nav" aria-label="Điều hướng chính">
+            {links.map((link) => (
+              <Link
+                key={link.to}
+                href={link.to}
+                aria-current={
+                  pathname === link.to || (link.to !== "/" && pathname.startsWith(link.to + "/")) ? "page" : undefined
+                }
+                aria-label={link.label}
+                className={
+                  pathname === link.to || (link.to !== "/" && pathname.startsWith(link.to + "/"))
+                    ? "nav-item active"
+                    : "nav-item"
+                }
+              >
+                <Icon name={link.icon} />
+                <span>{link.label}</span>
+                <span className="nav-dot" />
+              </Link>
+            ))}
+          </nav>
+          <div className="sidebar-note">
+            <Icon name="leaf" size={28} />
+            <p>
+              Mỗi từ mới là
+              <br />
+              một cánh cửa nhỏ.
+            </p>
+            <span>Chậm một chút. Nhớ lâu hơn.</span>
+          </div>
+          <Link href="/settings" className="sidebar-settings" aria-label="Cài đặt và sao lưu">
+            <Icon name="settings" />
+            <span>Cài đặt & sao lưu</span>
+          </Link>
+          <div className="build-label">
+            Vocab Learn <span>BẢN THỬ NGHIỆM</span>
+          </div>
+        </aside>
+        <div className="workspace">
+          <header className="topbar">
+            <Link className="mobile-brand" href="/" aria-label="Vocab Learn — Hôm nay">
+              <Logo theme={resolvedTheme} />
+            </Link>
+            <span className="topbar-location">
+              <span className="mini-leaf">
+                <Icon name="leaf" size={16} />
+              </span>{" "}
+              Không gian học tập{" "}
+              <span className="topbar-date" suppressHydrationWarning>
+                / {date}
+              </span>
+            </span>
+            <div className="topbar-actions">
+              <span className="save-status">
+                <Icon name="device" size={16} />
+                {!ready ? "Đang mở dữ liệu…" : busy ? "Đang lưu…" : "Lưu trên máy"}
+              </span>
+              <button
+                className="icon-button theme-toggle"
+                aria-label="Đổi giao diện sáng tối"
+                onClick={() =>
+                  void change((s) => ({
+                    ...s,
+                    settings: { ...s.settings, theme: resolvedTheme === "dark" ? "light" : "dark" },
+                  }))
+                }
+              >
+                <Icon name={resolvedTheme === "dark" ? "sun" : "moon"} />
+              </button>
+              <button className="avatar" onClick={() => router.push("/settings")} aria-label="Mở hồ sơ">
+                {data.settings.name ? data.settings.name.charAt(0).toUpperCase() : <Icon name="user" />}
+              </button>
+            </div>
+          </header>
+          {!online && (
+            <div className="offline-note" role="status">
+              Bạn đang offline. Tiến độ vẫn được lưu trên thiết bị này.
+            </div>
+          )}
+          {error && (
+            <div className="error-banner" role="alert">
+              <span>{error}</span>
+              {data.session && data.session.phase !== "complete" && !studying && (
+                <Link href="/study">Tiếp tục lượt học</Link>
+              )}
+              <button className="icon-button" aria-label="Đóng thông báo" onClick={clearError}>
+                <Icon name="close" />
+              </button>
+            </div>
+          )}
+          <main id="main">{children}</main>
+          <footer className="app-footer">
+            <span>Học để hiểu. Ôn để nhớ.</span>
+            <Link href="/progress">Tiến độ học của bạn →</Link>
+          </footer>
+        </div>
+        {!studying && (
+          <nav className="mobile-nav" aria-label="Điều hướng trên điện thoại">
+            {links
+              .filter((link) => link.to !== "/progress")
+              .map((link) => (
+                <Link className={pathname === link.to ? "active" : undefined} key={link.to} href={link.to}>
+                  <Icon name={link.icon} />
+                  <span>{link.label}</span>
+                </Link>
+              ))}
+          </nav>
+        )}
+      </div>
+      <WordDialog word={word} close={() => setWord(null)} opener={opener} />
+    </WordContext.Provider>
+  );
+}

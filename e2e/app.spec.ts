@@ -1,274 +1,148 @@
+import { test, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
-import { expect, test, type Page } from "@playwright/test";
+import { readFileSync } from "node:fs";
+import { emptySnapshot } from "../src/domain/learning";
+import type { Catalog } from "../src/domain/types";
 
-/** Ghi lại lỗi JS / console.error để mỗi test tự kiểm tra trang không lỗi */
-function watchErrors(page: Page) {
-  const errors: string[] = [];
-  page.on("pageerror", (e) => errors.push(e.message));
-  page.on("console", (m) => {
-    if (m.type() === "error" && !/fonts\.g|firebase|identitytoolkit|googleapis|ERR_/i.test(m.text()))
-      errors.push(m.text());
-  });
-  return errors;
-}
+const catalog = JSON.parse(readFileSync(new URL("../src/content/catalog.json", import.meta.url), "utf8")) as Catalog;
 
-const ROUTES = [
-  "#/",
-  "#/topics",
-  "#/network",
-  "#/network/agreement-1",
-  "#/flashcards",
-  "#/quiz",
-  "#/affixes",
-  "#/affixes/-ment",
-  "#/manage",
-  "#/practice",
-  "#/review",
-  "#/knowledge",
-  "#/everyday",
-  "#/term/program",
-];
-
-for (const r of ROUTES) {
-  test(`mở ${r} không lỗi`, async ({ page }) => {
-    const errors = watchErrors(page);
-    await page.goto(r);
-    await expect(page.locator("#app")).not.toBeEmpty();
-    await page.waitForTimeout(300);
-    expect(errors).toEqual([]);
-    // không có cuộn ngang
-    const overflow = await page.evaluate(
-      () => document.documentElement.scrollWidth - document.documentElement.clientWidth,
-    );
-    expect(overflow).toBeLessThanOrEqual(1);
-  });
-}
-
-test("trường từ: cụm từ ẩn mục cấu tạo + họ từ, đánh số lại", async ({ page }) => {
-  await page.goto("#/network/abide-by-1");
-  const heads = page.locator("#canvas .branch-head h3");
-  await expect(heads).toHaveText(["Đồng nghĩa & trái nghĩa", "Luyện riêng họ từ này"]);
-  await expect(page.locator("#canvas .branch-no")).toHaveText(["01", "02"]);
-  await expect(page.locator(".root-banner .ex-vi").first()).toContainText("Hai bên đồng ý");
+test("learn, reload, finish, and retry without duplicated credit", async ({ page }) => {
+  await page.goto("/");
+  await expect(page.getByRole("heading", { name: "Hôm nay, học một chút." })).toBeVisible();
+  await page.getByRole("button", { name: "Bắt đầu học", exact: true }).click();
+  await expect(page.getByRole("heading", { name: "Làm quen với từ này" })).toBeVisible();
+  expect(await page.evaluate(() => window.scrollY)).toBe(0);
+  await page.getByRole("button", { name: "Đã xem, thử nhớ lại" }).click();
+  await page.getByRole("button", { name: "Chưa nhớ, xem đáp án" }).click();
+  await expect(page.getByText("Gặp lại thêm một lần nhé.")).toBeVisible();
+  await page.reload();
+  await expect(page.getByText("Gặp lại thêm một lần nhé.")).toBeVisible();
+  await page.getByRole("button", { name: "Từ tiếp theo" }).click();
+  await expect(page.getByRole("heading", { name: "agreement", exact: true })).toBeVisible();
+  await page.getByRole("button", { name: "Đã xem, thử nhớ lại" }).click();
+  await page.getByRole("textbox", { name: "Đáp án của bạn" }).fill("  AGREEMENT  ");
+  await page.getByRole("button", { name: "Kiểm tra", exact: true }).click();
+  await expect(page.getByText("Chính xác. Bạn nhớ rồi!")).toBeVisible();
+  await page.getByRole("button", { name: "Kết thúc tại đây" }).click();
+  await expect(page.getByRole("heading", { name: "Một lượt học, thêm vững vàng." })).toBeVisible();
+  await expect(page.locator(".result-score b")).toHaveText("1/2");
+  await page.getByRole("button", { name: "Luyện lại từ vừa sai", exact: true }).click();
+  await page.getByRole("button", { name: "Chưa nhớ, xem đáp án" }).click();
+  await page.getByRole("button", { name: "Xem kết quả" }).click();
+  await expect(page.getByText("Luyện thêm không tăng bậc ôn")).toBeVisible();
+  await page.getByRole("link", { name: "Hoàn tất", exact: true }).click();
+  await expect(page.locator(".stat-number").first()).toHaveText("2/ 10 từ");
 });
 
-test("trường từ: chỉ hiện cột từ loại có dữ liệu", async ({ page }) => {
-  await page.goto("#/network/agreement-1");
-  await expect(page.locator("#canvas .branch-no")).toHaveText(["01", "02", "03", "04"]);
-  await expect(page.locator(".pos-col")).toHaveCount(3);
-  await expect(page.getByText("Không có dạng này")).toHaveCount(0);
-  await expect(page.locator(".wcard .ex-vi").first()).not.toBeEmpty();
-});
-
-test("trường từ: link có dạng từ thì nháy thẻ đó, lọc + tìm kiếm", async ({ page }) => {
-  await page.goto("#/network/agreement-1/agree");
-  await expect(page.locator('.wcard[data-w="agree"]')).toHaveClass(/flash/);
-  await page.fill("#net-search", "huỷ");
-  await expect(page.locator(".root-item").first()).toContainText("cancellation");
-  await page.fill("#net-search", "");
-  await page.locator(".pill-btn", { hasText: "Văn phòng" }).click();
-  await expect(page.locator(".lesson-nav")).toBeVisible();
-});
-
-test("tìm toàn trang bằng phím / và Enter", async ({ page, isMobile }) => {
-  test.skip(isMobile, "phím tắt chỉ dành cho bàn phím");
-  await page.goto("#/");
-  await page.keyboard.press("/");
-  await page.keyboard.type("assur");
-  await expect(page.locator(".gs-item").first()).toContainText("assurance");
-  await page.keyboard.press("Enter");
-  await expect(page).toHaveURL(/#\/network\/assurance-1/);
-  await expect(page.locator(".root-banner h2")).toHaveText("assurance");
-});
-
-test("flashcard: lật thẻ, chấm Đã nhớ ghi vào tổng quan", async ({ page }) => {
-  await page.goto("#/flashcards");
-  const word = await page.locator(".fc-front .fc-word").innerText();
-  // chạm vào chữ (giữa thẻ trên điện thoại là nút "Nghe phát âm", chạm vào đó chỉ phát âm)
-  await page.locator(".fc-front .fc-word").click();
-  await expect(page.locator("#fc-card")).toHaveClass(/flipped/);
-  await page.getByRole("button", { name: /Đã nhớ/ }).click();
-  await expect(page.locator(".toast").first()).toContainText(word);
-  await page.goto("#/");
-  await expect(page.locator(".d-today-list li").nth(1)).toContainText("1");
-});
-
-test("tự luyện: trả lời đủ 10 câu tới màn kết quả", async ({ page }) => {
-  await page.goto("#/quiz");
-  await page.getByRole("tab", { name: /Tự luyện/ }).click();
-  await page.locator(".quiz-scope", { hasText: "Tất cả" }).click();
-  await page.locator(".quiz-custom-types summary").click();
-  await page.locator(".quiz-type-option", { hasText: "Nghĩa của từ" }).click();
-  // chọn đáp án tới khi được sang câu tiếp (sai được thử lại tối đa 3 lần)
-  for (let step = 0; step < 60; step++) {
-    if (await page.getByText("Hoàn thành lượt luyện!").isVisible()) break;
-    const next = page.locator("#quiz-next");
-    if (await next.isVisible()) await next.click();
-    else await page.locator(".choice:not([disabled])").first().click();
-  }
-  await expect(page.getByText("Hoàn thành lượt luyện!")).toBeVisible();
-});
-
-test("bài tập sách: điền Words in Context và Part 5 rồi chấm điểm", async ({ page }) => {
-  test.setTimeout(90_000);
-  await page.goto("#/quiz");
-  await page.locator(".select").nth(1).selectOption("1");
-  const chips = page.locator(".bank-chip:not([disabled])");
-  // trang tải theo file riêng: đợi bảng từ hiện ra rồi mới điền (tránh vòng lặp chạy khi chưa có chip nào)
-  await expect(chips.first()).toBeVisible();
-  while ((await chips.count()) > 0) await chips.first().click();
-  await page.locator("#sec-wic .ex-actions .btn.primary").click();
-  await expect(page.locator("#sec-wic .ex-score .badge")).toContainText("đúng");
-  const opts = page.locator("#sec-p5 .mcq");
-  const n = await opts.count();
-  for (let i = 0; i < n; i++) await opts.nth(i).locator(".opt").first().click();
-  await page.locator("#sec-p5 .ex-actions .btn.primary").click();
-  await expect(page.locator("#sec-p5 .mcq-fb").first()).toBeVisible();
-});
-
-test("hồ sơ: tạo hồ sơ mới, đổi giao diện tối", async ({ page }) => {
-  await page.goto("#/");
-  await page.locator("#avatar-btn").click();
-  await page.getByRole("menuitem", { name: /Thêm hồ sơ mới/ }).click();
-  await page.fill('input[name="name"]', "Minh Anh");
-  await page.getByRole("button", { name: /Tạo hồ sơ/ }).click();
-  await expect(page.locator(".d-hello h1")).toHaveText("Minh Anh");
-  await page.locator("#avatar-btn").click();
-  await page.getByRole("radio", { name: /Tối/ }).click();
+test("search, keyboard dialog, theme and no horizontal overflow", async ({ page }) => {
+  await page.goto("/library?q=thoa%20thuan");
+  const word = page.getByRole("button").filter({ has: page.getByRole("heading", { name: "agreement", exact: true }) });
+  await expect(word).toBeVisible();
+  await word.click();
+  await expect(page.getByRole("dialog", { name: "Chi tiết từ" })).toBeVisible();
+  await page.keyboard.press("Escape");
+  await expect(page.getByRole("dialog")).not.toBeVisible();
+  await page.getByRole("button", { name: "Mở hồ sơ" }).click();
+  await page.getByLabel("Giao diện", { exact: true }).selectOption("dark");
+  await page.getByRole("button", { name: "Lưu tuỳ chọn" }).click();
   await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
+  await page.reload();
+  await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
+  const dimensions = await page.evaluate(() => ({ scroll: document.documentElement.scrollWidth, width: innerWidth }));
+  expect(dimensions.scroll).toBeLessThanOrEqual(dimensions.width);
 });
 
-test("thêm trường từ tự tạo rồi mở sơ đồ của nó", async ({ page }) => {
-  await page.goto("#/manage");
-  await page.getByRole("button", { name: /Thêm trường từ đầu tiên/ }).click();
-  await page.fill('input[name="word"]', "predict");
-  await page.fill('input[name="vi"]', "dự đoán");
-  await page.fill('textarea[name="family"]', "prediction | n | predict+-ion | sự dự đoán");
-  await page.getByRole("button", { name: /Lưu trường từ/ }).click();
-  await expect(page.locator(".root-banner h2")).toHaveText("predict");
-  await expect(page.locator(".formula")).toHaveCount(1);
-});
-
-test("đồng nghĩa: có nghĩa, từ phổ biến xếp trước và được đánh dấu, bấm liên kết sang trường từ khác", async ({
-  page,
-}) => {
-  await page.goto("#/network/abide-by-1");
-  const first = page.locator(".rel-card.syn").first();
-  await expect(first.locator(".rel-word")).toHaveText("follow");
-  await expect(first.locator(".freq-tag")).toHaveText("Rất phổ biến");
-  await expect(first.locator(".rel-vi")).toContainText("tuân theo");
-  await first.locator(".rel-also a").first().click();
-  await expect(page).toHaveURL(/#\/network\/(?!abide-by-1)/);
-  await expect(page.locator(".rel-card").first()).toBeVisible();
-});
-
-test("bấm từ đồng nghĩa ngoài sách (program) mở trang riêng, từ đó sang trường từ", async ({ page }) => {
-  await page.goto("#/network/agenda-27");
-  await page.locator(".rel-card", { hasText: "program" }).first().click();
-  await expect(page).toHaveURL(/#\/term\/program/);
-  await expect(page.locator(".root-banner h2")).toHaveText("program");
-  await expect(page.locator(".root-banner .vi")).toHaveText("chương trình");
-  await expect(page.locator(".term-root")).toHaveCount(3);
-  await page.locator(".term-root-word", { hasText: "software" }).click();
-  await expect(page.locator(".root-banner h2")).toHaveText("software");
-});
-
-test("mở từ ngoài danh sách đang lọc: giữ nguyên bộ lọc, có nút mở đúng bài", async ({ page }) => {
-  await page.goto("#/network");
-  await page.locator(".pill-btn", { hasText: "Văn phòng" }).click();
-  const count = await page.locator("#root-count").innerText();
-  await page.goto("#/network/agreement-1");
-  await expect(page.locator(".root-banner h2")).toHaveText("agreement");
-  await expect(page.locator(".pill-btn.active")).toHaveText("Văn phòng");
-  await expect(page.locator("#root-count")).toHaveText(count);
-  await expect(page.locator(".outside-note")).toBeVisible();
-  await page.locator(".outside-note button").click();
-  await expect(page.locator(".outside-note")).toHaveCount(0);
-  await expect(page.locator(".root-item.active")).toContainText("agreement");
-});
-
-// Kiểm tra truy cập tự động (axe · WCAG 2 AA): tương phản màu, nhãn, vai trò ARIA — cả giao diện sáng và tối.
-// Mỗi trang × giao diện là một test riêng để chạy song song, không dồn thành một test quá lâu.
-const A11Y_PAGES = [
-  "#/",
-  "#/topics",
-  "#/network/agreement-1",
-  "#/flashcards",
-  "#/quiz",
-  "#/affixes/-ment",
-  "#/term/program",
-  "#/practice",
-  "#/review",
-  "#/knowledge",
-  "#/everyday",
-];
-for (const theme of ["light", "dark"])
-  for (const p of A11Y_PAGES)
-    test(`không có lỗi truy cập WCAG AA: ${p} (${theme})`, async ({ page }) => {
-      // trang Trường từ có danh sách 600 từ: axe mất ~20s, chạy song song với các test khác thì lâu hơn
-      test.setTimeout(90_000);
-      await page.goto(p);
-      await page.evaluate((t) => document.documentElement.setAttribute("data-theme", t), theme);
-      // đợi hiệu ứng chữ (BlurText) chạy xong — chữ đang mờ dần không phải trạng thái cuối
-      await page.waitForTimeout(1500);
-      const r = await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa"]).analyze();
-      const found = r.violations.map(
-        (v) =>
-          `${v.id}: ${v.nodes
-            .map((n) => n.target.join(" "))
-            .slice(0, 3)
-            .join(" | ")}`,
-      );
-      expect(found).toEqual([]);
-    });
-
-test("thanh tiêu đề không bị cắt tab ở mọi bề ngang 1024–1920px, kể cả tên tài khoản rất dài", async ({
-  page,
-  isMobile,
-}) => {
-  test.skip(isMobile, "chỉ áp dụng màn hình rộng");
-  test.setTimeout(90_000);
-  await page.goto("#/");
-  await page.evaluate(() => {
-    const p = JSON.parse(localStorage.getItem("vn-profiles") || "[]");
-    p[0].name = "Phúc Nguyễn Ngọc Thành Trung";
-    localStorage.setItem("vn-profiles", JSON.stringify(p));
+test("preview legacy import, apply once, preserve unknown IDs", async ({ page }) => {
+  await page.goto("/settings");
+  await page.getByLabel("Chọn bản sao lưu JSON").setInputFiles({
+    name: "old.json",
+    mimeType: "application/json",
+    buffer: Buffer.from(
+      JSON.stringify({
+        app: "VocabLearn-600",
+        status: { "abide-by-1": "mastered", "old-unknown": "learning" },
+        stats: {},
+        book: { legacy: { right: 3 } },
+      }),
+    ),
   });
-  const bad: string[] = [];
-  for (let w = 1024; w <= 1920; w += 16) {
-    await page.setViewportSize({ width: w, height: 600 });
-    await page.goto("#/");
-    const r = await page.evaluate(() => {
-      const tabs = document.querySelector(".tabs") as HTMLElement;
-      const inner = document.querySelector(".header-inner") as HTMLElement;
-      return tabs.scrollWidth - tabs.clientWidth + Math.max(0, inner.scrollWidth - inner.clientWidth);
-    });
-    if (r > 0) bad.push(`${w}px: tràn ${r}px`);
-  }
-  expect(bad).toEqual([]);
+  await expect(page.getByRole("heading", { name: "Hồ sơ cũ" })).toBeVisible();
+  await expect(page.locator(".import-counts")).toContainText("1 mục cần xem lại");
+  await page.getByRole("button", { name: "Nhập dữ liệu này" }).click();
+  await expect(page.getByRole("status").filter({ hasText: "Đã nhập dữ liệu" })).toBeVisible();
+  await page.goto("/library?filter=started");
+  await expect(page.getByRole("heading", { name: "abide by", exact: true })).toBeVisible();
 });
 
-test("thanh điều hướng dưới đáy (điện thoại): 5 mục trên một hàng, icon trên chữ dưới", async ({ page, isMobile }) => {
-  test.skip(!isMobile, "chỉ có trên điện thoại");
-  await page.goto("#/");
-  const items = page.locator(".bottom-nav a");
-  await expect(items).toHaveCount(5);
-  const boxes = await items.evaluateAll((els) =>
-    els.map((e) => {
-      const r = e.getBoundingClientRect();
-      const icon = e.querySelector("svg")!.getBoundingClientRect();
-      const label = e.querySelector("span")!.getBoundingClientRect();
-      return { top: Math.round(r.top), h: r.height, iconAbove: icon.bottom <= label.top + 1 };
-    }),
-  );
-  expect(new Set(boxes.map((b) => b.top)).size).toBe(1);
-  for (const b of boxes) {
-    expect(b.h).toBeLessThan(72);
-    expect(b.iconAbove).toBe(true);
+test("home, learning, and settings meet automated accessibility checks", async ({ page }) => {
+  for (const path of ["/", "/lessons/1", "/settings"]) {
+    await page.goto(path);
+    await expect(page.locator("main h1")).toBeVisible();
+    const result = await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa"]).analyze();
+    expect(result.violations.map((v) => ({ id: v.id, nodes: v.nodes.map((n) => n.target) }))).toEqual([]);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   }
-  // số đếm ở ô "ngày liên tiếp" không bị thu nhỏ theo chữ bên cạnh
-  const size = await page
-    .locator(".d-streak b")
-    .evaluate((b) => parseFloat(getComputedStyle(b.querySelector("span") ?? b).fontSize));
-  expect(size).toBeGreaterThan(18);
+});
+
+test("two tabs keep one answer and the same resume point", async ({ page, context }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Bắt đầu học", exact: true }).click();
+  await page.getByRole("button", { name: "Đã xem, thử nhớ lại" }).click();
+  const other = await context.newPage();
+  await other.goto("/study");
+  await expect(other.getByRole("heading", { name: "Chọn nghĩa phù hợp" })).toBeVisible();
+  await page.getByRole("button", { name: "Chưa nhớ, xem đáp án" }).click();
+  await expect(other.getByText("Gặp lại thêm một lần nhé.")).toBeVisible();
+  await other.getByRole("button", { name: "Từ tiếp theo" }).click();
+  await expect(page.getByRole("heading", { name: "agreement", exact: true })).toBeVisible();
+  await page.getByRole("button", { name: "Kết thúc tại đây" }).click();
+  await expect(other.locator(".result-score b")).toHaveText("0/1");
+});
+
+test("overdue backlog stays visible after ending a short review batch", async ({ page }) => {
+  const data = emptySnapshot();
+  const at = Date.now() - 172_800_000;
+  for (const word of catalog.words.slice(0, 43))
+    data.progress[word.id] = {
+      startedAt: at,
+      startedDay: "2026-10-01",
+      box: 1,
+      dueAt: at,
+      correct: 0,
+      incorrect: 0,
+      tested: true,
+      policyVersion: 1,
+    };
+  await page.goto("/settings");
+  await page.getByLabel("Chọn bản sao lưu JSON").setInputFiles({
+    name: "due.json",
+    mimeType: "application/json",
+    buffer: Buffer.from(JSON.stringify({ app: "VocabLearn-v2", data })),
+  });
+  await page.getByRole("button", { name: "Khôi phục bản sao này" }).click();
+  await expect(page.getByText("Đã nhập dữ liệu.", { exact: false })).toBeVisible();
+  await page.goto("/");
+  await expect(page.getByText("43 từ đang đợi bạn.", { exact: false })).toBeVisible();
+  await page.getByRole("button", { name: "Bắt đầu ôn", exact: true }).click();
+  await expect(page.locator(".study-counter")).toHaveText("1 / 20");
+  await page.getByRole("button", { name: "Chưa nhớ, xem đáp án" }).click();
+  await page.getByRole("button", { name: "Kết thúc tại đây" }).click();
+  await page.getByRole("link", { name: "Hoàn tất", exact: true }).click();
+  await expect(page.getByText("42 từ đang đợi bạn.", { exact: false })).toBeVisible();
+});
+
+test("dark mode and compact sidebar remain accessible", async ({ page }) => {
+  await page.goto("/settings");
+  await page.getByLabel("Giao diện", { exact: true }).selectOption("dark");
+  await page.getByRole("button", { name: "Lưu tuỳ chọn" }).click();
+  await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
+  for (const path of ["/", "/library", "/progress", "/settings"]) {
+    await page.goto(path);
+    await expect(page.locator("main h1")).toBeVisible();
+    const results = await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa"]).analyze();
+    expect(results.violations.map((v) => ({ id: v.id, nodes: v.nodes.map((n) => n.target) }))).toEqual([]);
+  }
+  await page.setViewportSize({ width: 768, height: 1024 });
+  const results = await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa"]).analyze();
+  expect(results.violations).toEqual([]);
 });
