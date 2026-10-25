@@ -7,7 +7,7 @@ import type { SynonymQuestion } from "./types";
 const choice: SynonymQuestion = {
   kind: "synonym-choice",
   wordId: catalog.words[0].id,
-  prompt: "TRÁI NGHĨA: engage",
+  prompt: "engage",
   answer: "disengage",
   options: ["disengage", "inspect", "measure", "deliver"],
   direction: "antonym",
@@ -64,14 +64,16 @@ describe("Synonym practice contracts", () => {
     expect(old.schemaVersion).toBe(2);
     const compatible = start({ ...context, direction: undefined, target: undefined });
     expect(validateSnapshot(compatible)).toBe(compatible);
+    const oldAntonym = start({ ...choice, prompt: "TRÁI NGHĨA: engage" });
+    expect(validateSnapshot(oldAntonym)).toBe(oldAntonym);
   });
-  it("requires four normalized distinct options, a correct answer and consistent direction labels", () => {
+  it("requires four normalized distinct options, a correct answer and valid direction metadata", () => {
     for (const patch of [
       { options: ["disengage", "inspect", "measure"] },
       { options: ["disengage", "DISENGAGE", "measure", "deliver"] },
       { answer: "not-an-option" },
       { direction: "unknown" },
-      { prompt: "engage" },
+      { prompt: "TRÁI NGHĨA: engage", direction: "synonym" },
     ]) {
       const state = start();
       Object.assign(state.session!.questions[0], patch);

@@ -54,7 +54,7 @@ test("word relations label antonyms explicitly, save direction and retain the qu
       q.direction === "antonym" ? "TRÁI NGHĨA" : "ĐỒNG NGHĨA",
     );
     await expect(page.locator(".question-prompt p")).toHaveText(catalog.words.find((w) => w.id === q.wordId)!.text);
-    if (q.direction === "antonym") expect(q.prompt).toContain("TRÁI NGHĨA");
+    expect(q.prompt).toBe(catalog.words.find((w) => w.id === q.wordId)!.text);
     await option(page, index === ant ? q.options.find((value) => value !== q.answer)! : q.answer).click();
     await expect(page.locator(".answer-feedback")).toBeVisible();
     if (index < Math.max(ant, syn)) await page.getByRole("button", { name: "Từ tiếp theo" }).click();

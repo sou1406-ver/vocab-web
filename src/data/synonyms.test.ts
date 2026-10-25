@@ -68,7 +68,7 @@ describe("Synonym question generation", () => {
       expect(JSON.stringify(all)).toBe(before);
     },
   );
-  it("uses seeded answers/options and asks antonyms approximately one third of eligible sessions with a visible label", () => {
+  it("uses seeded answers/options and keeps only the word in both direction prompts", () => {
     const first = makeSynonymQuestions([target], all, "synonym-choice", "same");
     expect(makeSynonymQuestions([target], all, "synonym-choice", "same")).toEqual(first);
     const questions = Array.from(
@@ -78,13 +78,59 @@ describe("Synonym question generation", () => {
     const opposite = questions.filter((q) => q.direction === "antonym");
     expect(opposite.length).toBeGreaterThan(40);
     expect(opposite.length).toBeLessThan(80);
-    for (const q of opposite) expect(q.prompt).toBe("TRÁI NGHĨA: engage");
+    for (const q of questions) expect(q.prompt).toBe(target.text);
     expect(new Set(questions.map((q) => JSON.stringify(q.options))).size).toBeGreaterThan(1);
     expect(new Set(questions.filter((q) => q.direction === "synonym").map((q) => q.answer)).size).toBe(2);
     const noAntonym = { ...target, antonyms: [] };
     for (let index = 0; index < 12; index++)
       expect(makeSynonymQuestions([noAntonym], all, "synonym-choice", `s-${index}`)[0].direction).toBe("synonym");
   });
+  it.each(["synonym-choice", "synonym-context"] as const)(
+    "prefers the combined same-lesson and same-topic pool for %s",
+    (kind) => {
+      const home = catalog.lessons[0];
+      const related = catalog.lessons.find((lesson) => lesson.id !== home.id && lesson.topicId === home.topicId)!;
+      const remote = catalog.lessons.find((lesson) => lesson.topicId !== home.topicId)!;
+      expect(related).toBeDefined();
+      expect(remote).toBeDefined();
+      const root = { ...target, lesson: home.id };
+      const source = [
+        root,
+        // A remote alias also available locally must retain its local priority.
+        word("deliver", { lesson: remote.id, synonyms: ["examine", "bring"] }),
+        word("measure", { lesson: home.id }),
+        word("inspect", { lesson: related.id, synonyms: ["examine"] }),
+        word("capacity", { lesson: home.id, pos: "n", synonyms: ["volume"] }),
+      ];
+      for (let index = 0; index < 24; index++) {
+        const [q] = makeSynonymQuestions([root], source, kind, `local-${index}`);
+        expect(new Set(q.options.filter((option) => option !== q.answer))).toEqual(
+          new Set(["measure", "inspect", "examine"]),
+        );
+      }
+    },
+  );
+  it.each(["synonym-choice", "synonym-context"] as const)(
+    "uses the catalog only to fill missing local distractors for %s",
+    (kind) => {
+      const home = catalog.lessons[0];
+      const remote = catalog.lessons.find((lesson) => lesson.topicId !== home.topicId)!;
+      const root = { ...target, lesson: home.id };
+      const source = [
+        root,
+        word("deliver", { lesson: remote.id, synonyms: ["bring", "gauge", "inspect"] }),
+        word("measure", { lesson: home.id }),
+      ];
+      for (let index = 0; index < 24; index++) {
+        const [q] = makeSynonymQuestions([root], source, kind, `fallback-${index}`);
+        const wrong = q.options.filter((option) => option !== q.answer);
+        expect(wrong).toHaveLength(3);
+        expect(wrong).toContain("measure");
+        expect(wrong.filter((option) => ["deliver", "bring", "gauge", "inspect"].includes(option))).toHaveLength(2);
+        expect(makeSynonymQuestions([root], source, kind, `fallback-${index}`)[0]).toEqual(q);
+      }
+    },
+  );
   it("keeps the first example with one exact whole-word match, without substituting the synonym or making a blank", () => {
     const source = {
       ...target,

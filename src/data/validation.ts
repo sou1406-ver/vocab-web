@@ -224,9 +224,8 @@ export function validateSnapshot(value: unknown): Snapshot {
               (q.target !== undefined &&
                 (!nonempty(q.target) || !singleWordMatch(q.prompt as string, q.target as string))))) ||
           (q.kind === "synonym-choice" &&
-            (q.direction === "antonym"
-              ? !(q.prompt as string).startsWith("TRÁI NGHĨA: ")
-              : (q.prompt as string).startsWith("TRÁI NGHĨA: "))) ||
+            (q.prompt as string).startsWith("TRÁI NGHĨA: ") &&
+            q.direction !== "antonym") ||
           (q.sourceId !== undefined && !nonempty(q.sourceId)) ||
           (q.sourceVersion !== undefined && !nonempty(q.sourceVersion)) ||
           (q.sourceId === undefined) !== (q.sourceVersion === undefined)

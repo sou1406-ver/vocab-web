@@ -32,6 +32,7 @@ export function makeSynonymQuestions(
   sessionId: string,
 ): SynonymQuestion[] {
   const entries = all.map(profile);
+  const topicsByLesson = new Map(catalog.lessons.map((lesson) => [lesson.id, lesson.topicId]));
   const questions: SynonymQuestion[] = [];
   for (const word of words) {
     const target = profile(word);
@@ -71,29 +72,35 @@ export function makeSynonymQuestions(
         for (const term of entry.terms) unsafe.add(normalizeAnswer(term));
       }
     const names = new Set<string>();
-    const pool: string[] = [];
-    for (const entry of entries) {
-      if (entry.pos !== target.pos || entry.word.id === word.id) continue;
-      for (const term of entry.terms) {
-        const key = normalizeAnswer(term);
-        if (forbidden.has(key) || unsafe.has(key) || names.has(key)) continue;
-        names.add(key);
-        pool.push(term);
-      }
-    }
-    if (pool.length < 3) continue;
+    const topic = topicsByLesson.get(word.lesson);
+    const nearby = (entry: ReturnType<typeof profile>) =>
+      entry.word.lesson === word.lesson || (topic !== undefined && topicsByLesson.get(entry.word.lesson) === topic);
+    // Collect nearby aliases first so a duplicate from another topic cannot take their priority.
+    const [localPool, fallbackPool] = [entries.filter(nearby), entries.filter((entry) => !nearby(entry))].map(
+      (scope) => {
+        const pool: string[] = [];
+        for (const entry of scope) {
+          if (entry.pos !== target.pos || entry.word.id === word.id) continue;
+          for (const term of entry.terms) {
+            const key = normalizeAnswer(term);
+            if (forbidden.has(key) || unsafe.has(key) || names.has(key)) continue;
+            names.add(key);
+            pool.push(term);
+          }
+        }
+        return pool;
+      },
+    );
+    if (localPool.length + fallbackPool.length < 3) continue;
     const sourceId = `${kind}:${word.id}:${kind === "synonym-context" ? exampleIndex : direction}`;
     const answer = shuffleSeeded(answers, `${sessionId}:${sourceId}:answer`)[0];
-    const wrong = shuffleSeeded(pool, `${sessionId}:${sourceId}:distractors`).slice(0, 3);
+    const wrong = shuffleSeeded(localPool, `${sessionId}:${sourceId}:distractors`).slice(0, 3);
+    if (wrong.length < 3)
+      wrong.push(...shuffleSeeded(fallbackPool, `${sessionId}:${sourceId}:fallback`).slice(0, 3 - wrong.length));
     questions.push({
       kind,
       wordId: word.id,
-      prompt:
-        kind === "synonym-context"
-          ? word.examples[exampleIndex].text
-          : direction === "antonym"
-            ? `TRÁI NGHĨA: ${word.text}`
-            : word.text,
+      prompt: kind === "synonym-context" ? word.examples[exampleIndex].text : word.text,
       answer,
       options: shuffleSeeded([answer, ...wrong], `${sessionId}:${sourceId}:options`),
       direction,
