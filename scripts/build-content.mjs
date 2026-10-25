@@ -1,5 +1,6 @@
 import { readFile, writeFile, mkdir, readdir } from "node:fs/promises";
 import { createHash } from "node:crypto";
+import { buildClozeContent } from "./build-cloze-content.mjs";
 
 const root = new URL("../", import.meta.url);
 const read = async (path) => JSON.parse(await readFile(new URL(path, root), "utf8"));
@@ -62,3 +63,4 @@ await writeFile(
   JSON.stringify({ version, words: words.length, lessons: lessons.length, warnings }, null, 2) + "\n",
 );
 console.log(`Content: ${words.length} words, ${lessons.length} lessons, ${warnings.length} warnings.`);
+await buildClozeContent(words);

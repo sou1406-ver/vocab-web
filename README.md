@@ -61,3 +61,7 @@ Firebase SDK và rules còn giữ, chưa có Auth/cloudsync trong app local. G6 
 Xem [kết quả gộp app](docs/implementation/SINGLE-APP.md) và [kế hoạch sản phẩm](docs/BUILD-FROM-SCRATCH.md). Các báo cáo mốc cũ chỉ là lịch sử, không dùng đường dẫn/lệnh cũ để chạy app hiện tại.
 
 Phần review lõi học, các thay đổi tương thích và đề xuất trước khi mở rộng bài tập nằm trong [Learning contracts](docs/implementation/LEARNING-CONTRACTS.md).
+
+Trong trang mỗi bài có “Luyện điền chỗ trống”: câu V1 được đóng gói theo bài và chỉ tải khi mở. Báo cáo câu bỏ qua nằm trong `src/content/exercise-report.json`.
+
+Skill dành cho agent chỉ giữ local trong `.agents/` hoặc `.claude/`, bị ignore và không cần để build/chạy app. Không đưa lại bộ skill vào Git.

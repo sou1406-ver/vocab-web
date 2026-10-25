@@ -11,6 +11,8 @@ Thumbs.db
 tools/.cache/
 
 node_modules/
+.agents/
+.claude/
 .next/
 out/
 next-env.d.ts

@@ -8,6 +8,7 @@ import type {
   StudySession,
   Word,
   WordProgress,
+  RecognitionQuestion,
 } from "./types";
 
 export const INTERVALS = [1, 3, 7, 14, 30, 60];
@@ -128,6 +129,76 @@ export function beginSession(
   const next = { ...snapshot, session };
   return mode === "learn" ? introduce(next, words[0].id, at) : next;
 }
+export function makeRecognitionQuestions(words: Word[], all: Word[]): RecognitionQuestion[] {
+  const glosses = (value: string) =>
+    normalizeAnswer(value)
+      .split(/[;,]/)
+      .map((part) => part.trim())
+      .filter(Boolean);
+  return words.flatMap((word, index): RecognitionQuestion[] => {
+    const related = new Set([word.text, ...word.synonyms, ...word.family.map((f) => f.text)].map(normalizeAnswer));
+    const pool = [...all.filter((w) => w.pos === word.pos), ...all.filter((w) => w.pos !== word.pos)];
+    const chosen = [word];
+    const names = new Set([normalizeAnswer(word.text)]);
+    const meanings = new Set([normalizeAnswer(word.meaning)]);
+    for (const candidate of pool) {
+      if (
+        candidate.id === word.id ||
+        related.has(normalizeAnswer(candidate.text)) ||
+        names.has(normalizeAnswer(candidate.text)) ||
+        meanings.has(normalizeAnswer(candidate.meaning))
+      )
+        continue;
+      if (
+        candidate.synonyms.map(normalizeAnswer).includes(normalizeAnswer(word.text)) ||
+        candidate.family.some((f) => normalizeAnswer(f.text) === normalizeAnswer(word.text))
+      )
+        continue;
+      if (
+        glosses(candidate.meaning).some((part) =>
+          glosses(word.meaning).some((target) => part.includes(target) || target.includes(part)),
+        )
+      )
+        continue;
+      chosen.push(candidate);
+      names.add(normalizeAnswer(candidate.text));
+      meanings.add(normalizeAnswer(candidate.meaning));
+      if (chosen.length === 4) break;
+    }
+    if (chosen.length < 2) throw new Error("Chưa đủ đáp án khác nhau để luyện chọn từ. Hãy chọn bài khác.");
+    const rotate = (index + word.text.length) % chosen.length;
+    const order = [...chosen.slice(rotate), ...chosen.slice(0, rotate)];
+    return [
+      {
+        kind: "meaning",
+        wordId: word.id,
+        prompt: word.text,
+        answer: word.meaning,
+        options: order.map((w) => w.meaning),
+      },
+      {
+        kind: "word-choice",
+        wordId: word.id,
+        prompt: word.meaning,
+        answer: word.text,
+        options: [...order].reverse().map((w) => w.text),
+      },
+    ];
+  });
+}
+export function beginExerciseSession(
+  snapshot: Snapshot,
+  catalog: Catalog,
+  questions: Question[],
+  title: string,
+  id: string,
+  at = Date.now(),
+): Snapshot {
+  const words = questions.map((q) => catalog.words.find((w) => w.id === q.wordId));
+  if (words.some((word) => !word)) throw new Error("Bài tập có liên kết từ không hợp lệ.");
+  const next = beginSession(snapshot, catalog, words as Word[], "practice", title, id, at);
+  return { ...next, session: { ...next.session!, questions } };
+}
 function introduce(snapshot: Snapshot, wordId: string, at: number): Snapshot {
   if (snapshot.progress[wordId]) return snapshot;
   const progress: WordProgress = {
@@ -172,7 +243,8 @@ export function answerQuestion(
     mode: session.mode,
     questionId: id,
     questionKind: q.kind,
-    contentVersion: session.contentVersion,
+    contentVersion: q.kind === "cloze-choice" ? q.sourceVersion : session.contentVersion,
+    ...(q.kind === "cloze-choice" ? { sourceQuestionId: q.sourceId } : {}),
     skill: "vocabulary",
     scoringVersion: 1,
   };

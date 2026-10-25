@@ -21,7 +21,10 @@ test("letter slots support native editing, phrase spaces and submission", async 
     .locator(".letter-slot")
     .evaluateAll((nodes) => nodes.map((node) => (node as HTMLElement).offsetTop));
   expect(new Set(rows).size).toBe(1);
-  await page.locator(".letter-slot").first().click();
+  const first = await page.locator(".letter-slot").first().boundingBox();
+  if (testInfo.project.name === "mobile")
+    await page.touchscreen.tap(first!.x + first!.width / 2, first!.y + first!.height / 2);
+  else await page.mouse.click(first!.x + first!.width / 2, first!.y + first!.height / 2);
   expect(await input.evaluate((node) => (node as HTMLInputElement).selectionStart)).toBe(0);
   await input.press("ArrowRight");
   expect(await input.evaluate((node) => (node as HTMLInputElement).selectionStart)).toBe(1);
@@ -48,4 +51,34 @@ test("letter slots support native editing, phrase spaces and submission", async 
   await input.fill("abide by");
   await input.press("Enter");
   await expect(page.getByText("Chính xác. Bạn nhớ rồi!")).toBeVisible();
+});
+
+test("hint letters stay locked, record assistance and native input styling is independent of the form", async ({
+  page,
+}) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Bắt đầu học", exact: true }).click();
+  await page.getByRole("button", { name: "Đã xem, thử nhớ lại" }).click();
+  await page.getByRole("button", { name: "Chưa nhớ, xem đáp án" }).click();
+  await page.getByRole("button", { name: "Từ tiếp theo" }).click();
+  await page.getByRole("button", { name: "Đã xem, thử nhớ lại" }).click();
+  const input = page.getByRole("textbox", { name: "Đáp án của bạn" });
+  await page.getByRole("button", { name: "Gợi ý một chữ" }).click();
+  await expect(input).toHaveValue("a");
+  await expect(page.locator(".letter-slot.is-revealed")).toHaveText("a");
+  await input.press("ControlOrMeta+A");
+  await input.press("Backspace");
+  await expect(input).toHaveValue("a");
+  await input.fill("AGREEMENT");
+  await expect(input).toHaveValue("aGREEMENT");
+  await page.locator("form.typing-answer").evaluate((node) => node.classList.remove("typing-answer"));
+  const style = await input.evaluate((node) => {
+    const css = getComputedStyle(node);
+    return { position: css.position, color: css.color, background: css.backgroundColor };
+  });
+  expect(style).toEqual({ position: "absolute", color: "rgba(0, 0, 0, 0)", background: "rgba(0, 0, 0, 0)" });
+  await input.press("Enter");
+  await expect(page.getByText("Gặp lại thêm một lần nhé.")).toBeVisible();
+  await page.reload();
+  await expect(page.getByText("Gặp lại thêm một lần nhé.")).toBeVisible();
 });

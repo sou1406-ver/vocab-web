@@ -46,8 +46,16 @@ interface QuestionBase {
   prompt: string;
   answer: string;
 }
+export type ClozeChoiceQuestion = QuestionBase & {
+  kind: "cloze-choice";
+  options: string[];
+  sourceId: string;
+  sourceVersion: string;
+};
+export type RecognitionQuestion = QuestionBase & { kind: "meaning" | "word-choice"; options: string[] };
 export type Question =
-  | (QuestionBase & { kind: "meaning"; options: string[] })
+  | ClozeChoiceQuestion
+  | RecognitionQuestion
   // Empty options are a schema-2 compatibility field, never selectable answers.
   | (QuestionBase & { kind: "cloze"; options?: [] })
   | (QuestionBase & { kind: "recall"; options?: [] });
@@ -86,6 +94,7 @@ export interface AnswerEvent {
   contentVersion?: string;
   skill?: "vocabulary";
   scoringVersion?: 1;
+  sourceQuestionId?: string;
 }
 export interface SessionSummary {
   id: string;

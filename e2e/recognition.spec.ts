@@ -1,0 +1,31 @@
+import { test, expect } from "@playwright/test";
+import { readFileSync } from "node:fs";
+import type { Catalog } from "../src/domain/types";
+const catalog = JSON.parse(readFileSync(new URL("../src/content/catalog.json", import.meta.url), "utf8")) as Catalog;
+
+test("recognition practice preserves both directions, feedback and retry", async ({ page }, testInfo) => {
+  await page.goto("/lessons/1");
+  await page.getByRole("button", { name: "Luyện chọn nghĩa / chọn từ", exact: true }).click();
+  await expect(page.getByRole("heading", { name: "Chọn nghĩa phù hợp" })).toBeVisible();
+  const word = catalog.words.find((w) => w.lesson === 1)!;
+  await page.getByRole("button", { name: word.meaning, exact: false }).click();
+  await expect(page.getByText("Chính xác. Bạn nhớ rồi!")).toBeVisible();
+  await page.getByRole("button", { name: "Từ tiếp theo" }).click();
+  await expect(page.getByRole("heading", { name: "Chọn từ phù hợp" })).toBeVisible();
+  await expect(page.locator(".question-prompt p")).toHaveAttribute("lang", "vi");
+  await expect(page.locator(".answer-option")).toHaveCount(4);
+  await page.reload();
+  await expect(page.getByRole("heading", { name: "Chọn từ phù hợp" })).toBeVisible();
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  await page.screenshot({ path: `test-results/recognition-${testInfo.project.name}.png` });
+  await page.getByRole("button", { name: "Chưa nhớ, xem đáp án" }).click();
+  await page.getByRole("button", { name: "Kết thúc tại đây" }).click();
+  await page.getByRole("button", { name: "Luyện lại từ vừa sai" }).click();
+  await expect(page.getByRole("heading", { name: "Chọn từ phù hợp" })).toBeVisible();
+  await page.locator(".answer-option").filter({ hasText: word.text }).click();
+  await expect(page.getByText("Chính xác. Bạn nhớ rồi!")).toBeVisible();
+  await page.getByRole("button", { name: "Xem kết quả", exact: true }).click();
+  await page.goto("/lessons/1");
+  await page.getByRole("button", { name: "Luyện chọn nghĩa / chọn từ", exact: true }).click();
+  await expect(page.locator(".question-prompt p")).toHaveText(catalog.words.filter((w) => w.lesson === 1)[6].text);
+});

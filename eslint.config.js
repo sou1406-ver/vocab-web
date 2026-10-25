@@ -13,6 +13,7 @@ export default tseslint.config(
       ".next/**",
       "next-env.d.ts",
       ".agents/**",
+      ".claude/**",
       ".superpowers/**",
       "test-results*/**",
 

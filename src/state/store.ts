@@ -1,8 +1,15 @@
 import { createStore, type StoreApi } from "zustand/vanilla";
 import { readSnapshot, changeSnapshot } from "../data/repository";
 import { catalog } from "../data/catalog";
-import { emptySnapshot, beginSession, advanceSession, answerQuestion, finishSession } from "../domain/learning";
-import type { SessionMode, Snapshot, Word } from "../domain/types";
+import {
+  emptySnapshot,
+  beginSession,
+  beginExerciseSession,
+  advanceSession,
+  answerQuestion,
+  finishSession,
+} from "../domain/learning";
+import type { SessionMode, Snapshot, Word, Question } from "../domain/types";
 
 export interface AppState {
   clock: number;
@@ -13,6 +20,7 @@ export interface AppState {
   init: () => Promise<void>;
   change: (reduce: (data: Snapshot) => Snapshot) => Promise<boolean>;
   start: (words: Word[], mode: SessionMode, title: string, returnTo?: string) => Promise<boolean>;
+  startExercises: (questions: Question[], title: string, returnTo?: string) => Promise<boolean>;
   answer: (input: string, assisted?: boolean) => Promise<boolean>;
   advance: () => Promise<boolean>;
   finish: () => Promise<boolean>;
@@ -53,6 +61,11 @@ export function createAppStore() {
     start: (words, mode, title, returnTo) =>
       get().change((data) => {
         const next = beginSession(data, catalog, words, mode, title, crypto.randomUUID());
+        return returnTo && next.session ? { ...next, session: { ...next.session, returnTo } } : next;
+      }),
+    startExercises: (questions, title, returnTo) =>
+      get().change((data) => {
+        const next = beginExerciseSession(data, catalog, questions, title, crypto.randomUUID());
         return returnTo && next.session ? { ...next, session: { ...next.session, returnTo } } : next;
       }),
     answer: (input, assisted = false) => {

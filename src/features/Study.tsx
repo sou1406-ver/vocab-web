@@ -8,20 +8,24 @@ import { Empty, Icon, ProgressBar, WordContent } from "../shared/ui";
 import { useWord } from "../app/context";
 import type { Word } from "../domain/types";
 import { LetterSlotsInput } from "../components/LetterSlotsInput";
+import { projectRevealed } from "../components/letter-slots-edit";
 
 export default function Study() {
-  const { data, busy, advance, answer, finish, start } = useApp();
+  const { data, busy, advance, answer, finish, start, startExercises, change } = useApp();
   const router = useRouter();
   const inspect = useWord();
   const [input, setInput] = useState("");
+  const [revealed, setRevealed] = useState<number[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
+  const choiceRef = useRef<HTMLButtonElement>(null);
   const nextRef = useRef<HTMLButtonElement>(null);
   const feedbackRef = useRef<HTMLDivElement>(null);
   const session = data.session;
+  useEffect(() => setRevealed([]), [session?.id, session?.index]);
   useEffect(() => {
     setInput("");
     if (session?.phase === "learn" || session?.phase === "question") window.scrollTo(0, 0);
-    if (session?.phase === "question") inputRef.current?.focus({ preventScroll: true });
+    if (session?.phase === "question") (inputRef.current ?? choiceRef.current)?.focus({ preventScroll: true });
     else nextRef.current?.focus({ preventScroll: true });
     if (session?.phase === "feedback") feedbackRef.current?.scrollIntoView({ block: "nearest" });
   }, [session?.id, session?.index, session?.phase]);
@@ -44,6 +48,14 @@ export default function Study() {
       .map((id) => all.find((w) => w.id === id))
       .filter((w): w is Word => Boolean(w));
     const retry = async () => {
+      const questions =
+        session.mode === "practice"
+          ? session.questions.filter((_, index) => events.some((e) => !e.correct && e.id === `${session.id}:${index}`))
+          : [];
+      if (questions.length) {
+        if (await startExercises(questions, "Luyện lại câu vừa sai", session.returnTo)) router.push("/study");
+        return;
+      }
       if (await start(wrongWords, "practice", "Luyện lại từ vừa sai", session.returnTo)) router.push("/study");
     };
     return (
@@ -134,6 +146,28 @@ export default function Study() {
       </div>
     );
   const feedback = session.feedback;
+  const typed = question.kind === "cloze" || question.kind === "recall";
+  const hintIndex = Array.from(question.answer).findIndex(
+    (char, index) => !/\s/.test(char) && !revealed.includes(index),
+  );
+  const revealLetter = async () => {
+    if (!typed || hintIndex < 0 || session.phase !== "question") return;
+    const saved = await change((state) => {
+      if (
+        state.session?.id !== session.id ||
+        state.session.index !== session.index ||
+        state.session.phase !== "question"
+      )
+        throw new Error("Lượt học đã thay đổi. Hãy mở lại câu hiện tại.");
+      return { ...state, session: { ...state.session, peeked: true } };
+    });
+    if (saved) {
+      const indices = [...revealed, hintIndex];
+      setRevealed(indices);
+      setInput(projectRevealed(input, question.answer, indices));
+      requestAnimationFrame(() => inputRef.current?.focus({ preventScroll: true }));
+    }
+  };
   return (
     <div className="page study-page">
       <div className="study-top">
@@ -165,9 +199,11 @@ export default function Study() {
             ? "Làm quen với từ này"
             : question.kind === "meaning"
               ? "Chọn nghĩa phù hợp"
-              : question.kind === "cloze"
-                ? "Điền từ còn thiếu"
-                : "Bạn nhớ từ nào?"}
+              : question.kind === "word-choice"
+                ? "Chọn từ phù hợp"
+                : question.kind === "cloze" || question.kind === "cloze-choice"
+                  ? "Điền từ còn thiếu"
+                  : "Bạn nhớ từ nào?"}
         </h1>
       </div>
       <section className="study-card" aria-label="Nội dung lượt học">
@@ -183,22 +219,30 @@ export default function Study() {
           </>
         ) : (
           <>
-            <div className={`question-prompt ${question.kind === "cloze" ? "sentence-prompt" : ""}`}>
+            <div
+              className={`question-prompt ${question.kind === "cloze" || question.kind === "cloze-choice" ? "sentence-prompt" : ""}`}
+            >
               <span className="small-label">
                 {question.kind === "meaning"
                   ? "TỪ NÀY CÓ NGHĨA LÀ GÌ?"
-                  : question.kind === "cloze"
-                    ? "HOÀN THÀNH CÂU TIẾNG ANH"
-                    : "VIẾT TỪ TIẾNG ANH CÓ NGHĨA"}
+                  : question.kind === "word-choice"
+                    ? "CHỌN TỪ TIẾNG ANH PHÙ HỢP"
+                    : question.kind === "cloze" || question.kind === "cloze-choice"
+                      ? "HOÀN THÀNH CÂU TIẾNG ANH"
+                      : "VIẾT TỪ TIẾNG ANH CÓ NGHĨA"}
               </span>
-              <p lang={question.kind === "recall" ? "vi" : "en"}>{question.prompt}</p>
-              <span className="pos">{word.pos}</span>
+              <p lang={question.kind === "recall" || question.kind === "word-choice" ? "vi" : "en"}>
+                {question.prompt}
+              </p>
+              {question.kind !== "cloze-choice" && <span className="pos">{word.pos}</span>}
             </div>
-            {question.kind === "meaning" ? (
+            {question.kind === "meaning" || question.kind === "cloze-choice" || question.kind === "word-choice" ? (
               <div className="answer-options">
                 {question.options.map((option, i) => (
                   <button
+                    ref={i === 0 ? choiceRef : undefined}
                     key={option}
+                    lang={question.kind === "meaning" ? "vi" : "en"}
                     className={`answer-option${feedback && option === question.answer ? " correct-option" : ""}${feedback && !feedback.correct && option === feedback.input ? " wrong-option" : ""}`}
                     disabled={busy || session.phase === "feedback"}
                     onClick={() => void answer(option)}
@@ -224,6 +268,7 @@ export default function Study() {
                     inputRef={inputRef}
                     id="typed-answer"
                     answer={question.answer}
+                    revealed={revealed}
                     value={session.phase === "feedback" ? (feedback?.input ?? "") : input}
                     disabled={busy || session.phase === "feedback"}
                     onChange={setInput}
@@ -256,9 +301,13 @@ export default function Study() {
                   Đáp án: <strong lang={question.kind === "meaning" ? "vi" : "en"}>{question.answer}</strong>
                 </p>
                 <p className="feedback-example" lang="en">
-                  {word.examples[0]?.text}
+                  {question.kind === "cloze-choice"
+                    ? question.prompt.replace(/_{3,}/, question.answer)
+                    : word.examples[0]?.text}
                 </p>
-                {word.examples[0]?.translation && <p className="muted">{word.examples[0].translation}</p>}
+                {question.kind !== "cloze-choice" && word.examples[0]?.translation && (
+                  <p className="muted">{word.examples[0].translation}</p>
+                )}
                 <button className="button primary" ref={nextRef} disabled={busy} onClick={() => void advance()}>
                   {session.index + 1 === session.questions.length ? "Xem kết quả" : "Từ tiếp theo"}
                   <Icon name="arrow" size={18} />
@@ -266,6 +315,11 @@ export default function Study() {
               </div>
             ) : (
               <div className="question-help">
+                {typed && (
+                  <button className="text-link" disabled={busy || hintIndex < 0} onClick={() => void revealLetter()}>
+                    Gợi ý một chữ
+                  </button>
+                )}
                 <button className="text-link" disabled={busy} onClick={() => void answer("", true)}>
                   Chưa nhớ, xem đáp án
                 </button>

@@ -7,7 +7,7 @@ export function record(value: unknown): Record<string, unknown> {
 const number = (v: unknown) => typeof v === "number" && Number.isFinite(v) && v >= 0 && v <= 8_640_000_000_000_000;
 const string = (v: unknown) => typeof v === "string";
 const nonempty = (v: unknown) => typeof v === "string" && v.trim().length > 0 && v.length <= 500;
-const questionKinds = ["meaning", "cloze", "recall"];
+const questionKinds = ["meaning", "cloze", "recall", "cloze-choice", "word-choice"];
 const day = (v: unknown) => string(v) && /^\d{4}-\d{2}-\d{2}$/.test(v as string);
 const safeId = (v: string) => v !== "__proto__" && v !== "constructor" && v !== "prototype";
 export function isWord(value: unknown): value is Word {
@@ -103,7 +103,8 @@ export function validateSnapshot(value: unknown): Snapshot {
       (e.questionKind !== undefined && !questionKinds.includes(e.questionKind as string)) ||
       (e.contentVersion !== undefined && !nonempty(e.contentVersion)) ||
       (e.skill !== undefined && e.skill !== "vocabulary") ||
-      (e.scoringVersion !== undefined && e.scoringVersion !== 1)
+      (e.scoringVersion !== undefined && e.scoringVersion !== 1) ||
+      (e.sourceQuestionId !== undefined && !nonempty(e.sourceQuestionId))
     )
       fail();
   }
@@ -144,15 +145,35 @@ export function validateSnapshot(value: unknown): Snapshot {
       const q = record(raw);
       if (![q.wordId, q.prompt, q.answer].every(string) || !questionKinds.includes(q.kind as string)) fail();
       if (
-        q.kind === "meaning" &&
+        (q.kind === "meaning" || q.kind === "cloze-choice" || q.kind === "word-choice") &&
         (!Array.isArray(q.options) ||
           !q.options.every(string) ||
           !(q.options as string[]).includes(q.answer as string) ||
           new Set(q.options as string[]).size !== (q.options as string[]).length)
       )
         fail();
+      if (
+        q.kind === "word-choice" &&
+        ((q.options as string[]).length < 2 ||
+          (q.options as string[]).length > 4 ||
+          new Set((q.options as string[]).map((v) => v.trim().toLowerCase())).size !== (q.options as string[]).length)
+      )
+        fail();
       // Accept omission, but writers retain [] while schema-2 clients may still be open.
-      if (q.kind !== "meaning" && q.options !== undefined && (!Array.isArray(q.options) || q.options.length !== 0))
+      if (
+        (q.kind === "cloze" || q.kind === "recall") &&
+        q.options !== undefined &&
+        (!Array.isArray(q.options) || q.options.length !== 0)
+      )
+        fail();
+      if (
+        q.kind === "cloze-choice" &&
+        (!nonempty(q.sourceId) ||
+          !nonempty(q.sourceVersion) ||
+          (q.prompt as string).match(/_{3,}/g)?.length !== 1 ||
+          (q.options as string[]).length !== 4 ||
+          new Set((q.options as string[]).map((v) => v.trim().toLowerCase())).size !== 4)
+      )
         fail();
     }
     if (session.feedback !== null) {
