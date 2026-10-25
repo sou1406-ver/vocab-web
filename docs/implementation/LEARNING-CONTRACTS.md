@@ -6,13 +6,13 @@ Ngày 25/10/2026. Đọc tài liệu này để phân biệt thay đổi đã ch
 
 `src/domain/types.ts` dùng union cho các kind đang hoạt động:
 
-| Dạng             | Dữ liệu riêng                              | Hành vi hiện có                            |
-| ---------------- | ------------------------------------------ | ------------------------------------------ |
-| meaning          | options bắt buộc                           | Chọn một nghĩa                             |
-| cloze            | Không có danh sách đáp án chọn             | Nhập từ còn thiếu                          |
-| recall           | Không có danh sách đáp án chọn             | Nhập từ từ gợi ý nghĩa                     |
-| cloze-choice     | options và sourceId/sourceVersion bắt buộc | Chọn đáp án cho câu khuyết biên soạn sẵn   |
-| word-form-choice | options và sourceId/sourceVersion bắt buộc | Chọn dạng từ; bốn lựa chọn cùng gốc/family |
+| Dạng             | Dữ liệu riêng                              | Hành vi hiện có                                   |
+| ---------------- | ------------------------------------------ | ------------------------------------------------- |
+| meaning          | options bắt buộc                           | Chọn một nghĩa                                    |
+| cloze            | Không có danh sách đáp án chọn             | Nhập từ còn thiếu                                 |
+| recall           | Không có danh sách đáp án chọn             | Nhập từ từ gợi ý nghĩa                            |
+| cloze-choice     | options và sourceId/sourceVersion bắt buộc | Chọn đáp án cho câu khuyết biên soạn sẵn          |
+| word-form-choice | options và sourceId/sourceVersion bắt buộc | Chọn dạng từ; ít nhất ba lựa chọn cùng gốc/family |
 
 Các kind cùng có wordId, prompt và answer. Không thêm type Listening/Match/Build giả khi chưa có renderer, scorer và dữ liệu kiểm chứng. Khi triển khai một dạng, thêm nhánh union riêng và validator tương ứng; không nhét pairs/audio/tokens vào prompt.
 
@@ -103,13 +103,15 @@ Kiểm tra dữ liệu nguồn hiện tại:
 
 Hướng nạp đề xuất: manifest nhỏ gồm ID bộ/bài, phiên bản/hash và đường dẫn gói; exercises tách theo lesson/review, everyday chia theo nhóm, affixes là nguồn tra riêng. Chỉ tải gói khi mở dạng bài liên quan. Catalog lõi không import tất cả gói. ID câu nguồn cần ổn định khi sửa lỗi chính tả; phiên bản nội dung thay đổi độc lập với ID.
 
-**Part 5 đã phân loại lại:** builder tạo 299 câu trong 50 gói: 290 `word-form-choice`, 9 `cloze-choice`. Bốn options đều cùng family/gốc (kể cả biến tố và biến đổi hình thái có luật) thì là dạng từ; có lựa chọn ngoài family đó thì giữ cloze. UI có hai nút “Luyện dạng từ” và “Luyện điền chỗ trống”, chỉ mở các câu đúng nhãn, event giữ đúng questionKind.
+**Part 5 đã phân loại lại:** builder nhận 299 câu hợp lệ trong 50 gói. Ít nhất ba trong bốn options cùng family/gốc của từ liên kết (kể cả biến tố và biến đổi hình thái có luật) thì là dạng từ; dưới ngưỡng đó thì giữ cloze. UI có hai nút “Luyện dạng từ” và “Luyện điền chỗ trống”, chỉ mở các câu đúng nhãn, event giữ đúng questionKind.
 
 Đáp án được đối chiếu với từ chính/family trong đúng bài, có quy tắc số nhiều, chia động từ, trường hợp bất quy tắc và gốc cụm động từ. Nếu khớp từ hai wordId trở lên vẫn bỏ qua, kể cả một trong hai là khớp chính xác. Không chọn wordId chỉ bằng tiền tố giống nhau. Phân loại family có thêm quy tắc tạo từ và danh sách biến đổi chính tả không đều trong `scripts/lib/word-forms.mjs`; các mở rộng phân loại không được dùng tùy tiện để đoán liên kết đáp án.
 
+**Cloze từ catalog:** mỗi từ có tối đa một câu, lấy ví dụ đầu tiên chứa đúng một lần từ chính (không phân biệt hoa/thường, khớp nguyên từ/cụm từ), thay bằng chỗ trống. Chỉ tạo khi có đủ ba đáp án nhiễu khác nhau trong cùng bài và cùng từ loại; loại synonym và family/gốc ở cả hai chiều. Không đủ đáp án thì bỏ qua, không lấy từ bài hoặc từ loại khác để bù. ID mới `catalog:example:<wordId>:<index>` dùng chỉ số ví dụ gốc, bắt đầu từ 0; chỉ dành cho `cloze-choice`. Loader tiếp tục nhận ID Part 5 cũ; session và event cũ không bị viết lại. Không thêm field vào question/event và không đổi schemaVersion hoặc cách chấm.
+
 Đã lấy lại 76 câu trước đây bị `unlinked-answer` trong dữ liệu commit 82c1cff (khác số 75 nêu khi review). Một câu còn bị bỏ vì lựa chọn không hợp lệ. Báo cáo `src/content/exercise-report.json` có sourceQuestions/count/byKind, recovered, skipped và linked để truy từng câu. Giữ nguyên câu/options/đáp án V1; không tự sinh distractor cho Part 5. Các số phân loại mới tính trên toàn bộ 299 câu sau khi khôi phục và bổ sung biến thể, không dùng số 205/223 làm quota.
 
-Gói được tải theo bài, có sourceVersion độc lập; contentVersion của event mới luôn là catalog. Lỗi tải được thử lại; reload/resume dùng câu đã lưu, không cần tải lại gói. Session/event cũ vẫn đọc được và không tự đổi nhãn lịch sử. Gói version cũ đã phát hành còn được giữ để tab/cache cũ truy cập; manifest hiện tại chỉ trỏ gói hiện hành.
+Gói được tải theo bài, có sourceVersion độc lập; contentVersion của event mới luôn là catalog. Lỗi tải được thử lại; reload/resume dùng câu đã lưu, không cần tải lại gói. Session/event cũ vẫn đọc được và không tự đổi nhãn lịch sử. Builder dọn toàn bộ file trong thư mục output trước khi ghi gói mới; chỉ giữ các gói hiện hành mà manifest trỏ tới. Tab/cache còn manifest cũ cần tải lại trang nếu chưa tải gói trước đó.
 
 Hai dạng biên soạn vẫn chạy practice: ghi kết quả, không tăng box/dueAt hoặc tạo tiến độ từ mới. Loader/manifest cho everyday/affixes/ETS chưa triển khai; ETS vẫn rỗng.
 

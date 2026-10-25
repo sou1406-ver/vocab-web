@@ -22,11 +22,17 @@ export function validateClozePack(
   const ids = new Set<string>();
   for (const raw of pack.questions) {
     const q = record(raw);
+    const examplePrefix = `catalog:example:${q.wordId}:`;
     if (
       (q.kind !== "cloze-choice" && q.kind !== "word-form-choice") ||
       q.sourceVersion !== expected.version ||
       typeof q.sourceId !== "string" ||
-      !q.sourceId.startsWith(`v1:part5:${expected.lessonId}:`) ||
+      !(
+        q.sourceId.startsWith(`v1:part5:${expected.lessonId}:`) ||
+        (q.kind === "cloze-choice" &&
+          q.sourceId.startsWith(examplePrefix) &&
+          /^(0|[1-9]\d*)$/.test(q.sourceId.slice(examplePrefix.length)))
+      ) ||
       ids.has(q.sourceId) ||
       !catalog.words.some((w) => w.id === q.wordId && w.lesson === expected.lessonId)
     )

@@ -19,6 +19,30 @@ describe("Part 5 family classification and inflection links", () => {
     );
     expect(cloze.questions[0].kind).toBe("cloze-choice");
   });
+  it("classifies three related options as word form, but not just two", () => {
+    const three = convertLesson(1, [make("agreement", ["agreement", "agree", "agreeable", "party"])], catalog.words);
+    expect(three.questions[0].kind).toBe("word-form-choice");
+    const two = convertLesson(1, [make("agreement", ["agreement", "agree", "assurance", "party"])], catalog.words);
+    expect(two.questions[0].kind).toBe("cloze-choice");
+  });
+  it("classifies popular variants as word form even with population as a distractor", () => {
+    const word = catalog.words.find((w) => w.text === "agreement")!;
+    const popular = {
+      ...word,
+      text: "popular",
+      pos: "adj",
+      family: [
+        { text: "popularize", pos: "v", meaning: "phổ biến" },
+        { text: "popularity", pos: "n", meaning: "sự phổ biến" },
+      ],
+    };
+    const result = convertLesson(
+      1,
+      [make("popular", ["popular", "popularize", "popularity", "population"])],
+      [popular],
+    );
+    expect(result.questions[0].kind).toBe("word-form-choice");
+  });
   it.each([
     [1, "provisions", ["provisions", "provision", "provide", "providing"]],
     [11, "submitting", ["submitting", "submit", "submitted", "submission"]],

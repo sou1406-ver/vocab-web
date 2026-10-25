@@ -1,6 +1,55 @@
 const norm = (value) => value.trim().toLowerCase().replace(/\s+/g, " ");
 import { familyForms, classificationForms } from "./word-forms.mjs";
 
+/** @param {number} lessonId @param {import("../../src/domain/types").Word[]} words */
+export function createCatalogCloze(lessonId, words) {
+  const entries = words
+    .filter((word) => word.lesson === lessonId)
+    .map((word) => ({
+      word,
+      forms: classificationForms(word),
+      synonyms: new Set(word.synonyms.map(norm)),
+      pos: norm(word.pos).replace(/\./g, ""),
+    }));
+  /** @type {Omit<import("../../src/domain/types").ClozeChoiceQuestion, "sourceVersion">[]} */
+  const questions = [];
+  for (const target of entries) {
+    const { word, forms, synonyms, pos } = target;
+    const options = [word.text.trim()];
+    const names = new Set([norm(word.text)]);
+    for (const candidate of entries) {
+      const text = norm(candidate.word.text);
+      if (
+        candidate.word.id === word.id ||
+        candidate.pos !== pos ||
+        names.has(text) ||
+        [...candidate.forms].some((form) => forms.has(form) || synonyms.has(form)) ||
+        [...forms].some((form) => candidate.synonyms.has(form))
+      )
+        continue;
+      options.push(candidate.word.text.trim());
+      names.add(text);
+      if (options.length === 4) break;
+    }
+    if (options.length !== 4) continue;
+    const escaped = word.text.trim().replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const pattern = new RegExp(`(?<![\\p{L}\\p{N}])${escaped}(?![\\p{L}\\p{N}])`, "giu");
+    for (const [index, example] of word.examples.entries()) {
+      if (/_{3,}/.test(example.text) || example.text.match(pattern)?.length !== 1) continue;
+      questions.push({
+        kind: "cloze-choice",
+        sourceId: `catalog:example:${word.id}:${index}`,
+        wordId: word.id,
+        prompt: example.text.replace(pattern, "________"),
+        answer: word.text.trim(),
+        options,
+      });
+      break;
+    }
+  }
+  return questions;
+}
+
 /**
  * @param {number} lessonId
  * @param {unknown} input
@@ -42,7 +91,7 @@ export function convertLesson(lessonId, input, words) {
     }
     const { word } = matches[0];
     const family = classificationForms(word);
-    const kind = options.every((option) => family.has(norm(option))) ? "word-form-choice" : "cloze-choice";
+    const kind = options.filter((option) => family.has(norm(option))).length >= 3 ? "word-form-choice" : "cloze-choice";
     const exact = [word.text, ...word.family.map((f) => f.text)].some((text) => norm(text) === norm(answer));
     linked.push({ sourceId, wordId: word.id, kind, method: exact ? "exact" : "inflection" });
     questions.push({

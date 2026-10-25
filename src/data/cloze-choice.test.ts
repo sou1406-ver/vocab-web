@@ -4,7 +4,7 @@ import { catalog } from "./catalog";
 import { validateSnapshot } from "./validation";
 import { beginExerciseSession, answerQuestion, emptySnapshot } from "../domain/learning";
 import { clozeLessons, validateClozePack } from "./cloze";
-import { readFileSync } from "node:fs";
+import { readFileSync, readdirSync } from "node:fs";
 
 const word = catalog.words.find((w) => w.text === "agreement")!;
 const source = {
@@ -14,6 +14,27 @@ const source = {
   answer: "A",
 };
 describe("Authored cloze choices", () => {
+  it("accepts catalog example IDs alongside old Part 5 IDs and preserves both in saved sessions", () => {
+    const old = { ...convertLesson(1, [source], catalog.words).questions[0], sourceVersion: "mixed-pack" };
+    const example = {
+      ...old,
+      kind: "cloze-choice" as const,
+      sourceId: `catalog:example:${word.id}:0`,
+      options: ["agreement", "party", "assurance", "cancellation"],
+    };
+    const questions = [old, example];
+    const pack = { lessonId: 1, version: "mixed-pack", questions };
+    const expected = { lessonId: 1, version: "mixed-pack", count: 2 };
+    expect(validateClozePack(pack, expected)).toEqual(questions);
+    for (const q of questions) {
+      const snapshot = beginExerciseSession(emptySnapshot(), catalog, [q], "Practice", "s", 100);
+      expect(validateSnapshot(JSON.parse(JSON.stringify(snapshot)))).toEqual(snapshot);
+      expect(answerQuestion(snapshot, "s", 0, q.answer, false, 101).events[0].sourceQuestionId).toBe(q.sourceId);
+    }
+    for (const sourceId of [`catalog:example:another-word:0`, `catalog:example:${word.id}:-1`, "unknown:0"]) {
+      expect(() => validateClozePack({ ...pack, questions: [old, { ...example, sourceId }] }, expected)).toThrow();
+    }
+  });
   it("keeps catalog and package versions separate for both authored question labels", () => {
     const raw = { ...source, options: { A: "agreement", B: "party", C: "assurance", D: "cancellation" } };
     for (const item of [source, raw]) {
@@ -31,17 +52,25 @@ describe("Authored cloze choices", () => {
   });
   it("validates every generated lesson pack and rejects mismatched or cross-lesson data", () => {
     let count = 0;
+    let part5 = 0;
     for (const entry of clozeLessons) {
       const pack = JSON.parse(readFileSync(new URL(`../../public${entry.url}`, import.meta.url), "utf8"));
       const questions = validateClozePack(pack, entry);
       count += questions.length;
+      part5 += questions.filter((q) => q.sourceId.startsWith("v1:part5:")).length;
+      for (const kind of ["word-form-choice", "cloze-choice"] as const) {
+        expect(questions.filter((q) => q.kind === kind)).toHaveLength(entry.kinds[kind]);
+      }
       expect(() => validateClozePack({ ...pack, version: "outdated" }, entry)).toThrow();
       const changed = structuredClone(pack);
       changed.questions[0].wordId = "unknown-word";
       expect(() => validateClozePack(changed, entry)).toThrow();
     }
     expect(clozeLessons).toHaveLength(50);
-    expect(count).toBe(299);
+    expect(part5).toBe(299);
+    expect(count).toBeGreaterThan(part5);
+    const files = readdirSync(new URL("../../public/exercises/cloze/", import.meta.url)).sort();
+    expect(files).toEqual(clozeLessons.map((entry) => entry.url.split("/").at(-1)).sort());
   });
   it("preserves authored options and links only unique exact answer matches", () => {
     const result = convertLesson(

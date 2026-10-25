@@ -1,6 +1,6 @@
 import { readFile, writeFile, mkdir, readdir, unlink } from "node:fs/promises";
 import { createHash } from "node:crypto";
-import { convertLesson } from "./lib/cloze-content.mjs";
+import { convertLesson, createCatalogCloze } from "./lib/cloze-content.mjs";
 
 export async function buildClozeContent(words) {
   const root = new URL("../", import.meta.url);
@@ -13,21 +13,25 @@ export async function buildClozeContent(words) {
   const linked = [];
   const byKind = { "word-form-choice": 0, "cloze-choice": 0 };
   let sourceQuestions = 0;
+  let catalogQuestions = 0;
   for (const [id, data] of Object.entries(source.lessons)) {
     const lessonId = Number(id);
     if (!Number.isInteger(lessonId) || !words.some((w) => w.lesson === lessonId))
       throw new Error(`Invalid lesson: ${id}`);
     const result = convertLesson(lessonId, data.part5, words);
+    const examples = createCatalogCloze(lessonId, words);
+    const items = [...result.questions, ...examples];
+    catalogQuestions += examples.length;
     sourceQuestions += data.part5.length;
     skipped.push(...result.skipped);
     linked.push(...result.linked);
     const kinds = { "word-form-choice": 0, "cloze-choice": 0 };
-    for (const q of result.questions) {
+    for (const q of items) {
       kinds[q.kind]++;
       byKind[q.kind]++;
     }
-    const version = createHash("sha256").update(JSON.stringify(result.questions)).digest("hex").slice(0, 12);
-    const questions = result.questions.map((q) => ({ ...q, sourceVersion: version }));
+    const version = createHash("sha256").update(JSON.stringify(items)).digest("hex").slice(0, 12);
+    const questions = items.map((q) => ({ ...q, sourceVersion: version }));
     const file = `${lessonId}.${version}.json`;
     await writeFile(new URL(file, directory), JSON.stringify({ lessonId, version, questions }) + "\n");
     lessons.push({ lessonId, version, count: questions.length, kinds, url: `/exercises/cloze/${file}` });
@@ -39,6 +43,7 @@ export async function buildClozeContent(words) {
     JSON.stringify(
       {
         sourceQuestions,
+        catalogQuestions,
         count,
         byKind,
         recovered: linked.filter((entry) => entry.method === "inflection"),
@@ -50,6 +55,6 @@ export async function buildClozeContent(words) {
     ) + "\n",
   );
   console.log(
-    `Part 5: ${count} authored choices (${byKind["word-form-choice"]} word form, ${byKind["cloze-choice"]} cloze), ${skipped.length} skipped; ${linked.filter((entry) => entry.method === "inflection").length} inflection links.`,
+    `Exercises: ${count} choices (${byKind["word-form-choice"]} word form, ${byKind["cloze-choice"]} cloze; ${catalogQuestions} catalog examples), ${skipped.length} Part 5 skipped; ${linked.filter((entry) => entry.method === "inflection").length} inflection links.`,
   );
 }

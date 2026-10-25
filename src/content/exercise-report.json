@@ -1,9 +1,10 @@
 {
   "sourceQuestions": 300,
-  "count": 299,
+  "catalogQuestions": 360,
+  "count": 659,
   "byKind": {
-    "word-form-choice": 290,
-    "cloze-choice": 9
+    "word-form-choice": 299,
+    "cloze-choice": 360
   },
   "recovered": [
     {
@@ -761,7 +762,7 @@
     {
       "sourceId": "v1:part5:9:10",
       "wordId": "popularity-9",
-      "kind": "cloze-choice",
+      "kind": "word-form-choice",
       "method": "exact"
     },
     {
@@ -773,7 +774,7 @@
     {
       "sourceId": "v1:part5:9:12",
       "wordId": "revolution-9",
-      "kind": "cloze-choice",
+      "kind": "word-form-choice",
       "method": "exact"
     },
     {
@@ -989,7 +990,7 @@
     {
       "sourceId": "v1:part5:15:13",
       "wordId": "loyal-15",
-      "kind": "cloze-choice",
+      "kind": "word-form-choice",
       "method": "exact"
     },
     {
@@ -1121,7 +1122,7 @@
     {
       "sourceId": "v1:part5:19:11",
       "wordId": "efficient-19",
-      "kind": "cloze-choice",
+      "kind": "word-form-choice",
       "method": "exact"
     },
     {
@@ -1463,7 +1464,7 @@
     {
       "sourceId": "v1:part5:28:14",
       "wordId": "uniformly-28",
-      "kind": "cloze-choice",
+      "kind": "word-form-choice",
       "method": "exact"
     },
     {
@@ -2057,7 +2058,7 @@
     {
       "sourceId": "v1:part5:45:11",
       "wordId": "constantly-45",
-      "kind": "cloze-choice",
+      "kind": "word-form-choice",
       "method": "exact"
     },
     {
@@ -2081,7 +2082,7 @@
     {
       "sourceId": "v1:part5:45:15",
       "wordId": "thorough-45",
-      "kind": "cloze-choice",
+      "kind": "word-form-choice",
       "method": "exact"
     },
     {
@@ -2117,7 +2118,7 @@
     {
       "sourceId": "v1:part5:46:15",
       "wordId": "serious-46",
-      "kind": "cloze-choice",
+      "kind": "word-form-choice",
       "method": "exact"
     },
     {
@@ -2225,7 +2226,7 @@
     {
       "sourceId": "v1:part5:49:15",
       "wordId": "usually-49",
-      "kind": "cloze-choice",
+      "kind": "word-form-choice",
       "method": "exact"
     },
     {
