@@ -149,6 +149,7 @@ export default function Lessons({ lessonId: id }: { lessonId?: string }) {
             <div>
               <h2>{group.title}</h2>
               <p>
+                {group.kind === "word-form" ? "Tối đa " : ""}
                 {exercise?.kinds[group.kind === "word-form" ? "word-form-choice" : group.kind] ?? 0} câu ·{" "}
                 {group.kind === "word-form"
                   ? "Gõ đúng dạng từ trong câu, có từ gợi ý trong ngoặc."

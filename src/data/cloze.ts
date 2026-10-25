@@ -2,31 +2,44 @@ import manifest from "../content/exercise-manifest.json";
 import { catalog } from "./catalog";
 import { record, validateSnapshot } from "./validation";
 import { emptySnapshot, normalizeAnswer } from "../domain/learning";
-import type { ClozeChoiceQuestion, WordFormQuestion } from "../domain/types";
+import type { ClozeChoiceQuestion, Word, WordFormQuestion } from "../domain/types";
 
 export const clozeLessons = manifest.lessons;
-export function makeWordFormQuestions(questions: readonly ClozeChoiceQuestion[]): WordFormQuestion[] {
+export function makeWordFormQuestions(
+  questions: readonly ClozeChoiceQuestion[],
+  words: readonly Word[] = catalog.words,
+): WordFormQuestion[] {
+  const byId = new Map(words.map((word) => [word.id, word]));
   return questions
     .filter((q) => q.kind === "word-form-choice")
-    .map((q) => {
-      const cue = q.options
+    .flatMap((q): WordFormQuestion[] => {
+      const word = byId.get(q.wordId);
+      if (!word) return [];
+      const family = new Set([word.text, ...word.family.map((entry) => entry.text)].map(normalizeAnswer));
+      const selected = q.options
         .map((option) => option.trim())
-        .filter((option) => option && normalizeAnswer(option) !== normalizeAnswer(q.answer))
+        .filter(
+          (option) =>
+            option && family.has(normalizeAnswer(option)) && normalizeAnswer(option) !== normalizeAnswer(q.answer),
+        )
         .reduce(
           (shortest, option) =>
             !shortest || Array.from(option).length < Array.from(shortest).length ? option : shortest,
           "",
         );
-      if (!cue) throw new Error("Câu dạng từ thiếu từ gợi ý khác đáp án.");
-      return {
-        kind: "word-form",
-        wordId: q.wordId,
-        prompt: `${q.prompt} (${cue})`,
-        answer: q.answer,
-        options: [],
-        sourceId: q.sourceId,
-        sourceVersion: q.sourceVersion,
-      };
+      const cue = selected || (normalizeAnswer(word.text) !== normalizeAnswer(q.answer) ? word.text.trim() : "");
+      if (!cue) return [];
+      return [
+        {
+          kind: "word-form",
+          wordId: q.wordId,
+          prompt: `${q.prompt} (${cue})`,
+          answer: q.answer,
+          options: [],
+          sourceId: q.sourceId,
+          sourceVersion: q.sourceVersion,
+        },
+      ];
     });
 }
 export function validateClozePack(

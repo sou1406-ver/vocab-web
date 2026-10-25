@@ -329,7 +329,10 @@ export default function Study() {
                   {question.kind === "cloze-choice" ||
                   question.kind === "word-form-choice" ||
                   question.kind === "word-form"
-                    ? question.prompt.replace(/_{3,}/, question.answer)
+                    ? (question.kind === "word-form"
+                        ? question.prompt.replace(/\s+\([^()]*\)\s*$/, "")
+                        : question.prompt
+                      ).replace(/_{3,}/, question.answer)
                     : word.examples[0]?.text}
                 </p>
                 {question.kind !== "cloze-choice" &&

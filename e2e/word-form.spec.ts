@@ -1,6 +1,19 @@
 import { test, expect, type Page } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
+import { readFileSync } from "node:fs";
 import type { ClozeChoiceQuestion, Snapshot, WordFormQuestion } from "../src/domain/types";
+
+const manifest = JSON.parse(
+  readFileSync(new URL("../src/content/exercise-manifest.json", import.meta.url), "utf8"),
+) as {
+  lessons: { lessonId: number; url: string }[];
+};
+const authoredSources = manifest.lessons.flatMap((entry) => {
+  const pack = JSON.parse(readFileSync(new URL(`../public${entry.url}`, import.meta.url), "utf8")) as {
+    questions: ClozeChoiceQuestion[];
+  };
+  return pack.questions.map((question) => ({ lessonId: entry.lessonId, question }));
+});
 
 function readSnapshot(page: Page) {
   return page.evaluate(
@@ -66,6 +79,7 @@ test("typed word form loads on demand, keeps cues and hints across tabs, and ret
   await input.fill(question.answer);
   await input.press("Enter");
   await expect(page.getByText("Chính xác. Bạn nhớ rồi!")).toBeVisible();
+  await expect(page.locator(".feedback-example")).toHaveText(original.prompt.replace(/_{3,}/, original.answer));
   const answered = await readSnapshot(page);
   expect(answered.events.at(-1)).toMatchObject({
     id: `${state.session!.id}:0`,
@@ -95,35 +109,35 @@ test("typed word form loads on demand, keeps cues and hints across tabs, and ret
 });
 
 for (const fixture of [
-  { answer: "provides", cue: "provide", options: ["provides", "provide", "provided", "providing"], hints: 0 },
-  { answer: "will revise", cue: "revise", options: ["will revise", "revision", "revise", "revised"], hints: 0 },
-  {
-    answer: "accustomed to",
-    cue: "accustom",
-    options: ["accustomed to", "accustom", "accustomed", "accustoming"],
-    hints: 4,
-  },
+  { answer: "revolutionary", cue: "revolution", hints: 0 },
+  { answer: "efficiently", cue: "efficient", hints: 0 },
+  { answer: "seriousness", cue: "serious", hints: 0 },
+  { answer: "usual", cue: "usually", hints: 2 },
 ]) {
   test(`types the authored answer ${fixture.answer} with its cue and hint allowance`, async ({ page }) => {
+    const authored = authoredSources.find(
+      ({ question }) => question.kind === "word-form-choice" && question.answer === fixture.answer,
+    )!;
     await page.route("**/exercises/cloze/**", async (route) => {
       const response = await route.fetch();
       const pack = await response.json();
-      const first = pack.questions.find((q: ClozeChoiceQuestion) => q.kind === "word-form-choice");
-      Object.assign(first, { answer: fixture.answer, options: fixture.options, prompt: "Complete ________ here." });
+      const first = pack.questions.find((q: ClozeChoiceQuestion) => q.sourceId === authored.question.sourceId);
       pack.questions = [first, ...pack.questions.filter((q: ClozeChoiceQuestion) => q.sourceId !== first.sourceId)];
       await route.fulfill({ json: pack });
     });
-    await page.goto("/lessons/1");
+    await page.goto(`/lessons/${authored.lessonId}`);
     await page.getByRole("button", { name: "Luyện dạng từ — gõ", exact: true }).click();
     await expect(page.getByRole("heading", { name: "Gõ dạng từ phù hợp" })).toBeVisible();
-    await expect(page.locator(".question-prompt p")).toHaveText(`Complete ________ here. (${fixture.cue})`);
-    if (fixture.answer.includes(" ")) await expect(page.locator(".letter-gap")).toHaveCount(1);
+    await expect(page.locator(".question-prompt p")).toHaveText(`${authored.question.prompt} (${fixture.cue})`);
     for (let index = 0; index < fixture.hints; index++)
       await page.getByRole("button", { name: "Gợi ý một chữ" }).click();
     const input = page.getByRole("textbox", { name: "Đáp án của bạn" });
     await input.fill(fixture.answer);
     await input.press("Enter");
     await expect(page.getByText(fixture.hints ? "Gặp lại thêm một lần nhé." : "Chính xác. Bạn nhớ rồi!")).toBeVisible();
+    await expect(page.locator(".feedback-example")).toHaveText(
+      authored.question.prompt.replace(/_{3,}/, fixture.answer),
+    );
     const state = await readSnapshot(page);
     expect(state.events.at(-1)).toMatchObject({
       questionKind: "word-form",

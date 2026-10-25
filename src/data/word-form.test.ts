@@ -43,29 +43,76 @@ describe("Typed word form", () => {
     ["accustomed to", ["accustomed to", "accustomed", "accustom", "accustoming"], "accustom"],
     ["agreement", [" AGREEMENT ", " agrees ", "agreed", "agreeing"], "agrees"],
   ])("keeps the authored answer %s intact with a different shortest cue", (answer, options, cue) => {
-    const [q] = makeWordFormQuestions([{ ...source, answer, options }]);
+    const word = catalog.words.find((item) => item.id === source.wordId)!;
+    const [q] = makeWordFormQuestions(
+      [{ ...source, answer, options }],
+      [
+        {
+          ...word,
+          text: answer,
+          family: options.map((text) => ({ text, pos: "", meaning: "" })),
+        },
+      ],
+    );
     expect(q.answer).toBe(answer);
     expect(q.prompt).toBe(`${source.prompt} (${cue})`);
   });
-  it("rejects a source with no different nonempty cue", () => {
-    expect(() => makeWordFormQuestions([{ ...source, options: ["agreement", " AGREEMENT ", "", " "] }])).toThrow();
+  it("falls back to the catalog word when options contain no different family member", () => {
+    const word = { ...catalog.words.find((item) => item.id === source.wordId)!, text: "agree", family: [] };
+    const [q] = makeWordFormQuestions([{ ...source, options: ["agreement", "series", "used", "revolt"] }], [word]);
+    expect(q.prompt).toBe(`${source.prompt} (agree)`);
   });
-  it("converts all 299 authored questions without replacing inflected or multiword answers", () => {
+  it("skips a question if neither its options nor the catalog word can provide a different family cue", () => {
+    const word = { ...catalog.words.find((item) => item.id === source.wordId)!, family: [] };
+    expect(makeWordFormQuestions([{ ...source, options: ["agreement", "series", "used", "revolt"] }], [word])).toEqual(
+      [],
+    );
+  });
+  it.each([
+    ["revolutionary", "revolt", "revolution"],
+    ["efficiently", "efficacy", "efficient"],
+    ["seriousness", "series", "serious"],
+    ["usual", "used", "usually"],
+  ])("uses a catalog family cue for %s instead of the unrelated distractor %s", (answer, wrong, cue) => {
+    const questions = clozeLessons.flatMap((entry) => {
+      const pack = JSON.parse(readFileSync(new URL(`../../public${entry.url}`, import.meta.url), "utf8"));
+      return validateClozePack(pack, entry);
+    });
+    const original = questions.find((q) => q.kind === "word-form-choice" && q.answer === answer)!;
+    expect(original).toBeDefined();
+    expect(original.options).toContain(wrong);
+    const [q] = makeWordFormQuestions([original]);
+    expect(q.prompt).toBe(`${original.prompt} (${cue})`);
+    expect(q.answer).toBe(answer);
+  });
+  it("checks all 299 sources and preserves answers for every question with a usable family cue", () => {
     let count = 0;
     const phrases: string[] = [];
     for (const entry of clozeLessons) {
       const pack = JSON.parse(readFileSync(new URL(`../../public${entry.url}`, import.meta.url), "utf8"));
       const choices = validateClozePack(pack, entry).filter((q) => q.kind === "word-form-choice");
       const typed = makeWordFormQuestions(choices);
-      expect(typed.map((q) => q.answer)).toEqual(choices.map((q) => q.answer));
-      for (const [index, q] of typed.entries()) {
-        const eligible = choices[index].options.filter((option) => option !== q.answer);
-        const shortest = Math.min(...eligible.map((option) => Array.from(option.trim()).length));
-        const cue = eligible.find((option) => Array.from(option.trim()).length === shortest)!.trim();
-        expect(q.prompt).toBe(`${choices[index].prompt} (${cue})`);
-        if (q.answer.includes(" ")) phrases.push(q.answer);
+      for (const original of choices) {
+        const word = catalog.words.find((item) => item.id === original.wordId)!;
+        const family = [word.text, ...word.family.map((item) => item.text)].map((text) => text.trim().toLowerCase());
+        const eligible = original.options.filter(
+          (option) => option !== original.answer && family.includes(option.trim().toLowerCase()),
+        );
+        const q = typed.find((item) => item.sourceId === original.sourceId);
+        if (!eligible.length && word.text === original.answer) {
+          expect(q).toBeUndefined();
+          continue;
+        }
+        expect(q).toBeDefined();
+        expect(q!.answer).toBe(original.answer);
+        const cue = q!.prompt.slice(original.prompt.length + 2, -1);
+        expect(family).toContain(cue.toLowerCase());
+        expect(cue.toLowerCase()).not.toBe(q!.answer.toLowerCase());
+        if (eligible.length) expect(cue.length).toBe(Math.min(...eligible.map((option) => option.trim().length)));
+        else expect(cue).toBe(word.text);
+        if (q!.answer.includes(" ")) phrases.push(q!.answer);
       }
-      count += typed.length;
+      count += choices.length;
     }
     expect(count).toBe(299);
     expect(phrases.sort()).toEqual(["accustomed to", "built up"]);
