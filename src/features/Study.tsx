@@ -159,7 +159,7 @@ export default function Study() {
       </div>
     );
   const feedback = session.feedback;
-  const typed = question.kind === "cloze" || question.kind === "recall";
+  const typed = question.kind === "cloze" || question.kind === "recall" || question.kind === "word-form";
   const typedValue = projectRevealed(input, question.answer, revealed);
   const hintLimit = hintAllowance(question.answer);
   const hintIndex = Array.from(question.answer).findIndex(
@@ -207,9 +207,11 @@ export default function Study() {
                 ? "Chọn từ phù hợp"
                 : question.kind === "word-form-choice"
                   ? "Chọn dạng từ phù hợp"
-                  : question.kind === "cloze" || question.kind === "cloze-choice"
-                    ? "Điền từ còn thiếu"
-                    : "Bạn nhớ từ nào?"}
+                  : question.kind === "word-form"
+                    ? "Gõ dạng từ phù hợp"
+                    : question.kind === "cloze" || question.kind === "cloze-choice"
+                      ? "Điền từ còn thiếu"
+                      : "Bạn nhớ từ nào?"}
         </h1>
       </div>
       <section className="study-card" aria-label="Nội dung lượt học">
@@ -226,7 +228,7 @@ export default function Study() {
         ) : (
           <>
             <div
-              className={`question-prompt ${question.kind === "cloze" || question.kind === "cloze-choice" || question.kind === "word-form-choice" ? "sentence-prompt" : ""}`}
+              className={`question-prompt ${question.kind === "cloze" || question.kind === "cloze-choice" || question.kind === "word-form-choice" || question.kind === "word-form" ? "sentence-prompt" : ""}`}
             >
               <span className="small-label">
                 {question.kind === "meaning"
@@ -235,16 +237,18 @@ export default function Study() {
                     ? "CHỌN TỪ TIẾNG ANH PHÙ HỢP"
                     : question.kind === "word-form-choice"
                       ? "CHỌN DẠNG TỪ PHÙ HỢP"
-                      : question.kind === "cloze" || question.kind === "cloze-choice"
-                        ? "HOÀN THÀNH CÂU TIẾNG ANH"
-                        : "VIẾT TỪ TIẾNG ANH CÓ NGHĨA"}
+                      : question.kind === "word-form"
+                        ? "VIẾT DẠNG TỪ PHÙ HỢP"
+                        : question.kind === "cloze" || question.kind === "cloze-choice"
+                          ? "HOÀN THÀNH CÂU TIẾNG ANH"
+                          : "VIẾT TỪ TIẾNG ANH CÓ NGHĨA"}
               </span>
               <p lang={question.kind === "recall" || question.kind === "word-choice" ? "vi" : "en"}>
                 {question.prompt}
               </p>
-              {question.kind !== "cloze-choice" && question.kind !== "word-form-choice" && (
-                <span className="pos">{word.pos}</span>
-              )}
+              {question.kind !== "cloze-choice" &&
+                question.kind !== "word-form-choice" &&
+                question.kind !== "word-form" && <span className="pos">{word.pos}</span>}
             </div>
             {question.kind === "meaning" ||
             question.kind === "cloze-choice" ||
@@ -322,12 +326,15 @@ export default function Study() {
                   Đáp án: <strong lang={question.kind === "meaning" ? "vi" : "en"}>{question.answer}</strong>
                 </p>
                 <p className="feedback-example" lang="en">
-                  {question.kind === "cloze-choice" || question.kind === "word-form-choice"
+                  {question.kind === "cloze-choice" ||
+                  question.kind === "word-form-choice" ||
+                  question.kind === "word-form"
                     ? question.prompt.replace(/_{3,}/, question.answer)
                     : word.examples[0]?.text}
                 </p>
                 {question.kind !== "cloze-choice" &&
                   question.kind !== "word-form-choice" &&
+                  question.kind !== "word-form" &&
                   word.examples[0]?.translation && <p className="muted">{word.examples[0].translation}</p>}
                 <button className="button primary" ref={nextRef} disabled={busy} onClick={() => void advance()}>
                   {session.index + 1 === session.questions.length ? "Xem kết quả" : "Từ tiếp theo"}

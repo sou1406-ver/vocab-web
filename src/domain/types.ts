@@ -53,9 +53,16 @@ export type ClozeChoiceQuestion = QuestionBase & {
   sourceVersion: string;
 };
 export type RecognitionQuestion = QuestionBase & { kind: "meaning" | "word-choice"; options: string[] };
+export type WordFormQuestion = QuestionBase & {
+  kind: "word-form";
+  options?: [];
+  sourceId?: string;
+  sourceVersion?: string;
+};
 export type Question =
   | ClozeChoiceQuestion
   | RecognitionQuestion
+  | WordFormQuestion
   // Empty options are a schema-2 compatibility field, never selectable answers.
   | (QuestionBase & { kind: "cloze"; options?: [] })
   | (QuestionBase & { kind: "recall"; options?: [] });

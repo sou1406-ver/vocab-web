@@ -7,14 +7,14 @@ import { useApp } from "../state/provider";
 import { Icon, ProgressBar, Empty } from "../shared/ui";
 import { statusOf, makeRecognitionQuestions } from "../domain/learning";
 import { useWord } from "../app/context";
-import { clozeLessons, loadClozeLesson } from "../data/cloze";
+import { clozeLessons, loadClozeLesson, makeWordFormQuestions } from "../data/cloze";
 import { shuffleSeeded } from "../domain/random";
 
 export default function Lessons({ lessonId: id }: { lessonId?: string }) {
   const { data, start, startExercises, busy } = useApp();
   const [topic, setTopic] = useState("all");
   const [loading, setLoading] = useState(false);
-  const [loadingKind, setLoadingKind] = useState<"cloze-choice" | "word-form-choice" | null>(null);
+  const [loadingKind, setLoadingKind] = useState<"cloze-choice" | "word-form-choice" | "word-form" | null>(null);
   const [loadError, setLoadError] = useState("");
   const [recognitionError, setRecognitionError] = useState("");
   const request = useRef<AbortController | null>(null);
@@ -41,7 +41,7 @@ export default function Lessons({ lessonId: id }: { lessonId?: string }) {
     );
   if (lesson) {
     const exercise = clozeLessons.find((entry) => entry.lessonId === lesson.id);
-    const practiceCloze = async (kind: "cloze-choice" | "word-form-choice") => {
+    const practiceCloze = async (kind: "cloze-choice" | "word-form-choice" | "word-form") => {
       if (active) return router.push("/study");
       const controller = new AbortController();
       request.current?.abort();
@@ -50,17 +50,20 @@ export default function Lessons({ lessonId: id }: { lessonId?: string }) {
       setLoadingKind(kind);
       setLoadError("");
       try {
-        const questions = (await loadClozeLesson(lesson.id, controller.signal)).filter((q) => q.kind === kind);
+        const sourceKind = kind === "word-form" ? "word-form-choice" : kind;
+        const questions = (await loadClozeLesson(lesson.id, controller.signal)).filter((q) => q.kind === sourceKind);
         if (
           !controller.signal.aborted &&
           (await startExercises(
             (sessionId) =>
-              questions.map((q) =>
-                q.kind === "cloze-choice"
-                  ? { ...q, options: shuffleSeeded(q.options, `${sessionId}:${q.sourceId}`) }
-                  : q,
-              ),
-            `${kind === "word-form-choice" ? "Dạng từ" : "Điền chỗ trống"} · ${lesson.title}`,
+              kind === "word-form"
+                ? makeWordFormQuestions(questions)
+                : questions.map((q) =>
+                    q.kind === "cloze-choice"
+                      ? { ...q, options: shuffleSeeded(q.options, `${sessionId}:${q.sourceId}`) }
+                      : q,
+                  ),
+            `${kind === "cloze-choice" ? "Điền chỗ trống" : kind === "word-form" ? "Dạng từ · Gõ" : "Dạng từ"} · ${lesson.title}`,
           ))
         )
           router.push("/study");
@@ -139,14 +142,19 @@ export default function Lessons({ lessonId: id }: { lessonId?: string }) {
           [
             { kind: "cloze-choice", title: "Điền chỗ trống", button: "Luyện điền chỗ trống" },
             { kind: "word-form-choice", title: "Dạng từ", button: "Luyện dạng từ" },
+            { kind: "word-form", title: "Dạng từ — gõ", button: "Luyện dạng từ — gõ" },
           ] as const
         ).map((group) => (
           <section className="panel cloze-practice" aria-label={group.title} key={group.kind}>
             <div>
               <h2>{group.title}</h2>
               <p>
-                {exercise?.kinds[group.kind] ?? 0} câu ·{" "}
-                {group.kind === "word-form-choice" ? "Chọn đúng dạng từ trong câu." : "Chọn từ phù hợp trong câu."}{" "}
+                {exercise?.kinds[group.kind === "word-form" ? "word-form-choice" : group.kind] ?? 0} câu ·{" "}
+                {group.kind === "word-form"
+                  ? "Gõ đúng dạng từ trong câu, có từ gợi ý trong ngoặc."
+                  : group.kind === "word-form-choice"
+                    ? "Chọn đúng dạng từ trong câu."
+                    : "Chọn từ phù hợp trong câu."}{" "}
                 Luyện thêm không tăng bậc ôn.
               </p>
               {loadError && loadingKind === group.kind && <p role="alert">{loadError}</p>}
@@ -154,7 +162,12 @@ export default function Lessons({ lessonId: id }: { lessonId?: string }) {
             </div>
             <button
               className="button secondary"
-              disabled={busy || loading || Boolean(active) || !exercise?.kinds[group.kind]}
+              disabled={
+                busy ||
+                loading ||
+                Boolean(active) ||
+                !exercise?.kinds[group.kind === "word-form" ? "word-form-choice" : group.kind]
+              }
               onClick={() => void practiceCloze(group.kind)}
             >
               {loading && loadingKind === group.kind ? "Đang tải bài tập…" : group.button}

@@ -1,10 +1,34 @@
 import manifest from "../content/exercise-manifest.json";
 import { catalog } from "./catalog";
 import { record, validateSnapshot } from "./validation";
-import { emptySnapshot } from "../domain/learning";
-import type { ClozeChoiceQuestion } from "../domain/types";
+import { emptySnapshot, normalizeAnswer } from "../domain/learning";
+import type { ClozeChoiceQuestion, WordFormQuestion } from "../domain/types";
 
 export const clozeLessons = manifest.lessons;
+export function makeWordFormQuestions(questions: readonly ClozeChoiceQuestion[]): WordFormQuestion[] {
+  return questions
+    .filter((q) => q.kind === "word-form-choice")
+    .map((q) => {
+      const cue = q.options
+        .map((option) => option.trim())
+        .filter((option) => option && normalizeAnswer(option) !== normalizeAnswer(q.answer))
+        .reduce(
+          (shortest, option) =>
+            !shortest || Array.from(option).length < Array.from(shortest).length ? option : shortest,
+          "",
+        );
+      if (!cue) throw new Error("Câu dạng từ thiếu từ gợi ý khác đáp án.");
+      return {
+        kind: "word-form",
+        wordId: q.wordId,
+        prompt: `${q.prompt} (${cue})`,
+        answer: q.answer,
+        options: [],
+        sourceId: q.sourceId,
+        sourceVersion: q.sourceVersion,
+      };
+    });
+}
 export function validateClozePack(
   value: unknown,
   expected: { lessonId: number; version: string; count: number },

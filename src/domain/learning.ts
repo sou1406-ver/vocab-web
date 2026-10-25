@@ -76,7 +76,8 @@ export function revealQuestionLetter(snapshot: Snapshot, sessionId: string, inde
   if (!session || session.id !== sessionId || session.index !== index || session.phase !== "question")
     throw new Error("Lượt học đã thay đổi. Hãy mở lại câu hiện tại.");
   const q = session.questions[index];
-  if (q.kind !== "recall" && q.kind !== "cloze") throw new Error("Câu này không dùng gợi ý chữ.");
+  if (q.kind !== "recall" && q.kind !== "cloze" && q.kind !== "word-form")
+    throw new Error("Câu này không dùng gợi ý chữ.");
   const revealed = session.revealed ?? [];
   const next = Array.from(q.answer).findIndex((char, position) => /\p{L}/u.test(char) && !revealed.includes(position));
   if (next < 0) return snapshot;
@@ -254,7 +255,7 @@ export function answerQuestion(
   if (snapshot.events.some((event) => event.id === id)) return snapshot;
   const q = session.questions[index];
   const hintCount = session.revealed?.length ?? 0;
-  const hintLimit = q.kind === "recall" || q.kind === "cloze" ? hintAllowance(q.answer) : 0;
+  const hintLimit = q.kind === "recall" || q.kind === "cloze" || q.kind === "word-form" ? hintAllowance(q.answer) : 0;
   assisted = assisted || Boolean(session.peeked) || hintCount > hintLimit;
   const correct = !assisted && normalizeAnswer(input) === normalizeAnswer(q.answer);
   const day = dayKey(at, snapshot.settings.timezone);
@@ -270,7 +271,9 @@ export function answerQuestion(
     questionId: id,
     questionKind: q.kind,
     contentVersion: session.contentVersion,
-    ...(q.kind === "cloze-choice" || q.kind === "word-form-choice"
+    ...((q.kind === "cloze-choice" || q.kind === "word-form-choice" || q.kind === "word-form") &&
+    q.sourceId &&
+    q.sourceVersion
       ? { sourceQuestionId: q.sourceId, sourceVersion: q.sourceVersion }
       : {}),
     skill: "vocabulary",

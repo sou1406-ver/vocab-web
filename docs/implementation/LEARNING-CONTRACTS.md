@@ -6,13 +6,14 @@ Ngày 25/10/2026. Đọc tài liệu này để phân biệt thay đổi đã ch
 
 `src/domain/types.ts` dùng union cho các kind đang hoạt động:
 
-| Dạng             | Dữ liệu riêng                              | Hành vi hiện có                                   |
-| ---------------- | ------------------------------------------ | ------------------------------------------------- |
-| meaning          | options bắt buộc                           | Chọn một nghĩa                                    |
-| cloze            | Không có danh sách đáp án chọn             | Nhập từ còn thiếu                                 |
-| recall           | Không có danh sách đáp án chọn             | Nhập từ từ gợi ý nghĩa                            |
-| cloze-choice     | options và sourceId/sourceVersion bắt buộc | Chọn đáp án cho câu khuyết biên soạn sẵn          |
-| word-form-choice | options và sourceId/sourceVersion bắt buộc | Chọn dạng từ; ít nhất ba lựa chọn cùng gốc/family |
+| Dạng             | Dữ liệu riêng                                         | Hành vi hiện có                                   |
+| ---------------- | ----------------------------------------------------- | ------------------------------------------------- |
+| meaning          | options bắt buộc                                      | Chọn một nghĩa                                    |
+| cloze            | Không có danh sách đáp án chọn                        | Nhập từ còn thiếu                                 |
+| recall           | Không có danh sách đáp án chọn                        | Nhập từ từ gợi ý nghĩa                            |
+| cloze-choice     | options và sourceId/sourceVersion bắt buộc            | Chọn đáp án cho câu khuyết biên soạn sẵn          |
+| word-form-choice | options và sourceId/sourceVersion bắt buộc            | Chọn dạng từ; ít nhất ba lựa chọn cùng gốc/family |
+| word-form        | Không có đáp án chọn; sourceId/sourceVersion optional | Gõ dạng từ trong câu khuyết kèm từ gợi ý          |
 
 Các kind cùng có wordId, prompt và answer. Không thêm type Listening/Match/Build giả khi chưa có renderer, scorer và dữ liệu kiểm chứng. Khi triển khai một dạng, thêm nhánh union riêng và validator tương ứng; không nhét pairs/audio/tokens vào prompt.
 
@@ -24,19 +25,19 @@ Các kind cùng có wordId, prompt và answer. Không thêm type Listening/Match
 
 Ngoài kết quả/assisted/mode đã có, đáp án mới lưu:
 
-| Field            | Ý nghĩa                                                                 |
-| ---------------- | ----------------------------------------------------------------------- |
-| questionKind     | meaning, word-choice, cloze, recall, cloze-choice hoặc word-form-choice |
-| questionId       | sessionId:index; định danh lần xuất hiện câu hỏi trong lượt             |
-| contentVersion   | Luôn là phiên bản catalog của session cho mọi kind                      |
-| skill            | vocabulary cho các dạng đang triển khai                                 |
-| scoringVersion   | 2 cho event mới; vẫn đọc event scoringVersion 1                         |
-| sourceQuestionId | ID câu nguồn cho hai dạng biên soạn, dạng v1:part5:bài:số-câu           |
-| sourceVersion    | Phiên bản gói câu biên soạn, tách khỏi contentVersion                   |
-| hintCount        | Số chữ đã lộ trong câu, lưu cùng event scoringVersion 2                 |
-| hintLimit        | floor(số chữ cái của đáp án × 0.3), không có mức tối thiểu              |
+| Field            | Ý nghĩa                                                                            |
+| ---------------- | ---------------------------------------------------------------------------------- |
+| questionKind     | meaning, word-choice, cloze, recall, cloze-choice, word-form-choice hoặc word-form |
+| questionId       | sessionId:index; định danh lần xuất hiện câu hỏi trong lượt                        |
+| contentVersion   | Luôn là phiên bản catalog của session cho mọi kind                                 |
+| skill            | vocabulary cho các dạng đang triển khai                                            |
+| scoringVersion   | 2 cho event mới; vẫn đọc event scoringVersion 1                                    |
+| sourceQuestionId | ID câu nguồn cho hai dạng biên soạn, dạng v1:part5:bài:số-câu                      |
+| sourceVersion    | Phiên bản gói câu biên soạn, tách khỏi contentVersion                              |
+| hintCount        | Số chữ đã lộ trong câu, lưu cùng event scoringVersion 2                            |
+| hintLimit        | floor(số chữ cái của đáp án × 0.3), không có mức tối thiểu                         |
 
-questionId định danh lần xuất hiện trong session; sourceQuestionId liên kết câu nguồn xuyên session cho cloze-choice/word-form-choice. Chưa lưu toàn bộ câu hỏi hoặc câu trả lời người dùng trong event; do đó chưa đủ để phân tích cụ thể từng distractor sau khi session cũ được thay.
+questionId định danh lần xuất hiện trong session; sourceQuestionId liên kết câu nguồn xuyên session cho cloze-choice/word-form-choice/word-form. Chưa lưu toàn bộ câu hỏi hoặc câu trả lời người dùng trong event; do đó chưa đủ để phân tích cụ thể từng distractor sau khi session cũ được thay.
 
 Các field mới optional trong type lưu trữ để đọc event cũ; đường ghi mới luôn điền đầy đủ. Validator kiểm tra giá trị khi field có mặt. Không tự đoán kind/skill của event lịch sử từ từ vựng hoặc mode. Nếu thống kê theo dạng về sau, event thiếu kind nằm trong nhóm “không xác định”.
 
@@ -76,7 +77,7 @@ Còn cần chốt khi viết migration: cách hiển thị “nhớ ổn định
 
 `LetterSlotsInput` đã được tạo ở `src/components/LetterSlotsInput.tsx` và dùng cho recall/cloze nhập chữ hiện có. Dùng một input native với các ô hiển thị để hỗ trợ dán văn bản, chọn/xóa, phím mũi tên, Enter, bấm ô để sửa và cụm có khoảng trắng; giữ label/focus và bố cục mobile. Phần nhập dư vẫn hiện để sửa, không bị cắt theo độ dài đáp án. Các ô không hiện sẵn chữ đáp án.
 
-Component này dùng lại cho mức gõ dạng từ và nghe khi triển khai; hiện dạng từ đã có mức chọn, chưa có mức gõ và chưa có bài nghe. Đây là component nhập đáp án, không phải một skill riêng. Các dạng trong bảng chưa được triển khai đầy đủ; mục 1 mô tả code đang chạy. `cloze` vẫn là nhập chữ, còn `cloze-choice` là dạng chọn mới. Chưa migrate lịch ôn sang hai skill.
+Component này đã dùng cho mức gõ dạng từ; phần nghe chưa triển khai. Đây là component nhập đáp án, không phải một skill riêng. Các dạng trong bảng chưa được triển khai đầy đủ; mục 1 mô tả code đang chạy. `cloze` vẫn là nhập chữ, còn `cloze-choice` là dạng chọn mới. Chưa migrate lịch ôn sang hai skill.
 
 `LetterSlotsInput` nhận prop `revealed` để khóa chữ gợi ý. Vị trí chữ đã lộ được lưu ngay trong session, đồng bộ tab và giữ khi reload; sang câu mới mới reset. Hạn mức là `floor(số chữ cái × 0.3)`, không tính dấu cách/dấu câu và không đặt mức tối thiểu: 3 chữ → 0, 5 chữ → 1, 10 chữ → 3. Bấm gợi ý vẫn được lộ thêm chữ sau hạn mức; đây là ngưỡng chấm, không phải số lần tối đa có thể bấm.
 
@@ -104,6 +105,12 @@ Kiểm tra dữ liệu nguồn hiện tại:
 Hướng nạp đề xuất: manifest nhỏ gồm ID bộ/bài, phiên bản/hash và đường dẫn gói; exercises tách theo lesson/review, everyday chia theo nhóm, affixes là nguồn tra riêng. Chỉ tải gói khi mở dạng bài liên quan. Catalog lõi không import tất cả gói. ID câu nguồn cần ổn định khi sửa lỗi chính tả; phiên bản nội dung thay đổi độc lập với ID.
 
 **Part 5 đã phân loại lại:** builder nhận 299 câu hợp lệ trong 50 gói. Ít nhất ba trong bốn options cùng family/gốc của từ liên kết (kể cả biến tố và biến đổi hình thái có luật) thì là dạng từ; dưới ngưỡng đó thì giữ cloze. UI có hai nút “Luyện dạng từ” và “Luyện điền chỗ trống”, chỉ mở các câu đúng nhãn, event giữ đúng questionKind.
+
+**Mức gõ dạng từ:** nút “Luyện dạng từ — gõ” dùng lại các câu `word-form-choice` đã tải, chuyển thành `word-form` khi bắt đầu lượt. Đề là câu khuyết kèm `(từ gợi ý)` ở cuối; từ gợi ý lấy từ option ngắn nhất khác đáp án đúng, so sánh không phân biệt hoa/thường và khoảng trắng ngoài. Nếu bằng độ dài thì giữ thứ tự options nguồn. Không lấy từ chính trong catalog làm gợi ý. Đáp án nguồn giữ nguyên, kể cả biến tố và cụm nhiều từ; options của câu gõ được ghi `[]` và validator cũng nhận trường bị lược bỏ.
+
+Câu mới luôn giữ `sourceId` và `sourceVersion` của Part 5. Hai field này optional trong type `word-form`; validator chấp nhận cùng thiếu hoặc cùng có giá trị hợp lệ. Event mới ghi `questionKind: word-form`, `sourceQuestionId`/`sourceVersion` khi có metadata nguồn, contentVersion của catalog và scoringVersion 2. Không thêm field cue vào snapshot: phần gợi ý nằm trong prompt đã lưu, nên reload/retry giữ nguyên đề. Validator tiếp tục đọc câu/event cũ; giữ schemaVersion 2, ID event sessionId:index, fingerprint catalog và tên IndexedDB.
+
+Mức gõ chạy practice, dùng `LetterSlotsInput` và cùng luật gợi ý `floor(số chữ cái × 0.3)` của recall/cloze: trong hạn mức vẫn được chấm đúng, vượt hạn thì assisted. Không tăng box, đổi dueAt/reviewedDay hoặc tạo tiến độ từ mới. Gợi ý đã lộ được lưu trong session, đồng bộ tab và reset khi sang câu mới.
 
 Đáp án được đối chiếu với từ chính/family trong đúng bài, có quy tắc số nhiều, chia động từ, trường hợp bất quy tắc và gốc cụm động từ. Nếu khớp từ hai wordId trở lên vẫn bỏ qua, kể cả một trong hai là khớp chính xác. Không chọn wordId chỉ bằng tiền tố giống nhau. Phân loại family có thêm quy tắc tạo từ và danh sách biến đổi chính tả không đều trong `scripts/lib/word-forms.mjs`; các mở rộng phân loại không được dùng tùy tiện để đoán liên kết đáp án.
 

@@ -7,7 +7,7 @@ export function record(value: unknown): Record<string, unknown> {
 const number = (v: unknown) => typeof v === "number" && Number.isFinite(v) && v >= 0 && v <= 8_640_000_000_000_000;
 const string = (v: unknown) => typeof v === "string";
 const nonempty = (v: unknown) => typeof v === "string" && v.trim().length > 0 && v.length <= 500;
-const questionKinds = ["meaning", "cloze", "recall", "cloze-choice", "word-form-choice", "word-choice"];
+const questionKinds = ["meaning", "cloze", "recall", "cloze-choice", "word-form-choice", "word-choice", "word-form"];
 const count = (value: unknown) => Number.isSafeInteger(value) && number(value);
 const day = (v: unknown) => string(v) && /^\d{4}-\d{2}-\d{2}$/.test(v as string);
 const safeId = (v: string) => v !== "__proto__" && v !== "constructor" && v !== "prototype";
@@ -173,9 +173,17 @@ export function validateSnapshot(value: unknown): Snapshot {
         fail();
       // Accept omission, but writers retain [] while schema-2 clients may still be open.
       if (
-        (q.kind === "cloze" || q.kind === "recall") &&
+        (q.kind === "cloze" || q.kind === "recall" || q.kind === "word-form") &&
         q.options !== undefined &&
         (!Array.isArray(q.options) || q.options.length !== 0)
+      )
+        fail();
+      if (
+        q.kind === "word-form" &&
+        ((q.prompt as string).match(/_{3,}/g)?.length !== 1 ||
+          (q.sourceId !== undefined && !nonempty(q.sourceId)) ||
+          (q.sourceVersion !== undefined && !nonempty(q.sourceVersion)) ||
+          (q.sourceId === undefined) !== (q.sourceVersion === undefined))
       )
         fail();
       if (
@@ -205,7 +213,7 @@ export function validateSnapshot(value: unknown): Snapshot {
           (position) =>
             Number.isInteger(position) && position >= 0 && position < chars.length && /\p{L}/u.test(chars[position]),
         ) ||
-        (session.revealed.length && q.kind !== "recall" && q.kind !== "cloze")
+        (session.revealed.length && q.kind !== "recall" && q.kind !== "cloze" && q.kind !== "word-form")
       )
         fail();
     }
