@@ -8,6 +8,7 @@ import { Icon, ProgressBar, Empty } from "../shared/ui";
 import { statusOf, makeRecognitionQuestions } from "../domain/learning";
 import { useWord } from "../app/context";
 import { clozeLessons, loadClozeLesson } from "../data/cloze";
+import { shuffleSeeded } from "../domain/random";
 
 export default function Lessons({ lessonId: id }: { lessonId?: string }) {
   const { data, start, startExercises, busy } = useApp();
@@ -53,7 +54,12 @@ export default function Lessons({ lessonId: id }: { lessonId?: string }) {
         if (
           !controller.signal.aborted &&
           (await startExercises(
-            questions,
+            (sessionId) =>
+              questions.map((q) =>
+                q.kind === "cloze-choice"
+                  ? { ...q, options: shuffleSeeded(q.options, `${sessionId}:${q.sourceId}`) }
+                  : q,
+              ),
             `${kind === "word-form-choice" ? "Dạng từ" : "Điền chỗ trống"} · ${lesson.title}`,
           ))
         )
