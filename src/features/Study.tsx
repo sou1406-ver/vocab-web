@@ -13,6 +13,8 @@ import { hintAllowance, revealQuestionLetter, questionAnswerText } from "../doma
 import { shuffleSeeded } from "../domain/random";
 import { BuildAnswer } from "../components/BuildAnswer";
 import { singleWordMatch } from "../domain/word-match";
+import { MatchBoard } from "../components/MatchBoard";
+import { makeMatchQuestions } from "../data/match";
 
 export default function Study() {
   const { data, busy, advance, answer, finish, start, startExercises, change } = useApp();
@@ -47,10 +49,21 @@ export default function Study() {
   const events = data.events.filter((e) => e.sessionId === session.id);
   const correct = events.filter((e) => e.correct).length;
   if (session.phase === "complete") {
+    const isMatch = session.questions[0].kind === "match";
     const wrongWords = [...new Set(events.filter((e) => !e.correct).map((e) => e.wordId))]
       .map((id) => all.find((w) => w.id === id))
       .filter((w): w is Word => Boolean(w));
     const retry = async () => {
+      if (isMatch) {
+        const word = catalog.words.find((w) => w.id === session.questions[0].wordId);
+        const topic = catalog.lessons.find((lesson) => lesson.id === word?.lesson)?.topicId;
+        if (
+          topic &&
+          (await startExercises((id) => makeMatchQuestions(catalog, topic, data.progress, id), session.title))
+        )
+          router.push("/study");
+        return;
+      }
       const questions =
         session.mode === "practice"
           ? session.questions.filter((_, index) => events.some((e) => !e.correct && e.id === `${session.id}:${index}`))
@@ -92,7 +105,7 @@ export default function Study() {
             {correct}
             <span>/{events.length}</span>
           </b>
-          <p>câu tự trả lời đúng</p>
+          <p>{isMatch ? "cặp đúng từ lần đầu" : "câu tự trả lời đúng"}</p>
         </div>
         <div className="result-notes">
           <span>
@@ -120,12 +133,12 @@ export default function Study() {
           </section>
         )}
         <div className="result-actions">
-          {wrongWords.length > 0 && (
+          {(wrongWords.length > 0 || isMatch) && (
             <button className="button primary" onClick={() => void retry()} disabled={busy}>
-              Luyện lại từ vừa sai <Icon name="repeat" size={18} />
+              {isMatch ? "Nối bảng mới" : "Luyện lại từ vừa sai"} <Icon name="repeat" size={18} />
             </button>
           )}
-          <Link className={`button ${wrongWords.length ? "secondary" : "primary"}`} href="/">
+          <Link className={`button ${wrongWords.length || isMatch ? "secondary" : "primary"}`} href="/">
             Hoàn tất <Icon name="check" size={18} />
           </Link>
           <Link className="text-link" href="/lessons">
@@ -153,6 +166,7 @@ export default function Study() {
       </div>
     );
   const question = session.questions[session.index];
+  if (question.kind === "match") return <MatchBoard key={`${session.id}:${session.index}`} session={session} />;
   const word = all.find((w) => w.id === question.wordId);
   if (!word)
     return (

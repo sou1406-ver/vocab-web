@@ -76,12 +76,20 @@ export type BuildQuestion = Omit<QuestionBase, "answer"> & {
   sourceVersion?: string;
   options?: [];
 };
+export type MatchQuestion = QuestionBase & {
+  kind: "match";
+  groupId?: string;
+  sourceId?: string;
+  sourceVersion?: string;
+  options?: [];
+};
 export type Question =
   | ClozeChoiceQuestion
   | RecognitionQuestion
   | SynonymQuestion
   | WordFormQuestion
   | BuildQuestion
+  | MatchQuestion
   // Empty options are a schema-2 compatibility field, never selectable answers.
   | (QuestionBase & { kind: "cloze"; options?: [] })
   | (QuestionBase & { kind: "recall"; options?: [] });
@@ -106,6 +114,7 @@ export interface StudySession {
   peeked?: boolean;
   revealed?: number[];
   returnTo?: string;
+  matchMistakes?: number[];
 }
 export interface AnswerEvent {
   id: string;
@@ -121,7 +130,7 @@ export interface AnswerEvent {
   questionKind?: Question["kind"];
   contentVersion?: string;
   skill?: "vocabulary";
-  scoringVersion?: 1 | 2 | 3;
+  scoringVersion?: 1 | 2 | 3 | 4;
   sourceQuestionId?: string;
   sourceVersion?: string;
   hintCount?: number;

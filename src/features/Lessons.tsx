@@ -11,6 +11,7 @@ import { clozeLessons, loadClozeLesson, makeWordFormQuestions } from "../data/cl
 import { shuffleSeeded } from "../domain/random";
 import { makeBuildQuestions } from "../data/build";
 import { makeSynonymQuestions } from "../data/synonyms";
+import { makeMatchQuestions } from "../data/match";
 
 export default function Lessons({ lessonId: id }: { lessonId?: string }) {
   const { data, start, startExercises, busy } = useApp();
@@ -21,6 +22,7 @@ export default function Lessons({ lessonId: id }: { lessonId?: string }) {
   const [recognitionError, setRecognitionError] = useState("");
   const [buildError, setBuildError] = useState("");
   const [synonymError, setSynonymError] = useState("");
+  const [matchError, setMatchError] = useState("");
   const request = useRef<AbortController | null>(null);
   useEffect(
     () => () => {
@@ -298,6 +300,21 @@ export default function Lessons({ lessonId: id }: { lessonId?: string }) {
     );
   }
   const visible = catalog.lessons.filter((l) => topic === "all" || l.topicId === topic);
+  const practiceMatch = async (topicId: string) => {
+    if (active) return router.push("/study");
+    setMatchError("");
+    try {
+      if (
+        await startExercises(
+          (id) => makeMatchQuestions(catalog, topicId, data.progress, id),
+          `Nối từ · ${catalog.topics.find((item) => item.id === topicId)?.title ?? topicId}`,
+        )
+      )
+        router.push("/study");
+    } catch (error) {
+      setMatchError(error instanceof Error ? error.message : "Chưa mở được bảng nối từ.");
+    }
+  };
   return (
     <div className="page">
       <div className="page-heading">
@@ -326,6 +343,34 @@ export default function Lessons({ lessonId: id }: { lessonId?: string }) {
         </select>
         <span className="muted">{visible.length} bài học</span>
       </div>
+      <section className="topic-match-section" aria-label="Nối từ theo chủ đề">
+        <div className="section-heading">
+          <h2>Nối từ theo chủ đề</h2>
+          <span className="muted">6 cặp · Luyện thêm không tăng bậc ôn</span>
+        </div>
+        <div className="topic-match-grid">
+          {catalog.topics
+            .filter((item) => topic === "all" || item.id === topic)
+            .map((item) => (
+              <div className="panel topic-match-card" key={item.id}>
+                <h3>{item.title}</h3>
+                <button
+                  className="button secondary"
+                  aria-label={`Nối từ: ${item.title}`}
+                  disabled={busy}
+                  onClick={() => void practiceMatch(item.id)}
+                >
+                  Nối từ <Icon name="arrow" size={16} />
+                </button>
+              </div>
+            ))}
+        </div>
+        {matchError && (
+          <p className="inline-error" role="alert">
+            {matchError}
+          </p>
+        )}
+      </section>
       <div className="lesson-grid">
         {visible.map((l) => {
           const words = catalog.words.filter((w) => w.lesson === l.id);

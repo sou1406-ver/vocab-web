@@ -17,8 +17,9 @@ Ngày 25/10/2026. Đọc tài liệu này để phân biệt thay đổi đã ch
 | build            | answer là mảng mảnh đúng thứ tự; tiles là ngân hàng mảnh | Ghép gốc + phụ tố theo nghĩa Việt và từ loại          |
 | synonym-choice   | options bắt buộc; direction optional                     | Chọn đồng nghĩa hoặc trái nghĩa có nhãn rõ ràng       |
 | synonym-context  | options bắt buộc; target/direction optional              | Chọn gần nghĩa trong câu giữ nguyên, gạch chân từ gốc |
+| match            | groupId/sourceId/sourceVersion optional                  | Sáu question riêng hiện chung một bảng nối từ         |
 
-Các kind cùng có wordId, prompt và answer. Answer của Build là mảng chuỗi; các dạng khác giữ chuỗi như cũ. Không thêm type Listening/Match giả khi chưa có renderer, scorer và dữ liệu kiểm chứng. Khi triển khai một dạng, thêm nhánh union riêng và validator tương ứng; không nhét pairs/audio/tokens vào prompt.
+Các kind cùng có wordId, prompt và answer. Answer của Build là mảng chuỗi; các dạng khác giữ chuỗi như cũ. Không thêm type Listening giả khi chưa có renderer, scorer và dữ liệu kiểm chứng. Khi triển khai một dạng, thêm nhánh union riêng và validator tương ứng; không nhét pairs/audio/tokens vào prompt.
 
 Để tương thích tab đang chạy bản schema 2, generator vẫn ghi `options: []` cho câu nhập chữ. Type chỉ cho phép mảng rỗng ở hai nhánh này; validator nhận cả mảng rỗng và trường bị lược bỏ. Options có nội dung ở cloze/recall hoặc kind chưa hỗ trợ bị từ chối. Đây là trường tương thích, không phải danh sách lựa chọn của câu nhập chữ.
 
@@ -28,17 +29,17 @@ Các kind cùng có wordId, prompt và answer. Answer của Build là mảng chu
 
 Ngoài kết quả/assisted/mode đã có, đáp án mới lưu:
 
-| Field            | Ý nghĩa                                                                                                                    |
-| ---------------- | -------------------------------------------------------------------------------------------------------------------------- |
-| questionKind     | meaning, word-choice, cloze, recall, cloze-choice, word-form-choice, word-form, build, synonym-choice hoặc synonym-context |
-| questionId       | sessionId:index; định danh lần xuất hiện câu hỏi trong lượt                                                                |
-| contentVersion   | Luôn là phiên bản catalog của session cho mọi kind                                                                         |
-| skill            | vocabulary cho các dạng đang triển khai                                                                                    |
-| scoringVersion   | 3 cho Build theo thứ tự mảnh; các dạng cũ tiếp tục ghi 2; vẫn đọc version 1                                                |
-| sourceQuestionId | ID câu nguồn cho hai dạng biên soạn, dạng v1:part5:bài:số-câu                                                              |
-| sourceVersion    | Phiên bản gói câu biên soạn, tách khỏi contentVersion                                                                      |
-| hintCount        | Số chữ đã lộ trong câu, lưu cùng event scoringVersion 2                                                                    |
-| hintLimit        | floor(số chữ cái của đáp án × 0.3), không có mức tối thiểu                                                                 |
+| Field            | Ý nghĩa                                                                                                                           |
+| ---------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| questionKind     | meaning, word-choice, cloze, recall, cloze-choice, word-form-choice, word-form, build, synonym-choice, synonym-context hoặc match |
+| questionId       | sessionId:index; định danh lần xuất hiện câu hỏi trong lượt                                                                       |
+| contentVersion   | Luôn là phiên bản catalog của session cho mọi kind                                                                                |
+| skill            | vocabulary cho các dạng đang triển khai                                                                                           |
+| scoringVersion   | 4 cho Match theo từng cặp; 3 cho Build; các dạng cũ tiếp tục ghi 2; vẫn đọc version 1                                             |
+| sourceQuestionId | ID câu nguồn cho hai dạng biên soạn, dạng v1:part5:bài:số-câu                                                                     |
+| sourceVersion    | Phiên bản gói câu biên soạn, tách khỏi contentVersion                                                                             |
+| hintCount        | Số chữ đã lộ trong câu, lưu cùng event scoringVersion 2                                                                           |
+| hintLimit        | floor(số chữ cái của đáp án × 0.3), không có mức tối thiểu                                                                        |
 
 questionId định danh lần xuất hiện trong session; sourceQuestionId liên kết câu nguồn xuyên session cho cloze-choice/word-form-choice/word-form/build. Chưa lưu toàn bộ câu hỏi hoặc câu trả lời người dùng trong event; do đó chưa đủ để phân tích cụ thể từng distractor sau khi session cũ được thay.
 
@@ -142,6 +143,16 @@ Hai dạng biên soạn vẫn chạy practice: ghi kết quả, không tăng box
 Ba nhiễu lấy từ text và synonyms của từ khác cùng từ loại, ưu tiên pool gộp cùng bài + các bài cùng chủ đề; chỉ lấy từ toàn catalog để bù số còn thiếu. Thu thập và normalize pool gần trước để alias trùng ở chủ đề khác không làm mất ưu tiên. Loại từ gốc, toàn bộ synonyms/antonyms/family đã biết, quan hệ synonym chiều ngược, giao synonyms và family chiều ngược đã biết. Cả các alias của nguồn liên quan cũng bị loại trên toàn catalog để không lọt trở lại qua synonyms của một nguồn khác, kể cả khi chỉ dùng pool gần. Nếu không đủ ba nhiễu khác nhau sau normalize thì bỏ câu. Đáp án và options xáo theo seed session/wordId/kind; retry giữ nguyên câu/đáp án/hướng và xáo lại options. Nút “Đồng nghĩa”/“Gần nghĩa trong câu” ẩn khi không có câu.
 
 Các field direction/target/sourceId/sourceVersion trong hai nhánh mới là optional để đọc dữ liệu cũ; generator luôn ghi direction, source metadata và target cho ngữ cảnh. Khi thiếu direction thì đọc là synonym, không diễn giải prompt trái nghĩa thiếu direction thành dữ liệu hợp lệ. ID nguồn là `synonym-choice:<wordId>:<direction>` hoặc `synonym-context:<wordId>:<exampleIndex>`, sourceVersion bằng catalog. Event mới lưu direction optional, questionKind riêng và scorer chuỗi hiện có scoringVersion 2, hintCount/hintLimit 0. Không suy diễn direction cho event lịch sử. Hai mức chỉ chạy practice, giữ schemaVersion 2, ID event, lịch ôn và catalog/fingerprint.
+
+### Match theo chủ đề
+
+Mỗi bảng có 6 question `match` liên tiếp, chỉ trong session practice; `prompt` là từ tiếng Anh, `answer` là nghĩa Việt, mỗi cặp có wordId riêng. Generator ghi chung groupId `<sessionId>:match:<topicId>`, sourceId `match:<topicId>:<wordId>` và sourceVersion catalog. Metadata optional; khi không có groupId, sáu question liên tiếp vẫn tạo một bảng. Validator giữ schemaVersion 2 và đọc các loại câu/session/event cũ như trước.
+
+Chọn từ trong các bài cùng chủ đề, xáo nhóm `progress.tested` trước rồi bù từ chưa học. Loại từ tiếng Anh trùng sau normalize và các nghĩa có gloss trùng/chứa nhau theo cả hai chiều; tách gloss bằng dấu phẩy/chấm phẩy như recognition. Không đủ 6 cặp thì không sinh bảng dở. Hai cột có thứ tự ổn định theo session; mỗi lần mở bảng mới dùng session seed mới.
+
+Session.index giữ ở question đầu của bảng cho tới khi cả 6 cặp được nối đúng. Nối sai đánh dấu index từ bên trái trong `session.matchMistakes?: number[]`, lưu ngay và giữ qua reload/đồng bộ tab; không chấm sai từ không được chọn bên trái. Nối đúng khóa cả hai ô và ghi đúng một event `sessionId:index` cho cặp đó, theo index question gốc, kể cả nối không theo thứ tự. Event `correct` chỉ true nếu cặp chưa có lần nối sai; `assisted` false, hintCount/hintLimit 0, scoringVersion 4. Không dùng scorer chuỗi thông thường để chấm Match và không thay đổi progress, box, dueAt hoặc reviewedDay.
+
+Sau 6 event mới sang feedback của bảng; advance nhảy 6 question hoặc kết thúc lượt. Kết thúc sớm giữ các event đã hoàn tất, không tạo event giả cho cặp chưa nối xong. Từ màn kết quả, “Nối bảng mới” mở lại đủ 6 cặp của chủ đề với seed mới, không dùng bộ retry chỉ gồm vài cặp sai. Catalog/fingerprint và ID event giữ nguyên.
 
 Avatar Boring Avatars lưu seed trong `settings.avatarSeed` optional (chuỗi không rỗng, tối đa 200 ký tự). Bản sao cũ không có field này vẫn đọc được với schemaVersion 2; avatar mặc định sinh theo tên hoặc seed khách. Chọn avatar không đổi tên, tiến độ hay catalog/fingerprint. Bản sao lưu giữ nguyên lựa chọn.
 

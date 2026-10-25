@@ -259,6 +259,7 @@ export function answerQuestion(
   if (snapshot.events.some((event) => event.id === id)) return snapshot;
   const q = session.questions[index];
   const hintCount = session.revealed?.length ?? 0;
+  if (q.kind === "match") throw new Error("Hãy trả lời trên bảng nối từ.");
   if ((q.kind === "synonym-choice" || q.kind === "synonym-context") && session.mode !== "practice")
     throw new Error("Đồng nghĩa chỉ dùng trong lượt luyện thêm.");
   if (q.kind === "build" && session.mode !== "practice") throw new Error("Ghép từ chỉ dùng trong lượt luyện thêm.");
@@ -348,13 +349,14 @@ export function advanceSession(
     throw new Error("Lượt học đã thay đổi. Hãy tiếp tục từ vị trí mới nhất.");
   if (session.phase === "learn") return { ...snapshot, session: { ...session, phase: "question" } };
   if (session.phase !== "feedback") return snapshot;
-  if (session.index + 1 >= session.questions.length) return finishSession(snapshot, true, at);
-  const wordId = session.questions[session.index + 1].wordId;
+  const nextIndex = session.index + (session.questions[session.index].kind === "match" ? 6 : 1);
+  if (nextIndex >= session.questions.length) return finishSession(snapshot, true, at);
+  const wordId = session.questions[nextIndex].wordId;
   const next: Snapshot = {
     ...snapshot,
     session: {
       ...session,
-      index: session.index + 1,
+      index: nextIndex,
       phase: session.mode === "learn" ? "learn" : "question",
       feedback: null,
       peeked: false,
