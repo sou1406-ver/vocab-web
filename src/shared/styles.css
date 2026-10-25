@@ -1097,6 +1097,29 @@
     font-size: 14px;
     margin-bottom: 8px;
   }
+  .build-answer {
+    display: grid;
+    gap: 18px;
+  }
+  .build-selection,
+  .build-tiles {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .build-selection {
+    min-height: 72px;
+    align-items: center;
+    padding: 12px;
+    border: 1px dashed var(--green);
+    border-radius: 10px;
+    background: var(--surface-soft);
+  }
+  .build-tiles .button[aria-pressed="true"] {
+    background: var(--soft-green);
+    border-color: var(--green);
+    color: var(--green);
+  }
   .typing-answer > div {
     display: flex;
     gap: 10px;

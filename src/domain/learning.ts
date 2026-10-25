@@ -68,6 +68,10 @@ export function introducedToday(snapshot: Snapshot, at = Date.now()) {
   return Object.values(snapshot.progress).filter((p) => p.startedDay === day).length;
 }
 export const normalizeAnswer = (value: string) => value.trim().toLowerCase().replace(/\s+/g, " ");
+export const questionAnswerText = (question: Question) =>
+  question.kind === "build"
+    ? (question.form ?? question.answer.map((part) => part.replace(/^-|-$/g, "")).join(""))
+    : question.answer;
 const escapeRegex = (value: string) => value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 export const hintAllowance = (answer: string) =>
   Math.floor(Array.from(answer).filter((char) => /\p{L}/u.test(char)).length * 0.3);
@@ -242,7 +246,7 @@ export function answerQuestion(
   snapshot: Snapshot,
   sessionId: string,
   index: number,
-  input: string,
+  input: string | string[],
   assisted: boolean,
   at = Date.now(),
 ): Snapshot {
@@ -255,9 +259,16 @@ export function answerQuestion(
   if (snapshot.events.some((event) => event.id === id)) return snapshot;
   const q = session.questions[index];
   const hintCount = session.revealed?.length ?? 0;
+  if (q.kind === "build" && session.mode !== "practice") throw new Error("Ghép từ chỉ dùng trong lượt luyện thêm.");
   const hintLimit = q.kind === "recall" || q.kind === "cloze" || q.kind === "word-form" ? hintAllowance(q.answer) : 0;
   assisted = assisted || Boolean(session.peeked) || hintCount > hintLimit;
-  const correct = !assisted && normalizeAnswer(input) === normalizeAnswer(q.answer);
+  const correct =
+    !assisted &&
+    (q.kind === "build"
+      ? Array.isArray(input) &&
+        input.length === q.answer.length &&
+        input.every((part, position) => part === q.answer[position])
+      : typeof input === "string" && normalizeAnswer(input) === normalizeAnswer(q.answer));
   const day = dayKey(at, snapshot.settings.timezone);
   const event: AnswerEvent = {
     id,
@@ -271,17 +282,23 @@ export function answerQuestion(
     questionId: id,
     questionKind: q.kind,
     contentVersion: session.contentVersion,
-    ...((q.kind === "cloze-choice" || q.kind === "word-form-choice" || q.kind === "word-form") &&
+    ...((q.kind === "cloze-choice" || q.kind === "word-form-choice" || q.kind === "word-form" || q.kind === "build") &&
     q.sourceId &&
     q.sourceVersion
       ? { sourceQuestionId: q.sourceId, sourceVersion: q.sourceVersion }
       : {}),
     skill: "vocabulary",
-    scoringVersion: 2,
+    scoringVersion: q.kind === "build" ? 3 : 2,
     hintCount,
     hintLimit,
   };
-  const feedback: Feedback = { correct, assisted, answer: q.answer, input };
+  const feedback: Feedback = {
+    correct,
+    assisted,
+    answer: questionAnswerText(q),
+    input: Array.isArray(input) ? input.join(" + ") : input,
+    ...(q.kind === "build" ? { selectedParts: Array.isArray(input) ? [...input] : [] } : {}),
+  };
   const previous = snapshot.progress[q.wordId];
   const p: WordProgress = previous ?? {
     startedAt: at,

@@ -6,16 +6,17 @@ Ngày 25/10/2026. Đọc tài liệu này để phân biệt thay đổi đã ch
 
 `src/domain/types.ts` dùng union cho các kind đang hoạt động:
 
-| Dạng             | Dữ liệu riêng                                         | Hành vi hiện có                                   |
-| ---------------- | ----------------------------------------------------- | ------------------------------------------------- |
-| meaning          | options bắt buộc                                      | Chọn một nghĩa                                    |
-| cloze            | Không có danh sách đáp án chọn                        | Nhập từ còn thiếu                                 |
-| recall           | Không có danh sách đáp án chọn                        | Nhập từ từ gợi ý nghĩa                            |
-| cloze-choice     | options và sourceId/sourceVersion bắt buộc            | Chọn đáp án cho câu khuyết biên soạn sẵn          |
-| word-form-choice | options và sourceId/sourceVersion bắt buộc            | Chọn dạng từ; ít nhất ba lựa chọn cùng gốc/family |
-| word-form        | Không có đáp án chọn; sourceId/sourceVersion optional | Gõ dạng từ trong câu khuyết kèm từ gợi ý          |
+| Dạng             | Dữ liệu riêng                                            | Hành vi hiện có                                   |
+| ---------------- | -------------------------------------------------------- | ------------------------------------------------- |
+| meaning          | options bắt buộc                                         | Chọn một nghĩa                                    |
+| cloze            | Không có danh sách đáp án chọn                           | Nhập từ còn thiếu                                 |
+| recall           | Không có danh sách đáp án chọn                           | Nhập từ từ gợi ý nghĩa                            |
+| cloze-choice     | options và sourceId/sourceVersion bắt buộc               | Chọn đáp án cho câu khuyết biên soạn sẵn          |
+| word-form-choice | options và sourceId/sourceVersion bắt buộc               | Chọn dạng từ; ít nhất ba lựa chọn cùng gốc/family |
+| word-form        | Không có đáp án chọn; sourceId/sourceVersion optional    | Gõ dạng từ trong câu khuyết kèm từ gợi ý          |
+| build            | answer là mảng mảnh đúng thứ tự; tiles là ngân hàng mảnh | Ghép gốc + phụ tố theo nghĩa Việt và từ loại      |
 
-Các kind cùng có wordId, prompt và answer. Không thêm type Listening/Match/Build giả khi chưa có renderer, scorer và dữ liệu kiểm chứng. Khi triển khai một dạng, thêm nhánh union riêng và validator tương ứng; không nhét pairs/audio/tokens vào prompt.
+Các kind cùng có wordId, prompt và answer. Answer của Build là mảng chuỗi; các dạng khác giữ chuỗi như cũ. Không thêm type Listening/Match giả khi chưa có renderer, scorer và dữ liệu kiểm chứng. Khi triển khai một dạng, thêm nhánh union riêng và validator tương ứng; không nhét pairs/audio/tokens vào prompt.
 
 Để tương thích tab đang chạy bản schema 2, generator vẫn ghi `options: []` cho câu nhập chữ. Type chỉ cho phép mảng rỗng ở hai nhánh này; validator nhận cả mảng rỗng và trường bị lược bỏ. Options có nội dung ở cloze/recall hoặc kind chưa hỗ trợ bị từ chối. Đây là trường tương thích, không phải danh sách lựa chọn của câu nhập chữ.
 
@@ -25,19 +26,19 @@ Các kind cùng có wordId, prompt và answer. Không thêm type Listening/Match
 
 Ngoài kết quả/assisted/mode đã có, đáp án mới lưu:
 
-| Field            | Ý nghĩa                                                                            |
-| ---------------- | ---------------------------------------------------------------------------------- |
-| questionKind     | meaning, word-choice, cloze, recall, cloze-choice, word-form-choice hoặc word-form |
-| questionId       | sessionId:index; định danh lần xuất hiện câu hỏi trong lượt                        |
-| contentVersion   | Luôn là phiên bản catalog của session cho mọi kind                                 |
-| skill            | vocabulary cho các dạng đang triển khai                                            |
-| scoringVersion   | 2 cho event mới; vẫn đọc event scoringVersion 1                                    |
-| sourceQuestionId | ID câu nguồn cho hai dạng biên soạn, dạng v1:part5:bài:số-câu                      |
-| sourceVersion    | Phiên bản gói câu biên soạn, tách khỏi contentVersion                              |
-| hintCount        | Số chữ đã lộ trong câu, lưu cùng event scoringVersion 2                            |
-| hintLimit        | floor(số chữ cái của đáp án × 0.3), không có mức tối thiểu                         |
+| Field            | Ý nghĩa                                                                                   |
+| ---------------- | ----------------------------------------------------------------------------------------- |
+| questionKind     | meaning, word-choice, cloze, recall, cloze-choice, word-form-choice, word-form hoặc build |
+| questionId       | sessionId:index; định danh lần xuất hiện câu hỏi trong lượt                               |
+| contentVersion   | Luôn là phiên bản catalog của session cho mọi kind                                        |
+| skill            | vocabulary cho các dạng đang triển khai                                                   |
+| scoringVersion   | 3 cho Build theo thứ tự mảnh; các dạng cũ tiếp tục ghi 2; vẫn đọc version 1               |
+| sourceQuestionId | ID câu nguồn cho hai dạng biên soạn, dạng v1:part5:bài:số-câu                             |
+| sourceVersion    | Phiên bản gói câu biên soạn, tách khỏi contentVersion                                     |
+| hintCount        | Số chữ đã lộ trong câu, lưu cùng event scoringVersion 2                                   |
+| hintLimit        | floor(số chữ cái của đáp án × 0.3), không có mức tối thiểu                                |
 
-questionId định danh lần xuất hiện trong session; sourceQuestionId liên kết câu nguồn xuyên session cho cloze-choice/word-form-choice/word-form. Chưa lưu toàn bộ câu hỏi hoặc câu trả lời người dùng trong event; do đó chưa đủ để phân tích cụ thể từng distractor sau khi session cũ được thay.
+questionId định danh lần xuất hiện trong session; sourceQuestionId liên kết câu nguồn xuyên session cho cloze-choice/word-form-choice/word-form/build. Chưa lưu toàn bộ câu hỏi hoặc câu trả lời người dùng trong event; do đó chưa đủ để phân tích cụ thể từng distractor sau khi session cũ được thay.
 
 Các field mới optional trong type lưu trữ để đọc event cũ; đường ghi mới luôn điền đầy đủ. Validator kiểm tra giá trị khi field có mặt. Không tự đoán kind/skill của event lịch sử từ từ vựng hoặc mode. Nếu thống kê theo dạng về sau, event thiếu kind nằm trong nhóm “không xác định”.
 
@@ -91,7 +92,13 @@ Dữ liệu tạm dùng nguồn V1 hiện có theo yêu cầu người dùng, ch
 
 Builder đưa words/lessons/topics vào catalog lõi. Examples/synonyms/antonyms vẫn có; mỗi mục family hiện giữ `{text, pos, meaning, parts}` lấy từ `data/generated/word-details`, bao gồm thứ tự các mảnh gốc. Khi nguồn thiếu parts, builder ghi mảng rỗng, không tự tách hoặc đoán phụ tố.
 
-**Bước dữ liệu trước Build đã triển khai:** `Word.family[].parts` là field optional kiểu `string[]`. Validator đọc được custom word/backup cũ không có field này, không tự thêm field vào dữ liệu cũ; nếu có thì phải là mảng chỉ gồm chuỗi. Snapshot vẫn schemaVersion 2, giữ ID từ/event và lịch ôn. Riêng việc khôi phục nội dung family.parts được phép đổi fingerprint catalog; không ghi lại contentVersion của session/event cũ. Catalog sinh lại có 982 mục family gồm từ hai mảnh trở lên (không phải 982 từ duy nhất); 166/600 từ chính có parts từ hai mảnh trở lên. Phần câu hỏi/giao diện Build chưa triển khai. `affixes.json` có 92 phụ tố làm nguồn xây đáp án nhiễu, cần kiểm tra không tạo thêm đáp án đúng khi triển khai Build.
+**Bước dữ liệu trước Build đã triển khai:** `Word.family[].parts` là field optional kiểu `string[]`. Validator đọc được custom word/backup cũ không có field này, không tự thêm field vào dữ liệu cũ; nếu có thì phải là mảng chỉ gồm chuỗi. Snapshot vẫn schemaVersion 2, giữ ID từ/event và lịch ôn. Riêng việc khôi phục nội dung family.parts được phép đổi fingerprint catalog; không ghi lại contentVersion của session/event cũ. Catalog sinh lại có 982 mục family gồm từ hai mảnh trở lên (không phải 982 từ duy nhất); 166/600 từ chính có parts từ hai mảnh trở lên.
+
+**Build đã triển khai từ catalog:** mỗi mục family có ít nhất hai mảnh khác nhau và đủ text/meaning/pos tạo một câu `build`. Câu có prompt là nghĩa Việt kèm từ loại của chính dạng từ, answer là mảng parts đúng thứ tự, tiles là parts cộng đúng một prefix và hai suffix nhiễu từ `data/generated/affixes.json`. `AFFIX_GROUPS` và `RARE_AFFIXES` được port từ `main:src/lib/data.ts` theo bộ lọc `main:src/lib/quiz.ts`: loại mảnh đáp án, mọi biến thể cùng nhóm và phụ tố hiếm khỏi pool nhiễu. Tiles luôn khác nhau; câu có parts trùng hoặc dữ liệu không đủ bị bỏ. ID nguồn là `build:<wordId>:<form>` với form chuẩn hóa chữ thường; chỉ giữ một câu cho mỗi ID.
+
+Build được sinh khi mở lượt practice qua nút “Ghép từ” ở trang bài; ẩn nút nếu không có câu. Xáo tiles và chọn nhiễu bằng seed session ID + sourceId. Lưu tiles trong câu nên reload giữ thứ tự; retry giữ câu/parts và xáo tiles theo session mới. Thêm dạng này không đổi catalog/fingerprint hoặc sinh gói bài mới.
+
+`form`, `sourceId`, `sourceVersion` của Build là metadata optional; generator mới luôn ghi, sourceVersion bằng phiên bản catalog. Feedback giữ input dạng chuỗi để đọc dữ liệu cũ, thêm `selectedParts?: string[]` lưu các mảnh đã chọn sau khi trả lời. Lựa chọn chưa submit là state giao diện. Chấm bằng so sánh mảng đúng thứ tự, không chỉ nối ra cùng chữ; feedback hiện từ hoàn chỉnh theo form. Build dùng scoringVersion 3, hintCount/hintLimit đều 0, không có gợi ý chữ và chỉ chạy practice; các dạng trước giữ scorer/version cũ. Validator tiếp tục nhận snapshot schema 2 và feedback cũ thiếu selectedParts. Giữ nguyên database, ID từ/event và lịch ôn.
 
 Kiểm tra dữ liệu nguồn hiện tại:
 

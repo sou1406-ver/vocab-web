@@ -25,7 +25,7 @@ export interface AppState {
     title: string,
     returnTo?: string,
   ) => Promise<boolean>;
-  answer: (input: string, assisted?: boolean) => Promise<boolean>;
+  answer: (input: string | string[], assisted?: boolean) => Promise<boolean>;
   advance: () => Promise<boolean>;
   finish: () => Promise<boolean>;
   clearError: () => void;

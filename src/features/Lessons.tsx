@@ -9,6 +9,7 @@ import { statusOf, makeRecognitionQuestions } from "../domain/learning";
 import { useWord } from "../app/context";
 import { clozeLessons, loadClozeLesson, makeWordFormQuestions } from "../data/cloze";
 import { shuffleSeeded } from "../domain/random";
+import { makeBuildQuestions } from "../data/build";
 
 export default function Lessons({ lessonId: id }: { lessonId?: string }) {
   const { data, start, startExercises, busy } = useApp();
@@ -17,6 +18,7 @@ export default function Lessons({ lessonId: id }: { lessonId?: string }) {
   const [loadingKind, setLoadingKind] = useState<"cloze-choice" | "word-form-choice" | "word-form" | null>(null);
   const [loadError, setLoadError] = useState("");
   const [recognitionError, setRecognitionError] = useState("");
+  const [buildError, setBuildError] = useState("");
   const request = useRef<AbortController | null>(null);
   useEffect(
     () => () => {
@@ -74,6 +76,17 @@ export default function Lessons({ lessonId: id }: { lessonId?: string }) {
       }
     };
     const words = catalog.words.filter((w) => w.lesson === lesson.id);
+    const buildCount = makeBuildQuestions(words, "preview").length;
+    const practiceBuild = async () => {
+      if (active) return router.push("/study");
+      setBuildError("");
+      try {
+        if (await startExercises((sessionId) => makeBuildQuestions(words, sessionId), `Ghép từ · ${lesson.title}`))
+          router.push("/study");
+      } catch (error) {
+        setBuildError(error instanceof Error ? error.message : "Chưa mở được bài ghép từ.");
+      }
+    };
     const untested = words.filter((w) => !data.progress[w.id]?.tested);
     const learned = words.length - untested.length;
     const practiceRecognition = async () => {
@@ -176,6 +189,22 @@ export default function Lessons({ lessonId: id }: { lessonId?: string }) {
             </button>
           </section>
         ))}
+        {buildCount > 0 && (
+          <section className="panel cloze-practice" aria-label="Ghép từ">
+            <div>
+              <h2>Ghép từ</h2>
+              {buildError && <p role="alert">{buildError}</p>}
+              <p>{buildCount} câu · Ghép gốc và phụ tố theo nghĩa. Luyện thêm không tăng bậc ôn.</p>
+            </div>
+            <button
+              className="button secondary"
+              disabled={busy || loading || Boolean(active)}
+              onClick={() => void practiceBuild()}
+            >
+              Ghép từ <Icon name="arrow" />
+            </button>
+          </section>
+        )}
         <section className="panel cloze-practice" aria-label="Chọn nghĩa và chọn từ">
           <div>
             <h2>Chọn nghĩa / chọn từ</h2>

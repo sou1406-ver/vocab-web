@@ -31,7 +31,8 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 ### Hợp đồng dữ liệu (không tự ý đổi)
 
-- Giữ nguyên: tên IndexedDB `vocab-learn-v2`, `schemaVersion` của snapshot, ID từ, fingerprint catalog, ID event `sessionId:index`.
+- Giữ nguyên: tên IndexedDB `vocab-learn-v2`, `schemaVersion` của snapshot, ID từ, ID event `sessionId:index`.
+- Fingerprint catalog chỉ đổi khi nội dung words/lessons/topics thực sự thay đổi. Thêm dạng bài hoặc UI không được làm đổi catalog/fingerprint.
 - Thêm field vào event/question: để optional, validator phải đọc được dữ liệu cũ, kèm test tương thích. Đổi cách chấm thì tăng `scoringVersion`.
 - Practice và Match không tăng box, không đổi `dueAt`/`reviewedDay`.
 - Gợi ý ô chữ: `hintLimit = floor(số chữ cái × 0.3)`. Vượt hạn mức thì `assisted`.

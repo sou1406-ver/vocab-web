@@ -7,7 +7,16 @@ export function record(value: unknown): Record<string, unknown> {
 const number = (v: unknown) => typeof v === "number" && Number.isFinite(v) && v >= 0 && v <= 8_640_000_000_000_000;
 const string = (v: unknown) => typeof v === "string";
 const nonempty = (v: unknown) => typeof v === "string" && v.trim().length > 0 && v.length <= 500;
-const questionKinds = ["meaning", "cloze", "recall", "cloze-choice", "word-form-choice", "word-choice", "word-form"];
+const questionKinds = [
+  "meaning",
+  "cloze",
+  "recall",
+  "cloze-choice",
+  "word-form-choice",
+  "word-choice",
+  "word-form",
+  "build",
+];
 const count = (value: unknown) => Number.isSafeInteger(value) && number(value);
 const day = (v: unknown) => string(v) && /^\d{4}-\d{2}-\d{2}$/.test(v as string);
 const safeId = (v: string) => v !== "__proto__" && v !== "constructor" && v !== "prototype";
@@ -107,12 +116,14 @@ export function validateSnapshot(value: unknown): Snapshot {
       (e.questionKind !== undefined && !questionKinds.includes(e.questionKind as string)) ||
       (e.contentVersion !== undefined && !nonempty(e.contentVersion)) ||
       (e.skill !== undefined && e.skill !== "vocabulary") ||
-      (e.scoringVersion !== undefined && e.scoringVersion !== 1 && e.scoringVersion !== 2) ||
+      (e.scoringVersion !== undefined && e.scoringVersion !== 1 && e.scoringVersion !== 2 && e.scoringVersion !== 3) ||
+      (e.scoringVersion === 3 &&
+        (e.questionKind !== "build" || e.mode !== "practice" || e.hintCount !== 0 || e.hintLimit !== 0)) ||
       (e.sourceQuestionId !== undefined && !nonempty(e.sourceQuestionId)) ||
       (e.sourceVersion !== undefined && !nonempty(e.sourceVersion)) ||
       (e.hintCount !== undefined && !count(e.hintCount)) ||
       (e.hintLimit !== undefined && !count(e.hintLimit)) ||
-      (e.scoringVersion === 2 &&
+      ((e.scoringVersion === 2 || e.scoringVersion === 3) &&
         (!count(e.hintCount) ||
           !count(e.hintLimit) ||
           ((e.hintCount as number) > (e.hintLimit as number) && !e.assisted) ||
@@ -155,7 +166,28 @@ export function validateSnapshot(value: unknown): Snapshot {
       fail();
     for (const raw of session.questions as unknown[]) {
       const q = record(raw);
-      if (![q.wordId, q.prompt, q.answer].every(string) || !questionKinds.includes(q.kind as string)) fail();
+      if (![q.wordId, q.prompt].every(string) || !questionKinds.includes(q.kind as string)) fail();
+      if (q.kind === "build") {
+        if (
+          session.mode !== "practice" ||
+          !Array.isArray(q.answer) ||
+          q.answer.length < 2 ||
+          !q.answer.every(nonempty) ||
+          new Set(q.answer.map((part: string) => part.trim().toLowerCase())).size !== q.answer.length ||
+          !Array.isArray(q.tiles) ||
+          q.tiles.length !== q.answer.length + 3 ||
+          !q.tiles.every(nonempty) ||
+          new Set(q.tiles.map((part: string) => part.trim().toLowerCase())).size !== q.tiles.length ||
+          !q.answer.every((part) => (q.tiles as string[]).includes(part)) ||
+          (q.form !== undefined && !nonempty(q.form)) ||
+          (q.sourceId !== undefined &&
+            (!nonempty(q.sourceId) || !(q.sourceId as string).startsWith(`build:${q.wordId}:`))) ||
+          (q.sourceVersion !== undefined && !nonempty(q.sourceVersion)) ||
+          (q.sourceId === undefined) !== (q.sourceVersion === undefined) ||
+          (q.options !== undefined && (!Array.isArray(q.options) || q.options.length !== 0))
+        )
+          fail();
+      } else if (!string(q.answer)) fail();
       if (
         (q.kind === "meaning" ||
           q.kind === "cloze-choice" ||
@@ -203,12 +235,22 @@ export function validateSnapshot(value: unknown): Snapshot {
       const f = record(session.feedback);
       if (typeof f.correct !== "boolean" || typeof f.assisted !== "boolean" || !string(f.answer) || !string(f.input))
         fail();
+      if (f.selectedParts !== undefined) {
+        const q = record((session.questions as unknown[])[session.index as number]);
+        if (
+          q.kind !== "build" ||
+          !Array.isArray(f.selectedParts) ||
+          !f.selectedParts.every((part) => string(part) && (q.tiles as string[]).includes(part)) ||
+          new Set(f.selectedParts).size !== f.selectedParts.length
+        )
+          fail();
+      }
     } else if (session.phase === "feedback") fail();
     if (session.finishedAt !== undefined && !number(session.finishedAt)) fail();
     if (session.peeked !== undefined && typeof session.peeked !== "boolean") fail();
     if (session.revealed !== undefined) {
       const q = record((session.questions as unknown[])[session.index as number]);
-      const chars = Array.from(q.answer as string);
+      const chars = typeof q.answer === "string" ? Array.from(q.answer) : [];
       if (
         !Array.isArray(session.revealed) ||
         new Set(session.revealed).size !== session.revealed.length ||

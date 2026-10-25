@@ -59,10 +59,20 @@ export type WordFormQuestion = QuestionBase & {
   sourceId?: string;
   sourceVersion?: string;
 };
+export type BuildQuestion = Omit<QuestionBase, "answer"> & {
+  kind: "build";
+  answer: string[];
+  tiles: string[];
+  form?: string;
+  sourceId?: string;
+  sourceVersion?: string;
+  options?: [];
+};
 export type Question =
   | ClozeChoiceQuestion
   | RecognitionQuestion
   | WordFormQuestion
+  | BuildQuestion
   // Empty options are a schema-2 compatibility field, never selectable answers.
   | (QuestionBase & { kind: "cloze"; options?: [] })
   | (QuestionBase & { kind: "recall"; options?: [] });
@@ -71,6 +81,7 @@ export interface Feedback {
   answer: string;
   assisted: boolean;
   input: string;
+  selectedParts?: string[];
 }
 export interface StudySession {
   id: string;
@@ -101,7 +112,7 @@ export interface AnswerEvent {
   questionKind?: Question["kind"];
   contentVersion?: string;
   skill?: "vocabulary";
-  scoringVersion?: 1 | 2;
+  scoringVersion?: 1 | 2 | 3;
   sourceQuestionId?: string;
   sourceVersion?: string;
   hintCount?: number;

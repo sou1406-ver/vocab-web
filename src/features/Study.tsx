@@ -9,8 +9,9 @@ import { useWord } from "../app/context";
 import type { Word } from "../domain/types";
 import { LetterSlotsInput } from "../components/LetterSlotsInput";
 import { projectRevealed } from "../components/letter-slots-edit";
-import { hintAllowance, revealQuestionLetter } from "../domain/learning";
+import { hintAllowance, revealQuestionLetter, questionAnswerText } from "../domain/learning";
 import { shuffleSeeded } from "../domain/random";
+import { BuildAnswer } from "../components/BuildAnswer";
 
 export default function Study() {
   const { data, busy, advance, answer, finish, start, startExercises, change } = useApp();
@@ -60,7 +61,9 @@ export default function Study() {
               questions.map((q) =>
                 q.kind === "meaning" || q.kind === "word-choice"
                   ? { ...q, options: shuffleSeeded(q.options, `${id}:${q.wordId}:${q.kind}`) }
-                  : q,
+                  : q.kind === "build"
+                    ? { ...q, tiles: shuffleSeeded(q.tiles, `${id}:${q.sourceId ?? q.wordId}:tiles`) }
+                    : q,
               ),
             "Luyện lại câu vừa sai",
             session.returnTo,
@@ -160,11 +163,10 @@ export default function Study() {
     );
   const feedback = session.feedback;
   const typed = question.kind === "cloze" || question.kind === "recall" || question.kind === "word-form";
-  const typedValue = projectRevealed(input, question.answer, revealed);
-  const hintLimit = hintAllowance(question.answer);
-  const hintIndex = Array.from(question.answer).findIndex(
-    (char, index) => /\p{L}/u.test(char) && !revealed.includes(index),
-  );
+  const answerText = questionAnswerText(question);
+  const typedValue = projectRevealed(input, answerText, revealed);
+  const hintLimit = hintAllowance(answerText);
+  const hintIndex = Array.from(answerText).findIndex((char, index) => /\p{L}/u.test(char) && !revealed.includes(index));
   const revealLetter = async () => {
     if (!typed || hintIndex < 0 || session.phase !== "question") return;
     const saved = await change((state) => revealQuestionLetter(state, session.id, session.index));
@@ -201,17 +203,19 @@ export default function Study() {
         <h1 tabIndex={-1}>
           {session.phase === "learn"
             ? "Làm quen với từ này"
-            : question.kind === "meaning"
-              ? "Chọn nghĩa phù hợp"
-              : question.kind === "word-choice"
-                ? "Chọn từ phù hợp"
-                : question.kind === "word-form-choice"
-                  ? "Chọn dạng từ phù hợp"
-                  : question.kind === "word-form"
-                    ? "Gõ dạng từ phù hợp"
-                    : question.kind === "cloze" || question.kind === "cloze-choice"
-                      ? "Điền từ còn thiếu"
-                      : "Bạn nhớ từ nào?"}
+            : question.kind === "build"
+              ? "Ghép gốc và phụ tố"
+              : question.kind === "meaning"
+                ? "Chọn nghĩa phù hợp"
+                : question.kind === "word-choice"
+                  ? "Chọn từ phù hợp"
+                  : question.kind === "word-form-choice"
+                    ? "Chọn dạng từ phù hợp"
+                    : question.kind === "word-form"
+                      ? "Gõ dạng từ phù hợp"
+                      : question.kind === "cloze" || question.kind === "cloze-choice"
+                        ? "Điền từ còn thiếu"
+                        : "Bạn nhớ từ nào?"}
         </h1>
       </div>
       <section className="study-card" aria-label="Nội dung lượt học">
@@ -233,27 +237,45 @@ export default function Study() {
               <span className="small-label">
                 {question.kind === "meaning"
                   ? "TỪ NÀY CÓ NGHĨA LÀ GÌ?"
-                  : question.kind === "word-choice"
-                    ? "CHỌN TỪ TIẾNG ANH PHÙ HỢP"
-                    : question.kind === "word-form-choice"
-                      ? "CHỌN DẠNG TỪ PHÙ HỢP"
-                      : question.kind === "word-form"
-                        ? "VIẾT DẠNG TỪ PHÙ HỢP"
-                        : question.kind === "cloze" || question.kind === "cloze-choice"
-                          ? "HOÀN THÀNH CÂU TIẾNG ANH"
-                          : "VIẾT TỪ TIẾNG ANH CÓ NGHĨA"}
+                  : question.kind === "build"
+                    ? "GHÉP TỪ THEO NGHĨA"
+                    : question.kind === "word-choice"
+                      ? "CHỌN TỪ TIẾNG ANH PHÙ HỢP"
+                      : question.kind === "word-form-choice"
+                        ? "CHỌN DẠNG TỪ PHÙ HỢP"
+                        : question.kind === "word-form"
+                          ? "VIẾT DẠNG TỪ PHÙ HỢP"
+                          : question.kind === "cloze" || question.kind === "cloze-choice"
+                            ? "HOÀN THÀNH CÂU TIẾNG ANH"
+                            : "VIẾT TỪ TIẾNG ANH CÓ NGHĨA"}
               </span>
-              <p lang={question.kind === "recall" || question.kind === "word-choice" ? "vi" : "en"}>
+              <p
+                lang={
+                  question.kind === "recall" || question.kind === "word-choice" || question.kind === "build"
+                    ? "vi"
+                    : "en"
+                }
+              >
                 {question.prompt}
               </p>
               {question.kind !== "cloze-choice" &&
                 question.kind !== "word-form-choice" &&
-                question.kind !== "word-form" && <span className="pos">{word.pos}</span>}
+                question.kind !== "word-form" &&
+                question.kind !== "build" && <span className="pos">{word.pos}</span>}
             </div>
-            {question.kind === "meaning" ||
-            question.kind === "cloze-choice" ||
-            question.kind === "word-form-choice" ||
-            question.kind === "word-choice" ? (
+            {question.kind === "build" ? (
+              <BuildAnswer
+                key={`${session.id}:${session.index}`}
+                question={question}
+                feedback={feedback}
+                busy={busy}
+                firstTileRef={choiceRef}
+                onAnswer={(parts) => void answer(parts)}
+              />
+            ) : question.kind === "meaning" ||
+              question.kind === "cloze-choice" ||
+              question.kind === "word-form-choice" ||
+              question.kind === "word-choice" ? (
               <div className="answer-options">
                 {question.options.map((option, i) => (
                   <button
@@ -284,7 +306,7 @@ export default function Study() {
                     key={`${session.id}:${session.index}`}
                     inputRef={inputRef}
                     id="typed-answer"
-                    answer={question.answer}
+                    answer={answerText}
                     revealed={revealed}
                     value={session.phase === "feedback" ? (feedback?.input ?? "") : typedValue}
                     disabled={busy || session.phase === "feedback"}
@@ -323,21 +345,24 @@ export default function Study() {
                   </b>
                 </div>
                 <p>
-                  Đáp án: <strong lang={question.kind === "meaning" ? "vi" : "en"}>{question.answer}</strong>
+                  Đáp án: <strong lang={question.kind === "meaning" ? "vi" : "en"}>{answerText}</strong>
                 </p>
-                <p className="feedback-example" lang="en">
-                  {question.kind === "cloze-choice" ||
-                  question.kind === "word-form-choice" ||
-                  question.kind === "word-form"
-                    ? (question.kind === "word-form"
-                        ? question.prompt.replace(/\s+\([^()]*\)\s*$/, "")
-                        : question.prompt
-                      ).replace(/_{3,}/, question.answer)
-                    : word.examples[0]?.text}
-                </p>
+                {question.kind !== "build" && (
+                  <p className="feedback-example" lang="en">
+                    {question.kind === "cloze-choice" ||
+                    question.kind === "word-form-choice" ||
+                    question.kind === "word-form"
+                      ? (question.kind === "word-form"
+                          ? question.prompt.replace(/\s+\([^()]*\)\s*$/, "")
+                          : question.prompt
+                        ).replace(/_{3,}/, question.answer)
+                      : word.examples[0]?.text}
+                  </p>
+                )}
                 {question.kind !== "cloze-choice" &&
                   question.kind !== "word-form-choice" &&
                   question.kind !== "word-form" &&
+                  question.kind !== "build" &&
                   word.examples[0]?.translation && <p className="muted">{word.examples[0].translation}</p>}
                 <button className="button primary" ref={nextRef} disabled={busy} onClick={() => void advance()}>
                   {session.index + 1 === session.questions.length ? "Xem kết quả" : "Từ tiếp theo"}
