@@ -32,7 +32,7 @@ test("V2 study layout returns with readable cards and study actions", async ({ p
   await page.goto("/");
   await expect(page.getByRole("heading", { name: "Hôm nay, học một chút." })).toBeVisible();
   await expect(page.locator(".hero-art")).toBeVisible();
-  await expect(page.locator(".sidebar-note")).toBeVisible();
+  await expect(page.locator(".sidebar-note")).toHaveCount(0);
   await expect(page.locator(".goal-panel")).toBeVisible();
   await expect(page.getByRole("button", { name: "Bắt đầu học", exact: true })).toHaveCount(1);
   for (const width of [1440, 1024]) {
@@ -52,5 +52,43 @@ test("V2 study layout returns with readable cards and study actions", async ({ p
     expect(layout.caption).toBeGreaterThanOrEqual(layout.end + 8);
     expect(layout.scroll).toBeLessThanOrEqual(layout.height);
     if (width === 1440) await page.screenshot({ path: `test-results/vocab-v2-restored-${testInfo.project.name}.png` });
+  }
+});
+
+test("short desktop and compact sidebars scroll the menu while keeping settings at the bottom", async ({
+  page,
+}, testInfo) => {
+  test.skip(testInfo.project.name !== "desktop", "The sidebar is hidden on mobile.");
+  for (const theme of ["light", "dark"]) {
+    for (const width of [1440, 768]) {
+      await page.setViewportSize({ width, height: 400 });
+      await page.goto("/");
+      await expect(page.getByText("Đang mở dữ liệu…")).not.toBeVisible();
+      if ((await page.locator("html").getAttribute("data-theme")) !== theme)
+        await page.getByRole("button", { name: "Đổi giao diện sáng tối" }).click();
+      const menu = page.getByRole("navigation", { name: "Điều hướng chính", exact: true });
+      const settings = page.getByRole("link", { name: "Cài đặt và sao lưu", exact: true });
+      const footer = page.locator(".sidebar-footer");
+      const initial = await footer.boundingBox();
+      expect(initial).not.toBeNull();
+      expect(initial!.y + initial!.height).toBeLessThanOrEqual(400);
+      expect(initial!.y + initial!.height).toBeGreaterThanOrEqual(375);
+      expect(await menu.evaluate((node) => node.scrollHeight > node.clientHeight)).toBe(true);
+      await menu.evaluate((node) => {
+        node.scrollTop = node.scrollHeight;
+      });
+      await menu.getByRole("link", { name: "Tiến độ", exact: true }).focus();
+      await page.keyboard.press("Tab");
+      await expect(settings).toBeFocused();
+      await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+      const after = await footer.boundingBox();
+      expect(after!.y).toBeCloseTo(initial!.y, 0);
+      const link = await settings.boundingBox();
+      expect(link!.y).toBeGreaterThanOrEqual(0);
+      expect(link!.y + link!.height).toBeLessThanOrEqual(400);
+      await page.screenshot({ path: testInfo.outputPath(`sidebar-${theme}-${width}.png`) });
+      await settings.click();
+      await expect(page).toHaveURL(/\/settings$/);
+    }
   }
 });

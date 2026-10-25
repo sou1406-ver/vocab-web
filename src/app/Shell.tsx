@@ -97,21 +97,14 @@ export function Shell({ children }: { children: ReactNode }) {
               </Link>
             ))}
           </nav>
-          <div className="sidebar-note">
-            <Icon name="leaf" size={28} />
-            <p>
-              Mỗi từ mới là
-              <br />
-              một cánh cửa nhỏ.
-            </p>
-            <span>Chậm một chút. Nhớ lâu hơn.</span>
-          </div>
-          <Link href="/settings" className="sidebar-settings" aria-label="Cài đặt và sao lưu">
-            <Icon name="settings" />
-            <span>Cài đặt & sao lưu</span>
-          </Link>
-          <div className="build-label">
-            Vocab Learn <span>BẢN THỬ NGHIỆM</span>
+          <div className="sidebar-footer">
+            <Link href="/settings" className="sidebar-settings" aria-label="Cài đặt và sao lưu">
+              <Icon name="settings" />
+              <span>Cài đặt & sao lưu</span>
+            </Link>
+            <div className="build-label">
+              Vocab Learn <span>BẢN THỬ NGHIỆM</span>
+            </div>
           </div>
         </aside>
         <div className="workspace">

@@ -345,6 +345,10 @@
     flex-direction: column;
     padding: 36px 20px 20px;
   }
+  .sidebar > .brand,
+  .sidebar-caption {
+    flex-shrink: 0;
+  }
   .brand {
     display: flex;
     align-items: center;
@@ -369,6 +373,10 @@
   .main-nav {
     display: grid;
     gap: 7px;
+    min-height: 0;
+    overflow-y: auto;
+    align-content: start;
+    flex-shrink: 1;
   }
   .nav-item {
     display: flex;
@@ -494,16 +502,16 @@
     color: var(--blue);
     background: var(--blue-bg);
   }
-  .stats-grid .stat-card:nth-child(2) .stat-icon {
+  .stat-card--brand .stat-icon {
     color: var(--brand);
     background: var(--brand-soft);
   }
-  .stats-grid .stat-card:nth-child(3) .stat-icon {
+  .stat-card--neutral .stat-icon {
     color: var(--muted);
     background: var(--surface-soft);
   }
-  .stats-grid[aria-label="Việc học của bạn"] .stat-card:nth-child(2) .stat-label,
-  .stats-grid[aria-label="Việc học của bạn"] .stat-card:nth-child(2) .stat-number {
+  .stat-card--due .stat-label,
+  .stat-card--due .stat-number {
     color: var(--brand-ink);
   }
   .stat-label {

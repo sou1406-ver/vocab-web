@@ -40,8 +40,8 @@ for (const theme of ["light", "dark"] as const) {
           root.getPropertyValue(`--${name}`).trim(),
         ]),
       );
-      const stats = document.querySelector('.stats-grid[aria-label="Việc học của bạn"]')!;
-      const due = stats.children[1];
+      const stats = document.querySelector(".stats-grid")!;
+      const due = stats.querySelector(".stat-card--due")!;
       return {
         tokens,
         due: getComputedStyle(due.querySelector(".stat-number")!).color,
@@ -69,6 +69,20 @@ for (const theme of ["light", "dark"] as const) {
     expect(ratios.dueNumber).toBeGreaterThanOrEqual(4.5);
     expect(ratios.dueLabel).toBeGreaterThanOrEqual(4.5);
     expect(new Set(palette.icons).size).toBe(3);
+    const moved = await page.evaluate(() => {
+      const stats = document.querySelector(".stats-grid")!;
+      const due = stats.querySelector(".stat-card--due")!;
+      const cards = Array.from(stats.children);
+      const label = stats.getAttribute("aria-label");
+      stats.prepend(due);
+      stats.setAttribute("aria-label", "Thống kê học tập");
+      const color = getComputedStyle(due.querySelector(".stat-number")!).color;
+      stats.replaceChildren(...cards);
+      if (label === null) stats.removeAttribute("aria-label");
+      else stats.setAttribute("aria-label", label);
+      return color;
+    });
+    expect(moved).toBe(palette.due);
     if (theme === "dark") expect(palette.cardTop).toBe("rgba(255, 255, 255, 0.1)");
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
     const result = await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa"]).analyze();
@@ -83,6 +97,20 @@ for (const theme of ["light", "dark"] as const) {
         path,
       ).toEqual([]);
       expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), path).toBe(true);
+      if (path === "/progress") {
+        const tracks = await page.locator(".activity-track").evaluateAll((nodes) =>
+          nodes.map((node) => ({
+            width: node.getBoundingClientRect().width,
+            maximum: parseFloat(getComputedStyle(node).maxWidth),
+          })),
+        );
+        expect(tracks).toHaveLength(7);
+        for (const track of tracks) {
+          expect(track.maximum).toBe(26.25);
+          expect(track.width).toBeLessThanOrEqual(26.25);
+        }
+        await page.screenshot({ path: testInfo.outputPath(`${theme}-progress.png`), fullPage: true });
+      }
     }
     const button = page.getByRole("button", { name: "Lưu tuỳ chọn" });
     await expect(button).toBeVisible();

@@ -51,8 +51,8 @@ export default function Progress() {
             </div>
           </div>
         </div>
-        <div className="stat-card">
-          <span className="stat-icon amber">
+        <div className="stat-card stat-card--brand">
+          <span className="stat-icon">
             <Icon name="memorized" />
           </span>
           <div>
@@ -63,8 +63,8 @@ export default function Progress() {
             </div>
           </div>
         </div>
-        <div className="stat-card">
-          <span className="stat-icon blue">
+        <div className="stat-card stat-card--neutral">
+          <span className="stat-icon">
             <Icon name="target" />
           </span>
           <div>

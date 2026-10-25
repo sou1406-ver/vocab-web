@@ -150,8 +150,8 @@ export function Today() {
           </div>
           <span className="stat-note">Mục tiêu mỗi ngày</span>
         </div>
-        <div className="stat-card">
-          <span className="stat-icon amber">
+        <div className="stat-card stat-card--brand stat-card--due">
+          <span className="stat-icon">
             <Icon name="repeat" />
           </span>
           <div>
@@ -163,8 +163,8 @@ export function Today() {
           </div>
           <span className="stat-note">{reviewed ? `Đã ôn ${reviewed} từ hôm nay` : "Ôn lại để nhớ lâu"}</span>
         </div>
-        <div className="stat-card">
-          <span className="stat-icon blue">
+        <div className="stat-card stat-card--neutral">
+          <span className="stat-icon">
             <Icon name="memorized" />
           </span>
           <div>
