@@ -89,9 +89,9 @@ Dữ liệu tạm dùng nguồn V1 hiện có theo yêu cầu người dùng, ch
 
 ## 4. Đề xuất: nội dung bài tập tải theo bài
 
-Builder hiện chỉ đưa words/lessons/topics vào catalog lõi. Examples/synonyms/antonyms vẫn có; family mới giữ `{text, pos, meaning}`, đã bỏ mất `parts` ở từng mục mà Build V1 sử dụng.
+Builder đưa words/lessons/topics vào catalog lõi. Examples/synonyms/antonyms vẫn có; mỗi mục family hiện giữ `{text, pos, meaning, parts}` lấy từ `data/generated/word-details`, bao gồm thứ tự các mảnh gốc. Khi nguồn thiếu parts, builder ghi mảng rỗng, không tự tách hoặc đoán phụ tố.
 
-**Điều kiện trước khi làm Build:** thêm lại `parts` vào từng mục family trong `scripts/build-content.mjs`, type Word và validator; tiếp tục đọc được custom word/backup cũ chưa có trường này. Nguồn `data/generated/word-details` vẫn giữ parts của family, nên cần khôi phục từ nguồn thay vì tự đoán. Hiện chỉ 166/600 từ chính có parts từ hai mảnh trở lên; nguồn family có 982 mục tách được từ hai mảnh trở lên (không phải 982 từ duy nhất). `affixes.json` có 92 phụ tố làm nguồn xây đáp án nhiễu, cần kiểm tra không tạo thêm đáp án đúng. Chưa sửa builder trong đợt cập nhật tài liệu này.
+**Bước dữ liệu trước Build đã triển khai:** `Word.family[].parts` là field optional kiểu `string[]`. Validator đọc được custom word/backup cũ không có field này, không tự thêm field vào dữ liệu cũ; nếu có thì phải là mảng chỉ gồm chuỗi. Snapshot vẫn schemaVersion 2, giữ ID từ/event và lịch ôn. Riêng việc khôi phục nội dung family.parts được phép đổi fingerprint catalog; không ghi lại contentVersion của session/event cũ. Catalog sinh lại có 982 mục family gồm từ hai mảnh trở lên (không phải 982 từ duy nhất); 166/600 từ chính có parts từ hai mảnh trở lên. Phần câu hỏi/giao diện Build chưa triển khai. `affixes.json` có 92 phụ tố làm nguồn xây đáp án nhiễu, cần kiểm tra không tạo thêm đáp án đúng khi triển khai Build.
 
 Kiểm tra dữ liệu nguồn hiện tại:
 

@@ -29,7 +29,10 @@ export function isWord(value: unknown): value is Word {
       Array.isArray(w.family) &&
       w.family.every((f) => {
         const x = record(f);
-        return [x.text, x.pos, x.meaning].every(string);
+        return (
+          [x.text, x.pos, x.meaning].every(string) &&
+          (x.parts === undefined || (Array.isArray(x.parts) && x.parts.every(string)))
+        );
       }) &&
       [w.synonyms, w.antonyms, w.parts].every((a) => Array.isArray(a) && a.every(string))
     );

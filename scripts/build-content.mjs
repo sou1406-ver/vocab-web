@@ -38,7 +38,7 @@ const words = metadata.map((word) => {
     meaning: word.vi,
     definition: word.def,
     examples,
-    family: (detail.family ?? []).map((f) => ({ text: f.w, pos: f.pos, meaning: f.vi })),
+    family: (detail.family ?? []).map((f) => ({ text: f.w, pos: f.pos, meaning: f.vi, parts: f.parts ?? [] })),
     synonyms: detail.syn ?? [],
     antonyms: detail.ant ?? [],
     parts: detail.parts ?? [],

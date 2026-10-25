@@ -7,7 +7,7 @@ export interface Word {
   meaning: string;
   definition: string;
   examples: { text: string; translation: string }[];
-  family: { text: string; pos: string; meaning: string }[];
+  family: { text: string; pos: string; meaning: string; parts?: string[] }[];
   synonyms: string[];
   antonyms: string[];
   parts: string[];
