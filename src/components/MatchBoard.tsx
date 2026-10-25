@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useApp } from "../state/provider";
 import { answerMatchPair, matchGroup } from "../domain/match";
 import { shuffleSeeded } from "../domain/random";
-import { Icon, ProgressBar } from "../shared/ui";
+import { Icon, ProgressBar, Speak } from "../shared/ui";
 import type { StudySession } from "../domain/types";
 
 export function MatchBoard({ session }: { session: StudySession }) {
@@ -139,7 +139,7 @@ export function MatchBoard({ session }: { session: StudySession }) {
             <ul className="match-feedback-list">
               {pairs.map(({ question, index }) => (
                 <li key={index}>
-                  <strong lang="en">{question.prompt}</strong> — {question.answer}
+                  <strong lang="en">{question.prompt}</strong> — {question.answer} <Speak text={question.prompt} />
                   <span className="muted">{eventFor(index)?.correct ? "Đúng từ lần đầu" : "Đã có lần nối sai"}</span>
                 </li>
               ))}

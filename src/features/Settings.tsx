@@ -7,6 +7,7 @@ import { applyImport, previewImport, type ImportPreview } from "../data/imports"
 import { Icon } from "../shared/ui";
 import { dayKey } from "../domain/learning";
 import { UserAvatar } from "../components/UserAvatar";
+import { SpeechPreferences } from "../components/SpeechPreferences";
 
 const initialAvatarSeeds = Array.from({ length: 12 }, (_, i) => `vocab-avatar-${i + 1}`);
 
@@ -166,6 +167,8 @@ export default function Settings() {
               Lưu tuỳ chọn <Icon name="check" size={17} />
             </button>
           </form>
+          <div className="settings-divider" />
+          <SpeechPreferences />
         </section>
         <section className="panel backup-panel">
           <div className="section-heading">

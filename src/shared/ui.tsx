@@ -1,11 +1,13 @@
 "use client";
-import { useEffect, useState, type ReactNode, type RefObject } from "react";
+import { type ReactNode, type RefObject } from "react";
 import type { Word } from "../domain/types";
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { useApp } from "../state/provider";
 import { brandIcons } from "./brand-icons";
 import { setWordSaved } from "../domain/personal";
+import { speak } from "../lib/speech";
+import { useEnglishVoices } from "../lib/use-english-voices";
 
 const iconAliases = {
   book: "lessons",
@@ -101,26 +103,13 @@ export function Empty({ title, children }: { title: string; children?: ReactNode
   );
 }
 export function Speak({ text }: { text: string }) {
-  const [supported, setSupported] = useState(false);
-  useEffect(() => {
-    setSupported("speechSynthesis" in window);
-  }, []);
-  const speak = () => {
-    if (!("speechSynthesis" in window)) return;
-    speechSynthesis.cancel();
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = "en-US";
-    utterance.rate = 0.85;
-    const voice = speechSynthesis.getVoices().find((v) => v.lang === "en-US");
-    if (voice) utterance.voice = voice;
-    speechSynthesis.speak(utterance);
-  };
+  const voices = useEnglishVoices();
+  if (!voices.length) return null;
   return (
     <button
       type="button"
       className="icon-button sound-button"
-      onClick={speak}
-      disabled={!supported}
+      onClick={() => speak(text)}
       aria-label={`Nghe phát âm ${text}`}
       title="Nghe phát âm"
     >

@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { catalog } from "../data/catalog";
 import { useApp } from "../state/provider";
-import { Empty, Icon, ProgressBar, WordContent } from "../shared/ui";
+import { Empty, Icon, ProgressBar, WordContent, Speak } from "../shared/ui";
 import { useWord } from "../app/context";
 import type { Word } from "../domain/types";
 import { LetterSlotsInput } from "../components/LetterSlotsInput";
@@ -395,6 +395,7 @@ export default function Study() {
                 </div>
                 <p>
                   Đáp án: <strong lang={question.kind === "meaning" ? "vi" : "en"}>{answerText}</strong>
+                  <Speak text={question.kind === "meaning" ? word.text : answerText} />
                 </p>
                 {question.kind !== "build" && (
                   <p className="feedback-example" lang="en">
