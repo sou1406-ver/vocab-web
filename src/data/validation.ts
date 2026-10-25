@@ -1,6 +1,7 @@
 import type { Snapshot, Word } from "../domain/types";
 import { singleWordMatch } from "../domain/word-match";
 import { matchGlosses, matchMeaningsOverlap } from "./match";
+import { LISTEN_PROMPTS } from "./listening";
 
 export function record(value: unknown): Record<string, unknown> {
   if (!value || typeof value !== "object" || Array.isArray(value)) throw new Error("Dữ liệu không đúng định dạng.");
@@ -21,6 +22,8 @@ const questionKinds = [
   "synonym-choice",
   "synonym-context",
   "match",
+  "listen-choice",
+  "listen-type",
 ];
 const count = (value: unknown) => Number.isSafeInteger(value) && number(value);
 const day = (v: unknown) => string(v) && /^\d{4}-\d{2}-\d{2}$/.test(v as string);
@@ -120,6 +123,7 @@ export function validateSnapshot(value: unknown): Snapshot {
     eventIds.add(e.id);
     if (
       (e.questionId !== undefined && !nonempty(e.questionId)) ||
+      ((e.questionKind === "listen-choice" || e.questionKind === "listen-type") && e.mode !== "practice") ||
       (e.questionKind !== undefined && !questionKinds.includes(e.questionKind as string)) ||
       (e.direction !== undefined &&
         ((e.direction !== "synonym" && e.direction !== "antonym") ||
@@ -225,13 +229,31 @@ export function validateSnapshot(value: unknown): Snapshot {
           q.kind === "word-form-choice" ||
           q.kind === "synonym-choice" ||
           q.kind === "synonym-context" ||
-          q.kind === "word-choice") &&
+          q.kind === "word-choice" ||
+          q.kind === "listen-choice") &&
         (!Array.isArray(q.options) ||
           !q.options.every(string) ||
           !(q.options as string[]).includes(q.answer as string) ||
           new Set(q.options as string[]).size !== (q.options as string[]).length)
       )
         fail();
+      if (q.kind === "listen-choice" || q.kind === "listen-type") {
+        if (
+          session.mode !== "practice" ||
+          q.prompt !== LISTEN_PROMPTS[q.kind] ||
+          !nonempty(q.answer) ||
+          (q.sourceId !== undefined && (!nonempty(q.sourceId) || q.sourceId !== `${q.kind}:${q.wordId}`)) ||
+          (q.sourceVersion !== undefined && !nonempty(q.sourceVersion)) ||
+          (q.sourceId === undefined) !== (q.sourceVersion === undefined) ||
+          (q.kind === "listen-choice" &&
+            ((q.options as string[]).length !== 4 ||
+              (q.options as string[]).some((option) => !option.trim()) ||
+              new Set((q.options as string[]).map((option) => option.trim().toLowerCase().replace(/\s+/g, " ")))
+                .size !== 4)) ||
+          (q.kind === "listen-type" && q.options !== undefined && (!Array.isArray(q.options) || q.options.length !== 0))
+        )
+          fail();
+      }
       if (q.kind === "synonym-choice" || q.kind === "synonym-context") {
         if (
           session.mode !== "practice" ||
@@ -376,7 +398,11 @@ export function validateSnapshot(value: unknown): Snapshot {
           (position) =>
             Number.isInteger(position) && position >= 0 && position < chars.length && /\p{L}/u.test(chars[position]),
         ) ||
-        (session.revealed.length && q.kind !== "recall" && q.kind !== "cloze" && q.kind !== "word-form")
+        (session.revealed.length &&
+          q.kind !== "recall" &&
+          q.kind !== "cloze" &&
+          q.kind !== "word-form" &&
+          q.kind !== "listen-type")
       )
         fail();
     }

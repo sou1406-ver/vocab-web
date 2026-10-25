@@ -18,8 +18,10 @@ Ngày 25/10/2026. Đọc tài liệu này để phân biệt thay đổi đã ch
 | synonym-choice   | options bắt buộc; direction optional                     | Chọn đồng nghĩa hoặc trái nghĩa có nhãn rõ ràng       |
 | synonym-context  | options bắt buộc; target/direction optional              | Chọn gần nghĩa trong câu giữ nguyên, gạch chân từ gốc |
 | match            | groupId/sourceId/sourceVersion optional                  | Sáu question riêng hiện chung một bảng nối từ         |
+| listen-choice    | options; sourceId/sourceVersion optional                 | Nghe phát âm rồi chọn từ                              |
+| listen-type      | sourceId/sourceVersion optional                          | Nghe phát âm rồi gõ bằng ô chữ                        |
 
-Các kind cùng có wordId, prompt và answer. Answer của Build là mảng chuỗi; các dạng khác giữ chuỗi như cũ. Không thêm type Listening giả khi chưa có renderer, scorer và dữ liệu kiểm chứng. Khi triển khai một dạng, thêm nhánh union riêng và validator tương ứng; không nhét pairs/audio/tokens vào prompt.
+Các kind cùng có wordId, prompt và answer. Answer của Build là mảng chuỗi; các dạng khác giữ chuỗi như cũ. Hai kind nghe `listen-choice`/`listen-type` dùng prompt tiếng Việt cố định, answer là từ tiếng Anh, metadata nguồn optional. Khi triển khai một dạng, thêm nhánh union riêng và validator tương ứng; không nhét pairs/audio/tokens vào prompt.
 
 Để tương thích tab đang chạy bản schema 2, generator vẫn ghi `options: []` cho câu nhập chữ. Type chỉ cho phép mảng rỗng ở hai nhánh này; validator nhận cả mảng rỗng và trường bị lược bỏ. Options có nội dung ở cloze/recall hoặc kind chưa hỗ trợ bị từ chối. Đây là trường tương thích, không phải danh sách lựa chọn của câu nhập chữ.
 
@@ -29,17 +31,17 @@ Các kind cùng có wordId, prompt và answer. Answer của Build là mảng chu
 
 Ngoài kết quả/assisted/mode đã có, đáp án mới lưu:
 
-| Field            | Ý nghĩa                                                                                                                           |
-| ---------------- | --------------------------------------------------------------------------------------------------------------------------------- |
-| questionKind     | meaning, word-choice, cloze, recall, cloze-choice, word-form-choice, word-form, build, synonym-choice, synonym-context hoặc match |
-| questionId       | sessionId:index; định danh lần xuất hiện câu hỏi trong lượt                                                                       |
-| contentVersion   | Luôn là phiên bản catalog của session cho mọi kind                                                                                |
-| skill            | vocabulary cho các dạng đang triển khai                                                                                           |
-| scoringVersion   | 4 cho Match theo từng cặp; 3 cho Build; các dạng cũ tiếp tục ghi 2; vẫn đọc version 1                                             |
-| sourceQuestionId | ID câu nguồn cho hai dạng biên soạn, dạng v1:part5:bài:số-câu                                                                     |
-| sourceVersion    | Phiên bản gói câu biên soạn, tách khỏi contentVersion                                                                             |
-| hintCount        | Số chữ đã lộ trong câu, lưu cùng event scoringVersion 2                                                                           |
-| hintLimit        | floor(số chữ cái của đáp án × 0.3), không có mức tối thiểu                                                                        |
+| Field            | Ý nghĩa                                                                                                                                                       |
+| ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| questionKind     | meaning, word-choice, cloze, recall, cloze-choice, word-form-choice, word-form, build, synonym-choice, synonym-context, match, listen-choice hoặc listen-type |
+| questionId       | sessionId:index; định danh lần xuất hiện câu hỏi trong lượt                                                                                                   |
+| contentVersion   | Luôn là phiên bản catalog của session cho mọi kind                                                                                                            |
+| skill            | vocabulary cho các dạng đang triển khai                                                                                                                       |
+| scoringVersion   | 4 cho Match theo từng cặp; 3 cho Build; các dạng cũ tiếp tục ghi 2; vẫn đọc version 1                                                                         |
+| sourceQuestionId | ID câu nguồn cho hai dạng biên soạn, dạng v1:part5:bài:số-câu                                                                                                 |
+| sourceVersion    | Phiên bản gói câu biên soạn, tách khỏi contentVersion                                                                                                         |
+| hintCount        | Số chữ đã lộ trong câu, lưu cùng event scoringVersion 2                                                                                                       |
+| hintLimit        | floor(số chữ cái của đáp án × 0.3), không có mức tối thiểu                                                                                                    |
 
 questionId định danh lần xuất hiện trong session; sourceQuestionId liên kết câu nguồn xuyên session cho cloze-choice/word-form-choice/word-form/build. Chưa lưu toàn bộ câu hỏi hoặc câu trả lời người dùng trong event; do đó chưa đủ để phân tích cụ thể từng distractor sau khi session cũ được thay.
 
@@ -81,7 +83,7 @@ Còn cần chốt khi viết migration: cách hiển thị “nhớ ổn định
 
 `LetterSlotsInput` đã được tạo ở `src/components/LetterSlotsInput.tsx` và dùng cho recall/cloze nhập chữ hiện có. Dùng một input native với các ô hiển thị để hỗ trợ dán văn bản, chọn/xóa, phím mũi tên, Enter, bấm ô để sửa và cụm có khoảng trắng; giữ label/focus và bố cục mobile. Phần nhập dư vẫn hiện để sửa, không bị cắt theo độ dài đáp án. Các ô không hiện sẵn chữ đáp án.
 
-Component này đã dùng cho mức gõ dạng từ; phần nghe chưa triển khai. Đây là component nhập đáp án, không phải một skill riêng. Các dạng trong bảng chưa được triển khai đầy đủ; mục 1 mô tả code đang chạy. `cloze` vẫn là nhập chữ, còn `cloze-choice` là dạng chọn mới. Chưa migrate lịch ôn sang hai skill.
+Component này đã dùng cho mức gõ dạng từ; đã dùng thêm cho nghe gõ từ. Đây là component nhập đáp án, không phải một skill riêng. Các dạng trong bảng chưa được triển khai đầy đủ; mục 1 mô tả code đang chạy. `cloze` vẫn là nhập chữ, còn `cloze-choice` là dạng chọn mới. Chưa migrate lịch ôn sang hai skill.
 
 `LetterSlotsInput` nhận prop `revealed` để khóa chữ gợi ý. Vị trí chữ đã lộ được lưu ngay trong session, đồng bộ tab và giữ khi reload; sang câu mới mới reset. Hạn mức là `floor(số chữ cái × 0.3)`, không tính dấu cách/dấu câu và không đặt mức tối thiểu: 3 chữ → 0, 5 chữ → 1, 10 chữ → 3. Bấm gợi ý vẫn được lộ thêm chữ sau hạn mức; đây là ngưỡng chấm, không phải số lần tối đa có thể bấm.
 
@@ -143,6 +145,14 @@ Hai dạng biên soạn vẫn chạy practice: ghi kết quả, không tăng box
 Ba nhiễu lấy từ text và synonyms của từ khác cùng từ loại, ưu tiên pool gộp cùng bài + các bài cùng chủ đề; chỉ lấy từ toàn catalog để bù số còn thiếu. Thu thập và normalize pool gần trước để alias trùng ở chủ đề khác không làm mất ưu tiên. Loại từ gốc, toàn bộ synonyms/antonyms/family đã biết, quan hệ synonym chiều ngược, giao synonyms và family chiều ngược đã biết. Cả các alias của nguồn liên quan cũng bị loại trên toàn catalog để không lọt trở lại qua synonyms của một nguồn khác, kể cả khi chỉ dùng pool gần. Nếu không đủ ba nhiễu khác nhau sau normalize thì bỏ câu. Đáp án và options xáo theo seed session/wordId/kind; retry giữ nguyên câu/đáp án/hướng và xáo lại options. Nút “Đồng nghĩa”/“Gần nghĩa trong câu” ẩn khi không có câu.
 
 Các field direction/target/sourceId/sourceVersion trong hai nhánh mới là optional để đọc dữ liệu cũ; generator luôn ghi direction, source metadata và target cho ngữ cảnh. Khi thiếu direction thì đọc là synonym, không diễn giải prompt trái nghĩa thiếu direction thành dữ liệu hợp lệ. ID nguồn là `synonym-choice:<wordId>:<direction>` hoặc `synonym-context:<wordId>:<exampleIndex>`, sourceVersion bằng catalog. Event mới lưu direction optional, questionKind riêng và scorer chuỗi hiện có scoringVersion 2, hintCount/hintLimit 0. Không suy diễn direction cho event lịch sử. Hai mức chỉ chạy practice, giữ schemaVersion 2, ID event, lịch ôn và catalog/fingerprint.
+
+### Nghe trên Edge/Chrome desktop
+
+`listen-choice` và `listen-type` chỉ chạy practice, giữ schemaVersion 2. Prompt lần lượt là “Nghe và chọn từ.” và “Nghe và gõ từ.”, không chứa từ đích. Answer lấy word.text; sourceId `<kind>:<wordId>`, sourceVersion bằng catalog; hai field nguồn optional để đọc bản sao không có metadata. Bản sao cũ và scorer 1–4 vẫn đọc được; hai dạng nghe dùng scorer chuỗi hiện có, scoringVersion 2, ID event vẫn sessionId:index. Practice không tăng box hoặc đổi dueAt/reviewedDay.
+
+Nghe chọn có đúng 4 từ khác nhau sau normalize: ưu tiên family, rồi từ cùng bài/chủ đề có cùng chữ đầu hoặc chênh không quá hai chữ cái; thiếu mới bù từ còn lại trong chủ đề, rồi catalog. Đáp án và nhiễu xáo theo seed session. Nghe gõ dùng LetterSlotsInput và gợi ý chữ khóa: hintLimit = floor(số chữ cái × 0.3), vượt hạn mới assisted; vị trí chữ đã lộ giữ qua reload. Nghe lại/nghe chậm không thay đổi trạng thái hỗ trợ.
+
+Câu tự đọc khi mở và khi sang câu mới; có nút Nghe lại không chứa đáp án trong nhãn. Hủy phát âm khi rời câu. Nếu chưa có giọng tiếng Anh, ẩn nút vào bài nghe; lượt đã lưu vẫn mở được nhưng khóa nhập/chọn cho tới khi có giọng, cho phép kết thúc lượt hoặc mở Cài đặt. Giọng/tốc độ chỉ lưu trong localStorage `vocab-speech-settings`, không nằm trong snapshot. Chỉ kiểm chứng Edge/Chrome desktop; không thêm xử lý iOS/Safari.
 
 ### Match theo chủ đề
 

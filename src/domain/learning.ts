@@ -80,7 +80,7 @@ export function revealQuestionLetter(snapshot: Snapshot, sessionId: string, inde
   if (!session || session.id !== sessionId || session.index !== index || session.phase !== "question")
     throw new Error("Lượt học đã thay đổi. Hãy mở lại câu hiện tại.");
   const q = session.questions[index];
-  if (q.kind !== "recall" && q.kind !== "cloze" && q.kind !== "word-form")
+  if (q.kind !== "recall" && q.kind !== "cloze" && q.kind !== "word-form" && q.kind !== "listen-type")
     throw new Error("Câu này không dùng gợi ý chữ.");
   const revealed = session.revealed ?? [];
   const next = Array.from(q.answer).findIndex((char, position) => /\p{L}/u.test(char) && !revealed.includes(position));
@@ -260,10 +260,15 @@ export function answerQuestion(
   const q = session.questions[index];
   const hintCount = session.revealed?.length ?? 0;
   if (q.kind === "match") throw new Error("Hãy trả lời trên bảng nối từ.");
+  if ((q.kind === "listen-choice" || q.kind === "listen-type") && session.mode !== "practice")
+    throw new Error("Nghe chỉ dùng trong lượt luyện thêm.");
   if ((q.kind === "synonym-choice" || q.kind === "synonym-context") && session.mode !== "practice")
     throw new Error("Đồng nghĩa chỉ dùng trong lượt luyện thêm.");
   if (q.kind === "build" && session.mode !== "practice") throw new Error("Ghép từ chỉ dùng trong lượt luyện thêm.");
-  const hintLimit = q.kind === "recall" || q.kind === "cloze" || q.kind === "word-form" ? hintAllowance(q.answer) : 0;
+  const hintLimit =
+    q.kind === "recall" || q.kind === "cloze" || q.kind === "word-form" || q.kind === "listen-type"
+      ? hintAllowance(q.answer)
+      : 0;
   assisted = assisted || Boolean(session.peeked) || hintCount > hintLimit;
   const correct =
     !assisted &&
@@ -290,7 +295,9 @@ export function answerQuestion(
       q.kind === "word-form" ||
       q.kind === "build" ||
       q.kind === "synonym-choice" ||
-      q.kind === "synonym-context") &&
+      q.kind === "synonym-context" ||
+      q.kind === "listen-choice" ||
+      q.kind === "listen-type") &&
     q.sourceId &&
     q.sourceVersion
       ? { sourceQuestionId: q.sourceId, sourceVersion: q.sourceVersion }

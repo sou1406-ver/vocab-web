@@ -83,6 +83,10 @@ export type MatchQuestion = QuestionBase & {
   sourceVersion?: string;
   options?: [];
 };
+export type ListeningQuestion = QuestionBase & {
+  sourceId?: string;
+  sourceVersion?: string;
+} & ({ kind: "listen-choice"; options: string[] } | { kind: "listen-type"; options?: [] });
 export type Question =
   | ClozeChoiceQuestion
   | RecognitionQuestion
@@ -90,6 +94,7 @@ export type Question =
   | WordFormQuestion
   | BuildQuestion
   | MatchQuestion
+  | ListeningQuestion
   // Empty options are a schema-2 compatibility field, never selectable answers.
   | (QuestionBase & { kind: "cloze"; options?: [] })
   | (QuestionBase & { kind: "recall"; options?: [] });

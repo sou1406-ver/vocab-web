@@ -15,9 +15,12 @@ import { BuildAnswer } from "../components/BuildAnswer";
 import { singleWordMatch } from "../domain/word-match";
 import { MatchBoard } from "../components/MatchBoard";
 import { makeMatchQuestions } from "../data/match";
+import { ListenPrompt } from "../components/ListenPrompt";
+import { useEnglishVoices } from "../lib/use-english-voices";
 
 export default function Study() {
   const { data, busy, advance, answer, finish, start, startExercises, change } = useApp();
+  const voices = useEnglishVoices();
   const router = useRouter();
   const inspect = useWord();
   const [input, setInput] = useState("");
@@ -27,6 +30,12 @@ export default function Study() {
   const feedbackRef = useRef<HTMLDivElement>(null);
   const session = data.session;
   const revealed = session?.revealed ?? [];
+  const currentKind = session?.questions[session.index]?.kind;
+  const listeningAvailable = voices.length > 0 && (currentKind === "listen-choice" || currentKind === "listen-type");
+  useEffect(() => {
+    if (listeningAvailable && !busy && session?.phase === "question")
+      (inputRef.current ?? choiceRef.current)?.focus({ preventScroll: true });
+  }, [listeningAvailable, busy, session?.id, session?.index, session?.phase]);
   useEffect(() => {
     setInput("");
     if (session?.phase === "learn" || session?.phase === "question") window.scrollTo(0, 0);
@@ -76,7 +85,8 @@ export default function Study() {
                 q.kind === "meaning" ||
                 q.kind === "word-choice" ||
                 q.kind === "synonym-choice" ||
-                q.kind === "synonym-context"
+                q.kind === "synonym-context" ||
+                q.kind === "listen-choice"
                   ? { ...q, options: shuffleSeeded(q.options, `${id}:${q.wordId}:${q.kind}`) }
                   : q.kind === "build"
                     ? { ...q, tiles: shuffleSeeded(q.tiles, `${id}:${q.sourceId ?? q.wordId}:tiles`) }
@@ -182,7 +192,13 @@ export default function Study() {
   const feedback = session.feedback;
   const synonymMatch =
     question.kind === "synonym-context" ? singleWordMatch(question.prompt, question.target ?? word.text) : null;
-  const typed = question.kind === "cloze" || question.kind === "recall" || question.kind === "word-form";
+  const listening = question.kind === "listen-choice" || question.kind === "listen-type";
+  const cannotHear = listening && !voices.length;
+  const typed =
+    question.kind === "cloze" ||
+    question.kind === "recall" ||
+    question.kind === "word-form" ||
+    question.kind === "listen-type";
   const answerText = questionAnswerText(question);
   const typedValue = projectRevealed(input, answerText, revealed);
   const hintLimit = hintAllowance(answerText);
@@ -223,25 +239,29 @@ export default function Study() {
         <h1 tabIndex={-1}>
           {session.phase === "learn"
             ? "Làm quen với từ này"
-            : question.kind === "synonym-choice"
-              ? question.direction === "antonym"
-                ? "Chọn từ trái nghĩa"
-                : "Chọn từ đồng nghĩa"
-              : question.kind === "synonym-context"
-                ? "Từ nào gần nghĩa nhất với từ gạch chân?"
-                : question.kind === "build"
-                  ? "Ghép gốc và phụ tố"
-                  : question.kind === "meaning"
-                    ? "Chọn nghĩa phù hợp"
-                    : question.kind === "word-choice"
-                      ? "Chọn từ phù hợp"
-                      : question.kind === "word-form-choice"
-                        ? "Chọn dạng từ phù hợp"
-                        : question.kind === "word-form"
-                          ? "Gõ dạng từ phù hợp"
-                          : question.kind === "cloze" || question.kind === "cloze-choice"
-                            ? "Điền từ còn thiếu"
-                            : "Bạn nhớ từ nào?"}
+            : question.kind === "listen-choice"
+              ? "Nghe và chọn từ"
+              : question.kind === "listen-type"
+                ? "Nghe và gõ từ"
+                : question.kind === "synonym-choice"
+                  ? question.direction === "antonym"
+                    ? "Chọn từ trái nghĩa"
+                    : "Chọn từ đồng nghĩa"
+                  : question.kind === "synonym-context"
+                    ? "Từ nào gần nghĩa nhất với từ gạch chân?"
+                    : question.kind === "build"
+                      ? "Ghép gốc và phụ tố"
+                      : question.kind === "meaning"
+                        ? "Chọn nghĩa phù hợp"
+                        : question.kind === "word-choice"
+                          ? "Chọn từ phù hợp"
+                          : question.kind === "word-form-choice"
+                            ? "Chọn dạng từ phù hợp"
+                            : question.kind === "word-form"
+                              ? "Gõ dạng từ phù hợp"
+                              : question.kind === "cloze" || question.kind === "cloze-choice"
+                                ? "Điền từ còn thiếu"
+                                : "Bạn nhớ từ nào?"}
         </h1>
       </div>
       <section className="study-card" aria-label="Nội dung lượt học">
@@ -263,27 +283,32 @@ export default function Study() {
               <span className="small-label">
                 {question.kind === "meaning"
                   ? "TỪ NÀY CÓ NGHĨA LÀ GÌ?"
-                  : question.kind === "synonym-choice"
-                    ? question.direction === "antonym"
-                      ? "TRÁI NGHĨA"
-                      : "ĐỒNG NGHĨA"
-                    : question.kind === "synonym-context"
-                      ? "GẦN NGHĨA NHẤT TRONG NGỮ CẢNH"
-                      : question.kind === "build"
-                        ? "GHÉP TỪ THEO NGHĨA"
-                        : question.kind === "word-choice"
-                          ? "CHỌN TỪ TIẾNG ANH PHÙ HỢP"
-                          : question.kind === "word-form-choice"
-                            ? "CHỌN DẠNG TỪ PHÙ HỢP"
-                            : question.kind === "word-form"
-                              ? "VIẾT DẠNG TỪ PHÙ HỢP"
-                              : question.kind === "cloze" || question.kind === "cloze-choice"
-                                ? "HOÀN THÀNH CÂU TIẾNG ANH"
-                                : "VIẾT TỪ TIẾNG ANH CÓ NGHĨA"}
+                  : listening
+                    ? "NGHE PHÁT ÂM"
+                    : question.kind === "synonym-choice"
+                      ? question.direction === "antonym"
+                        ? "TRÁI NGHĨA"
+                        : "ĐỒNG NGHĨA"
+                      : question.kind === "synonym-context"
+                        ? "GẦN NGHĨA NHẤT TRONG NGỮ CẢNH"
+                        : question.kind === "build"
+                          ? "GHÉP TỪ THEO NGHĨA"
+                          : question.kind === "word-choice"
+                            ? "CHỌN TỪ TIẾNG ANH PHÙ HỢP"
+                            : question.kind === "word-form-choice"
+                              ? "CHỌN DẠNG TỪ PHÙ HỢP"
+                              : question.kind === "word-form"
+                                ? "VIẾT DẠNG TỪ PHÙ HỢP"
+                                : question.kind === "cloze" || question.kind === "cloze-choice"
+                                  ? "HOÀN THÀNH CÂU TIẾNG ANH"
+                                  : "VIẾT TỪ TIẾNG ANH CÓ NGHĨA"}
               </span>
               <p
                 lang={
-                  question.kind === "recall" || question.kind === "word-choice" || question.kind === "build"
+                  question.kind === "recall" ||
+                  question.kind === "word-choice" ||
+                  question.kind === "build" ||
+                  listening
                     ? "vi"
                     : "en"
                 }
@@ -308,8 +333,17 @@ export default function Study() {
               {question.kind !== "cloze-choice" &&
                 question.kind !== "word-form-choice" &&
                 question.kind !== "word-form" &&
-                question.kind !== "build" && <span className="pos">{word.pos}</span>}
+                question.kind !== "build" &&
+                !listening && <span className="pos">{word.pos}</span>}
             </div>
+            {listening && (
+              <ListenPrompt
+                key={`${session.id}:${session.index}`}
+                text={question.answer}
+                available={voices.length > 0}
+                active={session.phase === "question"}
+              />
+            )}
             {question.kind === "build" ? (
               <BuildAnswer
                 key={`${session.id}:${session.index}`}
@@ -324,7 +358,8 @@ export default function Study() {
               question.kind === "word-form-choice" ||
               question.kind === "synonym-choice" ||
               question.kind === "synonym-context" ||
-              question.kind === "word-choice" ? (
+              question.kind === "word-choice" ||
+              question.kind === "listen-choice" ? (
               <div className="answer-options">
                 {question.options.map((option, i) => (
                   <button
@@ -332,7 +367,7 @@ export default function Study() {
                     key={option}
                     lang={question.kind === "meaning" ? "vi" : "en"}
                     className={`answer-option${feedback && option === question.answer ? " correct-option" : ""}${feedback && !feedback.correct && option === feedback.input ? " wrong-option" : ""}`}
-                    disabled={busy || session.phase === "feedback"}
+                    disabled={busy || session.phase === "feedback" || cannotHear}
                     onClick={() => void answer(option)}
                   >
                     <span>{String.fromCharCode(65 + i)}</span>
@@ -358,11 +393,15 @@ export default function Study() {
                     answer={answerText}
                     revealed={revealed}
                     value={session.phase === "feedback" ? (feedback?.input ?? "") : typedValue}
-                    disabled={busy || session.phase === "feedback"}
+                    disabled={busy || session.phase === "feedback" || cannotHear}
                     onChange={setInput}
                   />
                   {session.phase === "question" && (
-                    <button className="button primary" disabled={!typedValue.trim() || busy} type="submit">
+                    <button
+                      className="button primary"
+                      disabled={!typedValue.trim() || busy || cannotHear}
+                      type="submit"
+                    >
                       Kiểm tra <Icon name="arrow" size={17} />
                     </button>
                   )}
@@ -432,9 +471,11 @@ export default function Study() {
                 <button className="text-link" disabled={busy} onClick={() => void answer("", true)}>
                   Chưa nhớ, xem đáp án
                 </button>
-                <button className="text-link" disabled={busy} onClick={() => inspect(word)}>
-                  <Icon name="help" size={16} /> Xem lại từ
-                </button>
+                {!listening && (
+                  <button className="text-link" disabled={busy} onClick={() => inspect(word)}>
+                    <Icon name="help" size={16} /> Xem lại từ
+                  </button>
+                )}
               </div>
             )}
           </>

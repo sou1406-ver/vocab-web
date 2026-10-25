@@ -12,9 +12,13 @@ import { shuffleSeeded } from "../domain/random";
 import { makeBuildQuestions } from "../data/build";
 import { makeSynonymQuestions } from "../data/synonyms";
 import { makeMatchQuestions } from "../data/match";
+import { makeListeningQuestions } from "../data/listening";
+import { useEnglishVoices } from "../lib/use-english-voices";
 
 export default function Lessons({ lessonId: id }: { lessonId?: string }) {
   const { data, start, startExercises, busy } = useApp();
+  const voices = useEnglishVoices();
+  const [listeningError, setListeningError] = useState("");
   const [topic, setTopic] = useState("all");
   const [loading, setLoading] = useState(false);
   const [loadingKind, setLoadingKind] = useState<"cloze-choice" | "word-form-choice" | "word-form" | null>(null);
@@ -80,6 +84,25 @@ export default function Lessons({ lessonId: id }: { lessonId?: string }) {
       }
     };
     const words = catalog.words.filter((w) => w.lesson === lesson.id);
+    const listeningGroups = [
+      { kind: "listen-choice", title: "Nghe chọn từ" },
+      { kind: "listen-type", title: "Nghe gõ từ" },
+    ] as const;
+    const practiceListening = async (kind: "listen-choice" | "listen-type") => {
+      if (active) return router.push("/study");
+      setListeningError("");
+      try {
+        if (
+          await startExercises(
+            (id) => makeListeningQuestions(words, catalog, kind, id),
+            `${kind === "listen-choice" ? "Nghe chọn từ" : "Nghe gõ từ"} · ${lesson.translation}`,
+          )
+        )
+          router.push("/study");
+      } catch (error) {
+        setListeningError(error instanceof Error ? error.message : "Chưa mở được bài nghe.");
+      }
+    };
     const buildCount = makeBuildQuestions(words, "preview").length;
     const synonymGroups = [
       { kind: "synonym-choice", title: "Đồng nghĩa", description: "Chọn từ đồng nghĩa; câu trái nghĩa có nhãn riêng." },
@@ -256,6 +279,27 @@ export default function Lessons({ lessonId: id }: { lessonId?: string }) {
             )
           );
         })}
+        {voices.length > 0 &&
+          listeningGroups.map((group) => (
+            <section className="panel cloze-practice" aria-label={group.title} key={group.kind}>
+              <div>
+                <h2>{group.title}</h2>
+                <p>
+                  {words.length} câu · Nghe phát âm rồi {group.kind === "listen-choice" ? "chọn" : "gõ"} từ. Luyện thêm
+                  không tăng bậc ôn.
+                </p>
+                {listeningError && <p role="alert">{listeningError}</p>}
+              </div>
+              <button
+                className="button secondary"
+                disabled={busy || loading || Boolean(active)}
+                onClick={() => void practiceListening(group.kind)}
+              >
+                {group.title}
+                <Icon name="arrow" />
+              </button>
+            </section>
+          ))}
         <section className="panel cloze-practice" aria-label="Chọn nghĩa và chọn từ">
           <div>
             <h2>Chọn nghĩa / chọn từ</h2>
