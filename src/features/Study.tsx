@@ -7,6 +7,7 @@ import { useApp } from "../state/provider";
 import { Empty, Icon, ProgressBar, WordContent } from "../shared/ui";
 import { useWord } from "../app/context";
 import type { Word } from "../domain/types";
+import { LetterSlotsInput } from "../components/LetterSlotsInput";
 
 export default function Study() {
   const { data, busy, advance, answer, finish, start } = useApp();
@@ -218,16 +219,14 @@ export default function Study() {
               >
                 <label htmlFor="typed-answer">Đáp án của bạn</label>
                 <div>
-                  <input
-                    ref={inputRef}
+                  <LetterSlotsInput
+                    key={`${session.id}:${session.index}`}
+                    inputRef={inputRef}
                     id="typed-answer"
-                    autoComplete="off"
-                    autoCapitalize="off"
-                    spellCheck={false}
-                    placeholder="Gõ từ tiếng Anh…"
+                    answer={question.answer}
                     value={session.phase === "feedback" ? (feedback?.input ?? "") : input}
                     disabled={busy || session.phase === "feedback"}
-                    onChange={(e) => setInput(e.target.value)}
+                    onChange={setInput}
                   />
                   {session.phase === "question" && (
                     <button className="button primary" disabled={!input.trim() || busy} type="submit">

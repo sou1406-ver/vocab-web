@@ -161,7 +161,21 @@ export function answerQuestion(
   assisted = assisted || Boolean(session.peeked);
   const correct = !assisted && normalizeAnswer(input) === normalizeAnswer(q.answer);
   const day = dayKey(at, snapshot.settings.timezone);
-  const event: AnswerEvent = { id, sessionId, wordId: q.wordId, at, day, correct, assisted, mode: session.mode };
+  const event: AnswerEvent = {
+    id,
+    sessionId,
+    wordId: q.wordId,
+    at,
+    day,
+    correct,
+    assisted,
+    mode: session.mode,
+    questionId: id,
+    questionKind: q.kind,
+    contentVersion: session.contentVersion,
+    skill: "vocabulary",
+    scoringVersion: 1,
+  };
   const feedback: Feedback = { correct, assisted, answer: q.answer, input };
   const previous = snapshot.progress[q.wordId];
   const p: WordProgress = previous ?? {

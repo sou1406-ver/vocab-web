@@ -59,3 +59,5 @@ Vercel dùng repo root (Root Directory mặc định), Next.js, Node24, `npm ci`
 Firebase SDK và rules còn giữ, chưa có Auth/cloudsync trong app local. G6 sẽ dùng staging/Emulator và CLI hiện hành. Chưa deploy hoặc thay web Firebase cũ trên cloud. Cần rà nguồn/quyền dùng catalog trước khi phát hành công khai.
 
 Xem [kết quả gộp app](docs/implementation/SINGLE-APP.md) và [kế hoạch sản phẩm](docs/BUILD-FROM-SCRATCH.md). Các báo cáo mốc cũ chỉ là lịch sử, không dùng đường dẫn/lệnh cũ để chạy app hiện tại.
+
+Phần review lõi học, các thay đổi tương thích và đề xuất trước khi mở rộng bài tập nằm trong [Learning contracts](docs/implementation/LEARNING-CONTRACTS.md).

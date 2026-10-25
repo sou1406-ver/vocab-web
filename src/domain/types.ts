@@ -41,13 +41,16 @@ export interface WordProgress {
   policyVersion: 1;
 }
 export type SessionMode = "learn" | "review" | "practice";
-export interface Question {
+interface QuestionBase {
   wordId: string;
-  kind: "meaning" | "cloze" | "recall";
   prompt: string;
   answer: string;
-  options: string[];
 }
+export type Question =
+  | (QuestionBase & { kind: "meaning"; options: string[] })
+  // Empty options are a schema-2 compatibility field, never selectable answers.
+  | (QuestionBase & { kind: "cloze"; options?: [] })
+  | (QuestionBase & { kind: "recall"; options?: [] });
 export interface Feedback {
   correct: boolean;
   answer: string;
@@ -77,6 +80,12 @@ export interface AnswerEvent {
   correct: boolean;
   assisted: boolean;
   mode: SessionMode;
+  // Optional only for historical events. New answers always record these fields.
+  questionId?: string;
+  questionKind?: Question["kind"];
+  contentVersion?: string;
+  skill?: "vocabulary";
+  scoringVersion?: 1;
 }
 export interface SessionSummary {
   id: string;
