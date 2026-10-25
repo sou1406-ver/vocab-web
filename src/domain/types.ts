@@ -140,7 +140,13 @@ export interface SessionSummary {
 export interface Snapshot {
   schemaVersion: 2;
   revision: number;
-  settings: { name: string; dailyNew: number; timezone: string; theme: "light" | "dark" | "system" };
+  settings: {
+    name: string;
+    dailyNew: number;
+    timezone: string;
+    theme: "light" | "dark" | "system";
+    avatarSeed?: string;
+  };
   progress: Record<string, WordProgress>;
   events: AnswerEvent[];
   session: StudySession | null;

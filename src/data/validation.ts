@@ -73,7 +73,9 @@ export function validateSnapshot(value: unknown): Snapshot {
     !Number.isInteger(settings.dailyNew) ||
     (settings.dailyNew as number) < 1 ||
     (settings.dailyNew as number) > 50 ||
-    !["light", "dark", "system"].includes(settings.theme as string)
+    !["light", "dark", "system"].includes(settings.theme as string) ||
+    (settings.avatarSeed !== undefined &&
+      (!nonempty(settings.avatarSeed) || (settings.avatarSeed as string).length > 200))
   )
     fail();
   try {

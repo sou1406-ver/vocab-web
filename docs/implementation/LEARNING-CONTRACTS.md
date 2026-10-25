@@ -143,6 +143,8 @@ Ba nhiễu lấy từ text và synonyms của từ khác cùng từ loại. Lo�
 
 Các field direction/target/sourceId/sourceVersion trong hai nhánh mới là optional để đọc dữ liệu cũ; generator luôn ghi direction, source metadata và target cho ngữ cảnh. Khi thiếu direction thì đọc là synonym, không diễn giải prompt trái nghĩa thiếu direction thành dữ liệu hợp lệ. ID nguồn là `synonym-choice:<wordId>:<direction>` hoặc `synonym-context:<wordId>:<exampleIndex>`, sourceVersion bằng catalog. Event mới lưu direction optional, questionKind riêng và scorer chuỗi hiện có scoringVersion 2, hintCount/hintLimit 0. Không suy diễn direction cho event lịch sử. Hai mức chỉ chạy practice, giữ schemaVersion 2, ID event, lịch ôn và catalog/fingerprint.
 
+Avatar Boring Avatars lưu seed trong `settings.avatarSeed` optional (chuỗi không rỗng, tối đa 200 ký tự). Bản sao cũ không có field này vẫn đọc được với schemaVersion 2; avatar mặc định sinh theo tên hoặc seed khách. Chọn avatar không đổi tên, tiến độ hay catalog/fingerprint. Bản sao lưu giữ nguyên lựa chọn.
+
 ## 5. Đề xuất: hợp đồng đồng bộ trước khi chọn collection
 
 **Chưa triển khai Auth/Firestore hoặc thay rules.** Trước khi sync cần quyết định:

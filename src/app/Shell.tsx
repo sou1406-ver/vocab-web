@@ -6,6 +6,7 @@ import { useApp } from "../state/provider";
 import { Icon, Logo, WordDialog, type IconName } from "../shared/ui";
 import { WordContext } from "./context";
 import type { Word } from "../domain/types";
+import { UserAvatar } from "../components/UserAvatar";
 const links: { to: string; label: string; icon: IconName; end?: boolean }[] = [
   { to: "/", label: "Hôm nay", icon: "home", end: true },
   { to: "/lessons", label: "Bài học", icon: "book" },
@@ -145,7 +146,7 @@ export function Shell({ children }: { children: ReactNode }) {
                 <Icon name={resolvedTheme === "dark" ? "sun" : "moon"} />
               </button>
               <button className="avatar" onClick={() => router.push("/settings")} aria-label="Mở hồ sơ">
-                {data.settings.name ? data.settings.name.charAt(0).toUpperCase() : <Icon name="user" />}
+                <UserAvatar seed={data.settings.avatarSeed ?? (data.settings.name.trim() || "Vocab guest")} />
               </button>
             </div>
           </header>

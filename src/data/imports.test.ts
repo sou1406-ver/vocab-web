@@ -54,6 +54,18 @@ describe("Import and restore", () => {
     expect(restored.settings.name).toBe("An");
     expect(restored.legacyArchives[0]).toMatchObject({ beforeRestore: { settings: { name: "Bình" } } });
   });
+  it("accepts old settings and preserves an optional avatar through backup restore", async () => {
+    const old = emptySnapshot();
+    expect(old.schemaVersion).toBe(2);
+    expect(validateSnapshot(old).settings).not.toHaveProperty("avatarSeed");
+    const source = { ...old, settings: { ...old.settings, avatarSeed: "avatar-test-seed" } };
+    const preview = await previewImport(JSON.stringify({ app: "VocabLearn-v2", data: source }), catalog);
+    expect(applyImport(emptySnapshot(), preview).settings).toEqual(source.settings);
+  });
+  it.each([null, 12, "", "  ", "x".repeat(201)])("rejects invalid avatar seeds: %s", (avatarSeed) => {
+    const source = emptySnapshot();
+    expect(() => validateSnapshot({ ...source, settings: { ...source.settings, avatarSeed } })).toThrow("không hợp lệ");
+  });
   it("preserves valid legacy custom words without allowing collisions", async () => {
     const source = {
       app: "VocabLearn-600",

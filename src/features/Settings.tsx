@@ -6,12 +6,22 @@ import { catalog } from "../data/catalog";
 import { applyImport, previewImport, type ImportPreview } from "../data/imports";
 import { Icon } from "../shared/ui";
 import { dayKey } from "../domain/learning";
+import { UserAvatar } from "../components/UserAvatar";
+
+const initialAvatarSeeds = Array.from({ length: 12 }, (_, i) => `vocab-avatar-${i + 1}`);
 
 export default function Settings() {
   const { data, busy, change } = useApp();
   const [name, setName] = useState(data.settings.name);
   const [goal, setGoal] = useState(data.settings.dailyNew);
   const [theme, setTheme] = useState(data.settings.theme);
+  const [avatarSeed, setAvatarSeed] = useState<string>();
+  const [avatarSeeds, setAvatarSeeds] = useState<string[] | null>(null);
+  const selectedAvatar = avatarSeed ?? data.settings.avatarSeed ?? (name.trim() || "Vocab guest");
+  const avatarOptions = avatarSeeds ?? [
+    selectedAvatar,
+    ...initialAvatarSeeds.filter((seed) => seed !== selectedAvatar).slice(0, 11),
+  ];
   const [notice, setNotice] = useState("");
   const [error, setError] = useState("");
   const [preview, setPreview] = useState<ImportPreview | null>(null);
@@ -23,7 +33,13 @@ export default function Settings() {
     if (
       await change((s) => ({
         ...s,
-        settings: { ...s.settings, name: name.trim().slice(0, 60), dailyNew: goal, theme },
+        settings: {
+          ...s.settings,
+          name: name.trim().slice(0, 60),
+          dailyNew: goal,
+          theme,
+          ...(avatarSeed === undefined ? {} : { avatarSeed }),
+        },
       }))
     )
       setNotice("Đã lưu tuỳ chọn của bạn.");
@@ -100,6 +116,35 @@ export default function Settings() {
               value={name}
               onChange={(e) => setName(e.target.value)}
             />
+            <fieldset className="avatar-picker">
+              <legend>Ảnh đại diện</legend>
+              <div className="avatar-options">
+                {avatarOptions.map((seed, i) => (
+                  <button
+                    key={seed}
+                    type="button"
+                    className="avatar-option"
+                    aria-label={`Chọn avatar ${i + 1}`}
+                    aria-pressed={seed === selectedAvatar}
+                    onClick={() => {
+                      setAvatarSeeds(avatarOptions);
+                      setAvatarSeed(seed);
+                    }}
+                  >
+                    <UserAvatar seed={seed} />
+                  </button>
+                ))}
+              </div>
+              <button
+                className="text-link"
+                type="button"
+                onClick={() =>
+                  setAvatarSeeds([selectedAvatar, ...Array.from({ length: 11 }, () => crypto.randomUUID())])
+                }
+              >
+                Đổi bộ avatar
+              </button>
+            </fieldset>
             <label htmlFor="daily-goal">Mục tiêu từ mới mỗi ngày</label>
             <select id="daily-goal" value={goal} onChange={(e) => setGoal(Number(e.target.value))}>
               {[5, 10, 15, 20, 30, 50].includes(goal) ? null : <option value={goal}>{goal} từ</option>}
