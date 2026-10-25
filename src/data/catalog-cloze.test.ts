@@ -31,14 +31,14 @@ const lessons = [
 ];
 
 describe("Catalog example cloze choices", () => {
-  it("uses three distinct same-lesson, same-pos distractors after excluding related words both ways", () => {
+  it("uses three distinct same-pos distractors after excluding related words both ways", () => {
     const words = [
       target,
       makeWord("deal"),
       makeWord("accord", { synonyms: ["agreement"] }),
       makeWord("agree"),
       makeWord("arrangement", { family: [{ text: "agreement", pos: "n", meaning: "" }] }),
-      makeWord("outside", { lesson: 2 }),
+      makeWord("outside", { lesson: 3 }),
       makeWord("promise", { pos: "v" }),
       distractors[0],
       makeWord("duplicate-policy", { text: "POLICY" }),
@@ -52,15 +52,16 @@ describe("Catalog example cloze choices", () => {
         wordId: "agreement",
         prompt: "They reached an ________ yesterday.",
         answer: "agreement",
-        options: ["agreement", "policy", "receipt", "invoice"],
+        options: expect.arrayContaining(["agreement", "policy", "receipt", "invoice"]),
       },
     ]);
+    expect(questions[0].options).toHaveLength(4);
     expect(createCatalogCloze(1, words, lessons)).toEqual(questions);
   });
   it("skips a word when fewer than three eligible distractors exist", () => {
     expect(createCatalogCloze(1, [target, ...distractors.slice(0, 2), makeWord("deal")])).toEqual([]);
   });
-  it("fills missing distractors from same-topic lessons after exhausting same-lesson choices", () => {
+  it("pools same-pos distractors across same-topic lessons while excluding related words and duplicates", () => {
     const words = [
       target,
       makeWord("outside-topic", { lesson: 3 }),
@@ -80,10 +81,58 @@ describe("Catalog example cloze choices", () => {
     ];
     const questions = createCatalogCloze(1, words, lessons);
     expect(questions).toMatchObject([
-      { wordId: target.id, answer: "agreement", options: ["agreement", "policy", "receipt", "invoice"] },
+      {
+        wordId: target.id,
+        answer: "agreement",
+        options: expect.arrayContaining(["agreement", "policy", "receipt", "invoice"]),
+      },
     ]);
     expect(questions).toHaveLength(1);
+    expect(questions[0].options).toHaveLength(4);
     expect(createCatalogCloze(1, words, lessons)).toEqual(questions);
+  });
+  it("uses the combined topic pool even when the lesson already has enough distractors", () => {
+    const words = ["agreement", "policy", "receipt", "invoice", "contract"].map((text) =>
+      makeWord(text, { examples: [{ text: `The ${text} arrived.`, translation: "" }] }),
+    );
+    const topicWords = ["shipment", "payment", "report", "budget", "account"].map((text) =>
+      makeWord(text, { lesson: 2 }),
+    );
+    const source = [...words, ...topicWords];
+    const original = structuredClone(source);
+    const questions = createCatalogCloze(1, source, lessons);
+    expect(questions).toHaveLength(5);
+    expect(questions.some((q) => q.options.some((option) => topicWords.some((word) => word.text === option)))).toBe(
+      true,
+    );
+    expect(createCatalogCloze(1, source, lessons)).toEqual(questions);
+    expect(source).toEqual(original);
+  });
+  it("does not repeat a complete answer set within a lesson when distinct sets are available", () => {
+    const words = ["agreement", "policy", "receipt", "invoice", "contract"].map((text) =>
+      makeWord(text, { examples: [{ text: `The ${text} arrived.`, translation: "" }] }),
+    );
+    const questions = createCatalogCloze(1, words, lessons);
+    expect(questions).toHaveLength(5);
+    const sets = questions.map((q) => JSON.stringify([...q.options].sort()));
+    expect(new Set(sets).size).toBe(questions.length);
+    expect(createCatalogCloze(1, words, lessons)).toEqual(questions);
+  });
+  it("seeds the sampled distractors with the word ID rather than the answer text", () => {
+    const pool = ["policy", "receipt", "invoice", "shipment", "payment", "budget"].map((text) => makeWord(text));
+    const first = createCatalogCloze(1, [target, ...pool], lessons)[0];
+    const otherId = createCatalogCloze(1, [{ ...target, id: "another-agreement" }, ...pool], lessons)[0];
+    expect(first.answer).toBe(otherId.answer);
+    expect(first.options).not.toEqual(otherId.options);
+    expect(createCatalogCloze(1, [target, ...pool], lessons)[0].options).toEqual(first.options);
+  });
+  it("allows repeated answer sets when the pool has only four eligible words", () => {
+    const words = ["agreement", "policy", "receipt", "invoice"].map((text) =>
+      makeWord(text, { examples: [{ text: `The ${text} arrived.`, translation: "" }] }),
+    );
+    const questions = createCatalogCloze(1, words, lessons);
+    expect(questions).toHaveLength(4);
+    expect(new Set(questions.map((q) => JSON.stringify([...q.options].sort()))).size).toBe(1);
   });
   it("does not borrow from other topics or duplicate options when the topic still has too few choices", () => {
     const words = [

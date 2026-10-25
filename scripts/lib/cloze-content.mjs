@@ -1,5 +1,23 @@
 const norm = (value) => value.trim().toLowerCase().replace(/\s+/g, " ");
 import { familyForms, classificationForms } from "./word-forms.mjs";
+import { shuffleSeeded } from "../../src/domain/random.mjs";
+
+const optionSetKey = (options) => JSON.stringify(options.map(norm).sort());
+
+/** @param {string} answer @param {string[]} pool @param {Set<string>} used */
+function chooseDistinctOptions(answer, pool, used) {
+  const initial = [answer, ...pool.slice(0, 3)];
+  if (!used.has(optionSetKey(initial))) return initial;
+  for (let first = 0; first < pool.length - 2; first++) {
+    for (let second = first + 1; second < pool.length - 1; second++) {
+      for (let third = second + 1; third < pool.length; third++) {
+        const options = [answer, pool[first], pool[second], pool[third]];
+        if (!used.has(optionSetKey(options))) return options;
+      }
+    }
+  }
+  return initial;
+}
 
 /**
  * @param {number} lessonId
@@ -11,21 +29,21 @@ export function createCatalogCloze(lessonId, words, lessons = []) {
   const topicLessons = new Set(
     lessons.filter((lesson) => topicId !== undefined && lesson.topicId === topicId).map((lesson) => lesson.id),
   );
-  const entries = [
-    ...words.filter((word) => word.lesson === lessonId),
-    ...words.filter((word) => word.lesson !== lessonId && topicLessons.has(word.lesson)),
-  ].map((word) => ({
-    word,
-    forms: classificationForms(word),
-    synonyms: new Set(word.synonyms.map(norm)),
-    pos: norm(word.pos).replace(/\./g, ""),
-  }));
+  const entries = words
+    .filter((word) => word.lesson === lessonId || topicLessons.has(word.lesson))
+    .map((word) => ({
+      word,
+      forms: classificationForms(word),
+      synonyms: new Set(word.synonyms.map(norm)),
+      pos: norm(word.pos).replace(/\./g, ""),
+    }));
   /** @type {Omit<import("../../src/domain/types").ClozeChoiceQuestion, "sourceVersion">[]} */
   const questions = [];
+  const usedOptions = new Set();
   for (const target of entries) {
     const { word, forms, synonyms, pos } = target;
     if (word.lesson !== lessonId) continue;
-    const options = [word.text.trim()];
+    const pool = [];
     const names = new Set([norm(word.text)]);
     for (const candidate of entries) {
       const text = norm(candidate.word.text);
@@ -37,11 +55,11 @@ export function createCatalogCloze(lessonId, words, lessons = []) {
         [...forms].some((form) => candidate.synonyms.has(form))
       )
         continue;
-      options.push(candidate.word.text.trim());
+      pool.push(candidate.word.text.trim());
       names.add(text);
-      if (options.length === 4) break;
     }
-    if (options.length !== 4) continue;
+    if (pool.length < 3) continue;
+    const options = chooseDistinctOptions(word.text.trim(), shuffleSeeded(pool, word.id), usedOptions);
     const escaped = word.text.trim().replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
     const pattern = new RegExp(`(?<![\\p{L}\\p{N}])${escaped}(?![\\p{L}\\p{N}])`, "giu");
     for (const [index, example] of word.examples.entries()) {
@@ -54,6 +72,7 @@ export function createCatalogCloze(lessonId, words, lessons = []) {
         answer: word.text.trim(),
         options,
       });
+      usedOptions.add(optionSetKey(options));
       break;
     }
   }
