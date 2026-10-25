@@ -42,15 +42,20 @@
 @layer base {
   :root {
     color-scheme: light;
-    --bg: #f7f8f3;
+    --bg: #e9eee4;
     --surface: #fff;
     --surface-soft: #f1f3ec;
     --ink: #242e29;
     --muted: #5d675d;
-    --green: #205840;
+    --green: #2f7357;
     --green-hover: #16432f;
+    --on-green: #fff;
     --soft-green: #e9f0df;
+    --brand: #e04a2f;
+    --brand-ink: #b83a22;
+    --brand-soft: #fdece6;
     --line: #e2e6dd;
+    --card-top-line: var(--line);
     --accent: #e6edb7;
     --accent-ink: #234a37;
     --amber-bg: #faf0da;
@@ -75,15 +80,20 @@
   }
   :root[data-theme="dark"] {
     color-scheme: dark;
-    --bg: #161e1a;
-    --surface: #202b24;
-    --surface-soft: #2a352d;
-    --ink: #e8eddf;
+    --bg: #0e1512;
+    --surface: #1e2b25;
+    --surface-soft: #24332c;
+    --ink: #f4f6ef;
     --muted: #b0bcac;
-    --green: #b9d5a8;
-    --green-hover: #cee6bf;
-    --soft-green: #2e422f;
-    --line: #3a493b;
+    --green: #6cc790;
+    --green-hover: #84d6a3;
+    --on-green: #0e1512;
+    --soft-green: #1f3a2c;
+    --brand: #ff6a4d;
+    --brand-ink: #ff6a4d;
+    --brand-soft: #3a2823;
+    --line: rgba(255, 255, 255, 0.08);
+    --card-top-line: rgba(255, 255, 255, 0.1);
     --accent: #e6edb7;
     --accent-ink: #234a37;
     --amber-bg: #463a26;
@@ -184,7 +194,7 @@
     left: 16px;
     z-index: 100;
     background: var(--green);
-    color: var(--surface);
+    color: var(--on-green);
     padding: 12px;
     border-radius: 8px;
   }
@@ -208,7 +218,7 @@
   }
   .primary {
     background: var(--green);
-    color: var(--surface);
+    color: var(--on-green);
   }
   .primary:hover:not(:disabled) {
     background: var(--green-hover);
@@ -265,6 +275,7 @@
     padding: 26px;
     background: var(--surface);
     border: 1px solid var(--line);
+    border-top-color: var(--card-top-line);
     border-radius: var(--radius);
     min-width: 0;
   }
@@ -462,6 +473,7 @@
   }
   .stat-card {
     border: 1px solid var(--line);
+    border-top-color: var(--card-top-line);
     border-radius: 13px;
     background: var(--surface);
     padding: 21px;
@@ -481,6 +493,18 @@
   .blue {
     color: var(--blue);
     background: var(--blue-bg);
+  }
+  .stats-grid .stat-card:nth-child(2) .stat-icon {
+    color: var(--brand);
+    background: var(--brand-soft);
+  }
+  .stats-grid .stat-card:nth-child(3) .stat-icon {
+    color: var(--muted);
+    background: var(--surface-soft);
+  }
+  .stats-grid[aria-label="Việc học của bạn"] .stat-card:nth-child(2) .stat-label,
+  .stats-grid[aria-label="Việc học của bạn"] .stat-card:nth-child(2) .stat-number {
+    color: var(--brand-ink);
   }
   .stat-label {
     color: var(--muted);
@@ -697,6 +721,7 @@
     padding: 23px;
     background: var(--surface);
     border: 1px solid var(--line);
+    border-top-color: var(--card-top-line);
     border-radius: 14px;
     transition:
       border-color 0.18s,
@@ -847,6 +872,7 @@
     text-align: left;
     background: var(--surface);
     border: 1px solid var(--line);
+    border-top-color: var(--card-top-line);
     border-radius: 13px;
     padding: 23px;
     min-width: 0;
@@ -1013,6 +1039,7 @@
   .study-card {
     background: var(--surface);
     border: 1px solid var(--line);
+    border-top-color: var(--card-top-line);
     border-radius: 20px;
     padding: 35px;
     box-shadow: none;
