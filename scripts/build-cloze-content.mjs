@@ -1,4 +1,4 @@
-import { readFile, writeFile, mkdir } from "node:fs/promises";
+import { readFile, writeFile, mkdir, readdir, unlink } from "node:fs/promises";
 import { createHash } from "node:crypto";
 import { convertLesson } from "./lib/cloze-content.mjs";
 
@@ -7,6 +7,7 @@ export async function buildClozeContent(words) {
   const source = JSON.parse(await readFile(new URL("data/generated/exercises.json", root), "utf8"));
   const directory = new URL("public/exercises/cloze/", root);
   await mkdir(directory, { recursive: true });
+  for (const file of await readdir(directory)) await unlink(new URL(file, directory));
   const lessons = [];
   const skipped = [];
   const linked = [];
