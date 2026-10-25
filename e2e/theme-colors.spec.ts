@@ -78,7 +78,10 @@ for (const theme of ["light", "dark"] as const) {
       await page.goto(path);
       await expect(page.locator("main h1")).toBeVisible();
       const scan = await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa"]).analyze();
-      expect(scan.violations.map((v) => ({ id: v.id, nodes: v.nodes.map((n) => n.target) })), path).toEqual([]);
+      expect(
+        scan.violations.map((v) => ({ id: v.id, nodes: v.nodes.map((n) => n.target) })),
+        path,
+      ).toEqual([]);
       expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), path).toBe(true);
     }
     const button = page.getByRole("button", { name: "Lưu tuỳ chọn" });
