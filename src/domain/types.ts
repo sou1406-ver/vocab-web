@@ -53,6 +53,14 @@ export type ClozeChoiceQuestion = QuestionBase & {
   sourceVersion: string;
 };
 export type RecognitionQuestion = QuestionBase & { kind: "meaning" | "word-choice"; options: string[] };
+export type SynonymQuestion = QuestionBase & {
+  kind: "synonym-choice" | "synonym-context";
+  options: string[];
+  direction?: "synonym" | "antonym";
+  target?: string;
+  sourceId?: string;
+  sourceVersion?: string;
+};
 export type WordFormQuestion = QuestionBase & {
   kind: "word-form";
   options?: [];
@@ -71,6 +79,7 @@ export type BuildQuestion = Omit<QuestionBase, "answer"> & {
 export type Question =
   | ClozeChoiceQuestion
   | RecognitionQuestion
+  | SynonymQuestion
   | WordFormQuestion
   | BuildQuestion
   // Empty options are a schema-2 compatibility field, never selectable answers.
@@ -116,6 +125,7 @@ export interface AnswerEvent {
   sourceQuestionId?: string;
   sourceVersion?: string;
   hintCount?: number;
+  direction?: "synonym" | "antonym";
   hintLimit?: number;
 }
 export interface SessionSummary {

@@ -12,6 +12,7 @@ import { projectRevealed } from "../components/letter-slots-edit";
 import { hintAllowance, revealQuestionLetter, questionAnswerText } from "../domain/learning";
 import { shuffleSeeded } from "../domain/random";
 import { BuildAnswer } from "../components/BuildAnswer";
+import { singleWordMatch } from "../domain/word-match";
 
 export default function Study() {
   const { data, busy, advance, answer, finish, start, startExercises, change } = useApp();
@@ -59,7 +60,10 @@ export default function Study() {
           await startExercises(
             (id) =>
               questions.map((q) =>
-                q.kind === "meaning" || q.kind === "word-choice"
+                q.kind === "meaning" ||
+                q.kind === "word-choice" ||
+                q.kind === "synonym-choice" ||
+                q.kind === "synonym-context"
                   ? { ...q, options: shuffleSeeded(q.options, `${id}:${q.wordId}:${q.kind}`) }
                   : q.kind === "build"
                     ? { ...q, tiles: shuffleSeeded(q.tiles, `${id}:${q.sourceId ?? q.wordId}:tiles`) }
@@ -162,6 +166,8 @@ export default function Study() {
       </div>
     );
   const feedback = session.feedback;
+  const synonymMatch =
+    question.kind === "synonym-context" ? singleWordMatch(question.prompt, question.target ?? word.text) : null;
   const typed = question.kind === "cloze" || question.kind === "recall" || question.kind === "word-form";
   const answerText = questionAnswerText(question);
   const typedValue = projectRevealed(input, answerText, revealed);
@@ -203,19 +209,25 @@ export default function Study() {
         <h1 tabIndex={-1}>
           {session.phase === "learn"
             ? "Làm quen với từ này"
-            : question.kind === "build"
-              ? "Ghép gốc và phụ tố"
-              : question.kind === "meaning"
-                ? "Chọn nghĩa phù hợp"
-                : question.kind === "word-choice"
-                  ? "Chọn từ phù hợp"
-                  : question.kind === "word-form-choice"
-                    ? "Chọn dạng từ phù hợp"
-                    : question.kind === "word-form"
-                      ? "Gõ dạng từ phù hợp"
-                      : question.kind === "cloze" || question.kind === "cloze-choice"
-                        ? "Điền từ còn thiếu"
-                        : "Bạn nhớ từ nào?"}
+            : question.kind === "synonym-choice"
+              ? question.direction === "antonym"
+                ? "Chọn từ trái nghĩa"
+                : "Chọn từ đồng nghĩa"
+              : question.kind === "synonym-context"
+                ? "Từ nào gần nghĩa nhất với từ gạch chân?"
+                : question.kind === "build"
+                  ? "Ghép gốc và phụ tố"
+                  : question.kind === "meaning"
+                    ? "Chọn nghĩa phù hợp"
+                    : question.kind === "word-choice"
+                      ? "Chọn từ phù hợp"
+                      : question.kind === "word-form-choice"
+                        ? "Chọn dạng từ phù hợp"
+                        : question.kind === "word-form"
+                          ? "Gõ dạng từ phù hợp"
+                          : question.kind === "cloze" || question.kind === "cloze-choice"
+                            ? "Điền từ còn thiếu"
+                            : "Bạn nhớ từ nào?"}
         </h1>
       </div>
       <section className="study-card" aria-label="Nội dung lượt học">
@@ -232,22 +244,28 @@ export default function Study() {
         ) : (
           <>
             <div
-              className={`question-prompt ${question.kind === "cloze" || question.kind === "cloze-choice" || question.kind === "word-form-choice" || question.kind === "word-form" ? "sentence-prompt" : ""}`}
+              className={`question-prompt ${question.kind === "cloze" || question.kind === "cloze-choice" || question.kind === "word-form-choice" || question.kind === "word-form" || question.kind === "synonym-context" ? "sentence-prompt" : ""}`}
             >
               <span className="small-label">
                 {question.kind === "meaning"
                   ? "TỪ NÀY CÓ NGHĨA LÀ GÌ?"
-                  : question.kind === "build"
-                    ? "GHÉP TỪ THEO NGHĨA"
-                    : question.kind === "word-choice"
-                      ? "CHỌN TỪ TIẾNG ANH PHÙ HỢP"
-                      : question.kind === "word-form-choice"
-                        ? "CHỌN DẠNG TỪ PHÙ HỢP"
-                        : question.kind === "word-form"
-                          ? "VIẾT DẠNG TỪ PHÙ HỢP"
-                          : question.kind === "cloze" || question.kind === "cloze-choice"
-                            ? "HOÀN THÀNH CÂU TIẾNG ANH"
-                            : "VIẾT TỪ TIẾNG ANH CÓ NGHĨA"}
+                  : question.kind === "synonym-choice"
+                    ? question.direction === "antonym"
+                      ? "TRÁI NGHĨA"
+                      : "ĐỒNG NGHĨA"
+                    : question.kind === "synonym-context"
+                      ? "GẦN NGHĨA NHẤT TRONG NGỮ CẢNH"
+                      : question.kind === "build"
+                        ? "GHÉP TỪ THEO NGHĨA"
+                        : question.kind === "word-choice"
+                          ? "CHỌN TỪ TIẾNG ANH PHÙ HỢP"
+                          : question.kind === "word-form-choice"
+                            ? "CHỌN DẠNG TỪ PHÙ HỢP"
+                            : question.kind === "word-form"
+                              ? "VIẾT DẠNG TỪ PHÙ HỢP"
+                              : question.kind === "cloze" || question.kind === "cloze-choice"
+                                ? "HOÀN THÀNH CÂU TIẾNG ANH"
+                                : "VIẾT TỪ TIẾNG ANH CÓ NGHĨA"}
               </span>
               <p
                 lang={
@@ -256,8 +274,23 @@ export default function Study() {
                     : "en"
                 }
               >
-                {question.prompt}
+                {synonymMatch ? (
+                  <>
+                    {question.prompt.slice(0, synonymMatch.start)}
+                    <u className="synonym-target">{question.prompt.slice(synonymMatch.start, synonymMatch.end)}</u>
+                    {question.prompt.slice(synonymMatch.end)}
+                  </>
+                ) : question.kind === "synonym-choice" ? (
+                  question.prompt.replace(/^TRÁI NGHĨA:\s*/, "")
+                ) : (
+                  question.prompt
+                )}
               </p>
+              {synonymMatch && (
+                <span className="sr-only">
+                  Từ được gạch chân: {question.prompt.slice(synonymMatch.start, synonymMatch.end)}.
+                </span>
+              )}
               {question.kind !== "cloze-choice" &&
                 question.kind !== "word-form-choice" &&
                 question.kind !== "word-form" &&
@@ -275,6 +308,8 @@ export default function Study() {
             ) : question.kind === "meaning" ||
               question.kind === "cloze-choice" ||
               question.kind === "word-form-choice" ||
+              question.kind === "synonym-choice" ||
+              question.kind === "synonym-context" ||
               question.kind === "word-choice" ? (
               <div className="answer-options">
                 {question.options.map((option, i) => (
@@ -349,20 +384,23 @@ export default function Study() {
                 </p>
                 {question.kind !== "build" && (
                   <p className="feedback-example" lang="en">
-                    {question.kind === "cloze-choice" ||
-                    question.kind === "word-form-choice" ||
-                    question.kind === "word-form"
-                      ? (question.kind === "word-form"
-                          ? question.prompt.replace(/\s+\([^()]*\)\s*$/, "")
-                          : question.prompt
-                        ).replace(/_{3,}/, question.answer)
-                      : word.examples[0]?.text}
+                    {question.kind === "synonym-context"
+                      ? question.prompt
+                      : question.kind === "cloze-choice" ||
+                          question.kind === "word-form-choice" ||
+                          question.kind === "word-form"
+                        ? (question.kind === "word-form"
+                            ? question.prompt.replace(/\s+\([^()]*\)\s*$/, "")
+                            : question.prompt
+                          ).replace(/_{3,}/, question.answer)
+                        : word.examples[0]?.text}
                   </p>
                 )}
                 {question.kind !== "cloze-choice" &&
                   question.kind !== "word-form-choice" &&
                   question.kind !== "word-form" &&
                   question.kind !== "build" &&
+                  question.kind !== "synonym-context" &&
                   word.examples[0]?.translation && <p className="muted">{word.examples[0].translation}</p>}
                 <button className="button primary" ref={nextRef} disabled={busy} onClick={() => void advance()}>
                   {session.index + 1 === session.questions.length ? "Xem kết quả" : "Từ tiếp theo"}

@@ -10,6 +10,7 @@ import { useWord } from "../app/context";
 import { clozeLessons, loadClozeLesson, makeWordFormQuestions } from "../data/cloze";
 import { shuffleSeeded } from "../domain/random";
 import { makeBuildQuestions } from "../data/build";
+import { makeSynonymQuestions } from "../data/synonyms";
 
 export default function Lessons({ lessonId: id }: { lessonId?: string }) {
   const { data, start, startExercises, busy } = useApp();
@@ -19,6 +20,7 @@ export default function Lessons({ lessonId: id }: { lessonId?: string }) {
   const [loadError, setLoadError] = useState("");
   const [recognitionError, setRecognitionError] = useState("");
   const [buildError, setBuildError] = useState("");
+  const [synonymError, setSynonymError] = useState("");
   const request = useRef<AbortController | null>(null);
   useEffect(
     () => () => {
@@ -77,6 +79,29 @@ export default function Lessons({ lessonId: id }: { lessonId?: string }) {
     };
     const words = catalog.words.filter((w) => w.lesson === lesson.id);
     const buildCount = makeBuildQuestions(words, "preview").length;
+    const synonymGroups = [
+      { kind: "synonym-choice", title: "Đồng nghĩa", description: "Chọn từ đồng nghĩa; câu trái nghĩa có nhãn riêng." },
+      {
+        kind: "synonym-context",
+        title: "Gần nghĩa trong câu",
+        description: "Chọn từ gần nghĩa nhất với từ được gạch chân.",
+      },
+    ] as const;
+    const practiceSynonym = async (kind: (typeof synonymGroups)[number]["kind"]) => {
+      if (active) return router.push("/study");
+      setSynonymError("");
+      try {
+        if (
+          await startExercises(
+            (sessionId) => makeSynonymQuestions(words, catalog.words, kind, sessionId),
+            `${kind === "synonym-choice" ? "Đồng nghĩa / trái nghĩa" : "Gần nghĩa trong câu"} · ${lesson.title}`,
+          )
+        )
+          router.push("/study");
+      } catch (error) {
+        setSynonymError(error instanceof Error ? error.message : "Chưa mở được bài đồng nghĩa.");
+      }
+    };
     const practiceBuild = async () => {
       if (active) return router.push("/study");
       setBuildError("");
@@ -205,6 +230,30 @@ export default function Lessons({ lessonId: id }: { lessonId?: string }) {
             </button>
           </section>
         )}
+        {synonymGroups.map((group) => {
+          const count = makeSynonymQuestions(words, catalog.words, group.kind, "preview").length;
+          return (
+            count > 0 && (
+              <section className="panel cloze-practice" aria-label={group.title} key={group.kind}>
+                <div>
+                  <h2>{group.title}</h2>
+                  <p>
+                    {count} câu · {group.description} Luyện thêm không tăng bậc ôn.
+                  </p>
+                  {synonymError && <p role="alert">{synonymError}</p>}
+                </div>
+                <button
+                  className="button secondary"
+                  disabled={busy || loading || Boolean(active)}
+                  onClick={() => void practiceSynonym(group.kind)}
+                >
+                  {group.title}
+                  <Icon name="arrow" />
+                </button>
+              </section>
+            )
+          );
+        })}
         <section className="panel cloze-practice" aria-label="Chọn nghĩa và chọn từ">
           <div>
             <h2>Chọn nghĩa / chọn từ</h2>

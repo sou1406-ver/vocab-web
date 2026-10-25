@@ -6,15 +6,17 @@ Ngày 25/10/2026. Đọc tài liệu này để phân biệt thay đổi đã ch
 
 `src/domain/types.ts` dùng union cho các kind đang hoạt động:
 
-| Dạng             | Dữ liệu riêng                                            | Hành vi hiện có                                   |
-| ---------------- | -------------------------------------------------------- | ------------------------------------------------- |
-| meaning          | options bắt buộc                                         | Chọn một nghĩa                                    |
-| cloze            | Không có danh sách đáp án chọn                           | Nhập từ còn thiếu                                 |
-| recall           | Không có danh sách đáp án chọn                           | Nhập từ từ gợi ý nghĩa                            |
-| cloze-choice     | options và sourceId/sourceVersion bắt buộc               | Chọn đáp án cho câu khuyết biên soạn sẵn          |
-| word-form-choice | options và sourceId/sourceVersion bắt buộc               | Chọn dạng từ; ít nhất ba lựa chọn cùng gốc/family |
-| word-form        | Không có đáp án chọn; sourceId/sourceVersion optional    | Gõ dạng từ trong câu khuyết kèm từ gợi ý          |
-| build            | answer là mảng mảnh đúng thứ tự; tiles là ngân hàng mảnh | Ghép gốc + phụ tố theo nghĩa Việt và từ loại      |
+| Dạng             | Dữ liệu riêng                                            | Hành vi hiện có                                       |
+| ---------------- | -------------------------------------------------------- | ----------------------------------------------------- |
+| meaning          | options bắt buộc                                         | Chọn một nghĩa                                        |
+| cloze            | Không có danh sách đáp án chọn                           | Nhập từ còn thiếu                                     |
+| recall           | Không có danh sách đáp án chọn                           | Nhập từ từ gợi ý nghĩa                                |
+| cloze-choice     | options và sourceId/sourceVersion bắt buộc               | Chọn đáp án cho câu khuyết biên soạn sẵn              |
+| word-form-choice | options và sourceId/sourceVersion bắt buộc               | Chọn dạng từ; ít nhất ba lựa chọn cùng gốc/family     |
+| word-form        | Không có đáp án chọn; sourceId/sourceVersion optional    | Gõ dạng từ trong câu khuyết kèm từ gợi ý              |
+| build            | answer là mảng mảnh đúng thứ tự; tiles là ngân hàng mảnh | Ghép gốc + phụ tố theo nghĩa Việt và từ loại          |
+| synonym-choice   | options bắt buộc; direction optional                     | Chọn đồng nghĩa hoặc trái nghĩa có nhãn rõ ràng       |
+| synonym-context  | options bắt buộc; target/direction optional              | Chọn gần nghĩa trong câu giữ nguyên, gạch chân từ gốc |
 
 Các kind cùng có wordId, prompt và answer. Answer của Build là mảng chuỗi; các dạng khác giữ chuỗi như cũ. Không thêm type Listening/Match giả khi chưa có renderer, scorer và dữ liệu kiểm chứng. Khi triển khai một dạng, thêm nhánh union riêng và validator tương ứng; không nhét pairs/audio/tokens vào prompt.
 
@@ -26,17 +28,17 @@ Các kind cùng có wordId, prompt và answer. Answer của Build là mảng chu
 
 Ngoài kết quả/assisted/mode đã có, đáp án mới lưu:
 
-| Field            | Ý nghĩa                                                                                   |
-| ---------------- | ----------------------------------------------------------------------------------------- |
-| questionKind     | meaning, word-choice, cloze, recall, cloze-choice, word-form-choice, word-form hoặc build |
-| questionId       | sessionId:index; định danh lần xuất hiện câu hỏi trong lượt                               |
-| contentVersion   | Luôn là phiên bản catalog của session cho mọi kind                                        |
-| skill            | vocabulary cho các dạng đang triển khai                                                   |
-| scoringVersion   | 3 cho Build theo thứ tự mảnh; các dạng cũ tiếp tục ghi 2; vẫn đọc version 1               |
-| sourceQuestionId | ID câu nguồn cho hai dạng biên soạn, dạng v1:part5:bài:số-câu                             |
-| sourceVersion    | Phiên bản gói câu biên soạn, tách khỏi contentVersion                                     |
-| hintCount        | Số chữ đã lộ trong câu, lưu cùng event scoringVersion 2                                   |
-| hintLimit        | floor(số chữ cái của đáp án × 0.3), không có mức tối thiểu                                |
+| Field            | Ý nghĩa                                                                                                                    |
+| ---------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| questionKind     | meaning, word-choice, cloze, recall, cloze-choice, word-form-choice, word-form, build, synonym-choice hoặc synonym-context |
+| questionId       | sessionId:index; định danh lần xuất hiện câu hỏi trong lượt                                                                |
+| contentVersion   | Luôn là phiên bản catalog của session cho mọi kind                                                                         |
+| skill            | vocabulary cho các dạng đang triển khai                                                                                    |
+| scoringVersion   | 3 cho Build theo thứ tự mảnh; các dạng cũ tiếp tục ghi 2; vẫn đọc version 1                                                |
+| sourceQuestionId | ID câu nguồn cho hai dạng biên soạn, dạng v1:part5:bài:số-câu                                                              |
+| sourceVersion    | Phiên bản gói câu biên soạn, tách khỏi contentVersion                                                                      |
+| hintCount        | Số chữ đã lộ trong câu, lưu cùng event scoringVersion 2                                                                    |
+| hintLimit        | floor(số chữ cái của đáp án × 0.3), không có mức tối thiểu                                                                 |
 
 questionId định danh lần xuất hiện trong session; sourceQuestionId liên kết câu nguồn xuyên session cho cloze-choice/word-form-choice/word-form/build. Chưa lưu toàn bộ câu hỏi hoặc câu trả lời người dùng trong event; do đó chưa đủ để phân tích cụ thể từng distractor sau khi session cũ được thay.
 
@@ -130,6 +132,16 @@ Gói được tải theo bài, có sourceVersion độc lập; contentVersion c�
 Hai dạng biên soạn vẫn chạy practice: ghi kết quả, không tăng box/dueAt hoặc tạo tiến độ từ mới. Loader/manifest cho everyday/affixes/ETS chưa triển khai; ETS vẫn rỗng.
 
 **Xáo đáp án nhận biết:** Fisher–Yates dùng seed từ đúng session ID, wordId và hướng câu hỏi. Options được lưu trong session nên reload không đổi thứ tự; lượt/retry mới có seed mới. Không còn xoay theo độ dài từ. Vì chỉ có bốn vị trí, hai seed khác nhau vẫn có thể tình cờ đặt đáp án đúng cùng vị trí; không dựa vào đó để nhận diện session hoặc suy đoán điểm.
+
+### Đồng nghĩa: hai mức practice
+
+`synonym-choice` hỏi từ gốc, chọn một synonym theo seed session. Nếu từ có antonym hợp lệ, khoảng một phần ba lượt hỏi trái nghĩa; câu trái nghĩa lưu tiền tố `TRÁI NGHĨA:` trong prompt, và UI luôn hiện nhãn `ĐỒNG NGHĨA`/`TRÁI NGHĨA` theo direction. Synonym/antonym trùng từ gốc hoặc mâu thuẫn giữa hai danh sách không được dùng làm đáp án. Tách các mục ngăn bằng dấu phẩy/chấm phẩy, normalize hoa/thường/khoảng trắng và giữ cách viết đầu tiên khi trùng.
+
+`synonym-context` chọn ví dụ đầu tiên chứa từ/cụm gốc đúng một lần, khớp nguyên từ và không phân biệt hoa/thường. Bỏ ví dụ chứa chỗ trống có sẵn hoặc không khớp; không có ví dụ hợp lệ thì bỏ từ. Prompt giữ nguyên câu, target ghi từ cần gạch chân; không khoét trống và không thay synonym vào câu, kể cả trong feedback. Hướng của mức này luôn là synonym.
+
+Ba nhiễu lấy từ text và synonyms của từ khác cùng từ loại. Loại từ gốc, toàn bộ synonyms/antonyms/family đã biết, quan hệ synonym chiều ngược, giao synonyms và family chiều ngược đã biết. Cả các alias của nguồn liên quan cũng bị loại trên toàn catalog để không lọt trở lại qua synonyms của một nguồn khác. Nếu không đủ ba nhiễu khác nhau sau normalize thì bỏ câu. Đáp án và options xáo theo seed session/wordId/kind; retry giữ nguyên câu/đáp án/hướng và xáo lại options. Nút “Đồng nghĩa”/“Gần nghĩa trong câu” ẩn khi không có câu.
+
+Các field direction/target/sourceId/sourceVersion trong hai nhánh mới là optional để đọc dữ liệu cũ; generator luôn ghi direction, source metadata và target cho ngữ cảnh. Khi thiếu direction thì đọc là synonym, không diễn giải prompt trái nghĩa thiếu direction thành dữ liệu hợp lệ. ID nguồn là `synonym-choice:<wordId>:<direction>` hoặc `synonym-context:<wordId>:<exampleIndex>`, sourceVersion bằng catalog. Event mới lưu direction optional, questionKind riêng và scorer chuỗi hiện có scoringVersion 2, hintCount/hintLimit 0. Không suy diễn direction cho event lịch sử. Hai mức chỉ chạy practice, giữ schemaVersion 2, ID event, lịch ôn và catalog/fingerprint.
 
 ## 5. Đề xuất: hợp đồng đồng bộ trước khi chọn collection
 

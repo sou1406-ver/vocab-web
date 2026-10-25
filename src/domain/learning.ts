@@ -259,6 +259,8 @@ export function answerQuestion(
   if (snapshot.events.some((event) => event.id === id)) return snapshot;
   const q = session.questions[index];
   const hintCount = session.revealed?.length ?? 0;
+  if ((q.kind === "synonym-choice" || q.kind === "synonym-context") && session.mode !== "practice")
+    throw new Error("Đồng nghĩa chỉ dùng trong lượt luyện thêm.");
   if (q.kind === "build" && session.mode !== "practice") throw new Error("Ghép từ chỉ dùng trong lượt luyện thêm.");
   const hintLimit = q.kind === "recall" || q.kind === "cloze" || q.kind === "word-form" ? hintAllowance(q.answer) : 0;
   assisted = assisted || Boolean(session.peeked) || hintCount > hintLimit;
@@ -282,12 +284,18 @@ export function answerQuestion(
     questionId: id,
     questionKind: q.kind,
     contentVersion: session.contentVersion,
-    ...((q.kind === "cloze-choice" || q.kind === "word-form-choice" || q.kind === "word-form" || q.kind === "build") &&
+    ...((q.kind === "cloze-choice" ||
+      q.kind === "word-form-choice" ||
+      q.kind === "word-form" ||
+      q.kind === "build" ||
+      q.kind === "synonym-choice" ||
+      q.kind === "synonym-context") &&
     q.sourceId &&
     q.sourceVersion
       ? { sourceQuestionId: q.sourceId, sourceVersion: q.sourceVersion }
       : {}),
     skill: "vocabulary",
+    ...(q.kind === "synonym-choice" || q.kind === "synonym-context" ? { direction: q.direction ?? "synonym" } : {}),
     scoringVersion: q.kind === "build" ? 3 : 2,
     hintCount,
     hintLimit,

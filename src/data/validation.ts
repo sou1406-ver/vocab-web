@@ -1,4 +1,5 @@
 import type { Snapshot, Word } from "../domain/types";
+import { singleWordMatch } from "../domain/word-match";
 
 export function record(value: unknown): Record<string, unknown> {
   if (!value || typeof value !== "object" || Array.isArray(value)) throw new Error("Dữ liệu không đúng định dạng.");
@@ -16,6 +17,8 @@ const questionKinds = [
   "word-choice",
   "word-form",
   "build",
+  "synonym-choice",
+  "synonym-context",
 ];
 const count = (value: unknown) => Number.isSafeInteger(value) && number(value);
 const day = (v: unknown) => string(v) && /^\d{4}-\d{2}-\d{2}$/.test(v as string);
@@ -114,6 +117,10 @@ export function validateSnapshot(value: unknown): Snapshot {
     if (
       (e.questionId !== undefined && !nonempty(e.questionId)) ||
       (e.questionKind !== undefined && !questionKinds.includes(e.questionKind as string)) ||
+      (e.direction !== undefined &&
+        ((e.direction !== "synonym" && e.direction !== "antonym") ||
+          (e.questionKind !== "synonym-choice" && e.questionKind !== "synonym-context") ||
+          (e.questionKind === "synonym-context" && e.direction !== "synonym"))) ||
       (e.contentVersion !== undefined && !nonempty(e.contentVersion)) ||
       (e.skill !== undefined && e.skill !== "vocabulary") ||
       (e.scoringVersion !== undefined && e.scoringVersion !== 1 && e.scoringVersion !== 2 && e.scoringVersion !== 3) ||
@@ -192,6 +199,8 @@ export function validateSnapshot(value: unknown): Snapshot {
         (q.kind === "meaning" ||
           q.kind === "cloze-choice" ||
           q.kind === "word-form-choice" ||
+          q.kind === "synonym-choice" ||
+          q.kind === "synonym-context" ||
           q.kind === "word-choice") &&
         (!Array.isArray(q.options) ||
           !q.options.every(string) ||
@@ -199,6 +208,29 @@ export function validateSnapshot(value: unknown): Snapshot {
           new Set(q.options as string[]).size !== (q.options as string[]).length)
       )
         fail();
+      if (q.kind === "synonym-choice" || q.kind === "synonym-context") {
+        if (
+          session.mode !== "practice" ||
+          (q.options as unknown[]).length !== 4 ||
+          new Set((q.options as string[]).map((option) => option.trim().toLowerCase().replace(/\s+/g, " "))).size !==
+            4 ||
+          (q.options as string[]).some((option) => !option.trim()) ||
+          (q.direction !== undefined && q.direction !== "synonym" && q.direction !== "antonym") ||
+          (q.kind === "synonym-context" &&
+            (q.direction === "antonym" ||
+              /_{3,}/.test(q.prompt as string) ||
+              (q.target !== undefined &&
+                (!nonempty(q.target) || !singleWordMatch(q.prompt as string, q.target as string))))) ||
+          (q.kind === "synonym-choice" &&
+            (q.direction === "antonym"
+              ? !(q.prompt as string).startsWith("TRÁI NGHĨA: ")
+              : (q.prompt as string).startsWith("TRÁI NGHĨA: "))) ||
+          (q.sourceId !== undefined && !nonempty(q.sourceId)) ||
+          (q.sourceVersion !== undefined && !nonempty(q.sourceVersion)) ||
+          (q.sourceId === undefined) !== (q.sourceVersion === undefined)
+        )
+          fail();
+      }
       if (
         q.kind === "word-choice" &&
         ((q.options as string[]).length < 2 ||
