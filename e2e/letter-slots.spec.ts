@@ -55,6 +55,7 @@ test("letter slots support native editing, phrase spaces and submission", async 
 
 test("hint letters stay locked, record assistance and native input styling is independent of the form", async ({
   page,
+  context,
 }) => {
   await page.goto("/");
   await page.getByRole("button", { name: "Bắt đầu học", exact: true }).click();
@@ -69,8 +70,16 @@ test("hint letters stay locked, record assistance and native input styling is in
   await input.press("ControlOrMeta+A");
   await input.press("Backspace");
   await expect(input).toHaveValue("a");
+  await page.reload();
+  await expect(input).toHaveValue("a");
+  const other = await context.newPage();
+  await other.goto("/study");
+  await other.getByRole("button", { name: "Gợi ý một chữ" }).click();
+  await expect(input).toHaveValue("ag");
+  await page.getByRole("button", { name: "Gợi ý một chữ" }).click();
+  await expect(input).toHaveValue("agr");
   await input.fill("AGREEMENT");
-  await expect(input).toHaveValue("aGREEMENT");
+  await expect(input).toHaveValue("agrEEMENT");
   await page.locator("form.typing-answer").evaluate((node) => node.classList.remove("typing-answer"));
   const style = await input.evaluate((node) => {
     const css = getComputedStyle(node);
@@ -81,4 +90,20 @@ test("hint letters stay locked, record assistance and native input styling is in
   await expect(page.getByText("Gặp lại thêm một lần nhé.")).toBeVisible();
   await page.reload();
   await expect(page.getByText("Gặp lại thêm một lần nhé.")).toBeVisible();
+});
+
+test("correct answer with a hint within the allowance still receives credit", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Bắt đầu học", exact: true }).click();
+  await page.getByRole("button", { name: "Đã xem, thử nhớ lại" }).click();
+  await page.getByRole("button", { name: "Chưa nhớ, xem đáp án" }).click();
+  await page.getByRole("button", { name: "Từ tiếp theo" }).click();
+  await page.getByRole("button", { name: "Đã xem, thử nhớ lại" }).click();
+  await page.getByRole("button", { name: "Gợi ý một chữ" }).click();
+  const input = page.getByRole("textbox", { name: "Đáp án của bạn" });
+  await input.fill("agreement");
+  await input.press("Enter");
+  await expect(page.getByText("Chính xác. Bạn nhớ rồi!")).toBeVisible();
+  await page.reload();
+  await expect(page.getByText("Chính xác. Bạn nhớ rồi!")).toBeVisible();
 });

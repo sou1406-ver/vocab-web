@@ -1,313 +1,2268 @@
 {
-  "count": 223,
-  "skipped": [
+  "sourceQuestions": 300,
+  "count": 299,
+  "byKind": {
+    "word-form-choice": 290,
+    "cloze-choice": 9
+  },
+  "recovered": [
     {
       "sourceId": "v1:part5:1:14",
-      "reason": "unlinked-answer"
+      "wordId": "provision-1",
+      "kind": "word-form-choice",
+      "method": "inflection"
     },
     {
       "sourceId": "v1:part5:2:10",
-      "reason": "unlinked-answer"
+      "wordId": "attract-2",
+      "kind": "word-form-choice",
+      "method": "inflection"
     },
     {
       "sourceId": "v1:part5:2:13",
-      "reason": "unlinked-answer"
+      "wordId": "consume-2",
+      "kind": "word-form-choice",
+      "method": "inflection"
     },
     {
       "sourceId": "v1:part5:2:15",
-      "reason": "unlinked-answer"
+      "wordId": "competition-2",
+      "kind": "word-form-choice",
+      "method": "inflection"
     },
     {
       "sourceId": "v1:part5:3:15",
-      "reason": "unlinked-answer"
+      "wordId": "require-3",
+      "kind": "word-form-choice",
+      "method": "inflection"
     },
     {
       "sourceId": "v1:part5:4:12",
-      "reason": "unlinked-answer"
+      "wordId": "develop-4",
+      "kind": "word-form-choice",
+      "method": "inflection"
     },
     {
       "sourceId": "v1:part5:5:15",
-      "reason": "unlinked-answer"
+      "wordId": "select-5",
+      "kind": "word-form-choice",
+      "method": "inflection"
     },
     {
       "sourceId": "v1:part5:6:12",
-      "reason": "unlinked-answer"
+      "wordId": "duplicate-6",
+      "kind": "word-form-choice",
+      "method": "inflection"
     },
     {
       "sourceId": "v1:part5:6:14",
-      "reason": "unlinked-answer"
+      "wordId": "ignore-6",
+      "kind": "word-form-choice",
+      "method": "inflection"
     },
     {
       "sourceId": "v1:part5:7:13",
-      "reason": "unlinked-answer"
+      "wordId": "provider-7",
+      "kind": "word-form-choice",
+      "method": "inflection"
     },
     {
       "sourceId": "v1:part5:7:14",
-      "reason": "unlinked-answer"
+      "wordId": "recur-7",
+      "kind": "word-form-choice",
+      "method": "inflection"
     },
     {
       "sourceId": "v1:part5:8:11",
-      "reason": "unlinked-answer"
+      "wordId": "code-8",
+      "kind": "word-form-choice",
+      "method": "inflection"
     },
     {
       "sourceId": "v1:part5:10:11",
-      "reason": "unlinked-answer"
+      "wordId": "mention-10",
+      "kind": "word-form-choice",
+      "method": "inflection"
     },
     {
       "sourceId": "v1:part5:10:13",
-      "reason": "unlinked-answer"
+      "wordId": "proof-10",
+      "kind": "word-form-choice",
+      "method": "inflection"
     },
     {
       "sourceId": "v1:part5:11:15",
-      "reason": "unlinked-answer"
+      "wordId": "submit-11",
+      "kind": "word-form-choice",
+      "method": "inflection"
     },
     {
       "sourceId": "v1:part5:12:10",
-      "reason": "unlinked-answer"
+      "wordId": "apply-12",
+      "kind": "word-form-choice",
+      "method": "inflection"
     },
     {
       "sourceId": "v1:part5:13:10",
-      "reason": "unlinked-answer"
+      "wordId": "conduct-13",
+      "kind": "word-form-choice",
+      "method": "inflection"
     },
     {
       "sourceId": "v1:part5:13:12",
-      "reason": "unlinked-answer"
+      "wordId": "hire-13",
+      "kind": "word-form-choice",
+      "method": "inflection"
     },
     {
       "sourceId": "v1:part5:13:13",
-      "reason": "unlinked-answer"
+      "wordId": "reject-13",
+      "kind": "word-form-choice",
+      "method": "inflection"
     },
     {
       "sourceId": "v1:part5:14:12",
-      "reason": "unlinked-answer"
+      "wordId": "compensate-14",
+      "kind": "word-form-choice",
+      "method": "inflection"
     },
     {
       "sourceId": "v1:part5:15:11",
-      "reason": "unlinked-answer"
-    },
-    {
-      "sourceId": "v1:part5:15:12",
-      "reason": "invalid-source"
+      "wordId": "contribute-15",
+      "kind": "word-form-choice",
+      "method": "inflection"
     },
     {
       "sourceId": "v1:part5:15:14",
-      "reason": "unlinked-answer"
+      "wordId": "productive-15",
+      "kind": "word-form-choice",
+      "method": "inflection"
     },
     {
       "sourceId": "v1:part5:15:15",
-      "reason": "unlinked-answer"
+      "wordId": "promote-15",
+      "kind": "word-form-choice",
+      "method": "inflection"
     },
     {
       "sourceId": "v1:part5:18:11",
-      "reason": "unlinked-answer"
+      "wordId": "fulfill-18",
+      "kind": "word-form-choice",
+      "method": "inflection"
     },
     {
       "sourceId": "v1:part5:19:10",
-      "reason": "unlinked-answer"
+      "wordId": "compile-19",
+      "kind": "word-form-choice",
+      "method": "inflection"
     },
     {
       "sourceId": "v1:part5:19:12",
-      "reason": "unlinked-answer"
+      "wordId": "estimate-19",
+      "kind": "word-form-choice",
+      "method": "inflection"
     },
     {
       "sourceId": "v1:part5:19:13",
-      "reason": "unlinked-answer"
+      "wordId": "impose-19",
+      "kind": "word-form-choice",
+      "method": "inflection"
     },
     {
       "sourceId": "v1:part5:19:14",
-      "reason": "unlinked-answer"
+      "wordId": "mistake-19",
+      "kind": "word-form-choice",
+      "method": "inflection"
     },
     {
       "sourceId": "v1:part5:20:10",
-      "reason": "unlinked-answer"
+      "wordId": "adjustment-20",
+      "kind": "word-form-choice",
+      "method": "inflection"
     },
     {
       "sourceId": "v1:part5:21:15",
-      "reason": "unlinked-answer"
+      "wordId": "transaction-21",
+      "kind": "word-form-choice",
+      "method": "inflection"
     },
     {
       "sourceId": "v1:part5:22:14",
-      "reason": "unlinked-answer"
+      "wordId": "build-up-22",
+      "kind": "word-form-choice",
+      "method": "inflection"
     },
     {
       "sourceId": "v1:part5:22:15",
-      "reason": "unlinked-answer"
+      "wordId": "profitably-22",
+      "kind": "word-form-choice",
+      "method": "inflection"
     },
     {
       "sourceId": "v1:part5:24:10",
-      "reason": "unlinked-answer"
+      "wordId": "calculation-24",
+      "kind": "word-form-choice",
+      "method": "inflection"
     },
     {
       "sourceId": "v1:part5:24:11",
-      "reason": "unlinked-answer"
+      "wordId": "file-24",
+      "kind": "word-form-choice",
+      "method": "inflection"
     },
     {
       "sourceId": "v1:part5:24:13",
-      "reason": "unlinked-answer"
+      "wordId": "penalty-24",
+      "kind": "word-form-choice",
+      "method": "inflection"
     },
     {
       "sourceId": "v1:part5:25:10",
-      "reason": "unlinked-answer"
+      "wordId": "desire-25",
+      "kind": "word-form-choice",
+      "method": "inflection"
     },
     {
       "sourceId": "v1:part5:25:11",
-      "reason": "unlinked-answer"
+      "wordId": "detail-25",
+      "kind": "word-form-choice",
+      "method": "inflection"
     },
     {
       "sourceId": "v1:part5:25:14",
-      "reason": "unlinked-answer"
+      "wordId": "translation-25",
+      "kind": "word-form-choice",
+      "method": "inflection"
     },
     {
       "sourceId": "v1:part5:26:10",
-      "reason": "unlinked-answer"
+      "wordId": "collaboration-26",
+      "kind": "word-form-choice",
+      "method": "inflection"
     },
     {
       "sourceId": "v1:part5:26:11",
-      "reason": "unlinked-answer"
+      "wordId": "concentrate-26",
+      "kind": "word-form-choice",
+      "method": "inflection"
     },
     {
       "sourceId": "v1:part5:27:15",
-      "reason": "unlinked-answer"
+      "wordId": "progress-27",
+      "kind": "word-form-choice",
+      "method": "inflection"
     },
     {
       "sourceId": "v1:part5:28:12",
-      "reason": "unlinked-answer"
+      "wordId": "perceptive-28",
+      "kind": "word-form-choice",
+      "method": "inflection"
     },
     {
       "sourceId": "v1:part5:28:13",
-      "reason": "unlinked-answer"
+      "wordId": "repel-28",
+      "kind": "word-form-choice",
+      "method": "inflection"
     },
     {
       "sourceId": "v1:part5:28:15",
-      "reason": "unlinked-answer"
+      "wordId": "wrinkle-28",
+      "kind": "word-form-choice",
+      "method": "inflection"
     },
     {
       "sourceId": "v1:part5:30:11",
-      "reason": "unlinked-answer"
+      "wordId": "circumstance-30",
+      "kind": "word-form-choice",
+      "method": "inflection"
     },
     {
       "sourceId": "v1:part5:30:12",
-      "reason": "unlinked-answer"
+      "wordId": "condition-30",
+      "kind": "word-form-choice",
+      "method": "inflection"
     },
     {
       "sourceId": "v1:part5:30:13",
-      "reason": "unlinked-answer"
+      "wordId": "indicator-30",
+      "kind": "word-form-choice",
+      "method": "inflection"
     },
     {
       "sourceId": "v1:part5:30:14",
-      "reason": "unlinked-answer"
+      "wordId": "fluctuate-30",
+      "kind": "word-form-choice",
+      "method": "inflection"
     },
     {
       "sourceId": "v1:part5:31:11",
-      "reason": "unlinked-answer"
+      "wordId": "daringly-31",
+      "kind": "word-form-choice",
+      "method": "inflection"
     },
     {
       "sourceId": "v1:part5:31:13",
-      "reason": "unlinked-answer"
+      "wordId": "mix-31",
+      "kind": "word-form-choice",
+      "method": "inflection"
     },
     {
       "sourceId": "v1:part5:31:15",
-      "reason": "unlinked-answer"
+      "wordId": "suggestion-31",
+      "kind": "word-form-choice",
+      "method": "inflection"
     },
     {
       "sourceId": "v1:part5:32:13",
-      "reason": "unlinked-answer"
+      "wordId": "forget-32",
+      "kind": "word-form-choice",
+      "method": "inflection"
     },
     {
       "sourceId": "v1:part5:32:15",
-      "reason": "unlinked-answer"
+      "wordId": "predict-32",
+      "kind": "word-form-choice",
+      "method": "inflection"
     },
     {
       "sourceId": "v1:part5:33:12",
-      "reason": "unlinked-answer"
+      "wordId": "delivery-33",
+      "kind": "word-form-choice",
+      "method": "inflection"
     },
     {
       "sourceId": "v1:part5:33:14",
-      "reason": "unlinked-answer"
+      "wordId": "impress-33",
+      "kind": "word-form-choice",
+      "method": "inflection"
     },
     {
       "sourceId": "v1:part5:34:13",
-      "reason": "unlinked-answer"
+      "wordId": "incorporate-34",
+      "kind": "word-form-choice",
+      "method": "inflection"
     },
     {
       "sourceId": "v1:part5:35:15",
-      "reason": "unlinked-answer"
+      "wordId": "regulate-35",
+      "kind": "word-form-choice",
+      "method": "inflection"
     },
     {
       "sourceId": "v1:part5:36:10",
-      "reason": "unlinked-answer"
+      "wordId": "announcement-36",
+      "kind": "word-form-choice",
+      "method": "inflection"
     },
     {
       "sourceId": "v1:part5:36:12",
-      "reason": "unlinked-answer"
+      "wordId": "claim-36",
+      "kind": "word-form-choice",
+      "method": "inflection"
     },
     {
       "sourceId": "v1:part5:37:12",
-      "reason": "unlinked-answer"
+      "wordId": "expense-37",
+      "kind": "word-form-choice",
+      "method": "inflection"
     },
     {
       "sourceId": "v1:part5:37:14",
-      "reason": "unlinked-answer"
+      "wordId": "prospective-37",
+      "kind": "word-form-choice",
+      "method": "inflection"
     },
     {
       "sourceId": "v1:part5:38:11",
-      "reason": "unlinked-answer"
+      "wordId": "directory-38",
+      "kind": "word-form-choice",
+      "method": "inflection"
     },
     {
       "sourceId": "v1:part5:38:14",
-      "reason": "unlinked-answer"
+      "wordId": "remainder-38",
+      "kind": "word-form-choice",
+      "method": "inflection"
     },
     {
       "sourceId": "v1:part5:39:12",
-      "reason": "unlinked-answer"
+      "wordId": "expect-39",
+      "kind": "word-form-choice",
+      "method": "inflection"
     },
     {
       "sourceId": "v1:part5:39:14",
-      "reason": "unlinked-answer"
+      "wordId": "quote-39",
+      "kind": "word-form-choice",
+      "method": "inflection"
     },
     {
       "sourceId": "v1:part5:40:15",
-      "reason": "unlinked-answer"
+      "wordId": "tempt-40",
+      "kind": "word-form-choice",
+      "method": "inflection"
     },
     {
       "sourceId": "v1:part5:44:10",
-      "reason": "unlinked-answer"
+      "wordId": "admire-44",
+      "kind": "word-form-choice",
+      "method": "inflection"
     },
     {
       "sourceId": "v1:part5:44:11",
-      "reason": "unlinked-answer"
+      "wordId": "collection-44",
+      "kind": "word-form-choice",
+      "method": "inflection"
     },
     {
       "sourceId": "v1:part5:45:12",
-      "reason": "unlinked-answer"
+      "wordId": "decision-45",
+      "kind": "word-form-choice",
+      "method": "inflection"
     },
     {
       "sourceId": "v1:part5:46:13",
-      "reason": "unlinked-answer"
+      "wordId": "recommendation-46",
+      "kind": "word-form-choice",
+      "method": "inflection"
     },
     {
       "sourceId": "v1:part5:47:11",
-      "reason": "unlinked-answer"
+      "wordId": "encouragement-47",
+      "kind": "word-form-choice",
+      "method": "inflection"
     },
     {
       "sourceId": "v1:part5:48:11",
-      "reason": "unlinked-answer"
+      "wordId": "alternative-48",
+      "kind": "word-form-choice",
+      "method": "inflection"
     },
     {
       "sourceId": "v1:part5:48:12",
-      "reason": "unlinked-answer"
+      "wordId": "concern-48",
+      "kind": "word-form-choice",
+      "method": "inflection"
     },
     {
       "sourceId": "v1:part5:49:10",
-      "reason": "unlinked-answer"
+      "wordId": "admit-49",
+      "kind": "word-form-choice",
+      "method": "inflection"
     },
     {
       "sourceId": "v1:part5:50:12",
-      "reason": "unlinked-answer"
+      "wordId": "detect-50",
+      "kind": "word-form-choice",
+      "method": "inflection"
     },
     {
       "sourceId": "v1:part5:50:15",
-      "reason": "unlinked-answer"
+      "wordId": "volunteer-50",
+      "kind": "word-form-choice",
+      "method": "inflection"
+    }
+  ],
+  "skipped": [
+    {
+      "sourceId": "v1:part5:15:12",
+      "reason": "invalid-source"
+    }
+  ],
+  "linked": [
+    {
+      "sourceId": "v1:part5:1:10",
+      "wordId": "agreement-1",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:1:11",
+      "wordId": "assurance-1",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:1:12",
+      "wordId": "cancellation-1",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:1:13",
+      "wordId": "obligate-1",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:1:14",
+      "wordId": "provision-1",
+      "kind": "word-form-choice",
+      "method": "inflection"
+    },
+    {
+      "sourceId": "v1:part5:1:15",
+      "wordId": "specific-1",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:2:10",
+      "wordId": "attract-2",
+      "kind": "word-form-choice",
+      "method": "inflection"
+    },
+    {
+      "sourceId": "v1:part5:2:11",
+      "wordId": "compare-2",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:2:12",
+      "wordId": "satisfaction-2",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:2:13",
+      "wordId": "consume-2",
+      "kind": "word-form-choice",
+      "method": "inflection"
+    },
+    {
+      "sourceId": "v1:part5:2:14",
+      "wordId": "market-2",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:2:15",
+      "wordId": "competition-2",
+      "kind": "word-form-choice",
+      "method": "inflection"
+    },
+    {
+      "sourceId": "v1:part5:3:10",
+      "wordId": "characteristic-3",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:3:11",
+      "wordId": "consider-3",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:3:12",
+      "wordId": "imply-3",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:3:13",
+      "wordId": "protect-3",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:3:14",
+      "wordId": "reputation-3",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:3:15",
+      "wordId": "require-3",
+      "kind": "word-form-choice",
+      "method": "inflection"
+    },
+    {
+      "sourceId": "v1:part5:4:10",
+      "wordId": "avoid-4",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:4:11",
+      "wordId": "demonstrate-4",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:4:12",
+      "wordId": "develop-4",
+      "kind": "word-form-choice",
+      "method": "inflection"
+    },
+    {
+      "sourceId": "v1:part5:4:13",
+      "wordId": "evaluate-4",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:4:14",
+      "wordId": "strategy-4",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:4:15",
+      "wordId": "substitution-4",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:5:10",
+      "wordId": "accommodate-5",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:5:11",
+      "wordId": "arrangement-5",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:5:12",
+      "wordId": "association-5",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:5:13",
+      "wordId": "attend-5",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:5:14",
+      "wordId": "register-5",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:5:15",
+      "wordId": "select-5",
+      "kind": "word-form-choice",
+      "method": "inflection"
+    },
+    {
+      "sourceId": "v1:part5:6:10",
+      "wordId": "access-6",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:6:11",
+      "wordId": "allocate-6",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:6:12",
+      "wordId": "duplicate-6",
+      "kind": "word-form-choice",
+      "method": "inflection"
+    },
+    {
+      "sourceId": "v1:part5:6:13",
+      "wordId": "failure-6",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:6:14",
+      "wordId": "ignore-6",
+      "kind": "word-form-choice",
+      "method": "inflection"
+    },
+    {
+      "sourceId": "v1:part5:6:15",
+      "wordId": "warning-6",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:7:10",
+      "wordId": "affordable-7",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:7:11",
+      "wordId": "initiative-7",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:7:12",
+      "wordId": "physically-7",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:7:13",
+      "wordId": "provider-7",
+      "kind": "word-form-choice",
+      "method": "inflection"
+    },
+    {
+      "sourceId": "v1:part5:7:14",
+      "wordId": "recur-7",
+      "kind": "word-form-choice",
+      "method": "inflection"
+    },
+    {
+      "sourceId": "v1:part5:7:15",
+      "wordId": "reduction-7",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:8:10",
+      "wordId": "appreciation-8",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:8:11",
+      "wordId": "code-8",
+      "kind": "word-form-choice",
+      "method": "inflection"
+    },
+    {
+      "sourceId": "v1:part5:8:12",
+      "wordId": "expose-8",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:8:13",
+      "wordId": "practice-8",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:8:14",
+      "wordId": "reinforce-8",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:8:15",
+      "wordId": "verbally-8",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:9:10",
+      "wordId": "popularity-9",
+      "kind": "cloze-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:9:11",
+      "wordId": "replace-9",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:9:12",
+      "wordId": "revolution-9",
+      "kind": "cloze-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:9:13",
+      "wordId": "skill-9",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:9:14",
+      "wordId": "store-9",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:9:15",
+      "wordId": "technically-9",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:10:10",
+      "wordId": "complication-10",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:10:11",
+      "wordId": "mention-10",
+      "kind": "word-form-choice",
+      "method": "inflection"
+    },
+    {
+      "sourceId": "v1:part5:10:12",
+      "wordId": "petition-10",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:10:13",
+      "wordId": "proof-10",
+      "kind": "word-form-choice",
+      "method": "inflection"
+    },
+    {
+      "sourceId": "v1:part5:10:14",
+      "wordId": "register-10",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:10:15",
+      "wordId": "revise-10",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:11:10",
+      "wordId": "accomplishment-11",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:11:11",
+      "wordId": "match-11",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:11:12",
+      "wordId": "profile-11",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:11:13",
+      "wordId": "qualifications-11",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:11:14",
+      "wordId": "recruit-11",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:11:15",
+      "wordId": "submit-11",
+      "kind": "word-form-choice",
+      "method": "inflection"
+    },
+    {
+      "sourceId": "v1:part5:12:10",
+      "wordId": "apply-12",
+      "kind": "word-form-choice",
+      "method": "inflection"
+    },
+    {
+      "sourceId": "v1:part5:12:11",
+      "wordId": "confidence-12",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:12:12",
+      "wordId": "expert-12",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:12:13",
+      "wordId": "hesitant-12",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:12:14",
+      "wordId": "present-12",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:12:15",
+      "wordId": "weakly-12",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:13:10",
+      "wordId": "conduct-13",
+      "kind": "word-form-choice",
+      "method": "inflection"
+    },
+    {
+      "sourceId": "v1:part5:13:11",
+      "wordId": "generate-13",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:13:12",
+      "wordId": "hire-13",
+      "kind": "word-form-choice",
+      "method": "inflection"
+    },
+    {
+      "sourceId": "v1:part5:13:13",
+      "wordId": "reject-13",
+      "kind": "word-form-choice",
+      "method": "inflection"
+    },
+    {
+      "sourceId": "v1:part5:13:14",
+      "wordId": "success-13",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:13:15",
+      "wordId": "training-13",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:14:10",
+      "wordId": "basis-14",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:14:11",
+      "wordId": "benefit-14",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:14:12",
+      "wordId": "compensate-14",
+      "kind": "word-form-choice",
+      "method": "inflection"
+    },
+    {
+      "sourceId": "v1:part5:14:13",
+      "wordId": "flexibly-14",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:14:14",
+      "wordId": "negotiate-14",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:14:15",
+      "wordId": "retire-14",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:15:10",
+      "wordId": "achievement-15",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:15:11",
+      "wordId": "contribute-15",
+      "kind": "word-form-choice",
+      "method": "inflection"
+    },
+    {
+      "sourceId": "v1:part5:15:13",
+      "wordId": "loyal-15",
+      "kind": "cloze-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:15:14",
+      "wordId": "productive-15",
+      "kind": "word-form-choice",
+      "method": "inflection"
+    },
+    {
+      "sourceId": "v1:part5:15:15",
+      "wordId": "promote-15",
+      "kind": "word-form-choice",
+      "method": "inflection"
+    },
+    {
+      "sourceId": "v1:part5:16:10",
+      "wordId": "comfort-16",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:16:11",
+      "wordId": "expand-16",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:16:12",
+      "wordId": "explore-16",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:16:13",
+      "wordId": "mandatory-16",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:16:14",
+      "wordId": "merchandise-16",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:16:15",
+      "wordId": "strictly-16",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:17:10",
+      "wordId": "diversify-17",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:17:11",
+      "wordId": "enterprise-17",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:17:12",
+      "wordId": "essentially-17",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:17:13",
+      "wordId": "function-17",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:17:14",
+      "wordId": "maintain-17",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:17:15",
+      "wordId": "smooth-17",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:18:10",
+      "wordId": "accurately-18",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:18:11",
+      "wordId": "fulfill-18",
+      "kind": "word-form-choice",
+      "method": "inflection"
+    },
+    {
+      "sourceId": "v1:part5:18:12",
+      "wordId": "integral-18",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:18:13",
+      "wordId": "minimize-18",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:18:14",
+      "wordId": "ship-18",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:18:15",
+      "wordId": "sufficiently-18",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:19:10",
+      "wordId": "compile-19",
+      "kind": "word-form-choice",
+      "method": "inflection"
+    },
+    {
+      "sourceId": "v1:part5:19:11",
+      "wordId": "efficient-19",
+      "kind": "cloze-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:19:12",
+      "wordId": "estimate-19",
+      "kind": "word-form-choice",
+      "method": "inflection"
+    },
+    {
+      "sourceId": "v1:part5:19:13",
+      "wordId": "impose-19",
+      "kind": "word-form-choice",
+      "method": "inflection"
+    },
+    {
+      "sourceId": "v1:part5:19:14",
+      "wordId": "mistake-19",
+      "kind": "word-form-choice",
+      "method": "inflection"
+    },
+    {
+      "sourceId": "v1:part5:19:15",
+      "wordId": "promptly-19",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:20:10",
+      "wordId": "adjustment-20",
+      "kind": "word-form-choice",
+      "method": "inflection"
+    },
+    {
+      "sourceId": "v1:part5:20:11",
+      "wordId": "automatically-20",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:20:12",
+      "wordId": "disturb-20",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:20:13",
+      "wordId": "reflection-20",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:20:14",
+      "wordId": "scan-20",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:20:15",
+      "wordId": "subtract-20",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:21:10",
+      "wordId": "accept-21",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:21:11",
+      "wordId": "cautiously-21",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:21:12",
+      "wordId": "deduct-21",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:21:13",
+      "wordId": "restricted-21",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:21:14",
+      "wordId": "signature-21",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:21:15",
+      "wordId": "transaction-21",
+      "kind": "word-form-choice",
+      "method": "inflection"
+    },
+    {
+      "sourceId": "v1:part5:22:10",
+      "wordId": "accounting-22",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:22:11",
+      "wordId": "accumulate-22",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:22:12",
+      "wordId": "audit-22",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:22:13",
+      "wordId": "budget-22",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:22:14",
+      "wordId": "build-up-22",
+      "kind": "word-form-choice",
+      "method": "inflection"
+    },
+    {
+      "sourceId": "v1:part5:22:15",
+      "wordId": "profitably-22",
+      "kind": "word-form-choice",
+      "method": "inflection"
+    },
+    {
+      "sourceId": "v1:part5:23:10",
+      "wordId": "aggressively-23",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:23:11",
+      "wordId": "commit-23",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:23:12",
+      "wordId": "conservative-23",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:23:13",
+      "wordId": "invest-23",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:23:14",
+      "wordId": "return-23",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:23:15",
+      "wordId": "wisely-23",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:24:10",
+      "wordId": "calculation-24",
+      "kind": "word-form-choice",
+      "method": "inflection"
+    },
+    {
+      "sourceId": "v1:part5:24:11",
+      "wordId": "file-24",
+      "kind": "word-form-choice",
+      "method": "inflection"
+    },
+    {
+      "sourceId": "v1:part5:24:12",
+      "wordId": "joint-24",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:24:13",
+      "wordId": "penalty-24",
+      "kind": "word-form-choice",
+      "method": "inflection"
+    },
+    {
+      "sourceId": "v1:part5:24:14",
+      "wordId": "preparation-24",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:24:15",
+      "wordId": "refund-24",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:25:10",
+      "wordId": "desire-25",
+      "kind": "word-form-choice",
+      "method": "inflection"
+    },
+    {
+      "sourceId": "v1:part5:25:11",
+      "wordId": "detail-25",
+      "kind": "word-form-choice",
+      "method": "inflection"
+    },
+    {
+      "sourceId": "v1:part5:25:12",
+      "wordId": "project-25",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:25:13",
+      "wordId": "realistic-25",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:25:14",
+      "wordId": "translation-25",
+      "kind": "word-form-choice",
+      "method": "inflection"
+    },
+    {
+      "sourceId": "v1:part5:25:15",
+      "wordId": "typically-25",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:26:10",
+      "wordId": "collaboration-26",
+      "kind": "word-form-choice",
+      "method": "inflection"
+    },
+    {
+      "sourceId": "v1:part5:26:11",
+      "wordId": "concentrate-26",
+      "kind": "word-form-choice",
+      "method": "inflection"
+    },
+    {
+      "sourceId": "v1:part5:26:12",
+      "wordId": "disruption-26",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:26:13",
+      "wordId": "inconsiderately-26",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:26:14",
+      "wordId": "opt-26",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:26:15",
+      "wordId": "scrutiny-26",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:27:10",
+      "wordId": "adhere-to-27",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:27:11",
+      "wordId": "conclude-27",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:27:12",
+      "wordId": "lengthy-27",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:27:13",
+      "wordId": "periodically-27",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:27:14",
+      "wordId": "priority-27",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:27:15",
+      "wordId": "progress-27",
+      "kind": "word-form-choice",
+      "method": "inflection"
+    },
+    {
+      "sourceId": "v1:part5:28:10",
+      "wordId": "defect-28",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:28:11",
+      "wordId": "inspect-28",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:28:12",
+      "wordId": "perceptive-28",
+      "kind": "word-form-choice",
+      "method": "inflection"
+    },
+    {
+      "sourceId": "v1:part5:28:13",
+      "wordId": "repel-28",
+      "kind": "word-form-choice",
+      "method": "inflection"
+    },
+    {
+      "sourceId": "v1:part5:28:14",
+      "wordId": "uniformly-28",
+      "kind": "cloze-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:28:15",
+      "wordId": "wrinkle-28",
+      "kind": "word-form-choice",
+      "method": "inflection"
+    },
+    {
+      "sourceId": "v1:part5:29:10",
+      "wordId": "anxious-29",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:29:11",
+      "wordId": "assume-29",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:29:12",
+      "wordId": "experiment-29",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:29:13",
+      "wordId": "logical-29",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:29:14",
+      "wordId": "responsibility-29",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:29:15",
+      "wordId": "supervisor-29",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:30:10",
+      "wordId": "apprehensive-30",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:30:11",
+      "wordId": "circumstance-30",
+      "kind": "word-form-choice",
+      "method": "inflection"
+    },
+    {
+      "sourceId": "v1:part5:30:12",
+      "wordId": "condition-30",
+      "kind": "word-form-choice",
+      "method": "inflection"
+    },
+    {
+      "sourceId": "v1:part5:30:13",
+      "wordId": "indicator-30",
+      "kind": "word-form-choice",
+      "method": "inflection"
+    },
+    {
+      "sourceId": "v1:part5:30:14",
+      "wordId": "fluctuate-30",
+      "kind": "word-form-choice",
+      "method": "inflection"
+    },
+    {
+      "sourceId": "v1:part5:30:15",
+      "wordId": "occupy-30",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:31:10",
+      "wordId": "appeal-31",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:31:11",
+      "wordId": "daringly-31",
+      "kind": "word-form-choice",
+      "method": "inflection"
+    },
+    {
+      "sourceId": "v1:part5:31:12",
+      "wordId": "guide-31",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:31:13",
+      "wordId": "mix-31",
+      "kind": "word-form-choice",
+      "method": "inflection"
+    },
+    {
+      "sourceId": "v1:part5:31:14",
+      "wordId": "rely-31",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:31:15",
+      "wordId": "suggestion-31",
+      "kind": "word-form-choice",
+      "method": "inflection"
+    },
+    {
+      "sourceId": "v1:part5:32:10",
+      "wordId": "complete-32",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:32:11",
+      "wordId": "excite-32",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:32:12",
+      "wordId": "flavor-32",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:32:13",
+      "wordId": "forget-32",
+      "kind": "word-form-choice",
+      "method": "inflection"
+    },
+    {
+      "sourceId": "v1:part5:32:14",
+      "wordId": "mix-up-32",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:32:15",
+      "wordId": "predict-32",
+      "kind": "word-form-choice",
+      "method": "inflection"
+    },
+    {
+      "sourceId": "v1:part5:33:10",
+      "wordId": "burden-33",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:33:11",
+      "wordId": "commonly-33",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:33:12",
+      "wordId": "delivery-33",
+      "kind": "word-form-choice",
+      "method": "inflection"
+    },
+    {
+      "sourceId": "v1:part5:33:13",
+      "wordId": "elegance-33",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:33:14",
+      "wordId": "impress-33",
+      "kind": "word-form-choice",
+      "method": "inflection"
+    },
+    {
+      "sourceId": "v1:part5:33:15",
+      "wordId": "individual-33",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:34:10",
+      "wordId": "accustom-to-34",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:34:11",
+      "wordId": "apprentice-34",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:34:12",
+      "wordId": "demand-34",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:34:13",
+      "wordId": "incorporate-34",
+      "kind": "word-form-choice",
+      "method": "inflection"
+    },
+    {
+      "sourceId": "v1:part5:34:14",
+      "wordId": "method-34",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:34:15",
+      "wordId": "profession-34",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:35:10",
+      "wordId": "assist-35",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:35:11",
+      "wordId": "coordinate-35",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:35:12",
+      "wordId": "general-35",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:35:13",
+      "wordId": "ideally-35",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:35:14",
+      "wordId": "plan-35",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:35:15",
+      "wordId": "regulate-35",
+      "kind": "word-form-choice",
+      "method": "inflection"
+    },
+    {
+      "sourceId": "v1:part5:36:10",
+      "wordId": "announcement-36",
+      "kind": "word-form-choice",
+      "method": "inflection"
+    },
+    {
+      "sourceId": "v1:part5:36:11",
+      "wordId": "board-36",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:36:12",
+      "wordId": "claim-36",
+      "kind": "word-form-choice",
+      "method": "inflection"
+    },
+    {
+      "sourceId": "v1:part5:36:13",
+      "wordId": "delay-36",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:36:14",
+      "wordId": "depart-36",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:36:15",
+      "wordId": "valid-36",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:37:10",
+      "wordId": "distinguish-37",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:37:11",
+      "wordId": "economize-37",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:37:12",
+      "wordId": "expense-37",
+      "kind": "word-form-choice",
+      "method": "inflection"
+    },
+    {
+      "sourceId": "v1:part5:37:13",
+      "wordId": "extend-37",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:37:14",
+      "wordId": "prospective-37",
+      "kind": "word-form-choice",
+      "method": "inflection"
+    },
+    {
+      "sourceId": "v1:part5:37:15",
+      "wordId": "substantially-37",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:38:10",
+      "wordId": "comprehensive-38",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:38:11",
+      "wordId": "directory-38",
+      "kind": "word-form-choice",
+      "method": "inflection"
+    },
+    {
+      "sourceId": "v1:part5:38:12",
+      "wordId": "operate-38",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:38:13",
+      "wordId": "punctually-38",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:38:14",
+      "wordId": "remainder-38",
+      "kind": "word-form-choice",
+      "method": "inflection"
+    },
+    {
+      "sourceId": "v1:part5:38:15",
+      "wordId": "remote-38",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:39:10",
+      "wordId": "advanced-39",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:39:11",
+      "wordId": "confirm-39",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:39:12",
+      "wordId": "expect-39",
+      "kind": "word-form-choice",
+      "method": "inflection"
+    },
+    {
+      "sourceId": "v1:part5:39:13",
+      "wordId": "notify-39",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:39:14",
+      "wordId": "quote-39",
+      "kind": "word-form-choice",
+      "method": "inflection"
+    },
+    {
+      "sourceId": "v1:part5:39:15",
+      "wordId": "reservation-39",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:40:10",
+      "wordId": "confusion-40",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:40:11",
+      "wordId": "coincide-40",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:40:12",
+      "wordId": "disappoint-40",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:40:13",
+      "wordId": "intend-40",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:40:14",
+      "wordId": "nervously-40",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:40:15",
+      "wordId": "tempt-40",
+      "kind": "word-form-choice",
+      "method": "inflection"
+    },
+    {
+      "sourceId": "v1:part5:41:10",
+      "wordId": "attainment-41",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:41:11",
+      "wordId": "continue-41",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:41:12",
+      "wordId": "description-41",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:41:13",
+      "wordId": "entertainment-41",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:41:14",
+      "wordId": "representation-41",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:41:15",
+      "wordId": "separately-41",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:42:10",
+      "wordId": "approach-42",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:42:11",
+      "wordId": "action-42",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:42:12",
+      "wordId": "experience-42",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:42:13",
+      "wordId": "creative-42",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:42:14",
+      "wordId": "perform-42",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:42:15",
+      "wordId": "rehearse-42",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:43:10",
+      "wordId": "broaden-43",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:43:11",
+      "wordId": "category-43",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:43:12",
+      "wordId": "favor-43",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:43:13",
+      "wordId": "prefer-43",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:43:14",
+      "wordId": "relaxation-43",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:43:15",
+      "wordId": "urge-43",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:44:10",
+      "wordId": "admire-44",
+      "kind": "word-form-choice",
+      "method": "inflection"
+    },
+    {
+      "sourceId": "v1:part5:44:11",
+      "wordId": "collection-44",
+      "kind": "word-form-choice",
+      "method": "inflection"
+    },
+    {
+      "sourceId": "v1:part5:44:12",
+      "wordId": "criticism-44",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:44:13",
+      "wordId": "respond-44",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:44:14",
+      "wordId": "schedule-44",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:44:15",
+      "wordId": "specialize-44",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:45:10",
+      "wordId": "choose-45",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:45:11",
+      "wordId": "constantly-45",
+      "kind": "cloze-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:45:12",
+      "wordId": "decision-45",
+      "kind": "word-form-choice",
+      "method": "inflection"
+    },
+    {
+      "sourceId": "v1:part5:45:13",
+      "wordId": "investigate-45",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:45:14",
+      "wordId": "subscribe-45",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:45:15",
+      "wordId": "thorough-45",
+      "kind": "cloze-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:46:10",
+      "wordId": "assess-46",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:46:11",
+      "wordId": "diagnose-46",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:46:12",
+      "wordId": "prevent-46",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:46:13",
+      "wordId": "recommendation-46",
+      "kind": "word-form-choice",
+      "method": "inflection"
+    },
+    {
+      "sourceId": "v1:part5:46:14",
+      "wordId": "record-46",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:46:15",
+      "wordId": "serious-46",
+      "kind": "cloze-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:47:10",
+      "wordId": "distraction-47",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:47:11",
+      "wordId": "encouragement-47",
+      "kind": "word-form-choice",
+      "method": "inflection"
+    },
+    {
+      "sourceId": "v1:part5:47:12",
+      "wordId": "evident-47",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:47:13",
+      "wordId": "habit-47",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:47:14",
+      "wordId": "irritate-47",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:47:15",
+      "wordId": "regularly-47",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:48:10",
+      "wordId": "allow-48",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:48:11",
+      "wordId": "alternative-48",
+      "kind": "word-form-choice",
+      "method": "inflection"
+    },
+    {
+      "sourceId": "v1:part5:48:12",
+      "wordId": "concern-48",
+      "kind": "word-form-choice",
+      "method": "inflection"
+    },
+    {
+      "sourceId": "v1:part5:48:13",
+      "wordId": "emphasize-48",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:48:14",
+      "wordId": "regardless-48",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:48:15",
+      "wordId": "suit-48",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:49:10",
+      "wordId": "admit-49",
+      "kind": "word-form-choice",
+      "method": "inflection"
+    },
+    {
+      "sourceId": "v1:part5:49:11",
+      "wordId": "authorize-49",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:49:12",
+      "wordId": "designate-49",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:49:13",
+      "wordId": "identify-49",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:49:14",
+      "wordId": "permit-49",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:49:15",
+      "wordId": "usually-49",
+      "kind": "cloze-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:50:10",
+      "wordId": "consult-50",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:50:11",
+      "wordId": "convenient-50",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:50:12",
+      "wordId": "detect-50",
+      "kind": "word-form-choice",
+      "method": "inflection"
+    },
+    {
+      "sourceId": "v1:part5:50:13",
+      "wordId": "limit-50",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:50:14",
+      "wordId": "potential-50",
+      "kind": "word-form-choice",
+      "method": "exact"
+    },
+    {
+      "sourceId": "v1:part5:50:15",
+      "wordId": "volunteer-50",
+      "kind": "word-form-choice",
+      "method": "inflection"
     }
   ]
 }

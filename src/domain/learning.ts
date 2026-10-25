@@ -10,6 +10,7 @@ import type {
   WordProgress,
   RecognitionQuestion,
 } from "./types";
+import { shuffleSeeded } from "./random";
 
 export const INTERVALS = [1, 3, 7, 14, 30, 60];
 export const TIMEZONE = "Asia/Ho_Chi_Minh";
@@ -68,7 +69,28 @@ export function introducedToday(snapshot: Snapshot, at = Date.now()) {
 }
 export const normalizeAnswer = (value: string) => value.trim().toLowerCase().replace(/\s+/g, " ");
 const escapeRegex = (value: string) => value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-export function makeQuestions(words: Word[], all: Word[], mode: SessionMode): Question[] {
+export const hintAllowance = (answer: string) =>
+  Math.floor(Array.from(answer).filter((char) => /\p{L}/u.test(char)).length * 0.3);
+export function revealQuestionLetter(snapshot: Snapshot, sessionId: string, index: number): Snapshot {
+  const session = snapshot.session;
+  if (!session || session.id !== sessionId || session.index !== index || session.phase !== "question")
+    throw new Error("Lượt học đã thay đổi. Hãy mở lại câu hiện tại.");
+  const q = session.questions[index];
+  if (q.kind !== "recall" && q.kind !== "cloze") throw new Error("Câu này không dùng gợi ý chữ.");
+  const revealed = session.revealed ?? [];
+  const next = Array.from(q.answer).findIndex((char, position) => /\p{L}/u.test(char) && !revealed.includes(position));
+  if (next < 0) return snapshot;
+  const indices = [...revealed, next];
+  return {
+    ...snapshot,
+    session: {
+      ...session,
+      revealed: indices,
+      peeked: Boolean(session.peeked) || indices.length > hintAllowance(q.answer),
+    },
+  };
+}
+export function makeQuestions(words: Word[], all: Word[], mode: SessionMode, sessionId = "preview"): Question[] {
   return words.map((word, i) => {
     const match = word.examples.find((example) =>
       new RegExp(`\\b${escapeRegex(word.text)}\\b`, "i").test(example.text),
@@ -92,14 +114,12 @@ export function makeQuestions(words: Word[], all: Word[], mode: SessionMode): Qu
       meanings.add(candidate.meaning);
       if (choices.length === 4) break;
     }
-    // Deterministic ordering is stable on reload, without placing every answer first.
-    const rotate = (i + word.text.length) % choices.length;
     return {
       wordId: word.id,
       kind: "meaning",
       prompt: word.text,
       answer: word.meaning,
-      options: [...choices.slice(rotate), ...choices.slice(0, rotate)],
+      options: shuffleSeeded(choices, `${sessionId}:${word.id}:meaning`),
     };
   });
 }
@@ -119,7 +139,7 @@ export function beginSession(
     id,
     title,
     mode,
-    questions: makeQuestions(words, catalog.words, mode),
+    questions: makeQuestions(words, catalog.words, mode, id),
     contentVersion: catalog.version,
     index: 0,
     phase: mode === "learn" ? "learn" : "question",
@@ -129,13 +149,13 @@ export function beginSession(
   const next = { ...snapshot, session };
   return mode === "learn" ? introduce(next, words[0].id, at) : next;
 }
-export function makeRecognitionQuestions(words: Word[], all: Word[]): RecognitionQuestion[] {
+export function makeRecognitionQuestions(words: Word[], all: Word[], sessionId = "preview"): RecognitionQuestion[] {
   const glosses = (value: string) =>
     normalizeAnswer(value)
       .split(/[;,]/)
       .map((part) => part.trim())
       .filter(Boolean);
-  return words.flatMap((word, index): RecognitionQuestion[] => {
+  return words.flatMap((word): RecognitionQuestion[] => {
     const related = new Set([word.text, ...word.synonyms, ...word.family.map((f) => f.text)].map(normalizeAnswer));
     const pool = [...all.filter((w) => w.pos === word.pos), ...all.filter((w) => w.pos !== word.pos)];
     const chosen = [word];
@@ -166,22 +186,26 @@ export function makeRecognitionQuestions(words: Word[], all: Word[]): Recognitio
       if (chosen.length === 4) break;
     }
     if (chosen.length < 2) throw new Error("Chưa đủ đáp án khác nhau để luyện chọn từ. Hãy chọn bài khác.");
-    const rotate = (index + word.text.length) % chosen.length;
-    const order = [...chosen.slice(rotate), ...chosen.slice(0, rotate)];
     return [
       {
         kind: "meaning",
         wordId: word.id,
         prompt: word.text,
         answer: word.meaning,
-        options: order.map((w) => w.meaning),
+        options: shuffleSeeded(
+          chosen.map((w) => w.meaning),
+          `${sessionId}:${word.id}:meaning`,
+        ),
       },
       {
         kind: "word-choice",
         wordId: word.id,
         prompt: word.meaning,
         answer: word.text,
-        options: [...order].reverse().map((w) => w.text),
+        options: shuffleSeeded(
+          chosen.map((w) => w.text),
+          `${sessionId}:${word.id}:word-choice`,
+        ),
       },
     ];
   });
@@ -229,7 +253,9 @@ export function answerQuestion(
   const id = `${sessionId}:${index}`;
   if (snapshot.events.some((event) => event.id === id)) return snapshot;
   const q = session.questions[index];
-  assisted = assisted || Boolean(session.peeked);
+  const hintCount = session.revealed?.length ?? 0;
+  const hintLimit = q.kind === "recall" || q.kind === "cloze" ? hintAllowance(q.answer) : 0;
+  assisted = assisted || Boolean(session.peeked) || hintCount > hintLimit;
   const correct = !assisted && normalizeAnswer(input) === normalizeAnswer(q.answer);
   const day = dayKey(at, snapshot.settings.timezone);
   const event: AnswerEvent = {
@@ -243,10 +269,14 @@ export function answerQuestion(
     mode: session.mode,
     questionId: id,
     questionKind: q.kind,
-    contentVersion: q.kind === "cloze-choice" ? q.sourceVersion : session.contentVersion,
-    ...(q.kind === "cloze-choice" ? { sourceQuestionId: q.sourceId } : {}),
+    contentVersion: session.contentVersion,
+    ...(q.kind === "cloze-choice" || q.kind === "word-form-choice"
+      ? { sourceQuestionId: q.sourceId, sourceVersion: q.sourceVersion }
+      : {}),
     skill: "vocabulary",
-    scoringVersion: 1,
+    scoringVersion: 2,
+    hintCount,
+    hintLimit,
   };
   const feedback: Feedback = { correct, assisted, answer: q.answer, input };
   const previous = snapshot.progress[q.wordId];
@@ -300,6 +330,7 @@ export function advanceSession(
       phase: session.mode === "learn" ? "learn" : "question",
       feedback: null,
       peeked: false,
+      revealed: [],
     },
   };
   return session.mode === "learn" ? introduce(next, wordId, at) : next;

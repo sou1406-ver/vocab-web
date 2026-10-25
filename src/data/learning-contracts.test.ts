@@ -33,7 +33,7 @@ describe("Learning contract compatibility", () => {
         questionId: "s:0",
         contentVersion: catalog.version,
         skill: "vocabulary",
-        scoringVersion: 1,
+        scoringVersion: 2,
       });
       expect(validateSnapshot(answered)).toBe(answered);
       expect(answerQuestion(answered, "s", 0, "answer", false, at).events).toHaveLength(1);
@@ -80,7 +80,7 @@ describe("Learning contract compatibility", () => {
     ["questionId", ""],
     ["contentVersion", 42],
     ["skill", "listening"],
-    ["scoringVersion", 2],
+    ["scoringVersion", 3],
   ])("rejects invalid event metadata %s", (key, value) => {
     const state = JSON.parse(JSON.stringify(answerQuestion(active(), "s", 0, "wrong", false, at)));
     state.events[0][key] = value;

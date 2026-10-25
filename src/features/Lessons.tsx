@@ -13,6 +13,7 @@ export default function Lessons({ lessonId: id }: { lessonId?: string }) {
   const { data, start, startExercises, busy } = useApp();
   const [topic, setTopic] = useState("all");
   const [loading, setLoading] = useState(false);
+  const [loadingKind, setLoadingKind] = useState<"cloze-choice" | "word-form-choice" | null>(null);
   const [loadError, setLoadError] = useState("");
   const [recognitionError, setRecognitionError] = useState("");
   const request = useRef<AbortController | null>(null);
@@ -39,16 +40,23 @@ export default function Lessons({ lessonId: id }: { lessonId?: string }) {
     );
   if (lesson) {
     const exercise = clozeLessons.find((entry) => entry.lessonId === lesson.id);
-    const practiceCloze = async () => {
+    const practiceCloze = async (kind: "cloze-choice" | "word-form-choice") => {
       if (active) return router.push("/study");
       const controller = new AbortController();
       request.current?.abort();
       request.current = controller;
       setLoading(true);
+      setLoadingKind(kind);
       setLoadError("");
       try {
-        const questions = await loadClozeLesson(lesson.id, controller.signal);
-        if (!controller.signal.aborted && (await startExercises(questions, `Điền chỗ trống · ${lesson.title}`)))
+        const questions = (await loadClozeLesson(lesson.id, controller.signal)).filter((q) => q.kind === kind);
+        if (
+          !controller.signal.aborted &&
+          (await startExercises(
+            questions,
+            `${kind === "word-form-choice" ? "Dạng từ" : "Điền chỗ trống"} · ${lesson.title}`,
+          ))
+        )
           router.push("/study");
       } catch {
         if (!controller.signal.aborted) setLoadError("Không tải được bài tập. Hãy thử lại.");
@@ -67,8 +75,8 @@ export default function Lessons({ lessonId: id }: { lessonId?: string }) {
         const offset =
           (data.history.filter((item) => item.mode === "practice" && item.title === title).length * 6) % words.length;
         const batch = [...words.slice(offset), ...words.slice(0, offset)].slice(0, 6);
-        const questions = makeRecognitionQuestions(batch, catalog.words);
-        if (await startExercises(questions, title)) router.push("/study");
+        if (await startExercises((sessionId) => makeRecognitionQuestions(batch, catalog.words, sessionId), title))
+          router.push("/study");
       } catch (error) {
         setRecognitionError(error instanceof Error ? error.message : "Chưa mở được bài luyện.");
       }
@@ -121,22 +129,33 @@ export default function Lessons({ lessonId: id }: { lessonId?: string }) {
             <p>từ nhớ ổn định</p>
           </div>
         </div>
-        <section className="panel cloze-practice" aria-label="Luyện điền chỗ trống">
-          <div>
-            <h2>Điền chỗ trống</h2>
-            <p>{exercise?.count ?? 0} câu · Chọn từ phù hợp trong câu. Luyện thêm không tăng bậc ôn.</p>
-            {loadError && <p role="alert">{loadError}</p>}
-            {active && <p>Tiếp tục hoặc kết thúc lượt đang học trước khi mở bài luyện mới.</p>}
-          </div>
-          <button
-            className="button secondary"
-            disabled={busy || loading || Boolean(active) || !exercise?.count}
-            onClick={() => void practiceCloze()}
-          >
-            {loading ? "Đang tải bài tập…" : "Luyện điền chỗ trống"}
-            <Icon name="arrow" />
-          </button>
-        </section>
+        {(
+          [
+            { kind: "cloze-choice", title: "Điền chỗ trống", button: "Luyện điền chỗ trống" },
+            { kind: "word-form-choice", title: "Dạng từ", button: "Luyện dạng từ" },
+          ] as const
+        ).map((group) => (
+          <section className="panel cloze-practice" aria-label={group.title} key={group.kind}>
+            <div>
+              <h2>{group.title}</h2>
+              <p>
+                {exercise?.kinds[group.kind] ?? 0} câu ·{" "}
+                {group.kind === "word-form-choice" ? "Chọn đúng dạng từ trong câu." : "Chọn từ phù hợp trong câu."}{" "}
+                Luyện thêm không tăng bậc ôn.
+              </p>
+              {loadError && loadingKind === group.kind && <p role="alert">{loadError}</p>}
+              {active && <p>Tiếp tục hoặc kết thúc lượt đang học trước khi mở bài luyện mới.</p>}
+            </div>
+            <button
+              className="button secondary"
+              disabled={busy || loading || Boolean(active) || !exercise?.kinds[group.kind]}
+              onClick={() => void practiceCloze(group.kind)}
+            >
+              {loading && loadingKind === group.kind ? "Đang tải bài tập…" : group.button}
+              <Icon name="arrow" />
+            </button>
+          </section>
+        ))}
         <section className="panel cloze-practice" aria-label="Chọn nghĩa và chọn từ">
           <div>
             <h2>Chọn nghĩa / chọn từ</h2>

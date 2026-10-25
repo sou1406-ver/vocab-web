@@ -23,7 +23,7 @@ export function validateClozePack(
   for (const raw of pack.questions) {
     const q = record(raw);
     if (
-      q.kind !== "cloze-choice" ||
+      (q.kind !== "cloze-choice" && q.kind !== "word-form-choice") ||
       q.sourceVersion !== expected.version ||
       typeof q.sourceId !== "string" ||
       !q.sourceId.startsWith(`v1:part5:${expected.lessonId}:`) ||

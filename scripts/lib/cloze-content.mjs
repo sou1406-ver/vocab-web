@@ -1,4 +1,5 @@
 const norm = (value) => value.trim().toLowerCase().replace(/\s+/g, " ");
+import { familyForms, classificationForms } from "./word-forms.mjs";
 
 /**
  * @param {number} lessonId
@@ -10,6 +11,10 @@ export function convertLesson(lessonId, input, words) {
   /** @type {Omit<import("../../src/domain/types").ClozeChoiceQuestion, "sourceVersion">[]} */
   const questions = [];
   const skipped = [];
+  const linked = [];
+  const lessonWords = words
+    .filter((word) => word.lesson === lessonId)
+    .map((word) => ({ word, forms: familyForms(word) }));
   const sourceIds = new Set();
   for (const raw of input) {
     const q = raw && typeof raw === "object" ? raw : {};
@@ -30,22 +35,24 @@ export function convertLesson(lessonId, input, words) {
     if (sourceIds.has(sourceId)) throw new Error(`Duplicate source question: ${sourceId}`);
     sourceIds.add(sourceId);
     const answer = q.options[q.answer].trim();
-    const matches = words.filter(
-      (w) =>
-        w.lesson === lessonId && [w.text, ...w.family.map((f) => f.text)].some((text) => norm(text) === norm(answer)),
-    );
+    const matches = lessonWords.filter(({ forms }) => forms.has(norm(answer)));
     if (matches.length !== 1) {
       skipped.push({ sourceId, reason: matches.length ? "ambiguous-word" : "unlinked-answer" });
       continue;
     }
+    const { word } = matches[0];
+    const family = classificationForms(word);
+    const kind = options.every((option) => family.has(norm(option))) ? "word-form-choice" : "cloze-choice";
+    const exact = [word.text, ...word.family.map((f) => f.text)].some((text) => norm(text) === norm(answer));
+    linked.push({ sourceId, wordId: word.id, kind, method: exact ? "exact" : "inflection" });
     questions.push({
-      kind: "cloze-choice",
+      kind,
       sourceId,
-      wordId: matches[0].id,
+      wordId: word.id,
       prompt: q.text.replace(/_{3,}/g, "________"),
       answer,
       options: options.map((v) => v.trim()),
     });
   }
-  return { questions, skipped };
+  return { questions, skipped, linked };
 }

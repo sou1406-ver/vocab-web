@@ -20,7 +20,11 @@ export interface AppState {
   init: () => Promise<void>;
   change: (reduce: (data: Snapshot) => Snapshot) => Promise<boolean>;
   start: (words: Word[], mode: SessionMode, title: string, returnTo?: string) => Promise<boolean>;
-  startExercises: (questions: Question[], title: string, returnTo?: string) => Promise<boolean>;
+  startExercises: (
+    questions: Question[] | ((sessionId: string) => Question[]),
+    title: string,
+    returnTo?: string,
+  ) => Promise<boolean>;
   answer: (input: string, assisted?: boolean) => Promise<boolean>;
   advance: () => Promise<boolean>;
   finish: () => Promise<boolean>;
@@ -65,7 +69,14 @@ export function createAppStore() {
       }),
     startExercises: (questions, title, returnTo) =>
       get().change((data) => {
-        const next = beginExerciseSession(data, catalog, questions, title, crypto.randomUUID());
+        const id = crypto.randomUUID();
+        const next = beginExerciseSession(
+          data,
+          catalog,
+          typeof questions === "function" ? questions(id) : questions,
+          title,
+          id,
+        );
         return returnTo && next.session ? { ...next, session: { ...next.session, returnTo } } : next;
       }),
     answer: (input, assisted = false) => {

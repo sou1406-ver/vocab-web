@@ -4,6 +4,20 @@ import { catalog } from "../data/catalog";
 import { validateSnapshot } from "../data/validation";
 
 describe("Recognition in both directions", () => {
+  it("shuffles by session ID, stays stable within a session and varies across sessions", () => {
+    const words = catalog.words.slice(0, 6);
+    const first = makeRecognitionQuestions(words, catalog.words, "session-a");
+    expect(first).toEqual(makeRecognitionQuestions(words, catalog.words, "session-a"));
+    const orders = new Set(
+      Array.from({ length: 12 }, (_, i) =>
+        JSON.stringify(makeRecognitionQuestions(words, catalog.words, `session-${i}`)[0].options),
+      ),
+    );
+    expect(orders.size).toBeGreaterThan(1);
+    expect(first.map((q) => q.options)).not.toEqual(
+      makeRecognitionQuestions(words, catalog.words, "session-b").map((q) => q.options),
+    );
+  });
   it("has distinct choices across the temporary 600-word catalog", () => {
     const questions = makeRecognitionQuestions(catalog.words, catalog.words);
     expect(questions).toHaveLength(1200);

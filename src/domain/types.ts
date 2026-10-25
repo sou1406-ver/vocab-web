@@ -47,7 +47,7 @@ interface QuestionBase {
   answer: string;
 }
 export type ClozeChoiceQuestion = QuestionBase & {
-  kind: "cloze-choice";
+  kind: "cloze-choice" | "word-form-choice";
   options: string[];
   sourceId: string;
   sourceVersion: string;
@@ -77,6 +77,7 @@ export interface StudySession {
   startedAt: number;
   finishedAt?: number;
   peeked?: boolean;
+  revealed?: number[];
   returnTo?: string;
 }
 export interface AnswerEvent {
@@ -93,8 +94,11 @@ export interface AnswerEvent {
   questionKind?: Question["kind"];
   contentVersion?: string;
   skill?: "vocabulary";
-  scoringVersion?: 1;
+  scoringVersion?: 1 | 2;
   sourceQuestionId?: string;
+  sourceVersion?: string;
+  hintCount?: number;
+  hintLimit?: number;
 }
 export interface SessionSummary {
   id: string;

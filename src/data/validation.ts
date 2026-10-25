@@ -7,7 +7,8 @@ export function record(value: unknown): Record<string, unknown> {
 const number = (v: unknown) => typeof v === "number" && Number.isFinite(v) && v >= 0 && v <= 8_640_000_000_000_000;
 const string = (v: unknown) => typeof v === "string";
 const nonempty = (v: unknown) => typeof v === "string" && v.trim().length > 0 && v.length <= 500;
-const questionKinds = ["meaning", "cloze", "recall", "cloze-choice", "word-choice"];
+const questionKinds = ["meaning", "cloze", "recall", "cloze-choice", "word-form-choice", "word-choice"];
+const count = (value: unknown) => Number.isSafeInteger(value) && number(value);
 const day = (v: unknown) => string(v) && /^\d{4}-\d{2}-\d{2}$/.test(v as string);
 const safeId = (v: string) => v !== "__proto__" && v !== "constructor" && v !== "prototype";
 export function isWord(value: unknown): value is Word {
@@ -103,8 +104,16 @@ export function validateSnapshot(value: unknown): Snapshot {
       (e.questionKind !== undefined && !questionKinds.includes(e.questionKind as string)) ||
       (e.contentVersion !== undefined && !nonempty(e.contentVersion)) ||
       (e.skill !== undefined && e.skill !== "vocabulary") ||
-      (e.scoringVersion !== undefined && e.scoringVersion !== 1) ||
-      (e.sourceQuestionId !== undefined && !nonempty(e.sourceQuestionId))
+      (e.scoringVersion !== undefined && e.scoringVersion !== 1 && e.scoringVersion !== 2) ||
+      (e.sourceQuestionId !== undefined && !nonempty(e.sourceQuestionId)) ||
+      (e.sourceVersion !== undefined && !nonempty(e.sourceVersion)) ||
+      (e.hintCount !== undefined && !count(e.hintCount)) ||
+      (e.hintLimit !== undefined && !count(e.hintLimit)) ||
+      (e.scoringVersion === 2 &&
+        (!count(e.hintCount) ||
+          !count(e.hintLimit) ||
+          ((e.hintCount as number) > (e.hintLimit as number) && !e.assisted) ||
+          (e.correct && e.assisted)))
     )
       fail();
   }
@@ -145,7 +154,10 @@ export function validateSnapshot(value: unknown): Snapshot {
       const q = record(raw);
       if (![q.wordId, q.prompt, q.answer].every(string) || !questionKinds.includes(q.kind as string)) fail();
       if (
-        (q.kind === "meaning" || q.kind === "cloze-choice" || q.kind === "word-choice") &&
+        (q.kind === "meaning" ||
+          q.kind === "cloze-choice" ||
+          q.kind === "word-form-choice" ||
+          q.kind === "word-choice") &&
         (!Array.isArray(q.options) ||
           !q.options.every(string) ||
           !(q.options as string[]).includes(q.answer as string) ||
@@ -167,7 +179,7 @@ export function validateSnapshot(value: unknown): Snapshot {
       )
         fail();
       if (
-        q.kind === "cloze-choice" &&
+        (q.kind === "cloze-choice" || q.kind === "word-form-choice") &&
         (!nonempty(q.sourceId) ||
           !nonempty(q.sourceVersion) ||
           (q.prompt as string).match(/_{3,}/g)?.length !== 1 ||
@@ -183,6 +195,20 @@ export function validateSnapshot(value: unknown): Snapshot {
     } else if (session.phase === "feedback") fail();
     if (session.finishedAt !== undefined && !number(session.finishedAt)) fail();
     if (session.peeked !== undefined && typeof session.peeked !== "boolean") fail();
+    if (session.revealed !== undefined) {
+      const q = record((session.questions as unknown[])[session.index as number]);
+      const chars = Array.from(q.answer as string);
+      if (
+        !Array.isArray(session.revealed) ||
+        new Set(session.revealed).size !== session.revealed.length ||
+        !session.revealed.every(
+          (position) =>
+            Number.isInteger(position) && position >= 0 && position < chars.length && /\p{L}/u.test(chars[position]),
+        ) ||
+        (session.revealed.length && q.kind !== "recall" && q.kind !== "cloze")
+      )
+        fail();
+    }
     if (
       session.returnTo !== undefined &&
       (typeof session.returnTo !== "string" || !/^\/knowledge\/[a-z0-9-]+$/.test(session.returnTo))

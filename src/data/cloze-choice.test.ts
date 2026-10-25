@@ -14,6 +14,21 @@ const source = {
   answer: "A",
 };
 describe("Authored cloze choices", () => {
+  it("keeps catalog and package versions separate for both authored question labels", () => {
+    const raw = { ...source, options: { A: "agreement", B: "party", C: "assurance", D: "cancellation" } };
+    for (const item of [source, raw]) {
+      const q = { ...convertLesson(1, [item], catalog.words).questions[0], sourceVersion: "authored-package" };
+      const state = beginExerciseSession(emptySnapshot(), catalog, [q], "Practice", "s", 100);
+      const event = answerQuestion(state, "s", 0, q.answer, false, 101).events[0];
+      expect(event).toMatchObject({
+        questionKind: q.kind,
+        contentVersion: catalog.version,
+        sourceVersion: "authored-package",
+        sourceQuestionId: q.sourceId,
+        scoringVersion: 2,
+      });
+    }
+  });
   it("validates every generated lesson pack and rejects mismatched or cross-lesson data", () => {
     let count = 0;
     for (const entry of clozeLessons) {
@@ -26,7 +41,7 @@ describe("Authored cloze choices", () => {
       expect(() => validateClozePack(changed, entry)).toThrow();
     }
     expect(clozeLessons).toHaveLength(50);
-    expect(count).toBe(223);
+    expect(count).toBe(299);
   });
   it("preserves authored options and links only unique exact answer matches", () => {
     const result = convertLesson(
@@ -36,7 +51,7 @@ describe("Authored cloze choices", () => {
     );
     expect(result.questions).toHaveLength(1);
     expect(result.questions[0]).toMatchObject({
-      kind: "cloze-choice",
+      kind: "word-form-choice",
       wordId: word.id,
       answer: "agreement",
       sourceId: "v1:part5:1:10",
@@ -52,9 +67,10 @@ describe("Authored cloze choices", () => {
     const answered = answerQuestion(state, "session", 0, "agreement", false, 101);
     expect(answered.progress).toEqual({});
     expect(answered.events[0]).toMatchObject({
-      questionKind: "cloze-choice",
+      questionKind: "word-form-choice",
       sourceQuestionId: "v1:part5:1:10",
-      contentVersion: "bundle-v1",
+      contentVersion: catalog.version,
+      sourceVersion: "bundle-v1",
       correct: true,
     });
     expect(validateSnapshot(answered)).toBe(answered);
