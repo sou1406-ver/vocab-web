@@ -1,20 +1,30 @@
 const norm = (value) => value.trim().toLowerCase().replace(/\s+/g, " ");
 import { familyForms, classificationForms } from "./word-forms.mjs";
 
-/** @param {number} lessonId @param {import("../../src/domain/types").Word[]} words */
-export function createCatalogCloze(lessonId, words) {
-  const entries = words
-    .filter((word) => word.lesson === lessonId)
-    .map((word) => ({
-      word,
-      forms: classificationForms(word),
-      synonyms: new Set(word.synonyms.map(norm)),
-      pos: norm(word.pos).replace(/\./g, ""),
-    }));
+/**
+ * @param {number} lessonId
+ * @param {import("../../src/domain/types").Word[]} words
+ * @param {Pick<import("../../src/domain/types").Lesson, "id" | "topicId">[]} lessons
+ */
+export function createCatalogCloze(lessonId, words, lessons = []) {
+  const topicId = lessons.find((lesson) => lesson.id === lessonId)?.topicId;
+  const topicLessons = new Set(
+    lessons.filter((lesson) => topicId !== undefined && lesson.topicId === topicId).map((lesson) => lesson.id),
+  );
+  const entries = [
+    ...words.filter((word) => word.lesson === lessonId),
+    ...words.filter((word) => word.lesson !== lessonId && topicLessons.has(word.lesson)),
+  ].map((word) => ({
+    word,
+    forms: classificationForms(word),
+    synonyms: new Set(word.synonyms.map(norm)),
+    pos: norm(word.pos).replace(/\./g, ""),
+  }));
   /** @type {Omit<import("../../src/domain/types").ClozeChoiceQuestion, "sourceVersion">[]} */
   const questions = [];
   for (const target of entries) {
     const { word, forms, synonyms, pos } = target;
+    if (word.lesson !== lessonId) continue;
     const options = [word.text.trim()];
     const names = new Set([norm(word.text)]);
     for (const candidate of entries) {

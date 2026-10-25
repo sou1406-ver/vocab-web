@@ -63,4 +63,4 @@ await writeFile(
   JSON.stringify({ version, words: words.length, lessons: lessons.length, warnings }, null, 2) + "\n",
 );
 console.log(`Content: ${words.length} words, ${lessons.length} lessons, ${warnings.length} warnings.`);
-await buildClozeContent(words);
+await buildClozeContent(words, payload.lessons);

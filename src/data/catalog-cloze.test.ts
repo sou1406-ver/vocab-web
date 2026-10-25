@@ -23,6 +23,12 @@ const target = makeWord("agreement", {
   synonyms: ["deal"],
 });
 const distractors = [makeWord("policy"), makeWord("receipt"), makeWord("invoice")];
+const lessons = [
+  { id: 1, topicId: "business" },
+  { id: 2, topicId: "business" },
+  { id: 3, topicId: "travel" },
+  { id: 4, topicId: "business" },
+];
 
 describe("Catalog example cloze choices", () => {
   it("uses three distinct same-lesson, same-pos distractors after excluding related words both ways", () => {
@@ -38,7 +44,7 @@ describe("Catalog example cloze choices", () => {
       makeWord("duplicate-policy", { text: "POLICY" }),
       ...distractors.slice(1),
     ];
-    const questions = createCatalogCloze(1, words);
+    const questions = createCatalogCloze(1, words, lessons);
     expect(questions).toEqual([
       {
         kind: "cloze-choice",
@@ -49,10 +55,52 @@ describe("Catalog example cloze choices", () => {
         options: ["agreement", "policy", "receipt", "invoice"],
       },
     ]);
-    expect(createCatalogCloze(1, words)).toEqual(questions);
+    expect(createCatalogCloze(1, words, lessons)).toEqual(questions);
   });
   it("skips a word when fewer than three eligible distractors exist", () => {
     expect(createCatalogCloze(1, [target, ...distractors.slice(0, 2), makeWord("deal")])).toEqual([]);
+  });
+  it("fills missing distractors from same-topic lessons after exhausting same-lesson choices", () => {
+    const words = [
+      target,
+      makeWord("outside-topic", { lesson: 3 }),
+      makeWord("unmapped-lesson", { lesson: 5 }),
+      makeWord("deal", { lesson: 2 }),
+      makeWord("accord", { lesson: 2, synonyms: ["agreement"] }),
+      makeWord("agree", { lesson: 2 }),
+      makeWord("arrangement", { lesson: 2, family: [{ text: "agreement", pos: "n", meaning: "" }] }),
+      makeWord("promise", { lesson: 2, pos: "v" }),
+      makeWord("receipt", { lesson: 2, pos: "N." }),
+      makeWord("duplicate-receipt", { lesson: 4, text: "RECEIPT" }),
+      makeWord("invoice", {
+        lesson: 4,
+        examples: [{ text: "The invoice arrived.", translation: "" }],
+      }),
+      distractors[0],
+    ];
+    const questions = createCatalogCloze(1, words, lessons);
+    expect(questions).toMatchObject([
+      { wordId: target.id, answer: "agreement", options: ["agreement", "policy", "receipt", "invoice"] },
+    ]);
+    expect(questions).toHaveLength(1);
+    expect(createCatalogCloze(1, words, lessons)).toEqual(questions);
+  });
+  it("does not borrow from other topics or duplicate options when the topic still has too few choices", () => {
+    const words = [
+      target,
+      distractors[0],
+      makeWord("receipt", { lesson: 2 }),
+      makeWord("duplicate-receipt", { lesson: 4, text: " RECEIPT " }),
+      makeWord("invoice", { lesson: 3 }),
+    ];
+    expect(createCatalogCloze(1, words, lessons)).toEqual([]);
+    expect(
+      createCatalogCloze(
+        1,
+        words,
+        lessons.filter((lesson) => lesson.id !== 1),
+      ),
+    ).toEqual([]);
   });
   it("uses the first example with one whole-word match and keeps its original index", () => {
     const word = {

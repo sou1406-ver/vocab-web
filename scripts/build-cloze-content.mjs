@@ -2,7 +2,7 @@ import { readFile, writeFile, mkdir, readdir, unlink } from "node:fs/promises";
 import { createHash } from "node:crypto";
 import { convertLesson, createCatalogCloze } from "./lib/cloze-content.mjs";
 
-export async function buildClozeContent(words) {
+export async function buildClozeContent(words, catalogLessons) {
   const root = new URL("../", import.meta.url);
   const source = JSON.parse(await readFile(new URL("data/generated/exercises.json", root), "utf8"));
   const directory = new URL("public/exercises/cloze/", root);
@@ -19,7 +19,7 @@ export async function buildClozeContent(words) {
     if (!Number.isInteger(lessonId) || !words.some((w) => w.lesson === lessonId))
       throw new Error(`Invalid lesson: ${id}`);
     const result = convertLesson(lessonId, data.part5, words);
-    const examples = createCatalogCloze(lessonId, words);
+    const examples = createCatalogCloze(lessonId, words, catalogLessons);
     const items = [...result.questions, ...examples];
     catalogQuestions += examples.length;
     sourceQuestions += data.part5.length;
