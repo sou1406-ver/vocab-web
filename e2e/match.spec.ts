@@ -65,13 +65,11 @@ test("each pair saves its own score across wrong attempts, reload and two tabs w
     legacyArchives: [],
   };
   await page.goto("/settings");
-  await page
-    .getByLabel("Chọn bản sao lưu JSON")
-    .setInputFiles({
-      name: "old.json",
-      mimeType: "application/json",
-      buffer: Buffer.from(JSON.stringify({ app: "VocabLearn-v2", data: old })),
-    });
+  await page.getByLabel("Chọn bản sao lưu JSON").setInputFiles({
+    name: "old.json",
+    mimeType: "application/json",
+    buffer: Buffer.from(JSON.stringify({ app: "VocabLearn-v2", data: old })),
+  });
   await page.getByRole("button", { name: "Khôi phục bản sao này" }).click();
   await expect(page.getByRole("status").filter({ hasText: "Đã nhập dữ liệu" })).toBeVisible();
   const first = await start(page);
