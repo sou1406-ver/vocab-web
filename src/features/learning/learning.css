@@ -471,77 +471,74 @@
   font-size: 0.92rem;
 }
 
-
 @media (max-width: 640px) {
-    /* Thanh lọc của Flashcard / Bài tập: mỗi lựa chọn một hàng, ô chọn chiếm hết chiều ngang */
-    .filter-bar {
-      padding: 12px;
-      gap: 10px;
-    }
-    .filter-bar > .row {
-      width: 100%;
-      gap: 8px;
-    }
-    .filter-bar label.row {
-      flex: 1 1 100%;
-      flex-wrap: nowrap;
-    }
-    .filter-bar label.row .eyebrow {
-      flex: 0 0 64px;
-    }
-    .filter-bar .select {
-      flex: 1;
-      min-width: 0;
-      width: 100%;
-    }
-    .filter-bar > .row > .select {
-      flex: 1 1 100%;
-    }
-
+  /* Thanh lọc của Flashcard / Bài tập: mỗi lựa chọn một hàng, ô chọn chiếm hết chiều ngang */
+  .filter-bar {
+    padding: 12px;
+    gap: 10px;
+  }
+  .filter-bar > .row {
+    width: 100%;
+    gap: 8px;
+  }
+  .filter-bar label.row {
+    flex: 1 1 100%;
+    flex-wrap: nowrap;
+  }
+  .filter-bar label.row .eyebrow {
+    flex: 0 0 64px;
+  }
+  .filter-bar .select {
+    flex: 1;
+    min-width: 0;
+    width: 100%;
+  }
+  .filter-bar > .row > .select {
+    flex: 1 1 100%;
+  }
 }
 
 @media (max-width: 640px) {
-    /* Flashcard */
-    .fc-scene {
-      height: 400px;
-    }
-    .fc-face {
-      padding: 18px;
-    }
-    .fc-front > .row {
-      gap: 6px;
-    }
-    .rate-grid {
-      gap: 8px;
-    }
-    .rate-btn {
-      padding: 10px 6px;
-      font-size: 0.92rem;
-    }
-    .rate-btn small {
-      display: none;
-    }
+  /* Flashcard */
+  .fc-scene {
+    height: 400px;
+  }
+  .fc-face {
+    padding: 18px;
+  }
+  .fc-front > .row {
+    gap: 6px;
+  }
+  .rate-grid {
+    gap: 8px;
+  }
+  .rate-btn {
+    padding: 10px 6px;
+    font-size: 0.92rem;
+  }
+  .rate-btn small {
+    display: none;
+  }
 
-    /* Bài tập */
-    .quiz-card {
-      padding: 16px;
-    }
-    .q-box {
-      margin: 10px 0 14px;
-    }
-    .q-box > .eyebrow {
-      font-size: 0.7rem;
-    }
-    .q-big {
-      font-size: 1.9rem;
-    }
-    .explain {
-      padding: 14px;
-    }
-    .explain .btn.dark {
-      width: 100%;
-    }
-
+  /* Bài tập */
+  .quiz-card {
+    padding: 16px;
+  }
+  .q-box {
+    margin: 10px 0 14px;
+  }
+  .q-box > .eyebrow {
+    font-size: 0.7rem;
+  }
+  .q-big {
+    font-size: 1.9rem;
+  }
+  .explain {
+    padding: 14px;
+  }
+  .explain .btn.dark {
+    width: 100%;
+  }
 }
 
 /* =====================================================================
@@ -942,7 +939,6 @@
     font-size: 1rem;
   }
 }
-
 
 /* ============ Ôn tập ============ */
 .review-page {

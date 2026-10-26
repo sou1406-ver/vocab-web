@@ -18,15 +18,29 @@ import { Build } from "./questions/Build";
 
 type Component = ComponentType<QuestionProps>;
 const VIEWS: Record<Question["kind"], Component> = {
-  "adaptive-listen-choice": ListenChoice, "adaptive-match": Match,
-  "adaptive-synonym-sentence": SynonymSentence, "adaptive-form-fix": FormFix,
-  "adaptive-choice": Choice, "adaptive-cloze": Cloze, "adaptive-hint": Hint,
-  "adaptive-formation": Formation, "adaptive-recall": Recall, listening: Listening,
-  recall: Recall, formation: FormationChoice, "adaptive-formation-choice": FormationChoice,
-  synonym: Synonym, meaning: Meaning, build: Build,
+  "adaptive-listen-choice": ListenChoice,
+  "adaptive-match": Match,
+  "adaptive-synonym-sentence": SynonymSentence,
+  "adaptive-form-fix": FormFix,
+  "adaptive-choice": Choice,
+  "adaptive-cloze": Cloze,
+  "adaptive-hint": Hint,
+  "adaptive-formation": Formation,
+  "adaptive-recall": Recall,
+  listening: Listening,
+  recall: Recall,
+  formation: FormationChoice,
+  "adaptive-formation-choice": FormationChoice,
+  synonym: Synonym,
+  meaning: Meaning,
+  build: Build,
 };
 export function QuestionView({ q, onAnswer, onNext }: QuestionProps) {
   const state = useTypedAnswer(q, onAnswer);
   const View = VIEWS[q.kind];
-  return <TypedAnswerContext.Provider value={state}><View q={q} onAnswer={onAnswer} onNext={onNext} /></TypedAnswerContext.Provider>;
+  return (
+    <TypedAnswerContext.Provider value={state}>
+      <View q={q} onAnswer={onAnswer} onNext={onNext} />
+    </TypedAnswerContext.Provider>
+  );
 }

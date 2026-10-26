@@ -11,43 +11,49 @@ export function Choice({ q, onAnswer, onNext }: QuestionProps) {
       {opts.map((o, i) => {
         const cls = st.answered ? (right(o) ? "right" : st.last?.pick === i ? "wrong" : "") : "";
         return (
-          <button key={i} className={cx("choice", cls)} disabled={st.answered} onClick={() => onAnswer(isRightChoice(q, i), i)}>
-            <span className="k">{i + 1}</span>{label(o)}
+          <button
+            key={i}
+            className={cx("choice", cls)}
+            disabled={st.answered}
+            onClick={() => onAnswer(isRightChoice(q, i), i)}
+          >
+            <span className="k">{i + 1}</span>
+            {label(o)}
           </button>
         );
       })}
     </div>
   );
-    const title = q.level === 1 ? "Nhận mặt từ" : "Phân biệt từ";
-    return (
-      <>
-        <div className="q-box">
-          <div className="eyebrow">
-            Bậc {q.level} · {title} · Chọn từ khớp với nghĩa:
-          </div>
-          <div className="q-big" style={{ fontSize: "1.5rem", marginTop: 8 }}>
-            {q.root.vi}
-          </div>
+  const title = q.level === 1 ? "Nhận mặt từ" : "Phân biệt từ";
+  return (
+    <>
+      <div className="q-box">
+        <div className="eyebrow">
+          Bậc {q.level} · {title} · Chọn từ khớp với nghĩa:
         </div>
-        {choices(
-          q.options,
-          (option) => option,
-          (option) => same(option, q.root.word),
-        )}
-        {st.answered && st.last && (
-          <Explain
-            ok={st.last.ok}
-            root={q.root}
-            extra={
-              st.last.ok ? null : (
-                <>
-                  Đáp án: <b>{q.root.word}</b>.
-                </>
-              )
-            }
-            onNext={onNext}
-          />
-        )}
-      </>
-    );
+        <div className="q-big" style={{ fontSize: "1.5rem", marginTop: 8 }}>
+          {q.root.vi}
+        </div>
+      </div>
+      {choices(
+        q.options,
+        (option) => option,
+        (option) => same(option, q.root.word),
+      )}
+      {st.answered && st.last && (
+        <Explain
+          ok={st.last.ok}
+          root={q.root}
+          extra={
+            st.last.ok ? null : (
+              <>
+                Đáp án: <b>{q.root.word}</b>.
+              </>
+            )
+          }
+          onNext={onNext}
+        />
+      )}
+    </>
+  );
 }

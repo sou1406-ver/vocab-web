@@ -201,7 +201,6 @@ p {
   display: none !important;
 }
 
-
 /* ============ Buttons, inputs, badges ============ */
 .btn {
   display: inline-flex;
@@ -531,7 +530,6 @@ a.morph:hover,
   color: var(--muted);
 }
 
-
 /* ============ Tự thêm / modal / toast ============ */
 .stats-line {
   display: flex;
@@ -678,16 +676,14 @@ input[type="search"]::-webkit-search-cancel-button {
   cursor: pointer;
 }
 
-
 @media (max-width: 640px) {
-    body {
-      font-size: 15px;
-    }
-
+  body {
+    font-size: 15px;
+  }
 }
 
 @media (max-width: 640px) {
-    .modal {
-      padding: 18px;
-    }
+  .modal {
+    padding: 18px;
+  }
 }

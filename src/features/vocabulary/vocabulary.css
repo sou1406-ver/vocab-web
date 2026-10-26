@@ -431,7 +431,6 @@
   margin: 2px 0 8px;
 }
 
-
 /* ============ Phụ tố ============ */
 .page-head {
   padding: 8px 0 4px;
@@ -496,7 +495,6 @@
   font-size: 0.9rem;
   flex: 1 1 200px;
 }
-
 
 /* Thanh lọc trang Trường từ */
 .net-filter {
@@ -572,7 +570,6 @@
     scroll-behavior: auto !important;
   }
 }
-
 
 /* ============ Hàng bộ lọc của trang Trường từ ============ */
 .filter-row {
@@ -718,7 +715,6 @@
   }
 }
 
-
 @media (max-width: 1023px) {
   /* Danh sách từ gốc thành dải ngang, nhường chỗ cho sơ đồ */
   .sidebar {
@@ -773,72 +769,70 @@
   }
 }
 
-
 @media (max-width: 640px) {
-    /* Trường từ */
-    .net-tools .search-box {
-      flex-basis: 100%;
-    }
-    .root-banner h2 {
-      font-size: 2.1rem;
-    }
-    .root-banner .stack-sm {
-      text-align: left !important;
-    }
-    .book-ex div {
-      font-size: 0.93rem;
-      padding-left: 12px;
-    }
-    .branch {
-      padding: 16px;
-    }
-    .branch-head {
-      margin-bottom: 12px;
-    }
-    .branch-head .legend {
-      display: none;
-    }
-    .formula {
-      gap: 6px;
-      padding: 10px 0;
-    }
-    .formula-parts {
-      gap: 4px;
-    }
-    .formula-parts .morph {
-      padding: 3px 8px;
-      font-size: 0.84rem;
-    }
-    .formula-parts .morph small {
-      display: none;
-    }
-    .formula-result {
-      flex-basis: 100%;
-      padding-left: 0;
-    }
-    .formula-result b {
-      font-size: 1.05rem;
-    }
-    .formula-meaning {
-      max-width: none;
-      font-size: 0.88rem;
-    }
-    .pos-col {
-      padding: 10px;
-    }
-
+  /* Trường từ */
+  .net-tools .search-box {
+    flex-basis: 100%;
+  }
+  .root-banner h2 {
+    font-size: 2.1rem;
+  }
+  .root-banner .stack-sm {
+    text-align: left !important;
+  }
+  .book-ex div {
+    font-size: 0.93rem;
+    padding-left: 12px;
+  }
+  .branch {
+    padding: 16px;
+  }
+  .branch-head {
+    margin-bottom: 12px;
+  }
+  .branch-head .legend {
+    display: none;
+  }
+  .formula {
+    gap: 6px;
+    padding: 10px 0;
+  }
+  .formula-parts {
+    gap: 4px;
+  }
+  .formula-parts .morph {
+    padding: 3px 8px;
+    font-size: 0.84rem;
+  }
+  .formula-parts .morph small {
+    display: none;
+  }
+  .formula-result {
+    flex-basis: 100%;
+    padding-left: 0;
+  }
+  .formula-result b {
+    font-size: 1.05rem;
+  }
+  .formula-meaning {
+    max-width: none;
+    font-size: 0.88rem;
+  }
+  .pos-col {
+    padding: 10px;
+  }
 }
 
 @media (max-width: 640px) {
-    .affix-word .aw {
-      min-width: 0;
-    }
-    .affix-card {
-      padding: 12px;
-    }
-    .stats-line {
-      gap: 18px;
-    }
+  .affix-word .aw {
+    min-width: 0;
+  }
+  .affix-card {
+    padding: 12px;
+  }
+  .stats-line {
+    gap: 18px;
+  }
 }
 
 /* Bộ lọc Trường từ trên điện thoại: lưới 2 cột, nhãn nằm trên */
@@ -900,7 +894,6 @@
 .gs-main .ipa {
   font-size: 0.78rem;
 }
-
 
 /* ============ Kiến thức ============ */
 .knowledge-page {

@@ -178,71 +178,69 @@
   background: var(--emerald);
 }
 
-
 @media (max-width: 640px) {
-    /* Trang chủ */
-    .home-head h1 {
-      font-size: 2rem;
-    }
-    .lede {
-      font-size: 0.97rem;
-    }
-    .resume {
-      padding: 18px;
-    }
-    .resume .row .btn {
-      flex: 1 1 auto;
-    }
-    .overall {
-      gap: 6px 14px;
-    }
-    .overall .progress {
-      flex-basis: 100%;
-    }
-    .unit {
-      padding: 20px 0;
-    }
-    .unit > div:first-child {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) auto;
-      column-gap: 12px;
-      align-items: end;
-    }
-    .unit-no,
-    .unit-title,
-    .unit-en {
-      grid-column: 1;
-    }
-    .unit-meta {
-      grid-column: 1;
-      margin-top: 4px;
-    }
-    .unit-links {
-      grid-column: 2;
-      grid-row: 2 / span 3;
-      flex-direction: column;
-      gap: 2px;
-      margin: 0;
-      align-items: flex-end;
-    }
-    .lesson-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 8px;
-    }
-    .lesson-tile {
-      min-height: 84px;
-      padding: 10px 12px 12px;
-    }
-    .lesson-tile .lt {
-      font-size: 0.9rem;
-    }
-
+  /* Trang chủ */
+  .home-head h1 {
+    font-size: 2rem;
+  }
+  .lede {
+    font-size: 0.97rem;
+  }
+  .resume {
+    padding: 18px;
+  }
+  .resume .row .btn {
+    flex: 1 1 auto;
+  }
+  .overall {
+    gap: 6px 14px;
+  }
+  .overall .progress {
+    flex-basis: 100%;
+  }
+  .unit {
+    padding: 20px 0;
+  }
+  .unit > div:first-child {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    column-gap: 12px;
+    align-items: end;
+  }
+  .unit-no,
+  .unit-title,
+  .unit-en {
+    grid-column: 1;
+  }
+  .unit-meta {
+    grid-column: 1;
+    margin-top: 4px;
+  }
+  .unit-links {
+    grid-column: 2;
+    grid-row: 2 / span 3;
+    flex-direction: column;
+    gap: 2px;
+    margin: 0;
+    align-items: flex-end;
+  }
+  .lesson-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+  .lesson-tile {
+    min-height: 84px;
+    padding: 10px 12px 12px;
+  }
+  .lesson-tile .lt {
+    font-size: 0.9rem;
+  }
 }
 
 @media (max-width: 380px) {
-    .lesson-grid {
-      grid-template-columns: minmax(0, 1fr);
-    }
+  .lesson-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }
 
 /* =====================================================================
@@ -585,7 +583,6 @@
   font-size: 0.74rem;
   color: var(--muted);
 }
-
 
 /* Tổng quan trên máy tính bảng: thẻ chính chiếm hết bề ngang cho thoáng */
 @media (max-width: 1023px) {

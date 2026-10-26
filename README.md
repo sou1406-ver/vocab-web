@@ -166,20 +166,20 @@ public/           logo, favicon
 
 Mọi chỉnh sửa dữ liệu nằm trong `data/`, sau đó chạy `npm run data` để dựng lại dữ liệu sinh trong `src/data/`.
 
-| File                                        | Nội dung                                                               |
-| ------------------------------------------- | ---------------------------------------------------------------------- |
-| `data/enrich/*.txt`                         | Nghĩa tiếng Việt, đồng nghĩa, trái nghĩa, cấu tạo và họ từ — sửa ở đây |
-| `data/translations/*.txt`                   | Bản dịch 1 900 câu ví dụ                                               |
-| `data/relations.txt`                        | Nghĩa của từ đồng nghĩa / trái nghĩa không có trong sách               |
-| `data/source/book.json`                     | 600 từ, định nghĩa, câu ví dụ (OCR)                                    |
-| `data/source/families.json`                 | Bảng _Word Families_ từng bài (OCR)                                    |
-| `data/source/exercises.json`                | Bài tập trong sách (OCR)                                               |
-| `data/source/exercises_overrides.json`      | Sửa tay chỗ OCR sai (đã đối chiếu ảnh trang)                           |
-| `data/source/ipa.json`                      | Phiên âm — `python tools/make_ipa.py` (CMU Pronouncing Dictionary)     |
-| `data/source/freq.json`                     | Độ phổ biến thang Zipf — `python tools/make_freq.py` (cần `msgpack`)   |
-| `data/everyday/everyday.json`                | Nội dung biên tập riêng cho bộ cụm từ đời thường                       |
-| `data/everyday/*-en.txt`, `*-vi.txt`        | Nguồn nghĩa tiếng Anh và tiếng Việt cho idiom, phrasal verb            |
-| `data/ets/*.json`                            | Bộ câu hỏi ETS tuỳ chọn; ID từ được kiểm tra khi dựng dữ liệu           |
+| File                                   | Nội dung                                                               |
+| -------------------------------------- | ---------------------------------------------------------------------- |
+| `data/enrich/*.txt`                    | Nghĩa tiếng Việt, đồng nghĩa, trái nghĩa, cấu tạo và họ từ — sửa ở đây |
+| `data/translations/*.txt`              | Bản dịch 1 900 câu ví dụ                                               |
+| `data/relations.txt`                   | Nghĩa của từ đồng nghĩa / trái nghĩa không có trong sách               |
+| `data/source/book.json`                | 600 từ, định nghĩa, câu ví dụ (OCR)                                    |
+| `data/source/families.json`            | Bảng _Word Families_ từng bài (OCR)                                    |
+| `data/source/exercises.json`           | Bài tập trong sách (OCR)                                               |
+| `data/source/exercises_overrides.json` | Sửa tay chỗ OCR sai (đã đối chiếu ảnh trang)                           |
+| `data/source/ipa.json`                 | Phiên âm — `python tools/make_ipa.py` (CMU Pronouncing Dictionary)     |
+| `data/source/freq.json`                | Độ phổ biến thang Zipf — `python tools/make_freq.py` (cần `msgpack`)   |
+| `data/everyday/everyday.json`          | Nội dung biên tập riêng cho bộ cụm từ đời thường                       |
+| `data/everyday/*-en.txt`, `*-vi.txt`   | Nguồn nghĩa tiếng Anh và tiếng Việt cho idiom, phrasal verb            |
+| `data/ets/*.json`                      | Bộ câu hỏi ETS tuỳ chọn; ID từ được kiểm tra khi dựng dữ liệu          |
 
 `src/data/words.json` chỉ chứa danh mục nhẹ. Ví dụ, họ từ, đồng/trái nghĩa được tách vào
 `src/data/word-details/<bài>.json` và tải khi trang cần. `src/data/everyday.json` và

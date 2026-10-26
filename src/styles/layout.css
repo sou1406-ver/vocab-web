@@ -330,7 +330,6 @@ main.container {
   color: var(--muted);
 }
 
-
 /* ============ Tìm kiếm toàn trang (thanh tiêu đề) ============ */
 .gsearch {
   position: relative;
@@ -421,7 +420,6 @@ main.container {
   color: var(--muted);
 }
 
-
 /* Phím tắt chỉ có ý nghĩa khi có bàn phím */
 @media (pointer: coarse), (max-width: 640px) {
   .fc-hint,
@@ -431,11 +429,11 @@ main.container {
 }
 
 @media (max-width: 380px) {
-    .bottom-nav :is(button, a) {
-      min-width: 0;
-      flex: 1;
-      font-size: 0.66rem;
-    }
+  .bottom-nav :is(button, a) {
+    min-width: 0;
+    flex: 1;
+    font-size: 0.66rem;
+  }
 }
 
 /* =====================================================================
@@ -505,7 +503,6 @@ main.container {
     display: none;
   }
 }
-
 
 /* =====================================================================
    HỒ SƠ
@@ -1139,7 +1136,6 @@ main.container {
   margin-bottom: 6px;
 }
 
-
 /* Thanh điều hướng dưới đáy: nhãn một dòng */
 @media (max-width: 1023px) {
   .bottom-nav :is(button, a) span {
@@ -1152,7 +1148,6 @@ main.container {
     padding: 0 2px;
   }
 }
-
 
 /* =====================================================================
    ĐĂNG NHẬP GOOGLE / ĐỒNG BỘ

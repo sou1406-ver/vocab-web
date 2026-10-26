@@ -14,43 +14,49 @@ export function ListenChoice({ q, onAnswer, onNext }: QuestionProps) {
       {opts.map((o, i) => {
         const cls = st.answered ? (right(o) ? "right" : st.last?.pick === i ? "wrong" : "") : "";
         return (
-          <button key={i} className={cx("choice", cls)} disabled={st.answered} onClick={() => onAnswer(isRightChoice(q, i), i)}>
-            <span className="k">{i + 1}</span>{label(o)}
+          <button
+            key={i}
+            className={cx("choice", cls)}
+            disabled={st.answered}
+            onClick={() => onAnswer(isRightChoice(q, i), i)}
+          >
+            <span className="k">{i + 1}</span>
+            {label(o)}
           </button>
         );
       })}
     </div>
   );
-    return (
-      <>
-        <div className="q-box">
-          <div className="eyebrow">Bậc 1 · Nghe phát âm rồi chọn từ:</div>
-          <div className="row" style={{ marginTop: 10 }}>
-            <button className="btn soft" type="button" onClick={() => speak(q.root.word)}>
-              <Icon name="volume" size="sm" /> Nghe lại
-            </button>
-            <Ipa ipa={q.root.ipa} />
-          </div>
+  return (
+    <>
+      <div className="q-box">
+        <div className="eyebrow">Bậc 1 · Nghe phát âm rồi chọn từ:</div>
+        <div className="row" style={{ marginTop: 10 }}>
+          <button className="btn soft" type="button" onClick={() => speak(q.root.word)}>
+            <Icon name="volume" size="sm" /> Nghe lại
+          </button>
+          <Ipa ipa={q.root.ipa} />
         </div>
-        {choices(
-          q.options,
-          (option) => option,
-          (option) => same(option, q.root.word),
-        )}
-        {st.answered && st.last && (
-          <Explain
-            ok={st.last.ok}
-            root={q.root}
-            extra={
-              st.last.ok ? null : (
-                <>
-                  Đáp án: <b>{q.root.word}</b>.
-                </>
-              )
-            }
-            onNext={onNext}
-          />
-        )}
-      </>
-    );
+      </div>
+      {choices(
+        q.options,
+        (option) => option,
+        (option) => same(option, q.root.word),
+      )}
+      {st.answered && st.last && (
+        <Explain
+          ok={st.last.ok}
+          root={q.root}
+          extra={
+            st.last.ok ? null : (
+              <>
+                Đáp án: <b>{q.root.word}</b>.
+              </>
+            )
+          }
+          onNext={onNext}
+        />
+      )}
+    </>
+  );
 }

@@ -53,7 +53,6 @@ export function LetterSlotsInput({
   );
 }
 
-
 export function applyFixedHintLetters(value: string, word: string, lockedCount: number) {
   const answerLetters = Array.from(word.toLocaleLowerCase().replace(/\s/g, ""));
   const inputLetters = Array.from(value.toLocaleLowerCase().replace(/\s/g, "")).slice(0, answerLetters.length);
@@ -72,4 +71,3 @@ export function applyFixedHintLetters(value: string, word: string, lockedCount: 
   }
   return result.trimEnd();
 }
-
