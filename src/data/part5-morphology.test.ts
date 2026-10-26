@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { convertLesson } from "../../scripts/lib/cloze-content.mjs";
-import { catalog } from "./catalog";
+import { defaultBook } from "./catalog";
+const catalog = defaultBook.catalog;
 const make = (answer: string, options: string[], n = 1) => ({
   n,
   text: "Choose ___ here.",

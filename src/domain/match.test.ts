@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { catalog } from "../data/catalog";
+import { defaultBook } from "../data/catalog";
+const catalog = defaultBook.catalog;
 import { makeMatchQuestions } from "../data/match";
 import { validateSnapshot } from "../data/validation";
 import { answerMatchPair } from "./match";

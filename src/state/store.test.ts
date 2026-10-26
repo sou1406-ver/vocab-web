@@ -2,7 +2,8 @@ import { describe, expect, it, vi } from "vitest";
 import { createAppStore } from "./store";
 import { changeSnapshot, readSnapshot } from "../data/repository";
 import { beginSession, emptySnapshot, finishSession, makeRecognitionQuestions } from "../domain/learning";
-import { catalog } from "../data/catalog";
+import { defaultBook } from "../data/catalog";
+const catalog = defaultBook.catalog;
 
 vi.mock("../data/repository", () => ({ readSnapshot: vi.fn(), changeSnapshot: vi.fn() }));
 

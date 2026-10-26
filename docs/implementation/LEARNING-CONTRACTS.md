@@ -184,3 +184,17 @@ Có thể lưu events, progress, settings và session thành các phần riêng 
 Các test mới đã chạy RED trước sửa: thiếu metadata, nhận metadata sai, không nhận câu nhập chữ thiếu options. Test tương thích wire format cũng phát hiện việc bỏ options rỗng; generator đã giữ lại trường đó cho schema 2.
 
 Đợt này đã kiểm tra cloze-choice, recognition hai hướng và gợi ý chữ khóa; đợt sửa scoringVersion 2 đã qua 58 unit tests và 40 E2E desktop/mobile; lint/typecheck/format/build đều qua. Catalog vẫn 600 từ/50 bài, fingerprint `54681aa41d1b`. Chưa có kiểm chứng độc lập từ reviewer khác trong đợt này; kiểm tra iPhone thật không nằm trong phạm vi theo yêu cầu người dùng.
+
+## 6. Đã làm: nhiều quyển sách
+
+Ngày 26/10/2026. Nội dung tách theo quyển để thêm sách mà không đụng tiến độ đã lưu.
+
+- **Nguồn và output:** mỗi quyển khai báo ở `content/books/<bookId>/book.json`; `scripts/build-content.mjs` gọi builder của quyển, kiểm tra chung rồi ghi `src/content/books/<bookId>/` (book, catalog, report, exercise-manifest, exercise-report), `public/exercises/<bookId>/cloze/` và `src/content/books/registry.ts`. Builder xóa cả hai thư mục output trước khi ghi.
+- **ID từ:** progress/event vẫn khóa theo wordId toàn cục. Quyển mới bắt buộc tiền tố `<bookId>:`; trùng ID giữa các quyển làm build lỗi. `toeic-600` có `legacyWordIds: true`, giữ nguyên 600 ID cũ nên không cần migration.
+- **Fingerprint:** chỉ băm `{lessons, topics, words}` của từng quyển, không gồm metadata sách. Catalog TOEIC sau khi tách vẫn là `cbd94fa970e5`; gói bài tập giữ nguyên version, chỉ đổi URL sang `/exercises/toeic-600/cloze/`. Tab còn manifest cũ cần tải lại trang nếu chưa tải gói.
+- **Quyển đang học:** `settings.bookId?` là field optional, schemaVersion vẫn 2. Validator chỉ kiểm tra dạng slug, không bắt buộc quyển còn tồn tại; ID không còn trong thư viện thì dùng quyển mặc định (quyển legacy, luôn đứng đầu registry). Hôm nay/Bộ học/Tiến độ theo quyển đang học; Thư viện và màn học tra từ của mọi quyển.
+- **Session:** catalog của lượt (distractor, contentVersion) lấy từ quyển chứa từ đầu tiên có chủ; lượt chỉ có từ tự thêm dùng quyển đang học. Màn học coi lượt là cũ khi `contentVersion` không khớp version catalog của quyển nào.
+- **Generator:** synonym/build tra chủ đề và sourceVersion theo quyển của từng từ; cloze tải và kiểm tra gói theo quyển (`loadClozeLesson(book, lessonId)`, `validateClozePack(pack, entry, catalog)`).
+- **URL:** `/books/<bookId>/lessons/<n>`, sinh tĩnh cho mọi bài; `/lessons/<n>` chuyển hướng 308 về `toeic-600`.
+
+Chưa làm: builder chung cho quyển mới (mỗi quyển tự viết builder), lọc theo quyển trong Thư viện, tách tiến độ hiển thị theo quyển trong lịch sử phiên.

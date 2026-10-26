@@ -1,6 +1,6 @@
 import { createStore, type StoreApi } from "zustand/vanilla";
 import { readSnapshot, changeSnapshot } from "../data/repository";
-import { catalog } from "../data/catalog";
+import { activeBook, bookOfWord } from "../data/catalog";
 import {
   emptySnapshot,
   beginSession,
@@ -29,6 +29,12 @@ export interface AppState {
   advance: () => Promise<boolean>;
   finish: () => Promise<boolean>;
   clearError: () => void;
+}
+// A session draws distractors and its content version from the book its words belong to.
+// Custom words belong to no book, so an all-custom session uses the active book.
+function sessionCatalog(data: Snapshot, wordIds: readonly string[]) {
+  const owned = wordIds.map((id) => bookOfWord(id)).find((book) => book !== undefined);
+  return (owned ?? activeBook(data.settings)).catalog;
 }
 export function createAppStore() {
   return createStore<AppState>((set, get) => ({
@@ -64,19 +70,22 @@ export function createAppStore() {
     },
     start: (words, mode, title, returnTo) =>
       get().change((data) => {
+        const catalog = sessionCatalog(
+          data,
+          words.map((word) => word.id),
+        );
         const next = beginSession(data, catalog, words, mode, title, crypto.randomUUID());
         return returnTo && next.session ? { ...next, session: { ...next.session, returnTo } } : next;
       }),
     startExercises: (questions, title, returnTo) =>
       get().change((data) => {
         const id = crypto.randomUUID();
-        const next = beginExerciseSession(
+        const list = typeof questions === "function" ? questions(id) : questions;
+        const catalog = sessionCatalog(
           data,
-          catalog,
-          typeof questions === "function" ? questions(id) : questions,
-          title,
-          id,
+          list.map((q) => q.wordId),
         );
+        const next = beginExerciseSession(data, catalog, list, title, id);
         return returnTo && next.session ? { ...next, session: { ...next.session, returnTo } } : next;
       }),
     answer: (input, assisted = false) => {

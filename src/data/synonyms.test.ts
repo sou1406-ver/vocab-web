@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { makeSynonymQuestions } from "./synonyms";
-import { catalog } from "./catalog";
+import { defaultBook } from "./catalog";
+const catalog = defaultBook.catalog;
 import type { Word } from "../domain/types";
 
 const word = (text: string, patch: Partial<Word> = {}): Word => ({

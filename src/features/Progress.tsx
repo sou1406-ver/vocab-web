@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useApp } from "../state/provider";
-import { catalog } from "../data/catalog";
+import { activeBook } from "../data/catalog";
 import { dayKey, statusOf } from "../domain/learning";
 import { Icon, ProgressBar } from "../shared/ui";
 import { useWord } from "../app/context";
@@ -9,6 +9,7 @@ import { useWord } from "../app/context";
 export default function Progress() {
   const { data } = useApp();
   const inspect = useWord();
+  const catalog = activeBook(data.settings).catalog;
   const all = [...catalog.words, ...data.customWords];
   const learned = catalog.words.filter((w) => data.progress[w.id]?.tested).length;
   const stable = catalog.words.filter((w) => (data.progress[w.id]?.box ?? 0) >= 5).length;

@@ -51,7 +51,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
             <Link href={`/library?filter=saved&from=${article.slug}`}>Xem từ đã lưu</Link>
           </Button>
           <Button asChild variant="outline" className="min-h-11">
-            <Link href="/lessons/1">Mở bài học TOEIC 1</Link>
+            <Link href="/books/toeic-600/lessons/1">Mở bài học TOEIC 1</Link>
           </Button>
         </div>
         <p className="saved-notice">{article.source}</p>

@@ -1,7 +1,9 @@
 import { describe, expect, it } from "vitest";
 import { readFileSync } from "node:fs";
-import { catalog } from "./catalog";
-import { clozeLessons, makeWordFormQuestions, validateClozePack } from "./cloze";
+import { defaultBook } from "./catalog";
+const catalog = defaultBook.catalog;
+const clozeLessons = defaultBook.exercises.lessons;
+import { makeWordFormQuestions, validateClozePack } from "./cloze";
 import { validateSnapshot } from "./validation";
 import { answerQuestion, beginExerciseSession, emptySnapshot, revealQuestionLetter } from "../domain/learning";
 import type { ClozeChoiceQuestion } from "../domain/types";
@@ -76,7 +78,7 @@ describe("Typed word form", () => {
   ])("uses a catalog family cue for %s instead of the unrelated distractor %s", (answer, wrong, cue) => {
     const questions = clozeLessons.flatMap((entry) => {
       const pack = JSON.parse(readFileSync(new URL(`../../public${entry.url}`, import.meta.url), "utf8"));
-      return validateClozePack(pack, entry);
+      return validateClozePack(pack, entry, catalog);
     });
     const original = questions.find((q) => q.kind === "word-form-choice" && q.answer === answer)!;
     expect(original).toBeDefined();
@@ -90,7 +92,7 @@ describe("Typed word form", () => {
     const phrases: string[] = [];
     for (const entry of clozeLessons) {
       const pack = JSON.parse(readFileSync(new URL(`../../public${entry.url}`, import.meta.url), "utf8"));
-      const choices = validateClozePack(pack, entry).filter((q) => q.kind === "word-form-choice");
+      const choices = validateClozePack(pack, entry, catalog).filter((q) => q.kind === "word-form-choice");
       const typed = makeWordFormQuestions(choices);
       for (const original of choices) {
         const word = catalog.words.find((item) => item.id === original.wordId)!;

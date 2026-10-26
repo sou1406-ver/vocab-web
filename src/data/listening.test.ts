@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { makeListeningQuestions, LISTEN_PROMPTS } from "./listening";
-import { catalog } from "./catalog";
+import { defaultBook } from "./catalog";
+const catalog = defaultBook.catalog;
 import type { Catalog, Word } from "../domain/types";
 const word = (text: string, lesson = 1): Word => ({
   id: text,

@@ -1,15 +1,31 @@
-import { readFile } from "node:fs/promises";
+import { readFile, readdir } from "node:fs/promises";
 import assert from "node:assert/strict";
 const root = new URL("../", import.meta.url);
 const json = async (path) => JSON.parse(await readFile(new URL(path, root), "utf8"));
-const [catalog, collection, articles] = await Promise.all([
-  json("src/content/catalog.json"),
-  json("src/content/manifest.json"),
-  json("content/knowledge/manifest.json"),
-]);
-assert.equal(catalog.words.length, collection.expectedEntries, "Collection entry count mismatch");
-assert.equal(catalog.lessons.length, collection.expectedLessons, "Collection lesson count mismatch");
-const ids = new Set(catalog.words.map((word) => word.id));
+const bookIds = (await readdir(new URL("src/content/books/", root), { withFileTypes: true }))
+  .filter((entry) => entry.isDirectory())
+  .map((entry) => entry.name);
+assert(bookIds.length, "No generated books; run npm run data:catalog");
+const registry = await readFile(new URL("src/content/books/registry.ts", root), "utf8");
+const ids = new Set();
+const summaries = [];
+for (const id of bookIds) {
+  const [book, catalog] = await Promise.all([
+    json(`src/content/books/${id}/book.json`),
+    json(`src/content/books/${id}/catalog.json`),
+  ]);
+  assert.equal(book.id, id, `Book folder ${id} has id ${book.id}`);
+  assert(registry.includes(`"./${id}/catalog.json"`), `Book ${id} missing from registry`);
+  assert.equal(catalog.words.length, book.expectedEntries, `${id}: entry count mismatch`);
+  assert.equal(catalog.lessons.length, book.expectedLessons, `${id}: lesson count mismatch`);
+  for (const word of catalog.words) {
+    assert(book.legacyWordIds || word.id.startsWith(`${id}:`), `${id}: word ID must start with "${id}:": ${word.id}`);
+    assert(!ids.has(word.id), `Duplicate word ID across books: ${word.id}`);
+    ids.add(word.id);
+  }
+  summaries.push(`${id}: ${catalog.words.length} entries/${catalog.lessons.length} lessons`);
+}
+const articles = await json("content/knowledge/manifest.json");
 const slugs = new Set();
 for (const article of articles) {
   assert.match(article.slug, /^[a-z0-9]+(?:-[a-z0-9]+)*$/);
@@ -27,5 +43,5 @@ for (const article of articles) {
   for (const id of linked) assert(ids.has(id), `Unknown vocabulary ID: ${id}`);
 }
 console.log(
-  `Validated ${articles.length} article(s), ${collection.id}: ${ids.size} entries/${catalog.lessons.length} lessons; no broken vocabulary links.`,
+  `Validated ${articles.length} article(s), ${summaries.join("; ")}; no duplicate IDs or broken vocabulary links.`,
 );

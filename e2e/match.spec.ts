@@ -3,7 +3,9 @@ import AxeBuilder from "@axe-core/playwright";
 import { readFileSync } from "node:fs";
 import type { Catalog, MatchQuestion, Snapshot } from "../src/domain/types";
 
-const catalog = JSON.parse(readFileSync(new URL("../src/content/catalog.json", import.meta.url), "utf8")) as Catalog;
+const catalog = JSON.parse(
+  readFileSync(new URL("../src/content/books/toeic-600/catalog.json", import.meta.url), "utf8"),
+) as Catalog;
 const topic = catalog.topics[0];
 const root = catalog.words.find(
   (word) => catalog.lessons.find((lesson) => lesson.id === word.lesson)?.topicId === topic.id,

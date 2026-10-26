@@ -3,7 +3,9 @@ import AxeBuilder from "@axe-core/playwright";
 import { readFileSync } from "node:fs";
 import type { BuildQuestion, Catalog, Snapshot } from "../src/domain/types";
 
-const catalog = JSON.parse(readFileSync(new URL("../src/content/catalog.json", import.meta.url), "utf8")) as Catalog;
+const catalog = JSON.parse(
+  readFileSync(new URL("../src/content/books/toeic-600/catalog.json", import.meta.url), "utf8"),
+) as Catalog;
 const lesson = catalog.lessons.find((entry) =>
   catalog.words.some((word) => word.lesson === entry.id && word.family.some((form) => (form.parts?.length ?? 0) >= 2)),
 )!;
@@ -30,7 +32,7 @@ test("Build toggles pieces, grades order, resumes and retries in practice", asyn
     downloads++;
     await route.continue();
   });
-  await page.goto(`/lessons/${lesson.id}`);
+  await page.goto(`/books/toeic-600/lessons/${lesson.id}`);
   await page.getByRole("button", { name: "Ghép từ", exact: true }).click();
   await expect(page.getByRole("heading", { name: "Ghép gốc và phụ tố" })).toBeVisible();
   const before = await readSnapshot(page);

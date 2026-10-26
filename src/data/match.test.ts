@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { makeMatchQuestions } from "./match";
-import { catalog } from "./catalog";
+import { defaultBook } from "./catalog";
+const catalog = defaultBook.catalog;
 import type { Catalog, Word, WordProgress } from "../domain/types";
 
 const word = (id: string, meaning: string, lesson = 1): Word => ({

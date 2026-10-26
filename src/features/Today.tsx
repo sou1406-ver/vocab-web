@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { catalog } from "../data/catalog";
+import { activeBook } from "../data/catalog";
 import { useApp } from "../state/provider";
 import { dayKey, dueIds, introducedToday } from "../domain/learning";
 import { Icon, ProgressBar } from "../shared/ui";
@@ -11,6 +11,8 @@ export function Today() {
   const { data, start, busy } = useApp();
   const router = useRouter();
   const inspect = useWord();
+  const book = activeBook(data.settings);
+  const catalog = book.catalog;
   const all = [...catalog.words, ...data.customWords];
   const due = dueIds(data).filter((id) => all.some((w) => w.id === id));
   const introduced = introducedToday(data);
@@ -21,8 +23,8 @@ export function Today() {
   const nextWords = catalog.words.filter((w) => w.lesson === lesson.id && !data.progress[w.id]?.tested).slice(0, 5);
   const today = dayKey(Date.now(), data.settings.timezone);
   const reviewed = new Set(data.events.filter((e) => e.day === today && e.mode === "review").map((e) => e.wordId)).size;
-  const learned = Object.values(data.progress).filter((p) => p.tested).length;
-  const complete = Object.values(data.progress).filter((p) => p.box >= 5).length;
+  const learned = catalog.words.filter((w) => data.progress[w.id]?.tested).length;
+  const complete = catalog.words.filter((w) => (data.progress[w.id]?.box ?? 0) >= 5).length;
   const dailyGoal = Math.min(100, (introduced / data.settings.dailyNew) * 100);
   const preview = nextWords[1] ?? all[0];
   const doPrimary = async () => {
@@ -51,7 +53,7 @@ export function Today() {
           </p>
         </div>
         <span className="edition-label">
-          <Icon name="book" size={16} /> TOEIC VOCABULARY
+          <Icon name="book" size={16} /> {book.shortTitle.toUpperCase()}
         </span>
       </div>
       <section className="study-hero" aria-labelledby="hero-title">
@@ -193,7 +195,7 @@ export function Today() {
               const words = catalog.words.filter((w) => w.lesson === l.id);
               const count = words.filter((w) => data.progress[w.id]?.tested).length;
               return (
-                <Link className="lesson-preview" href={`/lessons/${l.id}`} key={l.id}>
+                <Link className="lesson-preview" href={`/books/${book.id}/lessons/${l.id}`} key={l.id}>
                   <span className={`lesson-number ${i === 0 ? "current" : ""}`}>{String(l.id).padStart(2, "0")}</span>
                   <div className="lesson-preview-body">
                     <h3>{l.title}</h3>

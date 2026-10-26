@@ -1,5 +1,5 @@
 import affixes from "../../data/generated/affixes.json";
-import { catalog } from "./catalog";
+import { catalogFor } from "./catalog";
 import { shuffleSeeded } from "../domain/random";
 import type { BuildQuestion, Word } from "../domain/types";
 
@@ -79,7 +79,7 @@ export function makeBuildQuestions(words: readonly Word[], sessionId: string): B
         answer: [...parts],
         tiles,
         sourceId,
-        sourceVersion: catalog.version,
+        sourceVersion: catalogFor(word.id).version,
       });
     }
   return questions;

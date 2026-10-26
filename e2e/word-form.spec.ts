@@ -4,7 +4,7 @@ import { readFileSync } from "node:fs";
 import type { ClozeChoiceQuestion, Snapshot, WordFormQuestion } from "../src/domain/types";
 
 const manifest = JSON.parse(
-  readFileSync(new URL("../src/content/exercise-manifest.json", import.meta.url), "utf8"),
+  readFileSync(new URL("../src/content/books/toeic-600/exercise-manifest.json", import.meta.url), "utf8"),
 ) as {
   lessons: { lessonId: number; url: string }[];
 };
@@ -39,14 +39,14 @@ test("typed word form loads on demand, keeps cues and hints across tabs, and ret
 }, testInfo) => {
   let requests = 0;
   let sources: ClozeChoiceQuestion[] = [];
-  await page.route("**/exercises/cloze/**", async (route) => {
+  await page.route("**/exercises/*/cloze/**", async (route) => {
     requests++;
     if (requests === 1) return route.fulfill({ status: 503, body: "unavailable" });
     const response = await route.fetch();
     sources = (await response.json()).questions;
     await route.fulfill({ response });
   });
-  await page.goto("/lessons/1");
+  await page.goto("/books/toeic-600/lessons/1");
   expect(requests).toBe(0);
   const begin = page.getByRole("button", { name: "Luyện dạng từ — gõ", exact: true });
   await begin.click();
@@ -118,14 +118,14 @@ for (const fixture of [
     const authored = authoredSources.find(
       ({ question }) => question.kind === "word-form-choice" && question.answer === fixture.answer,
     )!;
-    await page.route("**/exercises/cloze/**", async (route) => {
+    await page.route("**/exercises/*/cloze/**", async (route) => {
       const response = await route.fetch();
       const pack = await response.json();
       const first = pack.questions.find((q: ClozeChoiceQuestion) => q.sourceId === authored.question.sourceId);
       pack.questions = [first, ...pack.questions.filter((q: ClozeChoiceQuestion) => q.sourceId !== first.sourceId)];
       await route.fulfill({ json: pack });
     });
-    await page.goto(`/lessons/${authored.lessonId}`);
+    await page.goto(`/books/toeic-600/lessons/${authored.lessonId}`);
     await page.getByRole("button", { name: "Luyện dạng từ — gõ", exact: true }).click();
     await expect(page.getByRole("heading", { name: "Gõ dạng từ phù hợp" })).toBeVisible();
     await expect(page.locator(".question-prompt p")).toHaveText(`${authored.question.prompt} (${fixture.cue})`);

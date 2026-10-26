@@ -3,7 +3,9 @@ import AxeBuilder from "@axe-core/playwright";
 import { readFileSync } from "node:fs";
 import type { Catalog, Snapshot, SynonymQuestion } from "../src/domain/types";
 
-const catalog = JSON.parse(readFileSync(new URL("../src/content/catalog.json", import.meta.url), "utf8")) as Catalog;
+const catalog = JSON.parse(
+  readFileSync(new URL("../src/content/books/toeic-600/catalog.json", import.meta.url), "utf8"),
+) as Catalog;
 const lesson = [...catalog.lessons].sort(
   (a, b) =>
     catalog.words.filter((w) => w.lesson === b.id && w.antonyms.length).length -
@@ -39,7 +41,7 @@ test("word relations label antonyms explicitly, save direction and retain the qu
       },
     }),
   );
-  await page.goto(`/lessons/${lesson.id}`);
+  await page.goto(`/books/toeic-600/lessons/${lesson.id}`);
   await page.getByRole("button", { name: "Đồng nghĩa", exact: true }).click();
   await expect(page.locator(".answer-option")).toHaveCount(4);
   const first = await readSnapshot(page);
@@ -83,7 +85,7 @@ test("word relations label antonyms explicitly, save direction and retain the qu
   expect((await readSnapshot(page)).events.at(-1)).toMatchObject({ direction: "antonym", correct: true });
 });
 test("context underlines the single original word and never replaces it with a synonym", async ({ page }, testInfo) => {
-  await page.goto("/lessons/1");
+  await page.goto("/books/toeic-600/lessons/1");
   await page.getByRole("button", { name: "Gần nghĩa trong câu", exact: true }).click();
   await expect(page.getByRole("heading", { name: "Từ nào gần nghĩa nhất với từ gạch chân?" })).toBeVisible();
   const before = await readSnapshot(page);

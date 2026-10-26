@@ -4,7 +4,9 @@ import { readFileSync } from "node:fs";
 import { emptySnapshot } from "../src/domain/learning";
 import type { Catalog } from "../src/domain/types";
 
-const catalog = JSON.parse(readFileSync(new URL("../src/content/catalog.json", import.meta.url), "utf8")) as Catalog;
+const catalog = JSON.parse(
+  readFileSync(new URL("../src/content/books/toeic-600/catalog.json", import.meta.url), "utf8"),
+) as Catalog;
 
 test("learn, reload, finish, and retry without duplicated credit", async ({ page }) => {
   await page.goto("/");
@@ -75,13 +77,19 @@ test("preview legacy import, apply once, preserve unknown IDs", async ({ page })
 });
 
 test("home, learning, and settings meet automated accessibility checks", async ({ page }) => {
-  for (const path of ["/", "/lessons/1", "/settings"]) {
+  for (const path of ["/", "/books/toeic-600/lessons/1", "/settings"]) {
     await page.goto(path);
     await expect(page.locator("main h1")).toBeVisible();
     const result = await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa"]).analyze();
     expect(result.violations.map((v) => ({ id: v.id, nodes: v.nodes.map((n) => n.target) }))).toEqual([]);
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   }
+});
+
+test("old lesson links redirect to the TOEIC book", async ({ page }) => {
+  await page.goto("/lessons/3");
+  await expect(page).toHaveURL(/\/books\/toeic-600\/lessons\/3$/);
+  await expect(page.getByRole("heading", { name: catalog.lessons[2].title, exact: true })).toBeVisible();
 });
 
 test("two tabs keep one answer and the same resume point", async ({ page, context }) => {

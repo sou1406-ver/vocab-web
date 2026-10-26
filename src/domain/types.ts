@@ -160,6 +160,8 @@ export interface Snapshot {
     timezone: string;
     theme: "light" | "dark" | "system";
     avatarSeed?: string;
+    // Book shown on Today/Lessons/Progress. Absent in older snapshots, which means the default book.
+    bookId?: string;
   };
   progress: Record<string, WordProgress>;
   events: AnswerEvent[];

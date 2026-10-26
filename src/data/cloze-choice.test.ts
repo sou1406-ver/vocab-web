@@ -1,9 +1,11 @@
 import { describe, expect, it } from "vitest";
 import { convertLesson } from "../../scripts/lib/cloze-content.mjs";
-import { catalog } from "./catalog";
+import { defaultBook } from "./catalog";
+const catalog = defaultBook.catalog;
+const clozeLessons = defaultBook.exercises.lessons;
 import { validateSnapshot } from "./validation";
 import { beginExerciseSession, answerQuestion, emptySnapshot } from "../domain/learning";
-import { clozeLessons, validateClozePack } from "./cloze";
+import { validateClozePack } from "./cloze";
 import { readFileSync, readdirSync } from "node:fs";
 
 const word = catalog.words.find((w) => w.text === "agreement")!;
@@ -25,14 +27,16 @@ describe("Authored cloze choices", () => {
     const questions = [old, example];
     const pack = { lessonId: 1, version: "mixed-pack", questions };
     const expected = { lessonId: 1, version: "mixed-pack", count: 2 };
-    expect(validateClozePack(pack, expected)).toEqual(questions);
+    expect(validateClozePack(pack, expected, catalog)).toEqual(questions);
     for (const q of questions) {
       const snapshot = beginExerciseSession(emptySnapshot(), catalog, [q], "Practice", "s", 100);
       expect(validateSnapshot(JSON.parse(JSON.stringify(snapshot)))).toEqual(snapshot);
       expect(answerQuestion(snapshot, "s", 0, q.answer, false, 101).events[0].sourceQuestionId).toBe(q.sourceId);
     }
     for (const sourceId of [`catalog:example:another-word:0`, `catalog:example:${word.id}:-1`, "unknown:0"]) {
-      expect(() => validateClozePack({ ...pack, questions: [old, { ...example, sourceId }] }, expected)).toThrow();
+      expect(() =>
+        validateClozePack({ ...pack, questions: [old, { ...example, sourceId }] }, expected, catalog),
+      ).toThrow();
     }
   });
   it("keeps catalog and package versions separate for both authored question labels", () => {
@@ -55,21 +59,21 @@ describe("Authored cloze choices", () => {
     let part5 = 0;
     for (const entry of clozeLessons) {
       const pack = JSON.parse(readFileSync(new URL(`../../public${entry.url}`, import.meta.url), "utf8"));
-      const questions = validateClozePack(pack, entry);
+      const questions = validateClozePack(pack, entry, catalog);
       count += questions.length;
       part5 += questions.filter((q) => q.sourceId.startsWith("v1:part5:")).length;
       for (const kind of ["word-form-choice", "cloze-choice"] as const) {
         expect(questions.filter((q) => q.kind === kind)).toHaveLength(entry.kinds[kind]);
       }
-      expect(() => validateClozePack({ ...pack, version: "outdated" }, entry)).toThrow();
+      expect(() => validateClozePack({ ...pack, version: "outdated" }, entry, catalog)).toThrow();
       const changed = structuredClone(pack);
       changed.questions[0].wordId = "unknown-word";
-      expect(() => validateClozePack(changed, entry)).toThrow();
+      expect(() => validateClozePack(changed, entry, catalog)).toThrow();
     }
     expect(clozeLessons).toHaveLength(50);
     expect(part5).toBe(299);
     expect(count).toBeGreaterThan(part5);
-    const files = readdirSync(new URL("../../public/exercises/cloze/", import.meta.url)).sort();
+    const files = readdirSync(new URL("../../public/exercises/toeic-600/cloze/", import.meta.url)).sort();
     expect(files).toEqual(clozeLessons.map((entry) => entry.url.split("/").at(-1)).sort());
   });
   it("preserves authored options and links only unique exact answer matches", () => {

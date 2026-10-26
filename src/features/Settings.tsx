@@ -2,7 +2,7 @@
 import { useState, type FormEvent } from "react";
 import Link from "next/link";
 import { useApp } from "../state/provider";
-import { catalog } from "../data/catalog";
+import { defaultBook } from "../data/catalog";
 import { applyImport, previewImport, type ImportPreview } from "../data/imports";
 import { Icon } from "../shared/ui";
 import { dayKey } from "../domain/learning";
@@ -65,7 +65,7 @@ export default function Settings() {
     setNotice("");
     try {
       if (file.size > 10_000_000) throw new Error("Vui lòng chọn file dưới 10 MB.");
-      setPreview(await previewImport(await file.text(), catalog));
+      setPreview(await previewImport(await file.text(), defaultBook.catalog));
     } catch (e) {
       setError(e instanceof Error ? e.message : "Không đọc được file. Hãy chọn bản sao lưu JSON của Vocab.");
     } finally {

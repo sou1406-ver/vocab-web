@@ -14,7 +14,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 - Chỉ làm đúng mục được giao. Không refactor, đổi tên hoặc format file ngoài phạm vi.
 - Chỉ đọc file liên quan. Dùng `rg` để tìm, không đọc cả thư mục.
-- Không đọc: `node_modules/` (trừ docs Next khi cần), `public/exercises/`, `src/content/*.json`, `data/generated/`, `package-lock.json`.
+- Không đọc: `node_modules/` (trừ docs Next khi cần), `public/exercises/`, `src/content/books/**/*.json`, `data/generated/`, `package-lock.json`.
 - Yêu cầu mơ hồ hoặc đụng schema/migration: dừng lại và hỏi, không tự đoán.
 
 ### Kiểm tra
@@ -32,6 +32,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 ### Hợp đồng dữ liệu (không tự ý đổi)
 
 - Giữ nguyên: tên IndexedDB `vocab-learn-v2`, `schemaVersion` của snapshot, ID từ, ID event `sessionId:index`.
+- Nhiều quyển: ID từ quyển mới bắt đầu bằng `<bookId>:`; `toeic-600` giữ ID cũ (`legacyWordIds`) và luôn là quyển mặc định. Không đọc catalog toàn cục: lấy quyển qua `activeBook`, `bookById` hoặc `bookOfWord` trong `src/data/catalog.ts`.
 - Fingerprint catalog chỉ đổi khi nội dung words/lessons/topics thực sự thay đổi. Thêm dạng bài hoặc UI không được làm đổi catalog/fingerprint.
 - Thêm field vào event/question: để optional, validator phải đọc được dữ liệu cũ, kèm test tương thích. Đổi cách chấm thì tăng `scoringVersion`.
 - Practice và Match không tăng box, không đổi `dueAt`/`reviewedDay`.

@@ -1,66 +1,88 @@
-import { readFile, writeFile, mkdir, readdir } from "node:fs/promises";
+import { readFile, writeFile, mkdir, readdir, rm } from "node:fs/promises";
 import { createHash } from "node:crypto";
 import { buildClozeContent } from "./build-cloze-content.mjs";
+import { buildToeic600 } from "./books/toeic-600.mjs";
 
+// Each book is declared in content/books/<id>/book.json and converted by the builder it names.
+// Output: src/content/books/<id>/*.json, public/exercises/<id>/ and src/content/books/registry.ts.
+const builders = { "toeic-600": buildToeic600 };
 const root = new URL("../", import.meta.url);
 const read = async (path) => JSON.parse(await readFile(new URL(path, root), "utf8"));
-const [metadata, lessons, topics] = await Promise.all([
-  read("data/generated/words.json"),
-  read("data/generated/lessons.json"),
-  read("data/generated/topics.json"),
-]);
-const details = new Map();
-for (const file of await readdir(new URL("data/generated/word-details/", root))) {
-  if (!file.endsWith(".json")) continue;
-  for (const item of await read(`data/generated/word-details/${file}`)) {
-    if (details.has(item.id)) throw new Error(`Duplicate detail: ${item.id}`);
-    details.set(item.id, item);
+const BOOK_ID = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+
+const books = [];
+for (const entry of (await readdir(new URL("content/books/", root), { withFileTypes: true })).sort((a, b) =>
+  a.name.localeCompare(b.name),
+)) {
+  if (!entry.isDirectory()) continue;
+  const book = await read(`content/books/${entry.name}/book.json`);
+  if (book.id !== entry.name || !BOOK_ID.test(book.id)) throw new Error(`Book id must match folder: ${entry.name}`);
+  if (!book.title?.trim() || !book.shortTitle?.trim()) throw new Error(`Book ${book.id} needs title and shortTitle`);
+  const build = builders[book.builder];
+  if (!build) throw new Error(`Unknown builder for ${book.id}: ${book.builder}`);
+  books.push({ book, ...(await build(root)) });
+}
+if (!books.length) throw new Error("No books in content/books/");
+// The original book keeps its first registry slot so it stays the default for existing learners.
+books.sort((a, b) => Number(Boolean(b.book.legacyWordIds)) - Number(Boolean(a.book.legacyWordIds)));
+
+const owners = new Map();
+for (const { book, payload } of books) {
+  const { words, lessons, topics } = payload;
+  if (words.length !== book.expectedEntries || lessons.length !== book.expectedLessons)
+    throw new Error(`Expected ${book.expectedEntries} words and ${book.expectedLessons} lessons in ${book.id}`);
+  for (const word of words) {
+    // New books namespace IDs so progress stored by word ID can never collide across books.
+    if (!book.legacyWordIds && !word.id.startsWith(`${book.id}:`))
+      throw new Error(`Word ID must start with "${book.id}:": ${word.id}`);
+    if (owners.has(word.id)) throw new Error(`Word ID ${word.id} is used by ${owners.get(word.id)} and ${book.id}`);
+    owners.set(word.id, book.id);
+  }
+  for (const lesson of lessons) {
+    if (!topics.some((t) => t.id === lesson.topicId)) throw new Error(`Unknown topic: ${book.id}/${lesson.topicId}`);
+    if (!words.some((w) => w.lesson === lesson.id)) throw new Error(`Empty lesson: ${book.id}/${lesson.id}`);
   }
 }
-const ids = new Set();
-const warnings = [];
-const words = metadata.map((word) => {
-  if (ids.has(word.id)) throw new Error(`Duplicate word: ${word.id}`);
-  ids.add(word.id);
-  if (!word.word?.trim() || !word.vi?.trim() || !lessons.some((l) => l.n === word.lesson))
-    throw new Error(`Invalid word: ${word.id}`);
-  const detail = details.get(word.id);
-  if (!detail) throw new Error(`Missing details: ${word.id}`);
-  const examples = (detail.ex ?? []).map((text, i) => ({ text, translation: detail.exVi?.[i] ?? "" }));
-  if (!examples.length) warnings.push(`${word.id}: no example`);
-  if (examples.some((e) => !e.translation)) warnings.push(`${word.id}: untranslated example`);
-  return {
-    id: word.id,
-    lesson: word.lesson,
-    text: word.word,
-    pos: word.pos,
-    ipa: word.ipa ?? "",
-    meaning: word.vi,
-    definition: word.def,
-    examples,
-    family: (detail.family ?? []).map((f) => ({ text: f.w, pos: f.pos, meaning: f.vi, parts: f.parts ?? [] })),
-    synonyms: detail.syn ?? [],
-    antonyms: detail.ant ?? [],
-    parts: detail.parts ?? [],
-  };
-});
-if (words.length !== 600 || lessons.length !== 50) throw new Error("Expected 600 words and 50 lessons");
-for (const lesson of lessons) {
-  if (!topics.some((t) => t.id === lesson.unit)) throw new Error(`Unknown topic: ${lesson.unit}`);
-  if (!words.some((w) => w.lesson === lesson.n)) throw new Error(`Empty lesson: ${lesson.n}`);
+
+const output = new URL("src/content/books/", root);
+await rm(output, { recursive: true, force: true });
+await rm(new URL("public/exercises/", root), { recursive: true, force: true });
+for (const { book, payload, warnings, part5 } of books) {
+  const directory = new URL(`${book.id}/`, output);
+  await mkdir(directory, { recursive: true });
+  // Fingerprint covers learning content only, so book metadata edits never invalidate sessions.
+  const version = createHash("sha256").update(JSON.stringify(payload)).digest("hex").slice(0, 12);
+  const write = (file, value, pretty) =>
+    writeFile(new URL(file, directory), JSON.stringify(value, null, pretty ? 2 : undefined) + "\n");
+  const exercises = await buildClozeContent(book.id, payload.words, payload.lessons, part5);
+  const { builder: _builder, ...meta } = book;
+  await write("book.json", meta, true);
+  await write("catalog.json", { version, ...payload });
+  await write("report.json", { version, words: payload.words.length, lessons: payload.lessons.length, warnings }, true);
+  await write("exercise-manifest.json", exercises.manifest);
+  await write("exercise-report.json", exercises.report, true);
+  console.log(
+    `${book.id}: ${payload.words.length} words, ${payload.lessons.length} lessons, ${warnings.length} warnings, catalog ${version}.`,
+  );
 }
-const payload = {
-  lessons: lessons.map((l) => ({ id: l.n, title: l.title, translation: l.vi, topicId: l.unit })),
-  topics: topics.map((t) => ({ id: t.id, title: t.name, english: t.en })),
-  words,
-};
-const version = createHash("sha256").update(JSON.stringify(payload)).digest("hex").slice(0, 12);
-const output = new URL("src/content/", root);
-await mkdir(output, { recursive: true });
-await writeFile(new URL("catalog.json", output), JSON.stringify({ version, ...payload }) + "\n");
+
+const name = (id) => id.replace(/-(\w)/g, (_, c) => c.toUpperCase()).replace(/^\d/, "_$&");
 await writeFile(
-  new URL("report.json", output),
-  JSON.stringify({ version, words: words.length, lessons: lessons.length, warnings }, null, 2) + "\n",
+  new URL("registry.ts", output),
+  [
+    "// Generated by scripts/build-content.mjs. Do not edit.",
+    ...books.flatMap(({ book: { id } }) => [
+      `import ${name(id)}Book from "./${id}/book.json";`,
+      `import ${name(id)}Catalog from "./${id}/catalog.json";`,
+      `import ${name(id)}Exercises from "./${id}/exercise-manifest.json";`,
+    ]),
+    "",
+    "export const registry = [",
+    ...books.map(
+      ({ book: { id } }) =>
+        `  { meta: ${name(id)}Book, catalog: ${name(id)}Catalog, exercises: ${name(id)}Exercises },`,
+    ),
+    "];",
+    "",
+  ].join("\n"),
 );
-console.log(`Content: ${words.length} words, ${lessons.length} lessons, ${warnings.length} warnings.`);
-await buildClozeContent(words, payload.lessons);

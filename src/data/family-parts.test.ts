@@ -1,7 +1,8 @@
 import { describe, expect, it } from "vitest";
 import { readFileSync, readdirSync } from "node:fs";
 import { createHash } from "node:crypto";
-import { catalog } from "./catalog";
+import { defaultBook } from "./catalog";
+const catalog = defaultBook.catalog;
 import { isWord, validateSnapshot } from "./validation";
 import { emptySnapshot } from "../domain/learning";
 import type { Word } from "../domain/types";

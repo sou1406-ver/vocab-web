@@ -1,4 +1,4 @@
-import { catalog } from "./catalog";
+import { catalogFor } from "./catalog";
 import { normalizeAnswer } from "../domain/learning";
 import { shuffleSeeded } from "../domain/random";
 import { singleWordMatch } from "../domain/word-match";
@@ -32,7 +32,6 @@ export function makeSynonymQuestions(
   sessionId: string,
 ): SynonymQuestion[] {
   const entries = all.map(profile);
-  const topicsByLesson = new Map(catalog.lessons.map((lesson) => [lesson.id, lesson.topicId]));
   const questions: SynonymQuestion[] = [];
   for (const word of words) {
     const target = profile(word);
@@ -72,6 +71,9 @@ export function makeSynonymQuestions(
         for (const term of entry.terms) unsafe.add(normalizeAnswer(term));
       }
     const names = new Set<string>();
+    // Lesson numbers are per book, so topics come from the target word's own book.
+    const catalog = catalogFor(word.id);
+    const topicsByLesson = new Map(catalog.lessons.map((lesson) => [lesson.id, lesson.topicId]));
     const topic = topicsByLesson.get(word.lesson);
     const nearby = (entry: ReturnType<typeof profile>) =>
       entry.word.lesson === word.lesson || (topic !== undefined && topicsByLesson.get(entry.word.lesson) === topic);

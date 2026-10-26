@@ -80,7 +80,12 @@ export function validateSnapshot(value: unknown): Snapshot {
     (settings.dailyNew as number) > 50 ||
     !["light", "dark", "system"].includes(settings.theme as string) ||
     (settings.avatarSeed !== undefined &&
-      (!nonempty(settings.avatarSeed) || (settings.avatarSeed as string).length > 200))
+      (!nonempty(settings.avatarSeed) || (settings.avatarSeed as string).length > 200)) ||
+    // Unknown book IDs stay valid so a backup survives a book being renamed or removed.
+    (settings.bookId !== undefined &&
+      (typeof settings.bookId !== "string" ||
+        !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(settings.bookId) ||
+        settings.bookId.length > 100))
   )
     fail();
   try {

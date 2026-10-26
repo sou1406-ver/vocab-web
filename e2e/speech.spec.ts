@@ -36,7 +36,7 @@ test("delayed voices, device preferences, repeat slowdown and word/feedback spea
   await speaker.click();
   expect((await speechLog(page)).at(-1)?.rate).toBe(0.6);
   await page.keyboard.press("Escape");
-  await page.goto("/lessons/1");
+  await page.goto("/books/toeic-600/lessons/1");
   await page.evaluate(() => (window as unknown as { __speech: { load: () => void } }).__speech.load());
   await page.getByRole("button", { name: "Học 5 từ tiếp theo", exact: true }).click();
   await expect(page.locator(".word-content .sound-button")).toBeVisible();

@@ -2,12 +2,12 @@
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { catalog } from "../data/catalog";
+import { activeBook, bookById, books } from "../data/catalog";
 import { useApp } from "../state/provider";
 import { Icon, ProgressBar, Empty } from "../shared/ui";
 import { statusOf, makeRecognitionQuestions } from "../domain/learning";
 import { useWord } from "../app/context";
-import { clozeLessons, loadClozeLesson, makeWordFormQuestions } from "../data/cloze";
+import { exerciseEntry, loadClozeLesson, makeWordFormQuestions } from "../data/cloze";
 import { shuffleSeeded } from "../domain/random";
 import { makeBuildQuestions } from "../data/build";
 import { makeSynonymQuestions } from "../data/synonyms";
@@ -15,8 +15,11 @@ import { makeMatchQuestions } from "../data/match";
 import { makeListeningQuestions } from "../data/listening";
 import { useEnglishVoices } from "../lib/use-english-voices";
 
-export default function Lessons({ lessonId: id }: { lessonId?: string }) {
-  const { data, start, startExercises, busy } = useApp();
+export default function Lessons({ bookId, lessonId: id }: { bookId?: string; lessonId?: string }) {
+  const { data, start, startExercises, busy, change } = useApp();
+  // Lesson pages name their book in the URL; the list follows the learner's active book.
+  const book = bookById(bookId) ?? activeBook(data.settings);
+  const catalog = book.catalog;
   const voices = useEnglishVoices();
   const [listeningError, setListeningError] = useState("");
   const [topic, setTopic] = useState("all");
@@ -50,7 +53,7 @@ export default function Lessons({ lessonId: id }: { lessonId?: string }) {
       </div>
     );
   if (lesson) {
-    const exercise = clozeLessons.find((entry) => entry.lessonId === lesson.id);
+    const exercise = exerciseEntry(book, lesson.id);
     const practiceCloze = async (kind: "cloze-choice" | "word-form-choice" | "word-form") => {
       if (active) return router.push("/study");
       const controller = new AbortController();
@@ -61,13 +64,15 @@ export default function Lessons({ lessonId: id }: { lessonId?: string }) {
       setLoadError("");
       try {
         const sourceKind = kind === "word-form" ? "word-form-choice" : kind;
-        const questions = (await loadClozeLesson(lesson.id, controller.signal)).filter((q) => q.kind === sourceKind);
+        const questions = (await loadClozeLesson(book, lesson.id, controller.signal)).filter(
+          (q) => q.kind === sourceKind,
+        );
         if (
           !controller.signal.aborted &&
           (await startExercises(
             (sessionId) =>
               kind === "word-form"
-                ? makeWordFormQuestions(questions)
+                ? makeWordFormQuestions(questions, catalog.words)
                 : questions.map((q) =>
                     q.kind === "cloze-choice"
                       ? { ...q, options: shuffleSeeded(q.options, `${sessionId}:${q.sourceId}`) }
@@ -372,10 +377,31 @@ export default function Lessons({ lessonId: id }: { lessonId?: string }) {
           <p className="page-subtitle">Chọn chủ đề bạn cần. Học theo nhịp của riêng mình.</p>
         </div>
         <span className="edition-label">
-          <Icon name="book" size={16} /> 600 ESSENTIAL WORDS
+          <Icon name="book" size={16} /> {book.shortTitle.toUpperCase()}
         </span>
       </div>
       <div className="filter-bar">
+        {books.length > 1 && (
+          <>
+            <label htmlFor="book-select">Bộ sách</label>
+            <select
+              id="book-select"
+              value={book.id}
+              disabled={busy}
+              onChange={(e) => {
+                const next = e.target.value;
+                setTopic("all");
+                void change((current) => ({ ...current, settings: { ...current.settings, bookId: next } }));
+              }}
+            >
+              {books.map((item) => (
+                <option key={item.id} value={item.id}>
+                  {item.title}
+                </option>
+              ))}
+            </select>
+          </>
+        )}
         <label htmlFor="topic-select">Chủ đề</label>
         <select id="topic-select" value={topic} onChange={(e) => setTopic(e.target.value)}>
           <option value="all">Tất cả chủ đề</option>
@@ -420,7 +446,7 @@ export default function Lessons({ lessonId: id }: { lessonId?: string }) {
           const words = catalog.words.filter((w) => w.lesson === l.id);
           const learned = words.filter((w) => data.progress[w.id]?.tested).length;
           return (
-            <Link className="lesson-card" href={`/lessons/${l.id}`} key={l.id}>
+            <Link className="lesson-card" href={`/books/${book.id}/lessons/${l.id}`} key={l.id}>
               <div className="lesson-card-top">
                 <span className="lesson-number">{String(l.id).padStart(2, "0")}</span>
                 <span className="small-label">{catalog.topics.find((t) => t.id === l.topicId)?.title}</span>

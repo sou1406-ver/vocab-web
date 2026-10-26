@@ -1,10 +1,12 @@
 import { test, expect } from "@playwright/test";
 import { readFileSync } from "node:fs";
 import type { Catalog } from "../src/domain/types";
-const catalog = JSON.parse(readFileSync(new URL("../src/content/catalog.json", import.meta.url), "utf8")) as Catalog;
+const catalog = JSON.parse(
+  readFileSync(new URL("../src/content/books/toeic-600/catalog.json", import.meta.url), "utf8"),
+) as Catalog;
 
 test("recognition practice preserves both directions, feedback and retry", async ({ page }, testInfo) => {
-  await page.goto("/lessons/1");
+  await page.goto("/books/toeic-600/lessons/1");
   await page.getByRole("button", { name: "Luyện chọn nghĩa / chọn từ", exact: true }).click();
   await expect(page.getByRole("heading", { name: "Chọn nghĩa phù hợp" })).toBeVisible();
   const word = catalog.words.find((w) => w.lesson === 1)!;
@@ -25,7 +27,7 @@ test("recognition practice preserves both directions, feedback and retry", async
   await page.locator(".answer-option").filter({ hasText: word.text }).click();
   await expect(page.getByText("Chính xác. Bạn nhớ rồi!")).toBeVisible();
   await page.getByRole("button", { name: "Xem kết quả", exact: true }).click();
-  await page.goto("/lessons/1");
+  await page.goto("/books/toeic-600/lessons/1");
   await page.getByRole("button", { name: "Luyện chọn nghĩa / chọn từ", exact: true }).click();
   await expect(page.locator(".question-prompt p")).toHaveText(catalog.words.filter((w) => w.lesson === 1)[6].text);
 });

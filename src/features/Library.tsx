@@ -6,7 +6,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { findArticle } from "./knowledge/articles";
-import { catalog, findWords } from "../data/catalog";
+import { library, findWords } from "../data/catalog";
 import { useApp } from "../state/provider";
 import { statusOf } from "../domain/learning";
 import { useWord } from "../app/context";
@@ -28,7 +28,7 @@ export default function Library() {
   const filter = params.get("filter") ?? "all";
   const sourceArticle = findArticle(params.get("from") ?? "");
   const from = sourceArticle ? `/knowledge/${sourceArticle.slug}` : undefined;
-  const all = [...catalog.words, ...data.customWords];
+  const all = [...library.words, ...data.customWords];
   const found = findWords(query, all).filter(
     (word) =>
       filter === "all" ||

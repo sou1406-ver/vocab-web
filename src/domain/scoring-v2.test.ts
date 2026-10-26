@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { catalog } from "../data/catalog";
+import { defaultBook } from "../data/catalog";
+const catalog = defaultBook.catalog;
 import { validateSnapshot } from "../data/validation";
 import { emptySnapshot, beginSession, answerQuestion, revealQuestionLetter, hintAllowance } from "./learning";
 

@@ -2,7 +2,7 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { catalog } from "../data/catalog";
+import { bookByVersion, bookOfWord, library } from "../data/catalog";
 import { useApp } from "../state/provider";
 import { Empty, Icon, ProgressBar, WordContent, Speak } from "../shared/ui";
 import { useWord } from "../app/context";
@@ -54,7 +54,7 @@ export default function Study() {
         </Empty>
       </div>
     );
-  const all = [...catalog.words, ...data.customWords];
+  const all = [...library.words, ...data.customWords];
   const events = data.events.filter((e) => e.sessionId === session.id);
   const correct = events.filter((e) => e.correct).length;
   if (session.phase === "complete") {
@@ -64,11 +64,14 @@ export default function Study() {
       .filter((w): w is Word => Boolean(w));
     const retry = async () => {
       if (isMatch) {
-        const word = catalog.words.find((w) => w.id === session.questions[0].wordId);
-        const topic = catalog.lessons.find((lesson) => lesson.id === word?.lesson)?.topicId;
+        const wordId = session.questions[0].wordId;
+        const book = bookOfWord(wordId);
+        const word = book?.catalog.words.find((w) => w.id === wordId);
+        const topic = book?.catalog.lessons.find((lesson) => lesson.id === word?.lesson)?.topicId;
         if (
+          book &&
           topic &&
-          (await startExercises((id) => makeMatchQuestions(catalog, topic, data.progress, id), session.title))
+          (await startExercises((id) => makeMatchQuestions(book.catalog, topic, data.progress, id), session.title))
         )
           router.push("/study");
         return;
@@ -164,7 +167,7 @@ export default function Study() {
       </div>
     );
   }
-  if (session.contentVersion !== catalog.version)
+  if (!bookByVersion(session.contentVersion))
     return (
       <div className="page">
         <Empty title="Nội dung bài học đã cập nhật">

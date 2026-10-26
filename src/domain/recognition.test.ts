@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { makeRecognitionQuestions, beginExerciseSession, answerQuestion, emptySnapshot } from "./learning";
-import { catalog } from "../data/catalog";
+import { defaultBook } from "../data/catalog";
+const catalog = defaultBook.catalog;
 import { validateSnapshot } from "../data/validation";
 
 describe("Recognition in both directions", () => {

@@ -48,7 +48,13 @@ npm run e2e -- --workers=1
 
 ## Nội dung và tiến độ
 
-Sửa nguồn ở `data/source`, `data/enrich`, `data/translations`, chạy `npm run data`. Python sinh `data/generated`, builder sinh `src/content/catalog.json`. Không sửa tay output. Bài sách/ETS/cụm từ chưa có UI được giữ làm dữ liệu nguồn.
+Sửa nguồn ở `data/source`, `data/enrich`, `data/translations`, chạy `npm run data`. Python sinh `data/generated`, builder sinh `src/content/books/<bookId>/` và `public/exercises/<bookId>/`. Không sửa tay output. Bài sách/ETS/cụm từ chưa có UI được giữ làm dữ liệu nguồn.
+
+### Thêm một quyển sách
+
+Mỗi quyển khai báo ở `content/books/<bookId>/book.json` (id trùng tên thư mục, `title`, `shortTitle`, `builder`, `expectedEntries`, `expectedLessons`). Viết builder trong `scripts/books/<bookId>.mjs` trả về `{ payload: { lessons, topics, words }, warnings, part5 }` rồi đăng ký trong `builders` của `scripts/build-content.mjs`. Chạy `npm run data:catalog`: builder sinh catalog, gói bài tập và `src/content/books/registry.ts`.
+
+ID từ của quyển mới phải bắt đầu bằng `<bookId>:` (ví dụ `ielts-starter:ticket-1`); builder và `validate:content` báo lỗi nếu thiếu tiền tố hoặc trùng ID giữa các quyển. Riêng `toeic-600` có `legacyWordIds: true` để giữ ID cũ của người học. Số bài (`lesson`) đánh riêng trong từng quyển; URL bài là `/books/<bookId>/lessons/<n>`, link cũ `/lessons/<n>` chuyển về TOEIC.
 
 Lưu/đọc/backup vẫn dùng database `vocab-learn-v2`, store `snapshots`, schemaVersion2, ID và fingerprint cũ. Đây là tên kho dữ liệu tương thích, không phải một app V2 riêng. Import V1/backup có preview; không xóa dữ liệu trình duyệt/cloud khi gộp mã.
 
@@ -62,6 +68,6 @@ Xem [kết quả gộp app](docs/implementation/SINGLE-APP.md) và [kế hoạch
 
 Phần review lõi học, các thay đổi tương thích và đề xuất trước khi mở rộng bài tập nằm trong [Learning contracts](docs/implementation/LEARNING-CONTRACTS.md).
 
-Trong trang mỗi bài có “Luyện điền chỗ trống”: câu V1 được đóng gói theo bài và chỉ tải khi mở. Báo cáo câu bỏ qua nằm trong `src/content/exercise-report.json`.
+Trong trang mỗi bài có “Luyện điền chỗ trống”: câu V1 được đóng gói theo bài và chỉ tải khi mở. Báo cáo câu bỏ qua nằm trong `src/content/books/<bookId>/exercise-report.json`.
 
 Skill dành cho agent chỉ giữ local trong `.agents/` hoặc `.claude/`, bị ignore và không cần để build/chạy app. Không đưa lại bộ skill vào Git.

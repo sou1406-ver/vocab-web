@@ -1,15 +1,15 @@
-import manifest from "../content/exercise-manifest.json";
-import { catalog } from "./catalog";
+import { wordsById, type Book, type ExerciseEntry } from "./catalog";
 import { record, validateSnapshot } from "./validation";
 import { emptySnapshot, normalizeAnswer } from "../domain/learning";
-import type { ClozeChoiceQuestion, Word, WordFormQuestion } from "../domain/types";
+import type { Catalog, ClozeChoiceQuestion, Word, WordFormQuestion } from "../domain/types";
 
-export const clozeLessons = manifest.lessons;
+export const exerciseEntry = (book: Book, lessonId: number) =>
+  book.exercises.lessons.find((entry) => entry.lessonId === lessonId);
 export function makeWordFormQuestions(
   questions: readonly ClozeChoiceQuestion[],
-  words: readonly Word[] = catalog.words,
+  words?: readonly Word[],
 ): WordFormQuestion[] {
-  const byId = new Map(words.map((word) => [word.id, word]));
+  const byId = words ? new Map(words.map((word) => [word.id, word])) : wordsById;
   return questions
     .filter((q) => q.kind === "word-form-choice")
     .flatMap((q): WordFormQuestion[] => {
@@ -44,7 +44,8 @@ export function makeWordFormQuestions(
 }
 export function validateClozePack(
   value: unknown,
-  expected: { lessonId: number; version: string; count: number },
+  expected: Pick<ExerciseEntry, "lessonId" | "version" | "count">,
+  catalog: Catalog,
 ): ClozeChoiceQuestion[] {
   const pack = record(value);
   if (
@@ -92,10 +93,10 @@ export function validateClozePack(
   });
   return state.session!.questions as ClozeChoiceQuestion[];
 }
-export async function loadClozeLesson(lessonId: number, signal?: AbortSignal) {
-  const entry = clozeLessons.find((l) => l.lessonId === lessonId);
+export async function loadClozeLesson(book: Book, lessonId: number, signal?: AbortSignal) {
+  const entry = exerciseEntry(book, lessonId);
   if (!entry?.count) throw new Error("Bài này chưa có câu điền chỗ trống phù hợp.");
   const response = await fetch(entry.url, { signal });
   if (!response.ok) throw new Error("Không tải được bài tập. Hãy thử lại.");
-  return validateClozePack(await response.json(), entry);
+  return validateClozePack(await response.json(), entry, book.catalog);
 }

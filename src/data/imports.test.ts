@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { catalog } from "./catalog";
+import { defaultBook } from "./catalog";
+const catalog = defaultBook.catalog;
 import { applyImport, previewImport } from "./imports";
 import { validateSnapshot } from "./validation";
 import { emptySnapshot } from "../domain/learning";
@@ -65,6 +66,17 @@ describe("Import and restore", () => {
   it.each([null, 12, "", "  ", "x".repeat(201)])("rejects invalid avatar seeds: %s", (avatarSeed) => {
     const source = emptySnapshot();
     expect(() => validateSnapshot({ ...source, settings: { ...source.settings, avatarSeed } })).toThrow("không hợp lệ");
+  });
+  it("keeps an optional active book, including books no longer in the library", async () => {
+    const old = emptySnapshot();
+    expect(validateSnapshot(old).settings).not.toHaveProperty("bookId");
+    const source = { ...old, settings: { ...old.settings, bookId: "removed-book" } };
+    const preview = await previewImport(JSON.stringify({ app: "VocabLearn-v2", data: source }), catalog);
+    expect(applyImport(emptySnapshot(), preview).settings).toEqual(source.settings);
+  });
+  it.each([null, 12, "", "Toeic 600", "x".repeat(101)])("rejects invalid book ids: %s", (bookId) => {
+    const source = emptySnapshot();
+    expect(() => validateSnapshot({ ...source, settings: { ...source.settings, bookId } })).toThrow("không hợp lệ");
   });
   it("preserves valid legacy custom words without allowing collisions", async () => {
     const source = {

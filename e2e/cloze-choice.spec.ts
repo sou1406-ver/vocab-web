@@ -4,9 +4,11 @@ import { readFileSync } from "node:fs";
 import type { Catalog, ClozeChoiceQuestion, StudySession } from "../src/domain/types";
 import { shuffleSeeded } from "../src/domain/random";
 const manifest = JSON.parse(
-  readFileSync(new URL("../src/content/exercise-manifest.json", import.meta.url), "utf8"),
+  readFileSync(new URL("../src/content/books/toeic-600/exercise-manifest.json", import.meta.url), "utf8"),
 ) as { lessons: { lessonId: number; version: string; url: string; kinds: Record<string, number> }[] };
-const catalog = JSON.parse(readFileSync(new URL("../src/content/catalog.json", import.meta.url), "utf8")) as Catalog;
+const catalog = JSON.parse(
+  readFileSync(new URL("../src/content/books/toeic-600/catalog.json", import.meta.url), "utf8"),
+) as Catalog;
 const optionText = (answer: string) => new RegExp(`${answer.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}$`);
 
 test("authored word form loads per lesson, retries failures and resumes without downloading again", async ({
@@ -14,12 +16,12 @@ test("authored word form loads per lesson, retries failures and resumes without 
   context,
 }, testInfo) => {
   let requests = 0;
-  await page.route("**/exercises/cloze/**", async (route) => {
+  await page.route("**/exercises/*/cloze/**", async (route) => {
     requests++;
     if (requests === 1) await route.fulfill({ status: 503, body: "unavailable" });
     else await route.continue();
   });
-  await page.goto("/lessons/1");
+  await page.goto("/books/toeic-600/lessons/1");
   expect(requests).toBe(0);
   const start = page.getByRole("button", { name: "Luyện dạng từ", exact: true });
   await start.click();
@@ -80,7 +82,7 @@ test("non-family Part 5 stays cloze-choice with the matching event label", async
   const entry = manifest.lessons.find((item) => item.kinds["cloze-choice"] > 0)!;
   const pack = JSON.parse(readFileSync(new URL(`../public${entry.url}`, import.meta.url), "utf8"));
   const question = pack.questions.find((q: { kind: string }) => q.kind === "cloze-choice");
-  await page.goto(`/lessons/${entry.lessonId}`);
+  await page.goto(`/books/toeic-600/lessons/${entry.lessonId}`);
   await page.getByRole("button", { name: "Luyện điền chỗ trống", exact: true }).click();
   await expect(page.getByRole("heading", { name: "Điền từ còn thiếu" })).toBeVisible();
   await expect(page.locator(".question-prompt p")).toHaveText(question.prompt);
@@ -94,13 +96,13 @@ test("catalog cloze answers vary in position and keep their saved order after re
     Object.defineProperty(crypto, "randomUUID", { value: () => "00000000-0000-4000-8000-000000000001" });
   });
   let sourceQuestions: ClozeChoiceQuestion[] = [];
-  await page.route("**/exercises/cloze/**", async (route) => {
+  await page.route("**/exercises/*/cloze/**", async (route) => {
     const response = await route.fetch();
     const pack = await response.json();
     sourceQuestions = pack.questions;
     await route.fulfill({ response });
   });
-  await page.goto("/lessons/1");
+  await page.goto("/books/toeic-600/lessons/1");
   await page.getByRole("button", { name: "Luyện điền chỗ trống", exact: true }).click();
   await expect(page.getByRole("heading", { name: "Điền từ còn thiếu" })).toBeVisible();
   const session = await page.evaluate(

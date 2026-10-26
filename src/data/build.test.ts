@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import affixes from "../../data/generated/affixes.json";
-import { catalog } from "./catalog";
+import { defaultBook } from "./catalog";
+const catalog = defaultBook.catalog;
 import { makeBuildQuestions } from "./build";
 import type { Word } from "../domain/types";
 

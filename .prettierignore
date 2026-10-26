@@ -1,6 +1,6 @@
 # Dữ liệu tự sinh (tools/build_data.py) — giữ dạng gọn
 src/content/
-public/exercises/cloze/
+public/exercises/
 .claude/
 /data/
 dist/

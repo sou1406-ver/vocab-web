@@ -6,7 +6,7 @@ const escape = (text: string) => text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 const choice = (page: Page, text: string) =>
   page.getByRole("button", { name: new RegExp(`^[A-D]\\s*${escape(text)}$`) });
 async function start(page: Page, title: string) {
-  await page.goto("/lessons/1");
+  await page.goto("/books/toeic-600/lessons/1");
   await page.getByRole("button", { name: title, exact: true }).click();
   await expect.poll(async () => (await speechLog(page)).length).toBeGreaterThan(0);
   return readSnapshot(page);
@@ -115,7 +115,7 @@ test("late English voices reveal buttons and disappearing voices disable the act
   await mockSpeech(page, "delayed");
   const errors: string[] = [];
   page.on("pageerror", (error) => errors.push(error.message));
-  await page.goto("/lessons/1");
+  await page.goto("/books/toeic-600/lessons/1");
   await expect(page.getByRole("button", { name: "Nghe chọn từ", exact: true })).toHaveCount(0);
   await expect(page.getByRole("button", { name: "Nghe gõ từ", exact: true })).toHaveCount(0);
   await page.evaluate(() => (window as unknown as { __speech: { load: () => void } }).__speech.load());
