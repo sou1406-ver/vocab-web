@@ -40,6 +40,6 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 ### Git
 
-- Làm trên nhánh `v2`, không merge vào `main`.
+- Làm trực tiếp trên `main` (v2 đã thay v1; bản v1 cũ lưu ở tag `v1-final`).
 - Mỗi mục một commit, message tiếng Anh ngắn.
 - Không commit `.agents/`, `.claude/`, `test-results/`, `playwright-report/`.
