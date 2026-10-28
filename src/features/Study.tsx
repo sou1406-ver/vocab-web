@@ -17,6 +17,7 @@ import { MatchBoard } from "../components/MatchBoard";
 import { makeMatchQuestions } from "../data/match";
 import { ListenPrompt } from "../components/ListenPrompt";
 import { useEnglishVoices } from "../lib/use-english-voices";
+import StatusMark from "../components/react-bits/StatusMark";
 
 export default function Study() {
   const { data, busy, advance, answer, finish, start, startExercises, change } = useApp();
@@ -430,7 +431,7 @@ export default function Study() {
                 role="status"
               >
                 <div className="feedback-title">
-                  <Icon name={feedback.correct ? "check" : "repeat"} size={22} />
+                  <StatusMark status={feedback.correct ? "done" : "failed"} size={22} decorative />
                   <b>
                     {feedback.correct
                       ? "Chính xác. Bạn nhớ rồi!"

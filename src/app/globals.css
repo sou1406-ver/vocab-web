@@ -4,6 +4,7 @@
 @import "@fontsource-variable/noto-serif/index.css";
 @import "../shared/styles.css";
 @import "../shared/v2-layout.css";
+@import "../components/react-bits/StatusMark.css";
 
 @source ".";
 @source "../components";

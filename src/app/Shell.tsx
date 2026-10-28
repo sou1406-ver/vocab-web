@@ -7,6 +7,7 @@ import { Icon, Logo, WordDialog, type IconName } from "../shared/ui";
 import { WordContext } from "./context";
 import type { Word } from "../domain/types";
 import { UserAvatar } from "../components/UserAvatar";
+import StatusMark from "../components/react-bits/StatusMark";
 const links: { to: string; label: string; icon: IconName; end?: boolean }[] = [
   { to: "/", label: "Hôm nay", icon: "home", end: true },
   { to: "/lessons", label: "Bài học", icon: "book" },
@@ -122,10 +123,12 @@ export function Shell({ children }: { children: ReactNode }) {
               </span>
             </span>
             <div className="topbar-actions">
-              <span className="save-status">
-                <Icon name="device" size={16} />
-                {!ready ? "Đang mở dữ liệu…" : busy ? "Đang lưu…" : "Lưu trên máy"}
-              </span>
+              <StatusMark
+                className="save-status"
+                size={16}
+                status={error ? "failed" : !ready || busy ? "running" : "done"}
+                label={error ? "Cần kiểm tra" : !ready ? "Đang mở dữ liệu…" : busy ? "Đang lưu…" : "Lưu trên máy"}
+              />
               <button
                 className="icon-button theme-toggle"
                 aria-label="Đổi giao diện sáng tối"

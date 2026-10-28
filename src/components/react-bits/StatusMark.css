@@ -1,0 +1,105 @@
+/* Adapted from React Bits StatusMark.css. See LICENSE.md in this directory. */
+@layer components {
+  .status-mark {
+    --sm-size: 20px;
+    --sm-color: var(--muted);
+    --sm-done: var(--green);
+    --sm-error: var(--red);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    vertical-align: middle;
+    line-height: 1;
+  }
+  .status-mark__glyph {
+    flex: none;
+    color: var(--sm-color);
+    transition: color 160ms ease-out;
+  }
+  .status-mark[data-status="done"] .status-mark__glyph {
+    color: var(--sm-done);
+  }
+  .status-mark[data-status="failed"] .status-mark__glyph {
+    color: var(--sm-error);
+  }
+  .status-mark__track {
+    fill: currentColor;
+    stroke: currentColor;
+    stroke-width: 2;
+    fill-opacity: 0;
+    stroke-opacity: 0;
+    transition:
+      fill-opacity 160ms ease-out,
+      stroke-opacity 160ms ease-out;
+  }
+  .status-mark[data-status="running"] .status-mark__track {
+    stroke-opacity: 0.2;
+  }
+  .status-mark[data-status="done"] .status-mark__track,
+  .status-mark[data-status="failed"] .status-mark__track {
+    fill-opacity: 0.06;
+  }
+  .status-mark__ring {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    transition: stroke-dasharray 240ms ease-out;
+  }
+  .status-mark[data-indeterminate] .status-mark__rotation {
+    transform-origin: 12px 12px;
+    animation: rb-status-spin 1100ms linear infinite;
+  }
+  .status-mark__check,
+  .status-mark__cross {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-dasharray: 1 2;
+    stroke-dashoffset: 1.05;
+    opacity: 0;
+    transition:
+      stroke-dashoffset 160ms ease-out,
+      opacity 120ms ease-out;
+  }
+  .status-mark[data-status="done"] .status-mark__check,
+  .status-mark[data-status="failed"] .status-mark__cross,
+  .status-mark[data-status="cancelled"] .status-mark__cross {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+  .status-mark__label {
+    color: var(--sm-color);
+    font-size: inherit;
+    line-height: 1.25;
+  }
+  .save-status.status-mark {
+    gap: 6px;
+  }
+  .feedback-title .status-mark {
+    --sm-color: currentColor;
+    --sm-done: currentColor;
+    --sm-error: currentColor;
+  }
+  @keyframes rb-status-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+}
+@layer responsive {
+  @media (prefers-reduced-motion: reduce) {
+    .status-mark__rotation {
+      animation: none !important;
+    }
+    .status-mark__glyph,
+    .status-mark__ring,
+    .status-mark__track,
+    .status-mark__check,
+    .status-mark__cross {
+      transition: none;
+    }
+  }
+}
