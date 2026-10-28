@@ -58,8 +58,9 @@ test("Build toggles pieces, grades order, resumes and retries in practice", asyn
   await expect(selected.getByRole("button")).toHaveCount(0);
   await piece(q.answer[0]).click();
   await piece(q.answer[1]).click();
-  await selected.getByRole("button").first().click();
+  await selected.getByRole("button").first().press("Enter");
   await expect(selected.getByRole("button")).toHaveText([q.answer[1]]);
+  await expect(piece(q.answer[0])).toBeFocused();
   await piece(q.answer[1]).click();
   await expect(selected.getByRole("button")).toHaveCount(0);
   await piece(q.answer[0]).click();

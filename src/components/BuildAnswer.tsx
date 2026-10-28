@@ -1,5 +1,5 @@
 "use client";
-import { useState, type RefObject } from "react";
+import { useRef, useState, type RefObject } from "react";
 import type { BuildQuestion, Feedback } from "../domain/types";
 
 export function BuildAnswer({
@@ -16,6 +16,7 @@ export function BuildAnswer({
   firstTileRef?: RefObject<HTMLButtonElement | null>;
 }) {
   const [chosen, setChosen] = useState<string[]>([]);
+  const tiles = useRef(new Map<string, HTMLButtonElement>());
   const selected = feedback?.selectedParts ?? chosen;
   const disabled = busy || Boolean(feedback);
   const toggle = (part: string) =>
@@ -46,7 +47,10 @@ export function BuildAnswer({
               className="button secondary"
               disabled={disabled}
               aria-label={`Gỡ mảnh ${index + 1}: ${part}`}
-              onClick={() => toggle(part)}
+              onClick={() => {
+                toggle(part);
+                requestAnimationFrame(() => tiles.current.get(part)?.focus({ preventScroll: true }));
+              }}
             >
               {part}
             </button>
@@ -58,7 +62,11 @@ export function BuildAnswer({
       <div className="build-tiles" role="group" aria-label="Các mảnh để ghép">
         {question.tiles.map((part, index) => (
           <button
-            ref={index === 0 ? firstTileRef : undefined}
+            ref={(node) => {
+              if (node) tiles.current.set(part, node);
+              else tiles.current.delete(part);
+              if (index === 0 && firstTileRef) firstTileRef.current = node;
+            }}
             type="button"
             className="button secondary"
             key={part}

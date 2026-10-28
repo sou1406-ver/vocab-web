@@ -267,7 +267,11 @@ export default function Study() {
                                 : "Bạn nhớ từ nào?"}
         </h1>
       </div>
-      <section className="study-card" aria-label="Nội dung lượt học">
+      <section
+        className="study-card study-step"
+        key={`${session.id}:${session.index}:${session.phase === "learn" ? "learn" : "question"}`}
+        aria-label="Nội dung lượt học"
+      >
         {session.phase === "learn" ? (
           <>
             <WordContent word={word} />

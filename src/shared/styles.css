@@ -67,6 +67,10 @@
     --hero: #1b4e3b;
     --radius: 18px;
     --shadow: 0 5px 24px #263d2810;
+    --motion-fast: 120ms;
+    --motion-enter: 160ms;
+    --motion-exit: 120ms;
+    --ease-responsive: cubic-bezier(0.16, 1, 0.3, 1);
     font-family:
       "Segoe UI",
       -apple-system,
@@ -2287,6 +2291,104 @@
     }
     .letter-slots-cells {
       gap: 4px;
+    }
+  }
+}
+
+@layer components {
+  .button,
+  .press-feedback,
+  .icon-button,
+  .answer-option,
+  .match-tile,
+  .avatar-option {
+    transition:
+      transform var(--motion-fast) var(--ease-responsive),
+      background-color var(--motion-fast) ease-out,
+      border-color var(--motion-fast) ease-out,
+      box-shadow var(--motion-fast) ease-out;
+  }
+  .button:active:not(:disabled),
+  .press-feedback:active:not(:disabled),
+  .icon-button:active:not(:disabled),
+  .answer-option:active:not(:disabled),
+  .match-tile:active:not(:disabled),
+  .avatar-option:active:not(:disabled) {
+    transform: scale(0.985);
+    transition-duration: 0s;
+  }
+  .study-step,
+  .answer-feedback,
+  .build-selection > button,
+  .match-tile.is-matched > svg {
+    animation: content-arrive var(--motion-enter) var(--ease-responsive);
+  }
+  .dialog-overlay {
+    background: #12241b70;
+    backdrop-filter: blur(4px);
+  }
+  :root[data-theme="dark"] .dialog-overlay {
+    background: #0009;
+  }
+  .dialog-overlay[data-state="open"],
+  .dialog-surface[data-state="open"] {
+    animation: content-arrive var(--motion-enter) var(--ease-responsive);
+  }
+  .dialog-overlay[data-state="closed"],
+  .dialog-surface[data-state="closed"] {
+    animation: content-depart var(--motion-exit) ease-in;
+  }
+  .dialog-dismiss {
+    width: 36px;
+    height: 36px;
+  }
+  @keyframes content-arrive {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  @keyframes content-depart {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
+  }
+}
+@layer responsive {
+  @media (prefers-reduced-motion: reduce) {
+    .study-step,
+    .answer-feedback,
+    .build-selection > button,
+    .match-tile.is-matched > svg,
+    .dialog-overlay,
+    .dialog-surface {
+      animation: none !important;
+    }
+    .button:active,
+    .press-feedback:active,
+    .icon-button:active,
+    .answer-option:active,
+    .match-tile:active,
+    .avatar-option:active {
+      transform: none;
+    }
+  }
+  @media (prefers-reduced-transparency: reduce) {
+    .dialog-overlay {
+      background: var(--bg);
+      backdrop-filter: none;
+    }
+  }
+  @media (prefers-contrast: more) {
+    .dialog-surface,
+    .answer-option,
+    .match-tile {
+      border-color: var(--ink);
     }
   }
 }
