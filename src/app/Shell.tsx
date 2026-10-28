@@ -8,6 +8,8 @@ import { WordContext } from "./context";
 import type { Word } from "../domain/types";
 import { UserAvatar } from "../components/UserAvatar";
 import StatusMark from "../components/react-bits/StatusMark";
+import { useCloud } from "../state/cloud-provider";
+import { syncLabels } from "../components/AccountPanel";
 const links: { to: string; label: string; icon: IconName; end?: boolean }[] = [
   { to: "/", label: "Hôm nay", icon: "home", end: true },
   { to: "/lessons", label: "Bài học", icon: "book" },
@@ -17,6 +19,7 @@ const links: { to: string; label: string; icon: IconName; end?: boolean }[] = [
 ];
 export function Shell({ children }: { children: ReactNode }) {
   const { data, ready, error, busy, change, clearError } = useApp();
+  const cloud = useCloud();
   const pathname = usePathname();
   const router = useRouter();
   const [word, setWord] = useState<Word | null>(null);
@@ -126,12 +129,37 @@ export function Shell({ children }: { children: ReactNode }) {
               <StatusMark
                 className="save-status"
                 size={16}
-                status={error ? "failed" : !ready || busy ? "running" : "done"}
-                label={error ? "Cần kiểm tra" : !ready ? "Đang mở dữ liệu…" : busy ? "Đang lưu…" : "Lưu trên máy"}
+                status={
+                  error
+                    ? "failed"
+                    : !ready || busy
+                      ? "running"
+                      : cloud.user
+                        ? cloud.status === "synced"
+                          ? "done"
+                          : cloud.status === "error" || cloud.status === "conflict"
+                            ? "failed"
+                            : cloud.status === "offline"
+                              ? "pending"
+                              : "running"
+                        : "done"
+                }
+                label={
+                  error
+                    ? "Cần kiểm tra"
+                    : !ready
+                      ? "Đang mở dữ liệu…"
+                      : busy
+                        ? "Đang lưu…"
+                        : cloud.user
+                          ? syncLabels[cloud.status]
+                          : "Lưu trên máy"
+                }
               />
               <button
                 className="icon-button theme-toggle"
                 aria-label="Đổi giao diện sáng tối"
+                disabled={!ready || busy}
                 onClick={() =>
                   void change((s) => ({
                     ...s,
@@ -162,7 +190,15 @@ export function Shell({ children }: { children: ReactNode }) {
               </button>
             </div>
           )}
-          <main id="main">{children}</main>
+          <main id="main">
+            {ready ? (
+              <div key={cloud.user?.uid ?? "guest"}>{children}</div>
+            ) : (
+              <p className="muted" role="status">
+                Đang mở dữ liệu học…
+              </p>
+            )}
+          </main>
           <footer className="app-footer">
             <span>Học để hiểu. Ôn để nhớ.</span>
             <Link href="/progress">Tiến độ học của bạn →</Link>

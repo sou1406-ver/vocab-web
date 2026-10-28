@@ -12,12 +12,14 @@ import {
 import type { SessionMode, Snapshot, Word, Question } from "../domain/types";
 
 export interface AppState {
+  profileKey: string;
   clock: number;
   data: Snapshot;
   ready: boolean;
   busy: boolean;
   error: string;
   init: () => Promise<void>;
+  switchProfile: (profile: string) => Promise<void>;
   change: (reduce: (data: Snapshot) => Snapshot) => Promise<boolean>;
   start: (words: Word[], mode: SessionMode, title: string, returnTo?: string) => Promise<boolean>;
   startExercises: (
@@ -37,31 +39,42 @@ function sessionCatalog(data: Snapshot, wordIds: readonly string[]) {
   return (owned ?? activeBook(data.settings)).catalog;
 }
 export function createAppStore() {
+  let profileRequest = 0;
   return createStore<AppState>((set, get) => ({
+    profileKey: "guest",
     clock: Date.now(),
     data: emptySnapshot(),
     ready: false,
     busy: false,
     error: "",
-    init: async () => {
+    init: async () => get().switchProfile(get().profileKey),
+    switchProfile: async (profileKey) => {
+      const request = ++profileRequest;
+      set({ profileKey, ready: false, busy: false, data: emptySnapshot(), error: "" });
       try {
-        const data = await readSnapshot();
-        set({ data, ready: true, error: "" });
+        const data = await readSnapshot(profileKey);
+        if (request === profileRequest) set({ data, ready: true, error: "" });
       } catch (e) {
-        set({ ready: false, error: e instanceof Error ? e.message : "Không mở được dữ liệu trên máy. Hãy thử lại." });
+        if (request === profileRequest)
+          set({ ready: false, error: e instanceof Error ? e.message : "Không mở được dữ liệu trên máy. Hãy thử lại." });
       }
     },
     change: async (reduce) => {
       if (get().busy || !get().ready) return false;
       set({ busy: true, error: "" });
+      const profileKey = get().profileKey;
+      const request = profileRequest;
       try {
-        const data = await changeSnapshot(reduce);
-        set({ data, busy: false });
+        const data = await changeSnapshot(reduce, profileKey);
+        if (request !== profileRequest) return false;
+        set({ ...(data.revision >= get().data.revision ? { data } : {}), busy: false });
         return true;
       } catch (e) {
+        if (request !== profileRequest) return false;
         set({ busy: false, error: e instanceof Error ? e.message : "Không lưu được tiến độ. Hãy thử lại." });
         try {
-          set({ data: await readSnapshot() });
+          const data = await readSnapshot(profileKey);
+          if (request === profileRequest) set({ data });
         } catch {
           /* Preserve the last readable state. */
         }
@@ -115,9 +128,11 @@ export function connectBrowserStore(store: StoreApi<AppState>) {
   const channel = typeof BroadcastChannel !== "undefined" ? new BroadcastChannel("vocab-learn-v2") : null;
   const refresh = () => {
     if (!store.getState().ready || store.getState().busy) return;
-    void readSnapshot()
+    const profile = store.getState().profileKey;
+    void readSnapshot(profile)
       .then((data) => {
-        if (data.revision > store.getState().data.revision) store.setState({ data });
+        if (profile === store.getState().profileKey && data.revision > store.getState().data.revision)
+          store.setState({ data });
       })
       .catch(() => {
         /* Keep the last readable state. */

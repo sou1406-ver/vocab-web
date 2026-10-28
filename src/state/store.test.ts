@@ -8,6 +8,23 @@ const catalog = defaultBook.catalog;
 vi.mock("../data/repository", () => ({ readSnapshot: vi.fn(), changeSnapshot: vi.fn() }));
 
 describe("App store isolation", () => {
+  it("does not let a delayed profile read expose another account", async () => {
+    let finish!: (data: ReturnType<typeof emptySnapshot>) => void;
+    vi.mocked(readSnapshot).mockImplementation(async (profile) =>
+      profile === "user:a"
+        ? new Promise((resolve) => {
+            finish = resolve;
+          })
+        : { ...emptySnapshot(), settings: { ...emptySnapshot().settings, name: "B" } },
+    );
+    const store = createAppStore();
+    const first = store.getState().switchProfile("user:a");
+    await store.getState().switchProfile("user:b");
+    finish({ ...emptySnapshot(), settings: { ...emptySnapshot().settings, name: "A" } });
+    await first;
+    expect(store.getState().profileKey).toBe("user:b");
+    expect(store.getState().data.settings.name).toBe("B");
+  });
   it("seeds recognition with the actual saved session ID", async () => {
     let persisted = emptySnapshot();
     vi.mocked(changeSnapshot).mockImplementation(async (reduce) => {

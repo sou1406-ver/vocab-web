@@ -8,14 +8,17 @@ import { Icon } from "../shared/ui";
 import { dayKey } from "../domain/learning";
 import { UserAvatar } from "../components/UserAvatar";
 import { SpeechPreferences } from "../components/SpeechPreferences";
+import { AccountPanel } from "../components/AccountPanel";
+import type { Snapshot } from "../domain/types";
 
 const initialAvatarSeeds = Array.from({ length: 12 }, (_, i) => `vocab-avatar-${i + 1}`);
 
 export default function Settings() {
   const { data, busy, change } = useApp();
-  const [name, setName] = useState(data.settings.name);
-  const [goal, setGoal] = useState(data.settings.dailyNew);
-  const [theme, setTheme] = useState(data.settings.theme);
+  const [draft, setDraft] = useState<Partial<Snapshot["settings"]>>({});
+  const name = draft.name ?? data.settings.name;
+  const goal = draft.dailyNew ?? data.settings.dailyNew;
+  const theme = draft.theme ?? data.settings.theme;
   const [avatarSeed, setAvatarSeed] = useState<string>();
   const [avatarSeeds, setAvatarSeeds] = useState<string[] | null>(null);
   const selectedAvatar = avatarSeed ?? data.settings.avatarSeed ?? (name.trim() || "Vocab guest");
@@ -42,8 +45,10 @@ export default function Settings() {
           ...(avatarSeed === undefined ? {} : { avatarSeed }),
         },
       }))
-    )
+    ) {
+      setDraft({});
       setNotice("Đã lưu tuỳ chọn của bạn.");
+    }
   };
   const download = () => {
     const blob = new Blob(
@@ -89,18 +94,7 @@ export default function Settings() {
           <p className="page-subtitle">Điều chỉnh mục tiêu và giữ một bản sao hành trình học.</p>
         </div>
       </div>
-      <section className="local-notice">
-        <span className="stat-icon green">
-          <Icon name="check" />
-        </span>
-        <div>
-          <h2>Đang học trên thiết bị này</h2>
-          <p>
-            Bản thử nghiệm lưu tiến độ trong trình duyệt. Tải bản sao để mang theo khi đổi máy hoặc xoá dữ liệu trình
-            duyệt. Đồng bộ tài khoản sẽ được bổ sung trước khi phát hành chính thức.
-          </p>
-        </div>
-      </section>
+      <AccountPanel />
       <div className="settings-columns">
         <section className="panel">
           <div className="section-heading">
@@ -115,7 +109,7 @@ export default function Settings() {
               maxLength={60}
               placeholder="Tên của bạn"
               value={name}
-              onChange={(e) => setName(e.target.value)}
+              onChange={(e) => setDraft((value) => ({ ...value, name: e.target.value }))}
             />
             <fieldset className="avatar-picker">
               <legend>Ảnh đại diện</legend>
@@ -147,7 +141,11 @@ export default function Settings() {
               </button>
             </fieldset>
             <label htmlFor="daily-goal">Mục tiêu từ mới mỗi ngày</label>
-            <select id="daily-goal" value={goal} onChange={(e) => setGoal(Number(e.target.value))}>
+            <select
+              id="daily-goal"
+              value={goal}
+              onChange={(e) => setDraft((value) => ({ ...value, dailyNew: Number(e.target.value) }))}
+            >
               {[5, 10, 15, 20, 30, 50].includes(goal) ? null : <option value={goal}>{goal} từ</option>}
               {[5, 10, 15, 20, 30, 50].map((n) => (
                 <option key={n} value={n}>
@@ -157,7 +155,11 @@ export default function Settings() {
             </select>
             <p className="field-hint">Đây là mục tiêu gợi ý. Bạn vẫn có thể học thêm khi muốn.</p>
             <label htmlFor="theme-select">Giao diện</label>
-            <select id="theme-select" value={theme} onChange={(e) => setTheme(e.target.value as typeof theme)}>
+            <select
+              id="theme-select"
+              value={theme}
+              onChange={(e) => setDraft((value) => ({ ...value, theme: e.target.value as typeof theme }))}
+            >
               <option value="system">Theo thiết bị</option>
               <option value="light">Sáng</option>
               <option value="dark">Tối</option>

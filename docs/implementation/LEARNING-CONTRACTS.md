@@ -166,18 +166,32 @@ Sau 6 event mới sang feedback của bảng; advance nhảy 6 question hoặc k
 
 Avatar Boring Avatars lưu seed trong `settings.avatarSeed` optional (chuỗi không rỗng, tối đa 200 ký tự). Bản sao cũ không có field này vẫn đọc được với schemaVersion 2; avatar mặc định sinh theo tên hoặc seed khách. Chọn avatar không đổi tên, tiến độ hay catalog/fingerprint. Bản sao lưu giữ nguyên lựa chọn.
 
-## 5. Đề xuất: hợp đồng đồng bộ trước khi chọn collection
+## 5. Hợp đồng đăng nhập và đồng bộ (28/10/2026)
 
-**Chưa triển khai Auth/Firestore hoặc thay rules.** Trước khi sync cần quyết định:
+Người dùng chốt Firebase project mới `vocab-web-next`, Google Auth và đồng bộ. Không kết nối project V1. Snapshot vẫn schemaVersion 2, database `vocab-learn-v2`, event ID `sessionId:index`, scoringVersion và fingerprint không đổi.
 
-- Mỗi tài khoản có namespace dữ liệu riêng; tách guest và có bước xác nhận nhập dữ liệu guest.
-- Event có ID ổn định để retry không tạo thêm kết quả. Session hiện đã dùng UUID và event sessionId:index; deviceId còn cần bổ sung khi triển khai sync.
-- Không giải quyết hai thiết bị bằng ghi đè toàn bộ snapshot hoặc lấy box lớn nhất. Hai thiết bị có thể trả lời cùng một từ; phải có luật xác định câu nào được tính vào lịch ôn.
-- Xác định nguồn có thẩm quyền cho thứ tự thời gian, timezone/ngày ôn và policyVersion; không giả định timestamp từ hai máy luôn chính xác.
-- Giữ lịch sử nhập/điểm xuất phát từ V1. Không dựng lại tiến độ chỉ từ event vì dữ liệu import có tiến độ nhưng không có lịch sử event đầy đủ.
-- Quy tắc reset/xóa/khôi phục và đổi tài khoản cần ngăn dữ liệu cũ được đồng bộ quay lại ngoài ý muốn.
+Thiết kế và kế hoạch triển khai:
 
-Có thể lưu events, progress, settings và session thành các phần riêng khi làm adapter cloud. Đường collection, quyền ghi và cách hợp nhất chưa được coi là chốt hoặc đã nghiệm thu. Phải kiểm chứng bằng Emulator và hai thiết bị/offline trước khi bật đồng bộ.
+- [x] Nhật ký bất biến dưới `users/{uid}/changes/{operationId}`; transaction cấp `order` tăng dần và thời gian server, retry theo operationId không tạo thêm thay đổi. Payload lớn chia chunk trong cùng transaction. Không ghi đè snapshot của máy khác.
+- [x] IndexedDB giữ nguyên key `guest`; tài khoản dùng `user:<uid>`, với snapshot, nhật ký đã nhận và outbox trong cùng transaction. Session đang làm giữ riêng mỗi máy. Đổi user chặn thao tác cho tới khi đọc đúng namespace; callback cũ không được cập nhật user mới.
+- [x] Tiến độ trước sync/import là seed theo từng từ, giữ cả import V1 không có event. Seed đến đầu tiên thắng khi trùng từ; event đã nằm trong seed không tính lại. Event mới được tính lại theo policy 1 và thứ tự server, dùng thời gian server khi xác định lịch ôn; practice/Match không đổi lịch. Không lấy box lớn nhất.
+- [x] Cài đặt cập nhật theo field; từ riêng/yêu thích theo ID; lịch sử theo sessionId; import và archive giữ lại. Hỏi rõ nhập guest vào tài khoản, không tự nhập khi đổi user. Guest gốc được giữ nguyên; lựa chọn nhớ riêng từng tài khoản trên máy.
+- [x] Khôi phục backup là thao tác thay thế có generation mới. Thay đổi offline dựa trên generation cũ bị chặn, giữ outbox và cho xuất backup trước khi chọn dùng dữ liệu mới, không tự phục hồi dữ liệu đã bị thay.
+- [x] Google popup, quan sát auth state, lỗi tiếng Việt; config công khai chỉ cho project mới; SSR không gọi API trình duyệt. Rules chỉ cho chủ UID đọc/ghi, kiểm tra cấu trúc, nhật ký/chunk bất biến, counter liên kết transaction.
+- [x] Kiểm chứng RED/GREEN cho replay, retry, seed cũ, hai thiết bị, practice, namespace và callback trễ; Emulator cho Auth/Firestore/rules; E2E Settings/đổi user/offline và accessibility; lint/format/build cuối đợt.
+
+Giới hạn: chưa có backend chống người dùng tự sửa điểm của chính họ; thứ tự commit server là thẩm quyền khi gộp lịch, không suy ra giờ thực tế của thao tác offline. Chỉ tải nhật ký thuộc UID hiện tại; tối ưu checkpoint/phân trang có thể bổ sung khi nhật ký lớn. Không thay đổi giọng/tốc độ phát âm theo tài khoản.
+
+### Cấu hình và vận hành
+
+- Firebase project `vocab-web-next`, database `(default)`, Standard, `asia-southeast1`. Web config là cấu hình công khai trong `src/lib/firebase.ts`; không cần service-account/private key trên Vercel. `NEXT_PUBLIC_FIREBASE_API_KEY` chỉ là override tùy chọn; để trống dùng config đã được cung cấp. Analytics không khởi tạo.
+- Bật Google provider và cho phép domain `vocab-web-beta.vercel.app`, `localhost`, `127.0.0.1` trong Authentication. Không đổi `authDomain` sang domain Vercel khi chưa proxy Firebase auth handler.
+- Publish rules: `npx -y firebase-tools@latest deploy --only firestore:rules --project vocab-web-next`. Không deploy Hosting/rules vào project V1.
+- Kiểm thử local: `npx -y firebase-tools@latest emulators:start --only auth,firestore --project demo-vocab-sync`; đặt `NEXT_PUBLIC_FIREBASE_EMULATORS=1` khi chạy Next dev. Chạy `FIREBASE_SYNC_EMULATOR_TEST=1 npx vitest run src/data/sync-emulator.test.ts` và `E2E_FIREBASE_EMULATOR=1 PW_CHANNEL=msedge npx playwright test e2e/auth-sync.spec.ts`. Biến môi trường ví dụ theo cú pháp shell POSIX; trong PowerShell dùng `$env:TEN_BIEN = '1'`.
+- Không đặt `NEXT_PUBLIC_FIREBASE_EMULATORS` trên Vercel. Emulator dùng riêng project demo; production luôn dùng project mới. Mỗi operation giới hạn 6 MB, chia chunk không cắt đôi emoji; vượt giới hạn báo rõ và giữ dữ liệu local, không cắt archive âm thầm.
+- Rules là bản đầu đã kiểm thử Emulator: owner-only cho từng UID, kiểm tra key/type/counter và nhật ký bất biến. Cần review lại khi mở rộng schema hoặc phát hành rộng; không bảo đảm chống chủ tài khoản tự sửa điểm của chính họ.
+
+Kiểm chứng cuối: 190/190 unit và Emulator tests; 4/4 E2E Auth/sync desktop/mobile; các spec trạng thái lưu và theme qua sau khi chặn nút theme lúc chưa ready. Typecheck, format và build production qua; lint 0 lỗi, 1 cảnh báo ref dùng để vô hiệu hóa callback cũ. Review đã sửa session sau restore, kết nối lại listener và form nhận settings từ cloud.
 
 ## Kiểm chứng
 

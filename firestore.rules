@@ -1,9 +1,58 @@
 rules_version = '2';
-// Mỗi tài khoản Google chỉ đọc / ghi được tài liệu của chính mình: users/<uid>
+// users/{uid}/sync/state: version, revision, generation, latestId, updatedAt.
+// users/{uid}/changes/{id}: immutable ordered operation metadata.
+// users/{uid}/changes/{id}/chunks/{index}: immutable JSON payload fragments.
+// All paths are private to the authenticated UID; all other access is denied.
 service cloud.firestore {
   match /databases/{database}/documents {
-    match /users/{uid} {
-      allow read, write: if request.auth != null && request.auth.uid == uid;
+    function owner(uid) { return request.auth != null && request.auth.uid == uid; }
+    function head(uid) { return /databases/$(database)/documents/users/$(uid)/sync/state; }
+    function entry(uid, id) { return /databases/$(database)/documents/users/$(uid)/changes/$(id); }
+    function validHead(uid) {
+      let d = request.resource.data;
+      let op = getAfter(entry(uid, d.latestId)).data;
+      return d.keys().hasAll(['version', 'revision', 'generation', 'latestId', 'updatedAt'])
+        && d.keys().hasOnly(['version', 'revision', 'generation', 'latestId', 'updatedAt'])
+        && d.version == 1 && d.revision is int && d.revision > 0
+        && d.generation is string && d.generation.size() > 0 && d.generation.size() <= 128
+        && d.latestId is string && d.latestId.size() > 0 && d.latestId.size() <= 128
+        && d.updatedAt == request.time && op.order == d.revision
+        && !exists(entry(uid, d.latestId))
+        && d.generation == (op.kind == 'restore' ? d.latestId : op.generation);
+    }
+    function validEntry(uid, id) {
+      let d = request.resource.data;
+      let h = getAfter(head(uid)).data;
+      return d.keys().hasAll(['version', 'deviceId', 'generation', 'kind', 'order', 'at', 'parts'])
+        && d.keys().hasOnly(['version', 'deviceId', 'generation', 'kind', 'order', 'at', 'parts'])
+        && id.size() > 0 && id.size() <= 128 && d.version == 1
+        && d.deviceId is string && d.deviceId.size() > 0 && d.deviceId.size() <= 128
+        && d.generation is string && d.generation.size() > 0 && d.generation.size() <= 128
+        && d.kind in ['patch', 'import', 'restore'] && d.order is int && d.order > 0
+        && d.at == request.time && d.parts is int && d.parts >= 1 && d.parts <= 100
+        && h.latestId == id && h.revision == d.order
+        && h.generation == (d.kind == 'restore' ? id : d.generation)
+        && (exists(head(uid)) ? d.generation == get(head(uid)).data.generation : d.generation == 'initial');
+    }
+    function validChunk(uid, id, index) {
+      let d = request.resource.data;
+      return d.keys().hasAll(['payload']) && d.keys().hasOnly(['payload'])
+        && d.payload is string && d.payload.size() > 0 && d.payload.size() <= 150000
+        && index.matches('^[0-9]{1,3}$') && int(index) < getAfter(entry(uid, id)).data.parts
+        && !exists(entry(uid, id));
+    }
+    match /users/{uid}/sync/state {
+      allow read: if owner(uid);
+      allow create: if owner(uid) && validHead(uid) && request.resource.data.revision == 1;
+      allow update: if owner(uid) && validHead(uid) && request.resource.data.revision == resource.data.revision + 1;
+    }
+    match /users/{uid}/changes/{id} {
+      allow read: if owner(uid);
+      allow create: if owner(uid) && validEntry(uid, id);
+      match /chunks/{index} {
+        allow read: if owner(uid);
+        allow create: if owner(uid) && validChunk(uid, id, index);
+      }
     }
   }
 }
