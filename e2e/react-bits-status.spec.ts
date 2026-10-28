@@ -88,7 +88,7 @@ test("React Bits save indicator follows actual save, failure and recovery withou
 
 test("React Bits answer marks preserve feedback text, keyboard flow and reduced motion", async ({ page }, testInfo) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
-  await page.goto("/lessons/1");
+  await page.goto("/books/toeic-600/lessons/1");
   await page.getByRole("button", { name: "Học 5 từ tiếp theo", exact: true }).click();
   await page.getByRole("button", { name: "Đã xem, thử nhớ lại" }).click();
   await page.getByRole("button", { name: "Chưa nhớ, xem đáp án" }).click();

@@ -80,7 +80,7 @@ test("reduced motion and transparency keep dialog geometry, keyboard and study f
   await page.keyboard.press("Escape");
   await expect(dialog).toHaveCount(0);
   await expect(opener).toBeFocused();
-  await page.goto("/lessons/1");
+  await page.goto("/books/toeic-600/lessons/1");
   await page.getByRole("button", { name: "Học 5 từ tiếp theo", exact: true }).click();
   await expect(page.locator(".study-step")).toBeVisible();
   expect(await page.locator(".study-step").evaluate((node) => getComputedStyle(node).animationName)).toBe("none");
