@@ -413,34 +413,6 @@ export default function Lessons({ bookId, lessonId: id }: { bookId?: string; les
         </select>
         <span className="muted">{visible.length} bài học</span>
       </div>
-      <section className="topic-match-section" aria-label="Nối từ theo chủ đề">
-        <div className="section-heading">
-          <h2>Nối từ theo chủ đề</h2>
-          <span className="muted">6 cặp · Luyện thêm không tăng bậc ôn</span>
-        </div>
-        <div className="topic-match-grid">
-          {catalog.topics
-            .filter((item) => topic === "all" || item.id === topic)
-            .map((item) => (
-              <div className="panel topic-match-card" key={item.id}>
-                <h3>{item.title}</h3>
-                <button
-                  className="button secondary"
-                  aria-label={`Nối từ: ${item.title}`}
-                  disabled={busy}
-                  onClick={() => void practiceMatch(item.id)}
-                >
-                  Nối từ <Icon name="arrow" size={16} />
-                </button>
-              </div>
-            ))}
-        </div>
-        {matchError && (
-          <p className="inline-error" role="alert">
-            {matchError}
-          </p>
-        )}
-      </section>
       <div className="lesson-grid">
         {visible.map((l) => {
           const words = catalog.words.filter((w) => w.lesson === l.id);
@@ -466,6 +438,34 @@ export default function Lessons({ bookId, lessonId: id }: { bookId?: string; les
           );
         })}
       </div>
+      <section className="topic-match-section" aria-label="Nối từ theo chủ đề">
+        <div className="section-heading">
+          <h2>Luyện theo chủ đề</h2>
+          <span className="muted">6 cặp · Luyện thêm không tăng bậc ôn</span>
+        </div>
+        <div className="topic-match-grid">
+          {catalog.topics
+            .filter((item) => topic === "all" || item.id === topic)
+            .map((item) => (
+              <div className="panel topic-match-card" key={item.id}>
+                <h3>{item.title}</h3>
+                <button
+                  className="button secondary"
+                  aria-label={`Nối từ: ${item.title}`}
+                  disabled={busy}
+                  onClick={() => void practiceMatch(item.id)}
+                >
+                  Nối từ <Icon name="arrow" size={16} />
+                </button>
+              </div>
+            ))}
+        </div>
+        {matchError && (
+          <p className="inline-error" role="alert">
+            {matchError}
+          </p>
+        )}
+      </section>
     </div>
   );
 }
