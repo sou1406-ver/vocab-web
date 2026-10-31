@@ -95,7 +95,24 @@ export function revealQuestionLetter(snapshot: Snapshot, sessionId: string, inde
     },
   };
 }
-export function makeQuestions(words: Word[], all: Word[], mode: SessionMode, sessionId = "preview"): Question[] {
+function distractorPool(word: Word, all: Word[], lessons: Catalog["lessons"], seed: string): Word[] {
+  const topics = new Map(lessons.map((lesson) => [lesson.id, lesson.topicId]));
+  const topic = topics.get(word.lesson);
+  const tiers: Word[][] = Array.from({ length: 6 }, () => []);
+  for (const candidate of all) {
+    const distance =
+      candidate.lesson === word.lesson ? 0 : topic !== undefined && topics.get(candidate.lesson) === topic ? 1 : 2;
+    tiers[(candidate.pos === word.pos ? 0 : 3) + distance].push(candidate);
+  }
+  return tiers.flatMap((tier, index) => shuffleSeeded(tier, `${seed}:${word.id}:pool:${index}`));
+}
+export function makeQuestions(
+  words: Word[],
+  all: Word[],
+  mode: SessionMode,
+  sessionId = "preview",
+  lessons: Catalog["lessons"] = [],
+): Question[] {
   return words.map((word, i) => {
     const match = word.examples.find((example) =>
       new RegExp(`\\b${escapeRegex(word.text)}\\b`, "i").test(example.text),
@@ -112,7 +129,7 @@ export function makeQuestions(words: Word[], all: Word[], mode: SessionMode, ses
     if (kind !== 0) return { wordId: word.id, kind: "recall", prompt: word.meaning, answer: word.text, options: [] };
     const meanings = new Set([word.meaning]);
     const choices = [word.meaning];
-    for (const candidate of [...all.filter((w) => w.pos === word.pos), ...all]) {
+    for (const candidate of distractorPool(word, all, lessons, sessionId)) {
       if (candidate.text === word.text || meanings.has(candidate.meaning)) continue;
       if (candidate.meaning.split(/[;,]/).some((part) => word.meaning.includes(part.trim()))) continue;
       choices.push(candidate.meaning);
@@ -144,7 +161,7 @@ export function beginSession(
     id,
     title,
     mode,
-    questions: makeQuestions(words, catalog.words, mode, id),
+    questions: makeQuestions(words, catalog.words, mode, id, catalog.lessons),
     contentVersion: catalog.version,
     index: 0,
     phase: mode === "learn" ? "learn" : "question",
@@ -154,7 +171,12 @@ export function beginSession(
   const next = { ...snapshot, session };
   return mode === "learn" ? introduce(next, words[0].id, at) : next;
 }
-export function makeRecognitionQuestions(words: Word[], all: Word[], sessionId = "preview"): RecognitionQuestion[] {
+export function makeRecognitionQuestions(
+  words: Word[],
+  all: Word[],
+  sessionId = "preview",
+  lessons: Catalog["lessons"] = [],
+): RecognitionQuestion[] {
   const glosses = (value: string) =>
     normalizeAnswer(value)
       .split(/[;,]/)
@@ -162,7 +184,7 @@ export function makeRecognitionQuestions(words: Word[], all: Word[], sessionId =
       .filter(Boolean);
   return words.flatMap((word): RecognitionQuestion[] => {
     const related = new Set([word.text, ...word.synonyms, ...word.family.map((f) => f.text)].map(normalizeAnswer));
-    const pool = [...all.filter((w) => w.pos === word.pos), ...all.filter((w) => w.pos !== word.pos)];
+    const pool = distractorPool(word, all, lessons, sessionId);
     const chosen = [word];
     const names = new Set([normalizeAnswer(word.text)]);
     const meanings = new Set([normalizeAnswer(word.meaning)]);

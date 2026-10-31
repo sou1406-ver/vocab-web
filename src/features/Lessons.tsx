@@ -152,7 +152,12 @@ export default function Lessons({ bookId, lessonId: id }: { bookId?: string; les
         const offset =
           (data.history.filter((item) => item.mode === "practice" && item.title === title).length * 6) % words.length;
         const batch = [...words.slice(offset), ...words.slice(0, offset)].slice(0, 6);
-        if (await startExercises((sessionId) => makeRecognitionQuestions(batch, catalog.words, sessionId), title))
+        if (
+          await startExercises(
+            (sessionId) => makeRecognitionQuestions(batch, catalog.words, sessionId, catalog.lessons),
+            title,
+          )
+        )
           router.push("/study");
       } catch (error) {
         setRecognitionError(error instanceof Error ? error.message : "Chưa mở được bài luyện.");
