@@ -1,3 +1,4 @@
+import { setTheme, toggleTheme, waitForSaved } from "./app-ready";
 import { test, expect } from "@playwright/test";
 import { readFileSync } from "node:fs";
 
@@ -20,7 +21,7 @@ test("brand kit logo follows theme and viewport, with matching app icons", async
   await expect(page.locator('link[rel="manifest"]')).toHaveAttribute("href", "/site.webmanifest");
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await page.screenshot({ path: `test-results/vocab-logo-${testInfo.project.name}.png` });
-  await page.getByRole("button", { name: "Đổi giao diện sáng tối" }).click();
+  await toggleTheme(page);
   await expect(logo).toHaveAttribute("src", "/brand/logo-dark.svg");
   await expect(page.locator('nav[aria-label="Điều hướng chính"] a[href="/library"] svg circle')).toHaveAttribute(
     "fill",
@@ -59,13 +60,12 @@ test("short desktop and compact sidebars scroll the menu while keeping settings 
   page,
 }, testInfo) => {
   test.skip(testInfo.project.name !== "desktop", "The sidebar is hidden on mobile.");
-  for (const theme of ["light", "dark"]) {
+  for (const theme of ["light", "dark"] as const) {
     for (const width of [1440, 768]) {
       await page.setViewportSize({ width, height: 400 });
       await page.goto("/");
       await expect(page.getByText("Đang mở dữ liệu…")).not.toBeVisible();
-      if ((await page.locator("html").getAttribute("data-theme")) !== theme)
-        await page.getByRole("button", { name: "Đổi giao diện sáng tối" }).click();
+      await setTheme(page, theme);
       const menu = page.getByRole("navigation", { name: "Điều hướng chính", exact: true });
       const settings = page.getByRole("link", { name: "Cài đặt và sao lưu", exact: true });
       const footer = page.locator(".sidebar-footer");
@@ -100,6 +100,7 @@ test("desktop sidebar shows every destination without scrolling at ordinary lapt
   await page.goto("/settings");
   await page.getByRole("checkbox", { name: "Học sâu: gốc từ", exact: true }).check();
   await page.getByRole("button", { name: "Lưu tuỳ chọn", exact: true }).click();
+  await waitForSaved(page);
   await expect(page.getByRole("status").filter({ hasText: "Đã lưu tuỳ chọn" })).toBeVisible();
   const menu = page.getByRole("navigation", { name: "Điều hướng chính", exact: true });
   for (const height of [600, 768, 900]) {

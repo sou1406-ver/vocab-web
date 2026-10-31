@@ -1,5 +1,5 @@
+import { scanAccessibility, waitForResult, waitForSaved } from "./app-ready";
 import { test, expect, type Page } from "@playwright/test";
-import AxeBuilder from "@axe-core/playwright";
 import { readFileSync } from "node:fs";
 import type { Catalog, Snapshot, SynonymQuestion } from "../src/domain/types";
 
@@ -14,7 +14,8 @@ const lesson = [...catalog.lessons].sort(
 const escape = (text: string) => text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 const option = (page: Page, text: string) =>
   page.getByRole("button", { name: new RegExp(`^[A-D]\\s*${escape(text)}$`) });
-function readSnapshot(page: Page) {
+async function readSnapshot(page: Page) {
+  await waitForSaved(page);
   return page.evaluate(
     () =>
       new Promise<Snapshot>((resolve, reject) => {
@@ -70,6 +71,7 @@ test("word relations label antonyms explicitly, save direction and retain the qu
     mode: "practice",
   });
   await page.getByRole("button", { name: "Kết thúc tại đây" }).click();
+  await waitForResult(page);
   await page.getByRole("button", { name: "Luyện lại từ vừa sai" }).click();
   await expect(page.getByRole("heading", { name: "Chọn từ trái nghĩa" })).toBeVisible();
   const retry = await readSnapshot(page);
@@ -78,6 +80,7 @@ test("word relations label antonyms explicitly, save direction and retain the qu
     prompt: questions[ant].prompt,
     answer: questions[ant].answer,
   });
+  await waitForSaved(page);
   await page.reload();
   await expect(page.locator(".question-prompt .small-label")).toHaveText("TRÁI NGHĨA");
   await option(page, questions[ant].answer).click();
@@ -97,10 +100,11 @@ test("context underlines the single original word and never replaces it with a s
   await expect(page.locator(".question-prompt p")).not.toContainText("___");
   await expect(page.getByRole("textbox")).toHaveCount(0);
   await expect(page.getByRole("button", { name: "Gợi ý một chữ" })).toHaveCount(0);
-  expect((await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa"]).analyze()).violations).toEqual([]);
+  expect((await scanAccessibility(page)).violations).toEqual([]);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await page.screenshot({ path: `test-results/synonym-context-${testInfo.project.name}.png` });
   const labels = await page.locator(".answer-option").allTextContents();
+  await waitForSaved(page);
   await page.reload();
   await expect(page.locator(".answer-option")).toHaveText(labels);
   await option(page, q.answer).click();

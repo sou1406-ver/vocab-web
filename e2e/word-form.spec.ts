@@ -1,5 +1,5 @@
+import { scanAccessibility, waitForResult, waitForSaved } from "./app-ready";
 import { test, expect, type Page } from "@playwright/test";
-import AxeBuilder from "@axe-core/playwright";
 import { readFileSync } from "node:fs";
 import type { ClozeChoiceQuestion, Snapshot, WordFormQuestion } from "../src/domain/types";
 
@@ -15,7 +15,8 @@ const authoredSources = manifest.lessons.flatMap((entry) => {
   return pack.questions.map((question) => ({ lessonId: entry.lessonId, question }));
 });
 
-function readSnapshot(page: Page) {
+async function readSnapshot(page: Page) {
+  await waitForSaved(page);
   return page.evaluate(
     () =>
       new Promise<Snapshot>((resolve, reject) => {
@@ -66,14 +67,16 @@ test("typed word form loads on demand, keeps cues and hints across tabs, and ret
   const input = page.getByRole("textbox", { name: "Đáp án của bạn" });
   await page.getByRole("button", { name: "Gợi ý một chữ" }).click();
   await expect(input).toBeFocused();
+  await waitForSaved(page);
   await page.reload();
   await expect(page.locator(".letter-slot.is-revealed")).toHaveCount(1);
   expect(requests).toBe(2);
   const other = await context.newPage();
+  await waitForSaved(page);
   await other.goto("/study");
   await other.getByRole("button", { name: "Gợi ý một chữ" }).click();
   await expect(page.locator(".letter-slot.is-revealed")).toHaveCount(2);
-  expect((await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa"]).analyze()).violations).toEqual([]);
+  expect((await scanAccessibility(page)).violations).toEqual([]);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await page.screenshot({ path: `test-results/word-form-${testInfo.project.name}.png` });
   await input.fill(question.answer);
@@ -101,6 +104,7 @@ test("typed word form loads on demand, keeps cues and hints across tabs, and ret
   await input.press("Enter");
   await expect(page.getByText("Chưa đúng, cùng xem lại nhé.")).toBeVisible();
   await page.getByRole("button", { name: "Kết thúc tại đây" }).click();
+  await waitForResult(page);
   await page.getByRole("button", { name: "Luyện lại từ vừa sai" }).click();
   await expect(page.getByRole("heading", { name: "Gõ dạng từ phù hợp" })).toBeVisible();
   await expect(page.locator(".question-prompt p")).toHaveText(next.prompt);

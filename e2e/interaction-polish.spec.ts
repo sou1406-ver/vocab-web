@@ -1,5 +1,5 @@
+import { scanAccessibility } from "./app-ready";
 import { test, expect } from "@playwright/test";
-import AxeBuilder from "@axe-core/playwright";
 import { mockSpeech } from "./speech-mock";
 
 test("word dialog responds on press, remains usable during its fade and restores focus", async ({ page }, testInfo) => {
@@ -31,7 +31,7 @@ test("word dialog responds on press, remains usable during its fade and restores
   await expect(opener).toBeFocused();
   await opener.press("Enter");
   await expect(dialog).toBeVisible();
-  expect((await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa"]).analyze()).violations).toEqual([]);
+  expect((await scanAccessibility(page)).violations).toEqual([]);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await page.screenshot({ path: testInfo.outputPath("word-dialog.png") });
 });

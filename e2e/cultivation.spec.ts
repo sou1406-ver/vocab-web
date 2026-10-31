@@ -1,5 +1,5 @@
+import { scanAccessibility, toggleTheme, waitForSaved } from "./app-ready";
 import { test, expect } from "@playwright/test";
-import AxeBuilder from "@axe-core/playwright";
 import { readFileSync } from "node:fs";
 import type { Catalog, Snapshot } from "../src/domain/types";
 
@@ -13,6 +13,7 @@ test("cultivation frames advance by learned words while keeping the selected Dic
   await page.goto("/settings");
   await page.getByRole("button", { name: "Chọn avatar 5", exact: true }).click();
   await page.getByRole("button", { name: "Lưu tuỳ chọn", exact: true }).click();
+  await waitForSaved(page);
   await expect(page.getByRole("status").filter({ hasText: "Đã lưu tuỳ chọn" })).toBeVisible();
   await page.goto("/progress");
   const card = page.getByRole("region", { name: "Phàm Nhân", exact: true });
@@ -56,6 +57,7 @@ test("cultivation frames advance by learned words while keeping the selected Dic
     },
     catalog.words.slice(0, 10).map((word) => word.id),
   );
+  await waitForSaved(page);
   await page.reload();
   await expect(page.getByRole("heading", { name: "Luyện Khí", exact: true })).toBeVisible();
   await expect(portrait).toHaveClass(/cultivation-avatar--1\b/);
@@ -76,10 +78,10 @@ test("cultivation frames advance by learned words while keeping the selected Dic
   await page.getByText("12 cảnh giới tu luyện", { exact: true }).click();
   await expect(page.locator(".cultivation-realms li")).toHaveCount(12);
   await expect(page.locator(".cultivation-realms")).toContainText("Tiên Đế");
-  expect((await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa"]).analyze()).violations).toEqual([]);
+  expect((await scanAccessibility(page)).violations).toEqual([]);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await page.screenshot({ path: testInfo.outputPath("cultivation.png"), fullPage: true });
-  await page.getByRole("button", { name: "Đổi giao diện sáng tối", exact: true }).click();
-  expect((await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa"]).analyze()).violations).toEqual([]);
+  await toggleTheme(page);
+  expect((await scanAccessibility(page)).violations).toEqual([]);
   await page.screenshot({ path: testInfo.outputPath("cultivation-dark.png"), fullPage: true });
 });

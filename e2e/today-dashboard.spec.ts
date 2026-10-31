@@ -1,5 +1,5 @@
+import { scanAccessibility, setTheme, waitForSaved } from "./app-ready";
 import { test, expect } from "@playwright/test";
-import AxeBuilder from "@axe-core/playwright";
 
 test("today uses the remaining daily goal, keeps the streak and replaces empty progress", async ({
   page,
@@ -10,6 +10,7 @@ test("today uses the remaining daily goal, keeps the streak and replaces empty p
   await page.goto("/settings");
   await page.getByLabel("Mục tiêu từ mới mỗi ngày", { exact: true }).selectOption("15");
   await page.getByRole("button", { name: "Lưu tuỳ chọn", exact: true }).click();
+  await waitForSaved(page);
   await expect(page.getByRole("status").filter({ hasText: "Đã lưu tuỳ chọn" })).toBeVisible();
   await page.goto("/");
   await expect(page.locator(".today-workload")).toHaveText("15 từ mới");
@@ -20,6 +21,7 @@ test("today uses the remaining daily goal, keeps the streak and replaces empty p
   await page.getByRole("button", { name: "Đã xem, thử nhớ lại", exact: true }).click();
   await page.getByRole("button", { name: "Chưa nhớ, xem đáp án", exact: true }).click();
   await expect(page.locator(".answer-feedback")).toBeVisible();
+  await waitForSaved(page);
   await page.goto("/");
   await expect(page.locator(".today-workload")).toHaveText("14 từ mới");
   await expect(page.locator(".today-streak-count")).toContainText("1");
@@ -27,12 +29,12 @@ test("today uses the remaining daily goal, keeps the streak and replaces empty p
     "aria-valuenow",
     "1",
   );
+  await waitForSaved(page);
   await page.reload();
   await expect(page.locator(".today-streak-count")).toContainText("1");
-  for (const theme of ["light", "dark"]) {
-    if ((await page.locator("html").getAttribute("data-theme")) !== theme)
-      await page.getByRole("button", { name: "Đổi giao diện sáng tối", exact: true }).click();
-    expect((await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa"]).analyze()).violations).toEqual([]);
+  for (const theme of ["light", "dark"] as const) {
+    await setTheme(page, theme);
+    expect((await scanAccessibility(page)).violations).toEqual([]);
     await page.screenshot({ path: testInfo.outputPath(`today-${theme}.png`), fullPage: true });
   }
   await page.goto("/progress");

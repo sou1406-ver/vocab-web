@@ -1,5 +1,5 @@
+import { scanAccessibility, waitForResult, waitForSaved } from "./app-ready";
 import { test, expect, type Page } from "@playwright/test";
-import AxeBuilder from "@axe-core/playwright";
 import { mockSpeech, readSnapshot, speechLog } from "./speech-mock";
 import type { ListeningQuestion } from "../src/domain/types";
 const escape = (text: string) => text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
@@ -29,7 +29,7 @@ test("choice autoplay and replay do not reveal the prompt or mark assistance; re
   const replayed = await readSnapshot(page);
   expect(replayed.events).toHaveLength(0);
   expect(replayed.session!.peeked ?? false).toBe(false);
-  expect((await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa"]).analyze()).violations).toEqual([]);
+  expect((await scanAccessibility(page)).violations).toEqual([]);
   await page.screenshot({ path: testInfo.outputPath("listen-choice.png"), fullPage: true });
   await choice(page, q.answer).click();
   await expect(page.locator(".answer-feedback")).toBeVisible();
@@ -48,6 +48,7 @@ test("choice autoplay and replay do not reveal the prompt or mark assistance; re
   await choice(page, second.options.find((value) => value !== second.answer)!).click();
   await expect(page.locator(".answer-feedback")).toBeVisible();
   await page.getByRole("button", { name: "Kết thúc tại đây", exact: true }).click();
+  await waitForResult(page);
   await page.getByRole("button", { name: "Luyện lại từ vừa sai", exact: true }).click();
   await expect(page.getByRole("heading", { name: "Nghe và chọn từ", exact: true })).toBeVisible();
   await choice(page, second.answer).click();
@@ -80,6 +81,7 @@ test("typed listening keeps hints across reload and replay, and only excess hint
     await expect(page.locator(".letter-slot.is-revealed")).toHaveCount(n + 1);
   }
   await page.getByRole("button", { name: "Nghe lại", exact: true }).click();
+  await waitForSaved(page);
   await page.reload();
   await expect(page.locator(".letter-slot.is-revealed")).toHaveCount(limit);
   await expect(page.getByRole("button", { name: "Nghe lại", exact: true })).toBeVisible();

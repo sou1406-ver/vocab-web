@@ -1,5 +1,5 @@
+import { scanAccessibility, toggleTheme, waitForVisualReady } from "./app-ready";
 import { test, expect } from "@playwright/test";
-import AxeBuilder from "@axe-core/playwright";
 
 test("React Bits save indicator follows actual save, failure and recovery without delaying writes", async ({
   page,
@@ -76,7 +76,7 @@ test("React Bits save indicator follows actual save, failure and recovery withou
   await page.getByRole("button", { name: "Lưu tuỳ chọn", exact: false }).click();
   await expect(mark).toHaveAttribute("data-status", "done");
   await expect(page.locator(".error-banner")).toHaveCount(0);
-  expect((await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa"]).analyze()).violations).toEqual([]);
+  expect((await scanAccessibility(page)).violations).toEqual([]);
   await page.evaluate(() => window.scrollTo(0, 0));
   await page.screenshot({ path: testInfo.outputPath("status-mark-light.png") });
   await page.evaluate(() => {
@@ -93,7 +93,7 @@ test("React Bits save indicator follows actual save, failure and recovery withou
     });
     observer.observe(root, { attributes: true, attributeFilter: ["data-theme"] });
   });
-  await page.getByRole("button", { name: "Đổi giao diện sáng tối", exact: true }).click();
+  await toggleTheme(page);
   await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
   expect(await page.evaluate(() => (window as unknown as { __themeTransition: unknown }).__themeTransition)).toEqual({
     switching: true,
@@ -114,7 +114,7 @@ test("React Bits save indicator follows actual save, failure and recovery withou
   }
   await expect(page.locator("body")).toHaveCSS("background-color", "rgb(14, 21, 18)");
   await expect(mark).toHaveAttribute("data-status", "done");
-  expect((await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa"]).analyze()).violations).toEqual([]);
+  expect((await scanAccessibility(page)).violations).toEqual([]);
   await page.screenshot({ path: testInfo.outputPath("status-mark-dark.png") });
 });
 
@@ -128,6 +128,7 @@ test("React Bits answer marks preserve feedback text, keyboard flow and reduced 
   await expect(mark).toHaveAttribute("data-status", "failed");
   await expect(mark).toHaveAttribute("aria-hidden", "true");
   await expect(page.getByText("Gặp lại thêm một lần nhé.", { exact: true })).toBeVisible();
+  await waitForVisualReady(page);
   const colors = await mark.evaluate((node) => ({
     glyph: getComputedStyle(node.querySelector("svg")!).color,
     text: getComputedStyle(node.parentElement!).color,
@@ -140,6 +141,7 @@ test("React Bits answer marks preserve feedback text, keyboard flow and reduced 
   await page.getByRole("button", { name: "Kiểm tra", exact: true }).click();
   await expect(mark).toHaveAttribute("data-status", "done");
   await expect(page.getByText("Chính xác. Bạn nhớ rồi!", { exact: true })).toBeVisible();
+  await waitForVisualReady(page);
   const doneColors = await mark.evaluate((node) => ({
     glyph: getComputedStyle(node.querySelector("svg")!).color,
     text: getComputedStyle(node.parentElement!).color,
@@ -149,7 +151,7 @@ test("React Bits answer marks preserve feedback text, keyboard flow and reduced 
   expect(await mark.locator(".status-mark__check").evaluate((node) => getComputedStyle(node).transitionProperty)).toBe(
     "none",
   );
-  expect((await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa"]).analyze()).violations).toEqual([]);
+  expect((await scanAccessibility(page)).violations).toEqual([]);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await page.getByRole("button", { name: "Từ tiếp theo", exact: true }).focus();
   await page.evaluate(() => window.scrollTo(0, 0));

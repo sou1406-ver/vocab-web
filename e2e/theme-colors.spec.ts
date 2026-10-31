@@ -1,5 +1,5 @@
+import { scanAccessibility, setTheme, waitForVisualReady } from "./app-ready";
 import { test, expect } from "@playwright/test";
-import AxeBuilder from "@axe-core/playwright";
 
 function luminance(color: string) {
   const hex = color.slice(1);
@@ -30,8 +30,7 @@ for (const theme of ["light", "dark"] as const) {
     await page.goto("/");
     await expect(page.getByText("Đang mở dữ liệu…")).not.toBeVisible();
     await expect(page.locator(".today-highlights")).toBeVisible();
-    if ((await page.locator("html").getAttribute("data-theme")) !== theme)
-      await page.getByRole("button", { name: "Đổi giao diện sáng tối" }).click();
+    await setTheme(page, theme);
     await expect(page.locator("html")).toHaveAttribute("data-theme", theme);
     const logo = page.locator(testInfo.project.name === "mobile" ? ".mobile-brand img" : ".sidebar .brand img");
     await expect(logo).toBeVisible();
@@ -43,6 +42,7 @@ for (const theme of ["light", "dark"] as const) {
       "href",
       "/favicon.svg?v=pocket",
     );
+    await waitForVisualReady(page);
     const palette = await page.evaluate(() => {
       const root = getComputedStyle(document.documentElement);
       const tokens = Object.fromEntries(
@@ -94,13 +94,13 @@ for (const theme of ["light", "dark"] as const) {
     });
     expect(moved).toBe(palette.due);
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
-    const result = await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa"]).analyze();
+    const result = await scanAccessibility(page);
     expect(result.violations.map((v) => ({ id: v.id, nodes: v.nodes.map((n) => n.target) }))).toEqual([]);
     await page.screenshot({ path: testInfo.outputPath(`${theme}-home.png`), fullPage: true });
     for (const path of ["/books/toeic-600/lessons/1", "/library", "/progress", "/settings"]) {
       await page.goto(path);
       await expect(page.locator("main h1")).toBeVisible();
-      const scan = await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa"]).analyze();
+      const scan = await scanAccessibility(page);
       expect(
         scan.violations.map((v) => ({ id: v.id, nodes: v.nodes.map((n) => n.target) })),
         path,
@@ -124,6 +124,7 @@ for (const theme of ["light", "dark"] as const) {
     };
     ratios.button = await buttonContrast();
     await button.hover();
+    await waitForVisualReady(page);
     // Wait for the existing color transition before measuring the hover state.
     await expect.poll(buttonContrast).toBeGreaterThanOrEqual(4.5);
     ratios.buttonHover = await buttonContrast();

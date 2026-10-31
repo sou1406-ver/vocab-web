@@ -1,9 +1,11 @@
 import { test, expect } from "@playwright/test";
+import { waitForVisualReady } from "./app-ready";
 
 test("Vietnamese headings use the bundled font and supporting text stays readable", async ({ page }) => {
   await page.goto("/progress");
   const heading = page.getByRole("heading", { name: "Mỗi chút đều có giá trị." });
   await expect(heading).toBeVisible();
+  await waitForVisualReady(page);
   const styles = await page.evaluate(() => {
     const css = (selector: string) => getComputedStyle(document.querySelector(selector)!);
     return {
@@ -16,10 +18,12 @@ test("Vietnamese headings use the bundled font and supporting text stays readabl
   expect(styles.body).toBeGreaterThanOrEqual(16);
   expect(styles.label).toBeGreaterThanOrEqual(14);
   await page.goto("/lessons");
+  await waitForVisualReady(page);
   expect(
     await page.locator(".page-heading .eyebrow").evaluate((node) => parseFloat(getComputedStyle(node).letterSpacing)),
   ).toBeLessThanOrEqual(0.5);
   await page.goto("/");
+  await waitForVisualReady(page);
   expect(
     await page.locator(".hero-label").evaluate((node) => parseFloat(getComputedStyle(node).letterSpacing)),
   ).toBeLessThanOrEqual(0.5);

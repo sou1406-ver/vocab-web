@@ -1,5 +1,5 @@
+import { scanAccessibility, toggleTheme, waitForResult, waitForSaved } from "./app-ready";
 import { test, expect, type Page } from "@playwright/test";
-import AxeBuilder from "@axe-core/playwright";
 import { readFileSync } from "node:fs";
 import type { Catalog, MatchQuestion, Snapshot } from "../src/domain/types";
 
@@ -14,7 +14,8 @@ const name = (text: string) => text.trim().replace(/\s+/g, " ");
 const left = (page: Page, q: MatchQuestion) => page.getByRole("button", { name: `Từ: ${name(q.prompt)}`, exact: true });
 const right = (page: Page, q: MatchQuestion) =>
   page.getByRole("button", { name: `Nghĩa: ${name(q.answer)}`, exact: true });
-function snapshot(page: Page) {
+async function snapshot(page: Page) {
+  await waitForSaved(page);
   return page.evaluate(
     () =>
       new Promise<Snapshot>((resolve, reject) => {
@@ -73,6 +74,7 @@ test("each pair saves its own score across wrong attempts, reload and two tabs w
     buffer: Buffer.from(JSON.stringify({ app: "VocabLearn-v2", data: old })),
   });
   await page.getByRole("button", { name: "Khôi phục bản sao này" }).click();
+  await waitForSaved(page);
   await expect(page.getByRole("status").filter({ hasText: "Đã nhập dữ liệu" })).toBeVisible();
   const first = await start(page);
   const questions = first.session!.questions as MatchQuestion[];
@@ -82,11 +84,12 @@ test("each pair saves its own score across wrong attempts, reload and two tabs w
     .getByRole("region", { name: "Nghĩa tiếng Việt", exact: true })
     .getByRole("button")
     .allTextContents();
-  expect((await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa"]).analyze()).violations).toEqual([]);
+  expect((await scanAccessibility(page)).violations).toEqual([]);
   await left(page, questions[0]).click();
   await right(page, questions[1]).click();
   await expect(page.getByText("Chưa đúng. Chọn lại từ tiếng Anh rồi thử nghĩa khác.")).toBeVisible();
   expect((await snapshot(page)).events).toHaveLength(0);
+  await waitForSaved(page);
   await page.reload();
   await expect(page.getByText("1 cặp đã có lần nối sai.")).toBeVisible();
   expect(
@@ -96,6 +99,7 @@ test("each pair saves its own score across wrong attempts, reload and two tabs w
   await right(page, questions[4]).click();
   await expect(left(page, questions[4])).toBeDisabled();
   const other = await context.newPage();
+  await waitForSaved(page);
   await other.goto("/study");
   await expect(left(other, questions[4])).toBeDisabled();
   await left(other, questions[2]).click();
@@ -125,6 +129,7 @@ test("each pair saves its own score across wrong attempts, reload and two tabs w
   expect(events.filter((event) => event.correct)).toHaveLength(5);
   expect(done.progress).toEqual(old.progress);
   await page.getByRole("button", { name: "Xem kết quả", exact: true }).click();
+  await waitForResult(page);
   await expect(page.locator(".result-score b")).toHaveText("5/6");
   await page.getByRole("button", { name: "Nối bảng mới", exact: true }).click();
   await expect(page.locator(".study-counter")).toHaveText("0 / 6 cặp");
@@ -148,7 +153,7 @@ test("topic filtering, keyboard controls and dark Match remain accessible", asyn
   await page.getByLabel("Chủ đề", { exact: true }).selectOption(topic.id);
   await expect(topics.getByRole("button", { name: /^Nối từ:/ })).toHaveCount(1);
   await page.screenshot({ path: testInfo.outputPath("filtered-lessons-and-practice.png"), fullPage: true });
-  await page.getByRole("button", { name: "Đổi giao diện sáng tối" }).click();
+  await toggleTheme(page);
   await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
   await topics.getByRole("button", { name: `Nối từ: ${topic.title}`, exact: true }).click();
   await expect(page.getByRole("heading", { name: "Nối từ với nghĩa", exact: true })).toBeVisible();
@@ -161,12 +166,13 @@ test("topic filtering, keyboard controls and dark Match remain accessible", asyn
   await page.keyboard.press("Enter");
   await expect(left(page, q)).toBeDisabled();
   await expect(right(page, q)).toBeDisabled();
-  expect((await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa"]).analyze()).violations).toEqual([]);
+  expect((await scanAccessibility(page)).violations).toEqual([]);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await expect(page.getByRole("textbox")).toHaveCount(0);
   await expect(page.getByRole("button", { name: "Gợi ý một chữ" })).toHaveCount(0);
   await page.screenshot({ path: testInfo.outputPath("match-dark.png"), fullPage: true });
   await page.getByRole("button", { name: "Kết thúc tại đây", exact: true }).click();
+  await waitForResult(page);
   await expect(page.locator(".result-score b")).toHaveText("1/1");
   const done = await snapshot(page);
   expect(done.history.at(-1)).toMatchObject({ total: 1, correct: 1, finished: false });

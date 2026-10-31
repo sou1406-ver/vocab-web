@@ -1,5 +1,5 @@
+import { scanAccessibility } from "./app-ready";
 import { test, expect } from "@playwright/test";
-import AxeBuilder from "@axe-core/playwright";
 
 test("avatar opens account links by hover, touch and keyboard, and dismisses safely", async ({ page }, testInfo) => {
   await page.goto("/");
@@ -17,7 +17,7 @@ test("avatar opens account links by hover, touch and keyboard, and dismisses saf
   await trigger.press("ArrowDown");
   const settings = menu.getByRole("link", { name: "Tài khoản & cài đặt", exact: true });
   await expect(settings).toBeFocused();
-  expect((await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa"]).analyze()).violations).toEqual([]);
+  expect((await scanAccessibility(page)).violations).toEqual([]);
   await page.screenshot({ path: testInfo.outputPath("account-menu.png") });
   await settings.click();
   await expect(page).toHaveURL(/\/settings$/);

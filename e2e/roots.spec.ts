@@ -1,5 +1,5 @@
+import { scanAccessibility, toggleTheme, waitForSaved } from "./app-ready";
 import { test, expect } from "@playwright/test";
-import AxeBuilder from "@axe-core/playwright";
 import { readSnapshot } from "./speech-mock";
 
 test("root discovery is off by default while basic decomposition stays available", async ({ page }, testInfo) => {
@@ -15,6 +15,7 @@ test("root discovery is off by default while basic decomposition stays available
   await expect(dialog.getByRole("region", { name: "Bản chất từ", exact: true })).toHaveCount(0);
   await expect(page.getByRole("navigation").getByRole("link", { name: "Gốc từ", exact: true })).toHaveCount(0);
   await page.getByRole("button", { name: "Đóng chi tiết từ", exact: true }).click();
+  await expect(dialog).toHaveCount(0);
   await page.goto("/roots");
   await expect(page.locator(".root-card")).toHaveCount(19);
   await page.goto("/settings");
@@ -22,7 +23,9 @@ test("root discovery is off by default while basic decomposition stays available
   await expect(setting).not.toBeChecked();
   await setting.check();
   await page.getByRole("button", { name: "Lưu tuỳ chọn", exact: true }).click();
+  await waitForSaved(page);
   await expect(page.getByRole("status").filter({ hasText: "Đã lưu tuỳ chọn" })).toBeVisible();
+  await waitForSaved(page);
   await page.reload();
   await expect(setting).toBeChecked();
   await expect(page.locator("nav:visible").getByRole("link", { name: "Gốc từ", exact: true })).toHaveCount(1);
@@ -46,15 +49,16 @@ test("root discovery is off by default while basic decomposition stays available
   const snapshot = await readSnapshot(page);
   expect(snapshot.progress).toEqual({});
   expect(snapshot.events).toEqual([]);
-  expect((await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa"]).analyze()).violations).toEqual([]);
+  expect((await scanAccessibility(page)).violations).toEqual([]);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await page.screenshot({ path: testInfo.outputPath("roots.png"), fullPage: true });
-  await page.getByRole("button", { name: "Đổi giao diện sáng tối", exact: true }).click();
-  expect((await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa"]).analyze()).violations).toEqual([]);
+  await toggleTheme(page);
+  expect((await scanAccessibility(page)).violations).toEqual([]);
   await page.screenshot({ path: testInfo.outputPath("roots-dark.png"), fullPage: true });
   await page.goto("/settings");
   await setting.uncheck();
   await page.getByRole("button", { name: "Lưu tuỳ chọn", exact: true }).click();
+  await waitForSaved(page);
   await expect(page.getByRole("status").filter({ hasText: "Đã lưu tuỳ chọn" })).toBeVisible();
   await page.goto("/library?q=tempt");
   await page

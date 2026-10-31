@@ -1,5 +1,5 @@
+import { scanAccessibility, waitForSaved } from "./app-ready";
 import { test, expect } from "@playwright/test";
-import AxeBuilder from "@axe-core/playwright";
 import type { Snapshot } from "../src/domain/types";
 
 test("guests cannot open reviewer tools or see an admin menu entry", async ({ page }) => {
@@ -45,6 +45,7 @@ test("only the reviewer claim opens all exercise previews without recording lear
     },
   );
   expect(grant.ok()).toBe(true);
+  await waitForSaved(page);
   await page.reload();
   await expect(page.getByRole("region", { name: "Bộ lọc nội dung" })).toBeVisible();
   const readOwnSnapshot = () =>
@@ -86,7 +87,7 @@ test("only the reviewer claim opens all exercise previews without recording lear
   await page.getByRole("button", { name: "Mở hồ sơ", exact: true }).click();
   await expect(page.getByRole("link", { name: "Kiểm tra nội dung", exact: true })).toBeVisible();
   await page.keyboard.press("Escape");
-  expect((await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa"]).analyze()).violations).toEqual([]);
+  expect((await scanAccessibility(page)).violations).toEqual([]);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await page.screenshot({ path: testInfo.outputPath("content-review.png"), fullPage: true });
 });

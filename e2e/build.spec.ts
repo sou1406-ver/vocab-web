@@ -1,5 +1,5 @@
+import { scanAccessibility, waitForResult, waitForSaved } from "./app-ready";
 import { test, expect, type Page } from "@playwright/test";
-import AxeBuilder from "@axe-core/playwright";
 import { readFileSync } from "node:fs";
 import type { BuildQuestion, Catalog, Snapshot } from "../src/domain/types";
 
@@ -9,7 +9,8 @@ const catalog = JSON.parse(
 const lesson = catalog.lessons.find((entry) =>
   catalog.words.some((word) => word.lesson === entry.id && word.family.some((form) => (form.parts?.length ?? 0) >= 2)),
 )!;
-function readSnapshot(page: Page) {
+async function readSnapshot(page: Page) {
+  await waitForSaved(page);
   return page.evaluate(
     () =>
       new Promise<Snapshot>((resolve, reject) => {
@@ -48,6 +49,7 @@ test("Build toggles pieces, grades order, resumes and retries in practice", asyn
   const bank = page.getByRole("group", { name: "Các mảnh để ghép", exact: true });
   const selected = page.getByRole("group", { name: "Các mảnh đã ghép", exact: true });
   await expect(bank.getByRole("button")).toHaveText(q.tiles);
+  await waitForSaved(page);
   await page.reload();
   await expect(bank.getByRole("button")).toHaveText(q.tiles);
   const piece = (part: string) => bank.getByRole("button", { name: part, exact: true });
@@ -64,7 +66,7 @@ test("Build toggles pieces, grades order, resumes and retries in practice", asyn
   await piece(q.answer[1]).click();
   await expect(selected.getByRole("button")).toHaveCount(0);
   await piece(q.answer[0]).click();
-  expect((await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa"]).analyze()).violations).toEqual([]);
+  expect((await scanAccessibility(page)).violations).toEqual([]);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await page.screenshot({ path: `test-results/build-${testInfo.project.name}.png` });
   await piece(q.answer[0]).click();
@@ -86,6 +88,7 @@ test("Build toggles pieces, grades order, resumes and retries in practice", asyn
     contentVersion: catalog.version,
   });
   expect(wrong.progress).toEqual({});
+  await waitForSaved(page);
   await page.reload();
   await expect(selected.getByRole("button")).toHaveText(wrongOrder);
   for (const button of await bank.getByRole("button").all()) await expect(button).toBeDisabled();
@@ -93,6 +96,7 @@ test("Build toggles pieces, grades order, resumes and retries in practice", asyn
   await expect(bank.getByRole("button").first()).toBeFocused();
   await expect(selected.getByRole("button")).toHaveCount(0);
   await page.getByRole("button", { name: "Kết thúc tại đây" }).click();
+  await waitForResult(page);
   await page.getByRole("button", { name: "Luyện lại từ vừa sai" }).click();
   await expect(page.getByRole("heading", { name: "Ghép gốc và phụ tố" })).toBeVisible();
   const retry = await readSnapshot(page);
@@ -100,6 +104,7 @@ test("Build toggles pieces, grades order, resumes and retries in practice", asyn
   expect(retry.session!.id).not.toBe(before.session!.id);
   expect(retried).toMatchObject({ sourceId: q.sourceId, answer: q.answer, form: q.form });
   expect([...retried.tiles].sort()).toEqual([...q.tiles].sort());
+  await waitForSaved(page);
   await page.reload();
   await expect(bank.getByRole("button")).toHaveText(retried.tiles);
   for (const part of q.answer) await piece(part).click();

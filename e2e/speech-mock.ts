@@ -1,3 +1,4 @@
+import { waitForSaved } from "./app-ready";
 import type { Page } from "@playwright/test";
 import type { Snapshot } from "../src/domain/types";
 
@@ -56,7 +57,8 @@ export function speechLog(page: Page) {
     () => (window as unknown as { __speech: { log: { text: string; rate: number; voiceId: string }[] } }).__speech.log,
   );
 }
-export function readSnapshot(page: Page) {
+export async function readSnapshot(page: Page) {
+  await waitForSaved(page);
   return page.evaluate(
     () =>
       new Promise<Snapshot>((resolve, reject) => {

@@ -1,5 +1,5 @@
+import { scanAccessibility, toggleTheme, waitForSaved } from "./app-ready";
 import { test, expect, type Page } from "@playwright/test";
-import AxeBuilder from "@axe-core/playwright";
 
 test.skip(
   process.env.E2E_FIREBASE_EMULATOR !== "1",
@@ -64,10 +64,13 @@ test("Google login imports guest only on consent, syncs two devices, queues offl
   await page.goto("/settings");
   await page.getByLabel("Mình gọi bạn là gì?").fill("Dữ liệu khách");
   await page.getByRole("button", { name: "Lưu tuỳ chọn", exact: true }).click();
+  await waitForSaved(page);
   await page.goto("/books/toeic-600/lessons/1");
   await page.getByRole("button", { name: "Học 5 từ tiếp theo", exact: true }).click();
   await page.getByRole("button", { name: "Đã xem, thử nhớ lại" }).click();
   await page.getByRole("button", { name: "Chưa nhớ, xem đáp án" }).click();
+  await expect(page.locator(".answer-feedback")).toBeVisible();
+  await waitForSaved(page);
   await page.goto("/settings");
   await googleLogin(page, email);
   await expect(page.getByLabel("Mình gọi bạn là gì?")).toHaveValue("");
@@ -93,13 +96,14 @@ test("Google login imports guest only on consent, syncs two devices, queues offl
       .toBeGreaterThan(0);
     await expect(second.getByLabel("Mình gọi bạn là gì?")).toHaveValue("Dữ liệu khách");
     await page.context().setOffline(false);
+    // The pending queue is confirmed above; reload deliberately tests its recovery.
     await page.reload();
     await expect(second.getByLabel("Mình gọi bạn là gì?")).toHaveValue("Học offline", { timeout: 20000 });
     await expect(page.getByLabel("Mình gọi bạn là gì?")).toHaveValue("Học offline");
-    expect((await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa"]).analyze()).violations).toEqual([]);
+    expect((await scanAccessibility(page)).violations).toEqual([]);
     await page.screenshot({ path: testInfo.outputPath("account-sync-light.png"), fullPage: true });
-    await page.getByRole("button", { name: "Đổi giao diện sáng tối", exact: true }).click();
-    expect((await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa"]).analyze()).violations).toEqual([]);
+    await toggleTheme(page);
+    expect((await scanAccessibility(page)).violations).toEqual([]);
     await page.screenshot({ path: testInfo.outputPath("account-sync-dark.png"), fullPage: true });
     await page.getByRole("button", { name: "Đăng xuất", exact: true }).click();
     await expect(page.getByLabel("Mình gọi bạn là gì?")).toHaveValue("Dữ liệu khách");

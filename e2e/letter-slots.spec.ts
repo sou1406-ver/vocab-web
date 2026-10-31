@@ -1,5 +1,5 @@
+import { scanAccessibility, waitForResult, waitForSaved } from "./app-ready";
 import { test, expect } from "@playwright/test";
-import AxeBuilder from "@axe-core/playwright";
 
 test("letter slots support native editing, phrase spaces and submission", async ({ page }, testInfo) => {
   await page.goto("/");
@@ -48,16 +48,18 @@ test("letter slots support native editing, phrase spaces and submission", async 
   await input.press("ArrowRight");
   expect(await input.evaluate((node) => (node as HTMLInputElement).selectionStart)).toBe(1);
   await input.press("End");
-  const a11y = await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa"]).analyze();
+  const a11y = await scanAccessibility(page);
   expect(a11y.violations).toEqual([]);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await page.screenshot({ path: `test-results/letter-slots-${testInfo.project.name}.png` });
   await input.press("Enter");
   await expect(page.getByText("Chính xác. Bạn nhớ rồi!")).toBeVisible();
+  await waitForSaved(page);
   await page.reload();
   await expect(page.getByText("Chính xác. Bạn nhớ rồi!")).toBeVisible();
   await expect(input).toBeDisabled();
   await page.getByRole("button", { name: "Kết thúc tại đây" }).click();
+  await waitForResult(page);
   await page.getByRole("button", { name: "Luyện lại từ vừa sai" }).click();
   // The missed first item is the two-word phrase "abide by".
   await expect(page.locator(".letter-slot")).toHaveCount(7);
@@ -89,9 +91,11 @@ test("hint letters stay locked, record assistance and native input styling is in
   await input.press("ControlOrMeta+A");
   await input.press("Backspace");
   await expect(input).toHaveValue("a");
+  await waitForSaved(page);
   await page.reload();
   await expect(input).toHaveValue("a");
   const other = await context.newPage();
+  await waitForSaved(page);
   await other.goto("/study");
   await other.getByRole("button", { name: "Gợi ý một chữ" }).click();
   await expect(input).toHaveValue("ag");
@@ -107,6 +111,7 @@ test("hint letters stay locked, record assistance and native input styling is in
   expect(style).toEqual({ position: "absolute", color: "rgba(0, 0, 0, 0)", background: "rgba(0, 0, 0, 0)" });
   await input.press("Enter");
   await expect(page.getByText("Gặp lại thêm một lần nhé.")).toBeVisible();
+  await waitForSaved(page);
   await page.reload();
   await expect(page.getByText("Gặp lại thêm một lần nhé.")).toBeVisible();
 });
@@ -123,6 +128,7 @@ test("correct answer with a hint within the allowance still receives credit", as
   await input.fill("agreement");
   await input.press("Enter");
   await expect(page.getByText("Chính xác. Bạn nhớ rồi!")).toBeVisible();
+  await waitForSaved(page);
   await page.reload();
   await expect(page.getByText("Chính xác. Bạn nhớ rồi!")).toBeVisible();
 });

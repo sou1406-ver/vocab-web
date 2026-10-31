@@ -1,5 +1,5 @@
+import { scanAccessibility, toggleTheme, waitForResult, waitForSaved } from "./app-ready";
 import { test, expect } from "@playwright/test";
-import AxeBuilder from "@axe-core/playwright";
 import { readSnapshot } from "./speech-mock";
 
 test("grouped progress shows measured results and keeps untried groups empty", async ({ page }, testInfo) => {
@@ -19,11 +19,13 @@ test("grouped progress shows measured results and keeps untried groups empty", a
     .filter({ hasText: second.options.find((option) => option !== second.answer)! })
     .click();
   await page.getByRole("button", { name: "Kết thúc tại đây", exact: true }).click();
+  await waitForResult(page);
   await page.goto("/progress");
   await expect(groups.getByRole("article")).toHaveCount(6);
   const recognition = page.getByRole("article", { name: "Nhận biết", exact: true });
   await expect(recognition.locator(".exercise-result-value")).toHaveText("50%");
   await expect(recognition).toContainText("1/2 câu tự trả lời đúng");
+  await waitForSaved(page);
   await page.reload();
   await expect(recognition.locator(".exercise-result-value")).toHaveText("50%");
   if (testInfo.project.name === "desktop") {
@@ -32,10 +34,10 @@ test("grouped progress shows measured results and keeps untried groups empty", a
     await expect(sidebar.getByText("THEO DÕI", { exact: true })).toBeVisible();
     await expect(sidebar.getByText("TÀI KHOẢN", { exact: true })).toBeVisible();
   }
-  expect((await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa"]).analyze()).violations).toEqual([]);
+  expect((await scanAccessibility(page)).violations).toEqual([]);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await page.screenshot({ path: testInfo.outputPath("exercise-progress.png"), fullPage: true });
-  await page.getByRole("button", { name: "Đổi giao diện sáng tối", exact: true }).click();
-  expect((await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa"]).analyze()).violations).toEqual([]);
+  await toggleTheme(page);
+  expect((await scanAccessibility(page)).violations).toEqual([]);
   await page.screenshot({ path: testInfo.outputPath("exercise-progress-dark.png"), fullPage: true });
 });

@@ -1,5 +1,5 @@
+import { scanAccessibility, waitForResult, waitForSaved } from "./app-ready";
 import { test, expect } from "@playwright/test";
-import AxeBuilder from "@axe-core/playwright";
 import { readFileSync } from "node:fs";
 import type { Catalog, ClozeChoiceQuestion, StudySession } from "../src/domain/types";
 const manifest = JSON.parse(
@@ -30,7 +30,7 @@ test("authored word form loads per lesson, retries failures and resumes without 
   await expect(page.locator(".answer-option")).toHaveCount(4);
   expect(requests).toBe(2);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
-  expect((await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa"]).analyze()).violations).toEqual([]);
+  expect((await scanAccessibility(page)).violations).toEqual([]);
   await page.screenshot({ path: `test-results/cloze-choice-${testInfo.project.name}.png` });
   // Authored first question for lesson 1 has answer agreement.
   await page
@@ -60,19 +60,23 @@ test("authored word form loads per lesson, retries failures and resumes without 
     hintLimit: 0,
   });
   expect(event.sourceVersion).toBe(manifest.lessons.find((item) => item.lessonId === 1)!.version);
+  await waitForSaved(page);
   await page.reload();
   await expect(page.getByText("Chính xác. Bạn nhớ rồi!")).toBeVisible();
   expect(requests).toBe(2);
   const other = await context.newPage();
+  await waitForSaved(page);
   await other.goto("/study");
   await expect(other.getByText("Chính xác. Bạn nhớ rồi!")).toBeVisible();
   await page.getByRole("button", { name: "Từ tiếp theo" }).click();
   await expect(other.locator(".answer-option")).toHaveCount(4);
   await page.getByRole("button", { name: "Chưa nhớ, xem đáp án" }).click();
   await page.getByRole("button", { name: "Kết thúc tại đây" }).click();
+  await waitForResult(page);
   await page.getByRole("button", { name: "Luyện lại từ vừa sai" }).click();
   await expect(page.locator(".answer-option")).toHaveCount(4);
   await page.getByRole("button", { name: "Kết thúc tại đây" }).click();
+  await waitForResult(page);
   await page.goto("/progress");
   await expect(page.locator(".progress-stats .stat-number").first()).toContainText("0");
 });
@@ -143,6 +147,7 @@ test("catalog cloze answers vary in position and keep their saved order after re
   }
   const options = page.locator(".answer-option");
   await expect(options).toHaveText(questions[0].options.map(optionText));
+  await waitForSaved(page);
   await page.reload();
   await expect(options).toHaveText(questions[0].options.map(optionText));
   await options.filter({ hasText: optionText(questions[0].answer) }).click();

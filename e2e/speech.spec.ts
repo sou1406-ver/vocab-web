@@ -1,5 +1,5 @@
+import { scanAccessibility, waitForSaved } from "./app-ready";
 import { test, expect } from "@playwright/test";
-import AxeBuilder from "@axe-core/playwright";
 import { mockSpeech, readSnapshot, speechLog } from "./speech-mock";
 
 test("delayed voices, device preferences, repeat slowdown and word/feedback speakers", async ({ page }, testInfo) => {
@@ -7,6 +7,7 @@ test("delayed voices, device preferences, repeat slowdown and word/feedback spea
   await page.goto("/settings");
   await expect(page.getByText("Máy này chưa có giọng tiếng Anh khả dụng.", { exact: false })).toBeVisible();
   await page.getByRole("button", { name: "Lưu tuỳ chọn", exact: false }).click();
+  await waitForSaved(page);
   await expect(page.getByRole("status").filter({ hasText: "Đã lưu tuỳ chọn" })).toBeVisible();
   const before = await readSnapshot(page);
   await page.evaluate(() => (window as unknown as { __speech: { load: () => void } }).__speech.load());
@@ -18,11 +19,12 @@ test("delayed voices, device preferences, repeat slowdown and word/feedback spea
   expect(settings).not.toHaveProperty("voiceId");
   expect(settings).not.toHaveProperty("rate");
   expect(await readSnapshot(page)).toEqual(before);
+  await waitForSaved(page);
   await page.reload();
   await page.evaluate(() => (window as unknown as { __speech: { load: () => void } }).__speech.load());
   await expect(page.getByLabel("Giọng tiếng Anh", { exact: true })).toHaveValue("british");
   await expect(page.getByLabel("Tốc độ đọc", { exact: true })).toHaveValue("1");
-  expect((await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa"]).analyze()).violations).toEqual([]);
+  expect((await scanAccessibility(page)).violations).toEqual([]);
   await page.screenshot({ path: testInfo.outputPath("speech-settings.png"), fullPage: true });
   await page.goto("/library?q=agreement");
   await page.evaluate(() => (window as unknown as { __speech: { load: () => void } }).__speech.load());
@@ -36,6 +38,7 @@ test("delayed voices, device preferences, repeat slowdown and word/feedback spea
   await speaker.click();
   expect((await speechLog(page)).at(-1)?.rate).toBe(0.6);
   await page.keyboard.press("Escape");
+  await expect(page.getByRole("dialog")).toHaveCount(0);
   await page.goto("/books/toeic-600/lessons/1");
   await page.evaluate(() => (window as unknown as { __speech: { load: () => void } }).__speech.load());
   await page.getByRole("button", { name: "Học 5 từ tiếp theo", exact: true }).click();

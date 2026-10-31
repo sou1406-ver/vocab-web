@@ -1,5 +1,5 @@
+import { scanAccessibility, waitForResult, waitForSaved } from "./app-ready";
 import { test, expect } from "@playwright/test";
-import AxeBuilder from "@axe-core/playwright";
 
 const article = "/knowledge/reading-at-work";
 
@@ -74,6 +74,9 @@ test("read, inspect inflection/phrase, save, learn and return to reading", async
   await page.getByRole("button", { name: "Đã xem, thử nhớ lại" }).click();
   await page.getByRole("button", { name: "Chưa nhớ, xem đáp án" }).click();
   await page.getByRole("button", { name: "Xem kết quả", exact: true }).click();
+  await waitForResult(page);
+  await expect(page.getByRole("link", { name: "Quay lại bài đang đọc", exact: true })).toBeVisible();
+  await waitForSaved(page);
   await page.reload();
   await page.getByRole("link", { name: "Quay lại bài đang đọc", exact: true }).click();
   await expect(page.getByRole("heading", { name: "Đọc một thỏa thuận công việc" })).toBeVisible();
@@ -86,13 +89,11 @@ test("lookup/save do not count as learning, accessible dialog and blocked local 
   const dialog = page.getByRole("dialog", { name: "Chi tiết từ" });
   await dialog.getByRole("button", { name: "Lưu vào bộ cá nhân", exact: true }).click();
   await expect(dialog.getByRole("button", { name: "Bỏ lưu từ", exact: true })).toBeVisible();
-  // Scan the settled saved state, after its button colors and dialog finish animating.
-  await dialog.evaluate((node) =>
-    Promise.all(node.getAnimations({ subtree: true }).map((animation) => animation.finished)),
-  );
-  const result = await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa"]).analyze();
+  await waitForSaved(page);
+  const result = await scanAccessibility(page);
   expect(result.violations.map((v) => v.id)).toEqual([]);
   await page.keyboard.press("Escape");
+  await expect(dialog).toHaveCount(0);
   await page.goto("/");
   await expect(page.getByRole("progressbar", { name: "Mục tiêu từ mới hôm nay", exact: true })).toHaveAttribute(
     "aria-valuenow",
