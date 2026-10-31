@@ -29,9 +29,20 @@ for (const theme of ["light", "dark"] as const) {
     await page.emulateMedia({ colorScheme: theme });
     await page.goto("/");
     await expect(page.getByText("Đang mở dữ liệu…")).not.toBeVisible();
+    await expect(page.locator(".stats-grid")).toBeVisible();
     if ((await page.locator("html").getAttribute("data-theme")) !== theme)
       await page.getByRole("button", { name: "Đổi giao diện sáng tối" }).click();
     await expect(page.locator("html")).toHaveAttribute("data-theme", theme);
+    const logo = page.locator(testInfo.project.name === "mobile" ? ".mobile-brand img" : ".sidebar .brand img");
+    await expect(logo).toBeVisible();
+    await expect(logo).toHaveAttribute("src", `/brand/logo-${theme}.svg`);
+    await expect
+      .poll(() => logo.evaluate((node: HTMLImageElement) => [node.naturalWidth, node.naturalHeight]))
+      .toEqual([760, 256]);
+    await expect(page.locator('link[rel="icon"][type="image/svg+xml"]')).toHaveAttribute(
+      "href",
+      "/favicon.svg?v=pocket",
+    );
     const palette = await page.evaluate(() => {
       const root = getComputedStyle(document.documentElement);
       const tokens = Object.fromEntries(

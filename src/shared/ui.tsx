@@ -73,7 +73,7 @@ export function Logo({ theme = "light", compact = false }: { theme?: string; com
   return (
     <picture className="brand-logo">
       {compact && <source media="(min-width: 681px) and (max-width: 900px)" srcSet={`/brand/symbol-${variant}.svg`} />}
-      <img src={`/brand/logo-${variant}.svg`} alt="Vocab Learn" width={1165} height={218} fetchPriority="high" />
+      <img src={`/brand/logo-${variant}.svg`} alt="Vocab Learn" width={760} height={256} fetchPriority="high" />
     </picture>
   );
 }
