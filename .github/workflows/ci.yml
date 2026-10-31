@@ -9,6 +9,10 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   firebase-emulator:
     runs-on: ubuntu-latest
@@ -37,12 +41,13 @@ jobs:
 
       - name: Test Auth and Firestore rules
         run: >-
-          npx -y firebase-tools@latest emulators:exec
+          npx -y firebase-tools@15.34.2 emulators:exec
           --only auth,firestore --project demo-vocab-sync
           "npx vitest run src/data/sync-emulator.test.ts src/data/usernames-emulator.test.ts"
 
   check:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - name: Check out repository
         uses: actions/checkout@v4

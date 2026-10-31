@@ -1,8 +1,7 @@
 import { test, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 import { readFileSync } from "node:fs";
-import { emptySnapshot } from "../src/domain/learning";
-import type { Catalog } from "../src/domain/types";
+import type { Catalog, Snapshot } from "../src/domain/types";
 
 const catalog = JSON.parse(
   readFileSync(new URL("../src/content/books/toeic-600/catalog.json", import.meta.url), "utf8"),
@@ -108,7 +107,19 @@ test("two tabs keep one answer and the same resume point", async ({ page, contex
 });
 
 test("overdue backlog stays visible after ending a short review batch", async ({ page }) => {
-  const data = emptySnapshot();
+  // Keep this browser fixture independent of the app's runtime module graph.
+  const data: Snapshot = {
+    schemaVersion: 2,
+    revision: 0,
+    settings: { name: "", dailyNew: 10, timezone: "Asia/Ho_Chi_Minh", theme: "light" },
+    progress: {},
+    events: [],
+    session: null,
+    history: [],
+    customWords: [],
+    imports: [],
+    legacyArchives: [],
+  };
   const at = Date.now() - 172_800_000;
   for (const word of catalog.words.slice(0, 43))
     data.progress[word.id] = {

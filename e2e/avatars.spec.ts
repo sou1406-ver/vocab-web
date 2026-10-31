@@ -11,6 +11,15 @@ test("twenty static avatars load locally and the selected image persists", async
   await expect(choice).toHaveAttribute("aria-pressed", "true");
   const artwork = () => picker.locator('[aria-pressed="true"] img').getAttribute("src");
   const selected = await artwork();
+  await expect
+    .poll(() =>
+      picker
+        .locator("img")
+        .evaluateAll((images) =>
+          images.every((image) => (image as HTMLImageElement).complete && (image as HTMLImageElement).naturalWidth > 0),
+        ),
+    )
+    .toBe(true);
   const sources = await picker.locator("img").evaluateAll((images) =>
     images.map((image) => ({
       src: image.getAttribute("src"),

@@ -4,6 +4,8 @@ const channel = process.env.PW_CHANNEL || undefined;
 export default defineConfig({
   testDir: "e2e",
   timeout: 45_000,
+  globalTimeout: 10 * 60_000,
+  forbidOnly: !!process.env.CI,
   fullyParallel: true,
   reporter: "list",
   use: {
