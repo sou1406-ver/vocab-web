@@ -32,7 +32,8 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: process.env.E2E_PRODUCTION ? "npm run preview" : "npm run dev",
+    // Own the Next process directly so CI teardown cannot strand nested npm shells.
+    command: `node node_modules/next/dist/bin/next ${process.env.E2E_PRODUCTION ? "start" : "dev"} --hostname 127.0.0.1 --port 5174`,
     url: "http://127.0.0.1:5174",
     reuseExistingServer: !process.env.CI,
     timeout: 60_000,

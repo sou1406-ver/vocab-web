@@ -2,6 +2,23 @@ import { test, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 
 const article = "/knowledge/reading-at-work";
+
+test("pending Firebase authentication leaves public reading and guest learning usable", async ({ page }) => {
+  await page.addInitScript(() => {
+    const open = indexedDB.open.bind(indexedDB);
+    indexedDB.open = ((name: string, version?: number) =>
+      name.startsWith("firebase")
+        ? (new EventTarget() as IDBOpenDBRequest)
+        : version === undefined
+          ? open(name)
+          : open(name, version)) as typeof indexedDB.open;
+  });
+  await page.goto(article);
+  await expect(page.getByRole("heading", { name: "Đọc một thỏa thuận công việc" })).toBeVisible();
+  await page.goto("/");
+  await page.getByRole("button", { name: "Bắt đầu học", exact: true }).click();
+  await expect(page.getByRole("heading", { name: "Làm quen với từ này" })).toBeVisible();
+});
 test("retry reopens local storage after a temporary opening failure clears", async ({ page }) => {
   await page.addInitScript(() => {
     const actual = window.indexedDB;

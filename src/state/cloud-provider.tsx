@@ -50,6 +50,8 @@ export function CloudProvider({ store, children }: { store: StoreApi<AppState>; 
     let request = 0;
     let unsubscribe: (() => void) | undefined;
     let stopProfile: (() => void) | undefined;
+    const useGuest = () =>
+      store.getState().profileKey === "guest" ? Promise.resolve() : store.getState().switchProfile("guest");
     void Promise.all([import("../lib/firebase"), import("../data/account-profile")])
       .then(([firebase, accountApi]) => {
         if (!active) return;
@@ -75,13 +77,10 @@ export function CloudProvider({ store, children }: { store: StoreApi<AppState>; 
             }));
             // Cancel a previous profile load without opening a new account before
             // its unique username has been confirmed. Guest data stays on this device.
-            void store
-              .getState()
-              .switchProfile("guest")
-              .then(() => {
-                if (!active || ticket !== request || user) return;
-                setState((previous) => ({ ...previous, loading: false, status: "synced" }));
-              });
+            void useGuest().then(() => {
+              if (!active || ticket !== request || user) return;
+              setState((previous) => ({ ...previous, loading: false, status: "synced" }));
+            });
             if (!user) return;
             const profileKey = `user:${user.uid}`;
             let named: AccountProfile | null = null;
@@ -160,7 +159,7 @@ export function CloudProvider({ store, children }: { store: StoreApi<AppState>; 
             sync.current = null;
             stopProfile?.();
             stopProfile = undefined;
-            void store.getState().switchProfile("guest");
+            void useGuest();
             setState((previous) => ({
               ...previous,
               user: null,
@@ -173,7 +172,7 @@ export function CloudProvider({ store, children }: { store: StoreApi<AppState>; 
       })
       .catch(() => {
         if (!active) return;
-        void store.getState().switchProfile("guest");
+        void useGuest();
         setState((previous) => ({
           ...previous,
           user: null,

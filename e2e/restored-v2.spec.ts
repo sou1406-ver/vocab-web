@@ -1,12 +1,22 @@
 import { test, expect } from "@playwright/test";
+import { readFileSync } from "node:fs";
 
 test("brand kit logo follows theme and viewport, with matching app icons", async ({ page }, testInfo) => {
   await page.goto("/");
   const logo = page.getByRole("img", { name: "Vocab Learn", exact: true });
   await expect(logo).toBeVisible();
   await expect(logo).toHaveAttribute("src", "/brand/logo-light.svg");
-  expect(await logo.evaluate((node) => (node as HTMLImageElement).naturalWidth)).toBe(1165);
-  await expect(page.locator('link[rel="icon"][type="image/svg+xml"]')).toHaveAttribute("href", "/favicon.svg");
+  const svg = readFileSync(new URL("../public/brand/logo-light.svg", import.meta.url), "utf8");
+  const dimensions = svg.match(/viewBox="[^"]*?\s([\d.]+)\s+([\d.]+)"/)!;
+  await expect
+    .poll(() =>
+      logo.evaluate((node) => [(node as HTMLImageElement).naturalWidth, (node as HTMLImageElement).naturalHeight]),
+    )
+    .toEqual([Number(dimensions[1]), Number(dimensions[2])]);
+  await expect(page.locator('link[rel="icon"][type="image/svg+xml"]')).toHaveAttribute(
+    "href",
+    /^\/favicon\.svg(?:\?.*)?$/,
+  );
   await expect(page.locator('link[rel="manifest"]')).toHaveAttribute("href", "/site.webmanifest");
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await page.screenshot({ path: `test-results/vocab-logo-${testInfo.project.name}.png` });
@@ -77,7 +87,7 @@ test("short desktop and compact sidebars scroll the menu while keeping settings 
       await menu.evaluate((node) => {
         node.scrollTop = node.scrollHeight;
       });
-      await menu.getByRole("link", { name: "Bảng tu luyện", exact: true }).focus();
+      await menu.getByRole("link").last().focus();
       await page.keyboard.press("Tab");
       await expect(settings).toBeFocused();
       await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));

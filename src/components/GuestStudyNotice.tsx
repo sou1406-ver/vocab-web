@@ -13,7 +13,7 @@ export function GuestStudyNotice({ children }: { children: ReactNode }) {
   useEffect(() => setAcknowledged(hasAcknowledgedGuestNotice()), []);
   const active = data.session && data.session.phase !== "complete";
   if (!active || profileKey !== "guest") return children;
-  if (!ready || cloud.loading || acknowledged === null)
+  if (!ready || acknowledged === null)
     return (
       <div className="page" role="status">
         Đang mở lượt học…

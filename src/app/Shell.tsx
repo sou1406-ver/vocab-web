@@ -74,13 +74,7 @@ export function Shell({ children }: { children: ReactNode }) {
     month: "long",
     timeZone: data.settings.timezone,
   }).format();
-  if (cloud.loading && !cloud.account)
-    return (
-      <main className="account-setup-page">
-        <p role="status">Đang mở tài khoản…</p>
-      </main>
-    );
-  if (cloud.user && !cloud.account) return <AccountSetup theme={resolvedTheme} />;
+  if (cloud.user && !cloud.loading && !cloud.account && !cloud.error) return <AccountSetup theme={resolvedTheme} />;
   return (
     <WordContext.Provider value={(selected) => void inspect(selected)}>
       <LeaderboardSync />
@@ -145,7 +139,7 @@ export function Shell({ children }: { children: ReactNode }) {
                 status={
                   error
                     ? "failed"
-                    : !ready || busy
+                    : !ready || busy || cloud.loading
                       ? "running"
                       : cloud.user
                         ? cloud.status === "synced"
@@ -164,9 +158,11 @@ export function Shell({ children }: { children: ReactNode }) {
                       ? "Đang mở dữ liệu…"
                       : busy
                         ? "Đang lưu…"
-                        : cloud.user
-                          ? syncLabels[cloud.status]
-                          : "Lưu trên máy"
+                        : cloud.loading
+                          ? "Đang mở tài khoản…"
+                          : cloud.user
+                            ? syncLabels[cloud.status]
+                            : "Lưu trên máy"
                 }
               />
               <button
@@ -202,13 +198,7 @@ export function Shell({ children }: { children: ReactNode }) {
             </div>
           )}
           <main id="main">
-            {ready ? (
-              <div key={cloud.user?.uid ?? "guest"}>{children}</div>
-            ) : (
-              <p className="muted" role="status">
-                Đang mở dữ liệu học…
-              </p>
-            )}
+            <div key={cloud.user?.uid ?? "guest"}>{children}</div>
           </main>
           <footer className="app-footer">
             <span>Học để hiểu. Ôn để nhớ.</span>

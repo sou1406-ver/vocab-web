@@ -9,6 +9,7 @@ const StoreContext = createContext<ReturnType<typeof createAppStore> | null>(nul
 export function AppProvider({ children }: { children: ReactNode }) {
   const [store] = useState(createAppStore);
   useEffect(() => {
+    void store.getState().init();
     return connectBrowserStore(store);
   }, [store]);
   return (
