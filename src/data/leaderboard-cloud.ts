@@ -1,6 +1,5 @@
 import {
   collection,
-  deleteDoc,
   doc,
   limit,
   onSnapshot,
@@ -8,12 +7,12 @@ import {
   query,
   runTransaction,
   serverTimestamp,
-  setDoc,
   type DocumentSnapshot,
   type Firestore,
 } from "firebase/firestore";
+import { validUsername } from "../domain/account";
 import { firebaseClient } from "../lib/firebase";
-import { readCultivator, validCultivatorName, type Cultivator } from "../domain/cultivation";
+import { readCultivator, type Cultivator } from "../domain/cultivation";
 
 function readEntry(snapshot: DocumentSnapshot): Cultivator | null {
   if (!snapshot.exists()) return null;
@@ -68,30 +67,7 @@ export function watchCultivator(
   );
 }
 
-export async function joinLeaderboard(
-  uid: string,
-  nickname: string,
-  learnedCount: number,
-  avatar: number,
-  db: Firestore = firebaseClient().db,
-) {
-  const name = nickname.trim();
-  if (!validCultivatorName(name)) throw new Error("Biệt danh cần 2–32 ký tự, không dùng email hoặc xuống dòng.");
-  readCultivator(uid, { version: 1, nickname: name, avatar, learnedCount, updatedAt: 0 });
-  await setDoc(doc(db, "leaderboard", uid), {
-    version: 1,
-    nickname: name,
-    avatar,
-    learnedCount,
-    updatedAt: serverTimestamp(),
-  });
-}
-
-export function leaveLeaderboard(uid: string, db: Firestore = firebaseClient().db) {
-  return deleteDoc(doc(db, "leaderboard", uid));
-}
-
-// A transaction cannot recreate a profile after the user leaves the leaderboard.
+// Visibility and username are rechecked inside the score transaction.
 export async function syncLeaderboardCount(
   uid: string,
   learnedCount: number,
@@ -102,13 +78,21 @@ export async function syncLeaderboardCount(
   await runTransaction(db, async (tx) => {
     if (!isCurrent()) return;
     const ref = doc(db, "leaderboard", uid);
-    const current = await tx.get(ref);
+    const [profile, current] = await Promise.all([tx.get(doc(db, "profiles", uid)), tx.get(ref)]);
+    if (!isCurrent() || !profile.exists()) return;
+    const account = profile.data();
+    if (typeof account.username !== "string" || !validUsername(account.username)) return;
+    if (account.hiddenLeaderboard) {
+      if (current.exists()) tx.delete(ref);
+      return;
+    }
     if (
-      !isCurrent() ||
-      !current.exists() ||
-      (current.data().learnedCount === learnedCount && current.data().avatar === avatar)
+      current.exists() &&
+      current.data().learnedCount === learnedCount &&
+      current.data().avatar === avatar &&
+      current.data().username === account.username
     )
       return;
-    tx.update(ref, { learnedCount, avatar, updatedAt: serverTimestamp() });
+    tx.set(ref, { version: 1, username: account.username, avatar, learnedCount, updatedAt: serverTimestamp() });
   });
 }

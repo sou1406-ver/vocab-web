@@ -1,3 +1,4 @@
+import { validUsername } from "./account";
 import type { Snapshot } from "./types";
 
 export const cultivationRealms = [
@@ -36,24 +37,20 @@ export function countLearnedWords(progress: Readonly<Snapshot["progress"]>, isCa
 
 export interface Cultivator {
   id: string;
-  nickname: string;
+  username: string;
   avatar: number;
   learnedCount: number;
   updatedAt: number;
-}
-
-export function validCultivatorName(name: string) {
-  return name === name.trim() && /^[^@\r\n\t]{2,32}$/u.test(name);
 }
 
 export function readCultivator(id: string, value: unknown): Cultivator {
   if (!value || typeof value !== "object" || Array.isArray(value)) throw new Error("Hồ sơ xếp hạng không hợp lệ.");
   const raw = value as Record<string, unknown>;
   if (
-    Object.keys(raw).some((key) => !["version", "nickname", "avatar", "learnedCount", "updatedAt"].includes(key)) ||
+    Object.keys(raw).some((key) => !["version", "username", "avatar", "learnedCount", "updatedAt"].includes(key)) ||
     raw.version !== 1 ||
-    typeof raw.nickname !== "string" ||
-    !validCultivatorName(raw.nickname) ||
+    typeof raw.username !== "string" ||
+    !validUsername(raw.username) ||
     typeof raw.avatar !== "number" ||
     !Number.isInteger(raw.avatar) ||
     raw.avatar < 0 ||
@@ -69,7 +66,7 @@ export function readCultivator(id: string, value: unknown): Cultivator {
     id.length > 128
   )
     throw new Error("Hồ sơ xếp hạng không hợp lệ.");
-  return { id, nickname: raw.nickname, avatar: raw.avatar, learnedCount: raw.learnedCount, updatedAt: raw.updatedAt };
+  return { id, username: raw.username, avatar: raw.avatar, learnedCount: raw.learnedCount, updatedAt: raw.updatedAt };
 }
 
 export function rankCultivators(entries: readonly Cultivator[]) {

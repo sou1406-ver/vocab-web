@@ -1509,6 +1509,45 @@
   .exercise-results > .section-heading {
     flex-wrap: wrap;
   }
+  .account-setup-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+    max-width: none;
+    min-height: 100dvh;
+    width: 100%;
+    padding: 24px 16px;
+  }
+  .account-setup-brand {
+    width: 194px;
+  }
+  .username-form {
+    display: grid;
+    gap: 12px;
+    margin: 20px 0;
+    text-align: left;
+  }
+  .username-form input {
+    width: 100%;
+    min-height: 48px;
+    padding: 10px 12px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    color: var(--ink);
+    background: var(--surface-soft);
+  }
+  .username-settings {
+    margin: 20px 0;
+    max-width: 560px;
+  }
+  .username-settings .deep-roots-toggle input {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    accent-color: var(--green);
+  }
   .guest-notice-page {
     display: grid;
     place-items: center;

@@ -19,8 +19,9 @@ import {
 } from "firebase/firestore";
 import { firestoreTransport } from "../lib/firebase";
 import { createChange, importChange, materialize } from "./sync";
+import { claimUsername, setLeaderboardHidden } from "./account-profile";
 import { emptySnapshot } from "../domain/learning";
-import { joinLeaderboard, leaveLeaderboard, syncLeaderboardCount } from "./leaderboard-cloud";
+import { syncLeaderboardCount } from "./leaderboard-cloud";
 
 // Run only against the local emulators; never against the real project.
 describe.skipIf(process.env.FIREBASE_SYNC_EMULATOR_TEST !== "1")(
@@ -48,6 +49,7 @@ describe.skipIf(process.env.FIREBASE_SYNC_EMULATOR_TEST !== "1")(
         email_verified: true,
       });
       const result = await signInWithCredential(auth, GoogleAuthProvider.credential(token));
+      await claimUsername(result.user.uid, `u_${runId.replaceAll("-", "").slice(0, 10)}_${subject}`, db);
       return { uid: result.user.uid, db };
     }
     beforeAll(async () => {
@@ -119,16 +121,16 @@ describe.skipIf(process.env.FIREBASE_SYNC_EMULATOR_TEST !== "1")(
       expect(materialize([committed]).legacyArchives).toEqual(snapshot.legacyArchives);
       expect((await getDocs(collection(b.db, "users", b.uid, "changes", "large", "chunks"))).size).toBeGreaterThan(1);
     });
-    it("allows opt-in public summaries for signed-in users while keeping private progress protected", async () => {
-      await joinLeaderboard(a.uid, "Đạo hữu A", 25, 3, a.db);
+    it("allows completed-account public summaries for signed-in users while keeping private progress protected", async () => {
+      await syncLeaderboardCount(a.uid, 25, 3, () => true, a.db);
       const table = await getDocs(query(collection(b.db, "leaderboard"), orderBy("learnedCount", "desc"), limit(50)));
       expect(table.docs.some((entry) => entry.id === a.uid)).toBe(true);
       const profile = await getDoc(doc(b.db, "leaderboard", a.uid));
       expect(Object.keys(profile.data()!).sort()).toEqual([
         "avatar",
         "learnedCount",
-        "nickname",
         "updatedAt",
+        "username",
         "version",
       ]);
       expect(profile.data()!.learnedCount).toBe(25);
@@ -136,7 +138,15 @@ describe.skipIf(process.env.FIREBASE_SYNC_EMULATOR_TEST !== "1")(
         code: "permission-denied",
       });
       for (const db of [guest, b.db])
-        await expect(joinLeaderboard(a.uid, "Impostor", 600, 3, db)).rejects.toMatchObject({
+        await expect(
+          setDoc(doc(db, "leaderboard", a.uid), {
+            version: 1,
+            username: "impostor",
+            avatar: 3,
+            learnedCount: 600,
+            updatedAt: serverTimestamp(),
+          }),
+        ).rejects.toMatchObject({
           code: "permission-denied",
         });
       await expect(getDoc(doc(guest, "leaderboard", a.uid))).rejects.toMatchObject({ code: "permission-denied" });
@@ -145,15 +155,22 @@ describe.skipIf(process.env.FIREBASE_SYNC_EMULATOR_TEST !== "1")(
       });
     });
     it("rejects unbounded lists, malformed public fields and PII on create and update", async () => {
-      const valid = { version: 1, nickname: "Đạo hữu B", avatar: 0, learnedCount: 10, updatedAt: serverTimestamp() };
+      const valid = {
+        version: 1,
+        username: (await getDoc(doc(b.db, "profiles", b.uid))).data()!.username,
+        avatar: 0,
+        learnedCount: 10,
+        updatedAt: serverTimestamp(),
+      };
+      const ownUsername = (await getDoc(doc(a.db, "profiles", a.uid))).data()!.username;
       for (const patch of [
         { avatar: -1 },
         { avatar: 20 },
         { learnedCount: -1 },
         { learnedCount: 1.5 },
         { learnedCount: 100001 },
-        { nickname: "" },
-        { nickname: "email@example.test" },
+        { username: "" },
+        { username: "email@example.test" },
         { email: "private@example.test" },
         { version: 2 },
         { updatedAt: null },
@@ -161,7 +178,9 @@ describe.skipIf(process.env.FIREBASE_SYNC_EMULATOR_TEST !== "1")(
         await expect(setDoc(doc(b.db, "leaderboard", b.uid), { ...valid, ...patch })).rejects.toMatchObject({
           code: "permission-denied",
         });
-        await expect(setDoc(doc(a.db, "leaderboard", a.uid), { ...valid, ...patch })).rejects.toMatchObject({
+        await expect(
+          setDoc(doc(a.db, "leaderboard", a.uid), { ...valid, username: ownUsername, ...patch }),
+        ).rejects.toMatchObject({
           code: "permission-denied",
         });
       }
@@ -170,13 +189,13 @@ describe.skipIf(process.env.FIREBASE_SYNC_EMULATOR_TEST !== "1")(
         code: "permission-denied",
       });
     });
-    it("updates only joined scores and never recreates a withdrawn or stale profile", async () => {
+    it("updates completed profiles without recreating hidden or stale rankings", async () => {
       await syncLeaderboardCount(a.uid, 50, 3, () => true, a.db);
       expect((await getDoc(doc(a.db, "leaderboard", a.uid))).data()!.learnedCount).toBe(50);
       await syncLeaderboardCount(a.uid, 80, 3, () => false, a.db);
       expect((await getDoc(doc(a.db, "leaderboard", a.uid))).data()!.learnedCount).toBe(50);
-      await expect(leaveLeaderboard(a.uid, b.db)).rejects.toMatchObject({ code: "permission-denied" });
-      await leaveLeaderboard(a.uid, a.db);
+      await expect(setLeaderboardHidden(a.uid, true, b.db)).rejects.toMatchObject({ code: "permission-denied" });
+      await setLeaderboardHidden(a.uid, true, a.db);
       await syncLeaderboardCount(a.uid, 80, 3, () => true, a.db);
       expect((await getDoc(doc(a.db, "leaderboard", a.uid))).exists()).toBe(false);
       expect((await getDocs(collection(a.db, "users", a.uid, "changes"))).size).toBeGreaterThan(0);

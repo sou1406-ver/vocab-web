@@ -2,14 +2,18 @@
 import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from "react";
 import type { StoreApi } from "zustand/vanilla";
 import type { AppState } from "./store";
+import { emptySnapshot } from "../domain/learning";
+import type { AccountProfile } from "../domain/account";
 import type { AccountUser } from "../lib/firebase";
 import { deviceId, readAccount, readSnapshot, updateAccount } from "../data/repository";
 import { generationOf, importChange, materialize } from "../data/sync";
 import { connectAccountSync, type SyncStatus } from "./cloud-sync";
 
+type ProfileModule = typeof import("../data/account-profile");
 type FirebaseModule = typeof import("../lib/firebase");
 interface CloudState {
   user: AccountUser | null;
+  account: AccountProfile | null;
   loading: boolean;
   working: boolean;
   status: SyncStatus;
@@ -18,6 +22,8 @@ interface CloudState {
 }
 interface CloudActions {
   login: () => Promise<void>;
+  setUsername: (name: string) => Promise<void>;
+  setLeaderboardHidden: (hidden: boolean) => Promise<void>;
   logout: () => Promise<void>;
   decideGuest: (merge: boolean) => Promise<void>;
   retry: () => void;
@@ -27,6 +33,7 @@ const CloudContext = createContext<(CloudState & CloudActions) | null>(null);
 export function CloudProvider({ store, children }: { store: StoreApi<AppState>; children: ReactNode }) {
   const [state, setState] = useState<CloudState>({
     user: null,
+    account: null,
     loading: true,
     working: false,
     status: "connecting",
@@ -34,6 +41,7 @@ export function CloudProvider({ store, children }: { store: StoreApi<AppState>; 
     guestAvailable: false,
   });
   const service = useRef<FirebaseModule | null>(null);
+  const profiles = useRef<ProfileModule | null>(null);
   const sync = useRef<ReturnType<typeof connectAccountSync> | null>(null);
   const lifetime = useRef(0);
   const action = useRef(false);
@@ -41,70 +49,125 @@ export function CloudProvider({ store, children }: { store: StoreApi<AppState>; 
     let active = true;
     let request = 0;
     let unsubscribe: (() => void) | undefined;
-    void import("../lib/firebase")
-      .then((firebase) => {
+    let stopProfile: (() => void) | undefined;
+    void Promise.all([import("../lib/firebase"), import("../data/account-profile")])
+      .then(([firebase, accountApi]) => {
         if (!active) return;
         service.current = firebase;
+        profiles.current = accountApi;
         unsubscribe = firebase.observeUser(
           (user) => {
             const ticket = ++request;
             lifetime.current++;
             sync.current?.stop();
             sync.current = null;
+            stopProfile?.();
+            stopProfile = undefined;
             setState((previous) => ({
               ...previous,
               user,
+              account: null,
               loading: true,
               error: "",
               guestAvailable: false,
               working: false,
               status: "connecting",
             }));
-            const profile = user ? `user:${user.uid}` : "guest";
+            // Cancel a previous profile load without opening a new account before
+            // its unique username has been confirmed. Guest data stays on this device.
             void store
               .getState()
-              .switchProfile(profile)
-              .then(async () => {
-                if (!active || ticket !== request) return;
+              .switchProfile("guest")
+              .then(() => {
+                if (!active || ticket !== request || user) return;
+                setState((previous) => ({ ...previous, loading: false, status: "synced" }));
+              });
+            if (!user) return;
+            const profileKey = `user:${user.uid}`;
+            let named: AccountProfile | null = null;
+            let opened = false;
+            let opening = false;
+            const openAccount = async () => {
+              if (opened || opening || !named || !active || ticket !== request) return;
+              opening = true;
+              try {
+                await store.getState().switchProfile(profileKey);
+                if (!active || ticket !== request || !named) return;
                 if (!store.getState().ready) throw new Error(store.getState().error);
-                if (user) {
-                  const account = await readAccount(profile);
-                  const guest = await readSnapshot();
-                  if (!active || ticket !== request) return;
-                  const guestAvailable =
-                    !account.guestDecision &&
-                    Boolean(
-                      Object.keys(guest.progress).length ||
-                        guest.events.length ||
-                        guest.customWords.length ||
-                        guest.savedWords?.length ||
-                        guest.imports.length,
-                    );
-                  setState((previous) => ({ ...previous, loading: false, guestAvailable }));
-                  sync.current = connectAccountSync(
-                    store,
-                    firebase.firestoreTransport(user.uid),
-                    profile,
-                    (status, error) => {
-                      if (active && ticket === request)
-                        setState((previous) => ({
-                          ...previous,
-                          status,
-                          error: error ? firebase.cloudError(error) : "",
-                        }));
-                    },
+                const account = await readAccount(profileKey);
+                const guest = await readSnapshot();
+                if (!active || ticket !== request || !named) return;
+                const guestAvailable =
+                  !account.guestDecision &&
+                  Boolean(
+                    Object.keys(guest.progress).length ||
+                      guest.events.length ||
+                      guest.customWords.length ||
+                      guest.savedWords?.length ||
+                      guest.imports.length,
                   );
-                } else setState((previous) => ({ ...previous, loading: false, status: "synced" }));
-              })
-              .catch((error) => {
+                opened = true;
+                setState((previous) => ({ ...previous, account: named, loading: false, guestAvailable }));
+                sync.current = connectAccountSync(
+                  store,
+                  firebase.firestoreTransport(user.uid),
+                  profileKey,
+                  (status, error) => {
+                    if (active && ticket === request)
+                      setState((previous) => ({ ...previous, status, error: error ? firebase.cloudError(error) : "" }));
+                  },
+                );
+              } catch (error) {
                 if (active && ticket === request)
                   setState((previous) => ({ ...previous, loading: false, error: firebase.cloudError(error) }));
-              });
+              } finally {
+                opening = false;
+              }
+            };
+            stopProfile = accountApi.watchAccountProfile(
+              user.uid,
+              (profile) => {
+                if (!active || ticket !== request) return;
+                named = profile;
+                if (!profile) {
+                  opened = false;
+                  sync.current?.stop();
+                  sync.current = null;
+                  store.setState({ ready: false, busy: false, data: emptySnapshot() });
+                  setState((previous) => ({
+                    ...previous,
+                    account: null,
+                    loading: false,
+                    guestAvailable: false,
+                    status: "connecting",
+                  }));
+                  return;
+                }
+                setState((previous) => ({ ...previous, account: profile, loading: !opened, error: "" }));
+                void openAccount();
+              },
+              (error) => {
+                if (active && ticket === request)
+                  setState((previous) => ({ ...previous, loading: false, error: firebase.cloudError(error) }));
+              },
+            );
           },
           (error) => {
             if (!active) return;
+            request++;
+            lifetime.current++;
+            sync.current?.stop();
+            sync.current = null;
+            stopProfile?.();
+            stopProfile = undefined;
             void store.getState().switchProfile("guest");
-            setState((previous) => ({ ...previous, loading: false, error: firebase.cloudError(error) }));
+            setState((previous) => ({
+              ...previous,
+              user: null,
+              account: null,
+              loading: false,
+              error: firebase.cloudError(error),
+            }));
           },
         );
       })
@@ -113,6 +176,8 @@ export function CloudProvider({ store, children }: { store: StoreApi<AppState>; 
         void store.getState().switchProfile("guest");
         setState((previous) => ({
           ...previous,
+          user: null,
+          account: null,
           loading: false,
           error: "Chưa tải được đăng nhập. Bạn vẫn có thể học trên máy; tải lại trang để thử lại.",
         }));
@@ -122,6 +187,7 @@ export function CloudProvider({ store, children }: { store: StoreApi<AppState>; 
       request++;
       lifetime.current++;
       unsubscribe?.();
+      stopProfile?.();
       sync.current?.stop();
     };
   }, [store]);
@@ -142,6 +208,18 @@ export function CloudProvider({ store, children }: { store: StoreApi<AppState>; 
   };
   const actions: CloudActions = {
     login: () => run((firebase) => firebase.loginGoogle()),
+    setUsername: (name) =>
+      run(async () => {
+        const uid = state.user?.uid;
+        if (!uid || !profiles.current) return;
+        await profiles.current.claimUsername(uid, name);
+      }),
+    setLeaderboardHidden: (hidden) =>
+      run(async () => {
+        const uid = state.user?.uid;
+        if (!uid || !state.account || !profiles.current) return;
+        await profiles.current.setLeaderboardHidden(uid, hidden);
+      }),
     logout: () => run((firebase) => firebase.logoutGoogle()),
     retry: () => sync.current?.retry(),
     decideGuest: (merge) =>

@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useCloud } from "../state/cloud-provider";
 import { useApp } from "../state/provider";
 import StatusMark from "./react-bits/StatusMark";
+import { UsernameSettings } from "./UsernameSettings";
 
 export const syncLabels = {
   connecting: "Đang kết nối tài khoản…",
@@ -40,9 +41,10 @@ export function AccountPanel() {
       ) : cloud.user ? (
         <>
           <p className="account-name">
-            <strong>{cloud.user.displayName || "Tài khoản Google"}</strong>
+            <strong>{cloud.account ? `@${cloud.account.username}` : "Tài khoản Google"}</strong>
             <span>{cloud.user.email}</span>
           </p>
+          <UsernameSettings />
           <StatusMark
             status={
               cloud.status === "synced"

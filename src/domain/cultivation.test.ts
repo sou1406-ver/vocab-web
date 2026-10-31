@@ -29,7 +29,7 @@ describe("Cultivation based on learned vocabulary", () => {
     expect(emptySnapshot().schemaVersion).toBe(2);
   });
   it("validates public fields and ranks ties equally without exposing other profile data", () => {
-    const profile = { version: 1, nickname: "Đạo hữu", avatar: 0, learnedCount: 50, updatedAt: 1 };
+    const profile = { version: 1, username: "dao_huu", avatar: 0, learnedCount: 50, updatedAt: 1 };
     const a = readCultivator("a", profile);
     const b = readCultivator("b", profile);
     const c = readCultivator("c", { ...profile, learnedCount: 10 });
@@ -47,8 +47,8 @@ describe("Cultivation based on learned vocabulary", () => {
       { learnedCount: -1 },
       { learnedCount: 1.5 },
       { learnedCount: Infinity },
-      { nickname: "" },
-      { nickname: "email@example.test" },
+      { username: "" },
+      { username: "email@example.test" },
       { version: 2 },
     ])
       expect(() => readCultivator("a", { ...profile, ...patch })).toThrow();

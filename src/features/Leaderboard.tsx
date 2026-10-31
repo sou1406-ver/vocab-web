@@ -1,9 +1,8 @@
 "use client";
 
-import { useEffect, useRef, useState, type FormEvent } from "react";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 import { avatarSeeds } from "../lib/avatar";
-import { readSyncedCultivatorSummary } from "../data/cultivation-summary";
-import { useApp } from "../state/provider";
 import { useCloud } from "../state/cloud-provider";
 import { cultivationOf, cultivationRealms, rankCultivators, type Cultivator } from "../domain/cultivation";
 import { CultivationAvatar } from "../components/CultivationAvatar";
@@ -13,23 +12,14 @@ type Connection = { uid?: string; rows: Cultivator[]; own: Cultivator | null; re
 const initial: Connection = { rows: [], own: null, ready: false, error: "" };
 
 export default function Leaderboard() {
-  const { profileKey, ready } = useApp();
   const cloud = useCloud();
   const uid = cloud.user?.uid;
   const [connection, setConnection] = useState<Connection>(initial);
   const [attempt, setAttempt] = useState(0);
-  const [draft, setDraft] = useState<{ uid: string; value: string }>();
-  const [consent, setConsent] = useState(false);
-  const [working, setWorking] = useState(false);
-  const [actionError, setActionError] = useState<{ uid: string; message: string }>();
-  const actionTicket = useRef(0);
   useEffect(() => {
     let active = true;
-    actionTicket.current++;
     const subscriptions: (() => void)[] = [];
     setConnection({ ...initial, uid });
-    setConsent(false);
-    setWorking(false);
     if (!uid) return;
     const fail = (reason: unknown) => {
       const denied = reason && typeof reason === "object" && "code" in reason && reason.code === "permission-denied";
@@ -66,47 +56,6 @@ export default function Leaderboard() {
     };
   }, [uid, attempt]);
   const current = connection.uid === uid ? connection : initial;
-  const nickname = draft && draft.uid === uid ? draft.value : (current.own?.nickname ?? "");
-  const canSave =
-    ready &&
-    uid &&
-    current.ready &&
-    !current.error &&
-    profileKey === `user:${uid}` &&
-    cloud.status === "synced" &&
-    !working;
-  const save = async (event: FormEvent) => {
-    event.preventDefault();
-    if (!canSave || (!current.own && !consent)) return;
-    const ticket = ++actionTicket.current;
-    setWorking(true);
-    setActionError(undefined);
-    try {
-      const summary = await readSyncedCultivatorSummary(uid);
-      if (ticket !== actionTicket.current) return;
-      await (await import("../data/leaderboard-cloud")).joinLeaderboard(uid, nickname, summary.count, summary.avatar);
-    } catch (reason) {
-      if (ticket === actionTicket.current)
-        setActionError({ uid, message: reason instanceof Error ? reason.message : "Chưa lưu được hồ sơ tu luyện." });
-    } finally {
-      if (ticket === actionTicket.current) setWorking(false);
-    }
-  };
-  const leave = async () => {
-    if (!uid || working) return;
-    const ticket = ++actionTicket.current;
-    setWorking(true);
-    setActionError(undefined);
-    try {
-      await (await import("../data/leaderboard-cloud")).leaveLeaderboard(uid);
-      if (ticket === actionTicket.current) setConsent(false);
-    } catch {
-      if (ticket === actionTicket.current)
-        setActionError({ uid, message: "Chưa rời được bảng tu luyện. Hãy kiểm tra kết nối và thử lại." });
-    } finally {
-      if (ticket === actionTicket.current) setWorking(false);
-    }
-  };
   const rankings = rankCultivators(current.rows);
   return (
     <div className="page leaderboard-page">
@@ -147,7 +96,7 @@ export default function Leaderboard() {
                   </span>
                   <CultivationAvatar words={entry.learnedCount} seed={avatarSeeds[entry.avatar]} decorative />
                   <div className="cultivator-name">
-                    <strong>{entry.nickname}</strong>
+                    <strong>{entry.username}</strong>
                     <small>
                       {cultivationOf(entry.learnedCount).name}
                       {entry.id === uid ? " · Bạn" : ""}
@@ -169,52 +118,30 @@ export default function Leaderboard() {
         </section>
         <section className="panel" aria-labelledby="public-profile-title">
           <div className="section-heading">
-            <h2 id="public-profile-title">{current.own ? "Hồ sơ tu luyện" : "Tham gia bảng tu luyện"}</h2>
+            <h2 id="public-profile-title">Hồ sơ tu luyện</h2>
           </div>
-          {uid ? (
-            <form className="leaderboard-form" onSubmit={(event) => void save(event)}>
-              <p className="muted">
-                Biệt danh, avatar, cảnh giới và số từ đã học sẽ hiện với người đã đăng nhập. Mỗi từ chỉ tính một lần.
+          {uid && cloud.account ? (
+            <>
+              <p className="account-name">
+                <strong>@{cloud.account.username}</strong>
               </p>
-              <label htmlFor="cultivator-nickname">Biệt danh công khai</label>
-              <input
-                id="cultivator-nickname"
-                value={nickname}
-                maxLength={32}
-                minLength={2}
-                required
-                autoComplete="off"
-                placeholder="Ví dụ: Đạo hữu ham học"
-                onChange={(event) => setDraft({ uid, value: event.target.value })}
-              />
-              {!current.own && (
-                <label className="leaderboard-consent">
-                  <input type="checkbox" checked={consent} onChange={(event) => setConsent(event.target.checked)} />
-                  Tôi đồng ý hiện biệt danh, avatar, cảnh giới và số từ đã học trên bảng.
-                </label>
-              )}
+              <p className="muted">
+                {cloud.account.hiddenLeaderboard
+                  ? "Bạn đang ẩn khỏi bảng xếp hạng. Username và tiến độ vẫn được giữ."
+                  : "Avatar, username, cảnh giới và số từ đã học hiển thị với người đã đăng nhập."}
+              </p>
               {cloud.status !== "synced" && (
-                <p className="quiet-note">Đợi tiến độ đồng bộ xong để cập nhật số từ lên bảng.</p>
+                <p className="quiet-note">Số từ sẽ cập nhật sau khi tiến độ đồng bộ xong.</p>
               )}
-              <button className="button primary" disabled={!canSave || (!current.own && !consent)}>
-                {working ? "Đang lưu…" : current.own ? "Cập nhật hồ sơ" : "Tham gia bảng tu luyện"}
-              </button>
-              {current.own && (
-                <button type="button" className="text-link" disabled={working} onClick={() => void leave()}>
-                  Rời bảng tu luyện
-                </button>
-              )}
-              {actionError?.uid === uid && (
-                <p className="inline-error" role="alert">
-                  {actionError.message}
-                </p>
-              )}
-            </form>
+              <Link href="/settings" className="button secondary">
+                Cài đặt username & hiển thị
+              </Link>
+            </>
           ) : (
             <>
               <p className="muted">
-                Đăng nhập Google để tham gia bằng biệt danh của bạn. Hành trình tu luyện cá nhân vẫn được lưu trên máy
-                khi học không đăng nhập.
+                Đăng nhập Google và chọn username để hoàn tất tài khoản. Khách vẫn có thể học trên máy, không xuất hiện
+                trên BXH.
               </p>
               <button
                 className="button primary"
@@ -230,10 +157,7 @@ export default function Leaderboard() {
               )}
             </>
           )}
-          <p className="quiet-note">
-            Cảnh giới tính theo số từ đã học, chưa phải mức thành thạo. Kết quả đồng bộ từ ứng dụng dùng để khích lệ học
-            đều.
-          </p>
+          <p className="quiet-note">Cảnh giới tính theo số từ đã học, chưa phải mức thành thạo.</p>
         </section>
       </div>
       <details className="panel cultivation-realms">

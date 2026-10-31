@@ -9,6 +9,7 @@ import type { Word } from "../domain/types";
 import { CultivationAvatar } from "../components/CultivationAvatar";
 import { countLearnedWords } from "../domain/cultivation";
 import { bookOfWord } from "../data/catalog";
+import { AccountSetup } from "../components/AccountSetup";
 import StatusMark from "../components/react-bits/StatusMark";
 import { useCloud } from "../state/cloud-provider";
 import { syncLabels } from "../components/AccountPanel";
@@ -76,6 +77,13 @@ export function Shell({ children }: { children: ReactNode }) {
     month: "long",
     timeZone: data.settings.timezone,
   }).format();
+  if (cloud.loading && !cloud.account)
+    return (
+      <main className="account-setup-page">
+        <p role="status">Đang mở tài khoản…</p>
+      </main>
+    );
+  if (cloud.user && !cloud.account) return <AccountSetup theme={resolvedTheme} />;
   return (
     <WordContext.Provider value={(selected) => void inspect(selected)}>
       <LeaderboardSync />
