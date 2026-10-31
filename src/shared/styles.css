@@ -455,6 +455,7 @@
   }
   .page-heading .eyebrow {
     margin-bottom: 9px;
+    letter-spacing: 0.3px;
   }
   .heading-dot {
     color: var(--green);

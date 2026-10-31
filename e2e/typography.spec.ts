@@ -15,5 +15,15 @@ test("Vietnamese headings use the bundled font and supporting text stays readabl
   expect(styles.font).toContain("Noto Serif");
   expect(styles.body).toBeGreaterThanOrEqual(16);
   expect(styles.label).toBeGreaterThanOrEqual(14);
+  await page.goto("/lessons");
+  expect(
+    await page.locator(".page-heading .eyebrow").evaluate((node) => parseFloat(getComputedStyle(node).letterSpacing)),
+  ).toBeLessThanOrEqual(0.5);
+  await page.goto("/");
+  expect(
+    await page
+      .locator(".front-vocab-card .small-label")
+      .evaluate((node) => parseFloat(getComputedStyle(node).letterSpacing)),
+  ).toBeLessThanOrEqual(0.5);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
 });

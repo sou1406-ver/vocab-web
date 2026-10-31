@@ -131,7 +131,7 @@
     font-size: 16px;
     max-width: 310px;
     line-height: 1.8;
-    color: #cfdbc8;
+    color: #f4f6ef;
   }
   .hero-button {
     margin-top: 23px;
@@ -213,7 +213,7 @@
   }
   .front-vocab-card .small-label {
     font-size: 14px;
-    letter-spacing: 1px;
+    letter-spacing: 0.3px;
     color: #68775f;
   }
   .art-word {
