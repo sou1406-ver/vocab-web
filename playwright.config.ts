@@ -6,7 +6,16 @@ export default defineConfig({
   timeout: 45_000,
   fullyParallel: true,
   reporter: "list",
-  use: { baseURL: "http://127.0.0.1:5174", channel, trace: "retain-on-failure" },
+  use: {
+    baseURL: "http://127.0.0.1:5174",
+    channel,
+    trace: "retain-on-failure",
+    // Exercise specs represent returning guests; the notice spec overrides this.
+    storageState: {
+      cookies: [],
+      origins: [{ origin: "http://127.0.0.1:5174", localStorage: [{ name: "vocab:guest-notice:v1", value: "1" }] }],
+    },
+  },
   projects: [
     { name: "desktop", use: { ...devices["Desktop Chrome"], channel, viewport: { width: 1440, height: 1000 } } },
     {

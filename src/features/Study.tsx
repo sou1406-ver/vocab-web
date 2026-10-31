@@ -18,8 +18,17 @@ import { makeMatchQuestions } from "../data/match";
 import { ListenPrompt } from "../components/ListenPrompt";
 import { useEnglishVoices } from "../lib/use-english-voices";
 import StatusMark from "../components/react-bits/StatusMark";
+import { GuestStudyNotice } from "../components/GuestStudyNotice";
 
 export default function Study() {
+  return (
+    <GuestStudyNotice>
+      <StudySession />
+    </GuestStudyNotice>
+  );
+}
+
+function StudySession() {
   const { data, busy, advance, answer, finish, start, startExercises, change } = useApp();
   const voices = useEnglishVoices();
   const router = useRouter();
