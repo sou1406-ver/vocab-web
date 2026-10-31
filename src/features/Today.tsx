@@ -1,35 +1,38 @@
 "use client";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { Flame } from "lucide-react";
 import { activeBook } from "../data/catalog";
 import { useApp } from "../state/provider";
 import { dayKey, dueIds, introducedToday } from "../domain/learning";
+import { learningStreak } from "../domain/streak";
+import { CultivationCard } from "../components/CultivationCard";
 import { Icon, ProgressBar } from "../shared/ui";
-import { useWord } from "../app/context";
 
 export function Today() {
   const { data, start, busy } = useApp();
   const router = useRouter();
-  const inspect = useWord();
+  const at = Date.now();
   const book = activeBook(data.settings);
   const catalog = book.catalog;
   const all = [...catalog.words, ...data.customWords];
-  const due = dueIds(data).filter((id) => all.some((w) => w.id === id));
-  const introduced = introducedToday(data);
+  const due = dueIds(data, at).filter((id) => all.some((word) => word.id === id));
+  const introduced = introducedToday(data, at);
+  const remaining = Math.max(0, data.settings.dailyNew - introduced);
   const active = data.session && data.session.phase !== "complete";
   const lesson =
-    catalog.lessons.find((l) => catalog.words.some((w) => w.lesson === l.id && !data.progress[w.id]?.tested)) ??
-    catalog.lessons[0];
-  const nextWords = catalog.words.filter((w) => w.lesson === lesson.id && !data.progress[w.id]?.tested).slice(0, 5);
-  const today = dayKey(Date.now(), data.settings.timezone);
-  const reviewed = new Set(data.events.filter((e) => e.day === today && e.mode === "review").map((e) => e.wordId)).size;
-  const learned = catalog.words.filter((w) => data.progress[w.id]?.tested).length;
-  const complete = catalog.words.filter((w) => (data.progress[w.id]?.box ?? 0) >= 5).length;
+    catalog.lessons.find((item) =>
+      catalog.words.some((word) => word.lesson === item.id && !data.progress[word.id]?.tested),
+    ) ?? catalog.lessons[0];
+  const nextWords = catalog.words
+    .filter((word) => word.lesson === lesson.id && !data.progress[word.id]?.tested)
+    .slice(0, 5);
   const dailyGoal = Math.min(100, (introduced / data.settings.dailyNew) * 100);
-  const preview = nextWords[1] ?? all[0];
+  const streak = learningStreak(data.events, at);
+  const studiedToday = data.events.some((event) => event.at <= at && dayKey(event.at) === dayKey(at));
   const doPrimary = async () => {
     if (active) return router.push("/study");
-    const words = due.length ? due.slice(0, 20).map((id) => all.find((w) => w.id === id)!) : nextWords;
+    const words = due.length ? due.slice(0, 20).map((id) => all.find((word) => word.id === id)!) : nextWords;
     if (!words.length) return router.push("/lessons");
     if (
       await start(
@@ -56,172 +59,44 @@ export function Today() {
           <Icon name="book" size={16} /> {book.shortTitle.toUpperCase()}
         </span>
       </div>
-      <section className="study-hero" aria-labelledby="hero-title">
+      <section className="study-hero today-hero" aria-labelledby="hero-title">
         <div className="hero-copy">
           <span className="hero-label">
-            <span /> {active ? "TIẾP NỐI NHỊP HỌC" : due.length ? "ĐÃ ĐẾN LÚC ÔN LẠI" : "BUỔI HỌC CỦA BẠN"}
+            <span /> {active ? "TIẾP NỐI NHỊP HỌC" : "VIỆC HỌC HÔM NAY"}
           </span>
-          <h2 id="hero-title">
-            {active ? (
+          <h2 id="hero-title">{active ? "Tiếp nối hành trình." : "Thêm một bước tiến."}</h2>
+          <p className="today-workload">
+            {remaining} từ mới
+            {due.length > 0 && (
               <>
-                Một chút nữa.
-                <br />
-                Tiếp tục nhé?
-              </>
-            ) : due.length ? (
-              <>
-                Gặp lại từ cũ.
-                <br />
-                Nhớ thêm một lần.
-              </>
-            ) : (
-              <>
-                Thêm 5 từ.
-                <br />
-                Thêm một bước tiến.
+                <span aria-hidden="true"> · </span>
+                <span className="today-due">{due.length} từ cần ôn</span>
               </>
             )}
-          </h2>
-          <p>
-            {active
-              ? `${data.session!.title} · Bạn đã làm ${data.session!.index} / ${data.session!.questions.length} câu.`
-              : due.length
-                ? `${due.length} từ đang đợi bạn. Bắt đầu với một lượt tối đa 20 từ.`
-                : `${lesson.title} — ${lesson.translation}. Học nghĩa, xem ví dụ và thử tự nhớ lại.`}
           </p>
           <button className="button hero-button" disabled={busy} onClick={() => void doPrimary()}>
-            {active
-              ? "Tiếp tục học"
-              : due.length
-                ? "Bắt đầu ôn"
-                : nextWords.length
-                  ? "Bắt đầu học"
-                  : "Khám phá bài học"}
+            {active ? "Tiếp tục học" : "Bắt đầu học"}
             <Icon name="arrow" />
           </button>
-          <div className="hero-footnote">
-            <Icon name="clock" size={15} />
+          <p className="hero-footnote">
             {active
-              ? "Tiến độ đã được giữ lại"
-              : due.length
-                ? "Mỗi lần nhớ lại, một lần vững hơn"
+              ? `${data.session!.title} · Bạn đã làm ${data.session!.index} / ${data.session!.questions.length} câu.`
+              : introduced >= data.settings.dailyNew
+                ? "Đã đạt mục tiêu hôm nay. Bạn vẫn có thể học thêm."
                 : "Một lượt ngắn · Lưu sau mỗi câu"}
-          </div>
+          </p>
         </div>
-        <div className="hero-art" aria-hidden="true">
-          <div className="orbit orbit-one" />
-          <div className="orbit orbit-two" />
-          <span className="art-star star-one">✳</span>
-          <span className="art-star star-two">+</span>
-          <div className="back-vocab-card">
-            <span>LEARN. RECALL. REMEMBER.</span>
-            <div className="card-lines">
-              <i />
-              <i />
-              <i />
-            </div>
-          </div>
-          <div className="front-vocab-card">
-            <span className="small-label">MỘT TỪ MỚI, MỘT KHỞI ĐẦU</span>
-            <span className="art-word">{preview.text}</span>
-            <span className="art-ipa">
-              {preview.pos} &nbsp; {preview.ipa}
-            </span>
-            <div className="art-divider" />
-            <span className="art-meaning">{preview.meaning}</span>
-            <span className="art-bottom">
-              <Icon name="leaf" size={17} /> a little, every day.
-            </span>
-          </div>
-          <div className="art-check">
-            <Icon name="check" size={24} />
-          </div>
-        </div>
-      </section>
-      <section className="stats-grid" aria-label="Việc học của bạn">
-        <div className="stat-card">
-          <span className="stat-icon green">
-            <Icon name="new-word" />
-          </span>
-          <div>
-            <span className="stat-label">Từ mới hôm nay</span>
-            <div className="stat-number">
-              {introduced}
-              <small>/ {data.settings.dailyNew} từ</small>
-            </div>
-          </div>
-          <span className="stat-note">Mục tiêu mỗi ngày</span>
-        </div>
-        <div className="stat-card stat-card--brand stat-card--due">
-          <span className="stat-icon">
-            <Icon name="repeat" />
-          </span>
-          <div>
-            <span className="stat-label">Đến hạn ôn</span>
-            <div className="stat-number">
-              {due.length}
-              <small>từ</small>
-            </div>
-          </div>
-          <span className="stat-note">{reviewed ? `Đã ôn ${reviewed} từ hôm nay` : "Ôn lại để nhớ lâu"}</span>
-        </div>
-        <div className="stat-card stat-card--neutral">
-          <span className="stat-icon">
-            <Icon name="memorized" />
-          </span>
-          <div>
-            <span className="stat-label">Đã bắt đầu ghi nhớ</span>
-            <div className="stat-number">
-              {learned}
-              <small>/ {catalog.words.length} từ</small>
-            </div>
-          </div>
-          <span className="stat-note">{complete} từ nhớ ổn định</span>
-        </div>
-      </section>
-      <div className="today-bottom">
-        <section className="panel learning-panel">
-          <div className="section-heading">
-            <div>
-              <p className="eyebrow">TỪNG BƯỚC VỮNG VÀNG</p>
-              <h2>Tiếp tục hành trình</h2>
-            </div>
-            <Link className="text-link" href="/lessons">
-              Tất cả bài học <Icon name="arrow" size={17} />
-            </Link>
-          </div>
-          <div className="lesson-preview-list">
-            {catalog.lessons.slice(Math.max(0, lesson.id - 1), Math.max(0, lesson.id - 1) + 3).map((l, i) => {
-              const words = catalog.words.filter((w) => w.lesson === l.id);
-              const count = words.filter((w) => data.progress[w.id]?.tested).length;
-              return (
-                <Link className="lesson-preview" href={`/books/${book.id}/lessons/${l.id}`} key={l.id}>
-                  <span className={`lesson-number ${i === 0 ? "current" : ""}`}>{String(l.id).padStart(2, "0")}</span>
-                  <div className="lesson-preview-body">
-                    <h3>{l.title}</h3>
-                    <span>
-                      {l.translation} <span className="dot-separator">·</span> {words.length} từ
-                    </span>
-                    <ProgressBar
-                      value={(count / words.length) * 100}
-                      label={`Bài ${l.id}: ${count} trên ${words.length} từ`}
-                    />
-                  </div>
-                  <span className="lesson-state">
-                    {count ? `${count}/${words.length}` : i === 0 ? "Học tiếp" : "Khám phá"}
-                  </span>
-                  <Icon name="chevron" size={17} />
-                </Link>
-              );
-            })}
-          </div>
-        </section>
-        <aside className="goal-panel">
-          <div className="section-heading">
-            <h2>Nhịp học hôm nay</h2>
-            <Icon name="target" />
-          </div>
-          <div className="goal-circle" style={{ "--progress": `${dailyGoal}%` } as React.CSSProperties}>
+        <div className="today-daily-goal">
+          <div
+            className="goal-circle"
+            style={{ "--progress": `${dailyGoal}%` } as React.CSSProperties}
+            role="progressbar"
+            aria-label="Mục tiêu từ mới hôm nay"
+            aria-valuenow={Math.min(introduced, data.settings.dailyNew)}
+            aria-valuemax={data.settings.dailyNew}
+            aria-valuemin={0}
+            aria-valuetext={`${introduced} trên ${data.settings.dailyNew} từ mới`}
+          >
             <div>
               <b>
                 {introduced}
@@ -230,27 +105,61 @@ export function Today() {
               <small>từ mới</small>
             </div>
           </div>
-          <p>
-            {introduced >= data.settings.dailyNew
-              ? "Bạn đã đạt mục tiêu hôm nay."
-              : "Đều đặn quan trọng hơn thật nhiều."}
+          <Link href="/settings">Điều chỉnh mục tiêu</Link>
+        </div>
+      </section>
+      <div className="today-highlights">
+        <CultivationCard />
+        <section className="panel streak-card" aria-labelledby="streak-title">
+          <Flame className="streak-icon" size={28} aria-hidden="true" />
+          <p className="eyebrow">ĐỀU ĐẶN MỖI NGÀY</p>
+          <h2 id="streak-title">
+            <span className="today-streak-count">{streak}</span> ngày liên tiếp
+          </h2>
+          <p className="muted">
+            {studiedToday
+              ? "Bạn đã giữ nhịp học hôm nay."
+              : streak
+                ? "Học một lượt hôm nay để nối dài chuỗi."
+                : "Bắt đầu hôm nay, từng chút thành thói quen."}
           </p>
-          <Link href="/settings" className="text-link">
-            Điều chỉnh mục tiêu <Icon name="arrow" size={16} />
-          </Link>
-        </aside>
+        </section>
       </div>
-      <section className="word-strip">
-        <div className="strip-icon">
-          <Icon name="leaf" />
+      <section className="panel learning-panel">
+        <div className="section-heading">
+          <div>
+            <p className="eyebrow">TỪNG BƯỚC VỮNG VÀNG</p>
+            <h2>Tiếp tục hành trình</h2>
+          </div>
+          <Link className="text-link" href="/lessons">
+            Tất cả bài học <Icon name="arrow" size={17} />
+          </Link>
         </div>
-        <div>
-          <span className="eyebrow">GÓC TỪ VỰNG</span>
-          <p>Một từ, nhiều cách dùng. Khám phá thêm những người bạn trong họ từ.</p>
+        <div className="lesson-preview-list">
+          {catalog.lessons.slice(Math.max(0, lesson.id - 1), Math.max(0, lesson.id - 1) + 3).map((l, i) => {
+            const words = catalog.words.filter((w) => w.lesson === l.id);
+            const count = words.filter((w) => data.progress[w.id]?.tested).length;
+            return (
+              <Link className="lesson-preview" href={`/books/${book.id}/lessons/${l.id}`} key={l.id}>
+                <span className={`lesson-number ${i === 0 ? "current" : ""}`}>{String(l.id).padStart(2, "0")}</span>
+                <div className="lesson-preview-body">
+                  <h3>{l.title}</h3>
+                  <span>
+                    {l.translation} <span className="dot-separator">·</span> {words.length} từ
+                  </span>
+                  <ProgressBar
+                    value={(count / words.length) * 100}
+                    label={`Bài ${l.id}: ${count} trên ${words.length} từ`}
+                  />
+                </div>
+                <span className="lesson-state">
+                  {count ? `${count}/${words.length}` : i === 0 ? "Học tiếp" : "Khám phá"}
+                </span>
+                <Icon name="chevron" size={17} />
+              </Link>
+            );
+          })}
         </div>
-        <button className="text-link" onClick={() => inspect(preview)}>
-          Khám phá “{preview.text}” <Icon name="arrow" size={16} />
-        </button>
       </section>
     </div>
   );

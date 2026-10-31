@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useState } from "react";
 import { avatarSeeds } from "../lib/avatar";
 import { useCloud } from "../state/cloud-provider";
@@ -73,11 +72,23 @@ export default function Leaderboard() {
         <section className="panel" aria-labelledby="ranking-title">
           <div className="section-heading">
             <h2 id="ranking-title">Đạo hữu dẫn đầu</h2>
-            <span className="muted">Tối đa 50 người</span>
           </div>
-          <p className="muted">Xếp theo số từ giáo trình đã học và kiểm tra trên tất cả sách. Cùng số từ, cùng hạng.</p>
           {!uid ? (
-            <p className="quiet-note">Đăng nhập để xem bảng tu luyện của cộng đồng.</p>
+            <div className="leaderboard-login">
+              <p className="quiet-note">Đăng nhập để xem bảng tu luyện của cộng đồng.</p>
+              <button
+                className="button primary"
+                disabled={cloud.loading || cloud.working}
+                onClick={() => void cloud.login()}
+              >
+                Đăng nhập bằng Google
+              </button>
+              {cloud.error && (
+                <p className="inline-error" role="alert">
+                  {cloud.error}
+                </p>
+              )}
+            </div>
           ) : current.error ? (
             <div role="alert">
               <p>{current.error}</p>
@@ -90,7 +101,11 @@ export default function Leaderboard() {
           ) : rankings.length ? (
             <ol className="cultivator-list">
               {rankings.map((entry) => (
-                <li className={entry.id === uid ? "cultivator-row is-self" : "cultivator-row"} key={entry.id}>
+                <li
+                  className={entry.id === uid ? "cultivator-row is-self" : "cultivator-row"}
+                  data-rank={entry.rank <= 3 ? entry.rank : undefined}
+                  key={entry.id}
+                >
                   <span className="cultivator-rank" aria-label={`Hạng ${entry.rank}`}>
                     #{entry.rank}
                   </span>
@@ -115,49 +130,6 @@ export default function Leaderboard() {
           {current.own && current.ready && !rankings.some((entry) => entry.id === uid) && (
             <p className="quiet-note">Bạn đã tham gia; hiện chưa nằm trong 50 người dẫn đầu.</p>
           )}
-        </section>
-        <section className="panel" aria-labelledby="public-profile-title">
-          <div className="section-heading">
-            <h2 id="public-profile-title">Hồ sơ tu luyện</h2>
-          </div>
-          {uid && cloud.account ? (
-            <>
-              <p className="account-name">
-                <strong>@{cloud.account.username}</strong>
-              </p>
-              <p className="muted">
-                {cloud.account.hiddenLeaderboard
-                  ? "Bạn đang ẩn khỏi bảng xếp hạng. Username và tiến độ vẫn được giữ."
-                  : "Avatar, username, cảnh giới và số từ đã học hiển thị với người đã đăng nhập."}
-              </p>
-              {cloud.status !== "synced" && (
-                <p className="quiet-note">Số từ sẽ cập nhật sau khi tiến độ đồng bộ xong.</p>
-              )}
-              <Link href="/settings" className="button secondary">
-                Cài đặt username & hiển thị
-              </Link>
-            </>
-          ) : (
-            <>
-              <p className="muted">
-                Đăng nhập Google và chọn username để hoàn tất tài khoản. Khách vẫn có thể học trên máy, không xuất hiện
-                trên BXH.
-              </p>
-              <button
-                className="button primary"
-                disabled={cloud.loading || cloud.working}
-                onClick={() => void cloud.login()}
-              >
-                {cloud.working ? "Đang đăng nhập…" : "Đăng nhập bằng Google"}
-              </button>
-              {cloud.error && (
-                <p className="inline-error" role="alert">
-                  {cloud.error}
-                </p>
-              )}
-            </>
-          )}
-          <p className="quiet-note">Cảnh giới tính theo số từ đã học, chưa phải mức thành thạo.</p>
         </section>
       </div>
       <details className="panel cultivation-realms">

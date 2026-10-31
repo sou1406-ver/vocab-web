@@ -89,7 +89,10 @@ test("lookup/save do not count as learning, accessible dialog and blocked local 
   expect(result.violations.map((v) => v.id)).toEqual([]);
   await page.keyboard.press("Escape");
   await page.goto("/");
-  await expect(page.locator(".stat-number").first()).toHaveText("0/ 10 từ");
+  await expect(page.getByRole("progressbar", { name: "Mục tiêu từ mới hôm nay", exact: true })).toHaveAttribute(
+    "aria-valuenow",
+    "0",
+  );
   await page.addInitScript(() => {
     Object.defineProperty(window, "indexedDB", {
       get() {

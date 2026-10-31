@@ -5,8 +5,8 @@ import { readSnapshot } from "./speech-mock";
 test("grouped progress shows measured results and keeps untried groups empty", async ({ page }, testInfo) => {
   await page.goto("/progress");
   const groups = page.getByRole("region", { name: "Theo nhóm bài tập" });
-  await expect(groups.getByRole("article")).toHaveCount(6);
-  await expect(groups.locator(".exercise-result-value")).toHaveText(Array(6).fill("—"));
+  await expect(groups).toHaveCount(0);
+  await expect(page.getByRole("heading", { name: "Chưa có lượt học nào", exact: true })).toBeVisible();
   await page.goto("/books/toeic-600/lessons/1");
   await page.getByRole("button", { name: "Luyện chọn nghĩa / chọn từ", exact: true }).click();
   const snapshot = await readSnapshot(page);
@@ -20,6 +20,7 @@ test("grouped progress shows measured results and keeps untried groups empty", a
     .click();
   await page.getByRole("button", { name: "Kết thúc tại đây", exact: true }).click();
   await page.goto("/progress");
+  await expect(groups.getByRole("article")).toHaveCount(6);
   const recognition = page.getByRole("article", { name: "Nhận biết", exact: true });
   await expect(recognition.locator(".exercise-result-value")).toHaveText("50%");
   await expect(recognition).toContainText("1/2 câu tự trả lời đúng");

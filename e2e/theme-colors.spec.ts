@@ -29,7 +29,7 @@ for (const theme of ["light", "dark"] as const) {
     await page.emulateMedia({ colorScheme: theme });
     await page.goto("/");
     await expect(page.getByText("Đang mở dữ liệu…")).not.toBeVisible();
-    await expect(page.locator(".stats-grid")).toBeVisible();
+    await expect(page.locator(".today-highlights")).toBeVisible();
     if ((await page.locator("html").getAttribute("data-theme")) !== theme)
       await page.getByRole("button", { name: "Đổi giao diện sáng tối" }).click();
     await expect(page.locator("html")).toHaveAttribute("data-theme", theme);
@@ -51,15 +51,15 @@ for (const theme of ["light", "dark"] as const) {
           root.getPropertyValue(`--${name}`).trim(),
         ]),
       );
-      const stats = document.querySelector(".stats-grid")!;
-      const due = stats.querySelector(".stat-card--due")!;
+      const stats = document.querySelector(".today-highlights")!;
+      const due = stats.querySelector(".streak-card")!;
       return {
         tokens,
-        due: getComputedStyle(due.querySelector(".stat-number")!).color,
-        dueLabel: getComputedStyle(due.querySelector(".stat-label")!).color,
+        due: getComputedStyle(due.querySelector(".today-streak-count")!).color,
+        dueLabel: getComputedStyle(due.querySelector(".eyebrow")!).color,
         cardBackground: getComputedStyle(due).backgroundColor,
         cardTop: getComputedStyle(due).borderTopColor,
-        icons: Array.from(stats.querySelectorAll(".stat-icon"), (node) => getComputedStyle(node).color),
+        icons: Array.from(stats.querySelectorAll(".streak-icon"), (node) => getComputedStyle(node).color),
       };
     });
     const ratios: Record<string, number> = {};
@@ -79,22 +79,20 @@ for (const theme of ["light", "dark"] as const) {
     ratios.dueLabel = contrast(palette.dueLabel, palette.cardBackground);
     expect(ratios.dueNumber).toBeGreaterThanOrEqual(4.5);
     expect(ratios.dueLabel).toBeGreaterThanOrEqual(4.5);
-    expect(new Set(palette.icons).size).toBe(3);
     const moved = await page.evaluate(() => {
-      const stats = document.querySelector(".stats-grid")!;
-      const due = stats.querySelector(".stat-card--due")!;
+      const stats = document.querySelector(".today-highlights")!;
+      const due = stats.querySelector(".streak-card")!;
       const cards = Array.from(stats.children);
       const label = stats.getAttribute("aria-label");
       stats.prepend(due);
       stats.setAttribute("aria-label", "Thống kê học tập");
-      const color = getComputedStyle(due.querySelector(".stat-number")!).color;
+      const color = getComputedStyle(due.querySelector(".today-streak-count")!).color;
       stats.replaceChildren(...cards);
       if (label === null) stats.removeAttribute("aria-label");
       else stats.setAttribute("aria-label", label);
       return color;
     });
     expect(moved).toBe(palette.due);
-    if (theme === "dark") expect(palette.cardTop).toBe("rgba(255, 255, 255, 0.1)");
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
     const result = await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa"]).analyze();
     expect(result.violations.map((v) => ({ id: v.id, nodes: v.nodes.map((n) => n.target) }))).toEqual([]);
@@ -109,17 +107,8 @@ for (const theme of ["light", "dark"] as const) {
       ).toEqual([]);
       expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), path).toBe(true);
       if (path === "/progress") {
-        const tracks = await page.locator(".activity-track").evaluateAll((nodes) =>
-          nodes.map((node) => ({
-            width: node.getBoundingClientRect().width,
-            maximum: parseFloat(getComputedStyle(node).maxWidth),
-          })),
-        );
-        expect(tracks).toHaveLength(7);
-        for (const track of tracks) {
-          expect(track.maximum).toBe(26.25);
-          expect(track.width).toBeLessThanOrEqual(26.25);
-        }
+        await expect(page.locator(".activity-chart")).toHaveCount(0);
+        await expect(page.getByRole("heading", { name: "Chưa có lượt học nào", exact: true })).toBeVisible();
         await page.screenshot({ path: testInfo.outputPath(`${theme}-progress.png`), fullPage: true });
       }
     }

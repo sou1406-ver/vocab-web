@@ -36,7 +36,7 @@ export function AccountPanel() {
       <div className="section-heading">
         <h2 id="account-heading">Tài khoản & đồng bộ</h2>
         {cloud.user && (
-          <button className="button secondary" disabled={disabled} onClick={() => void cloud.logout()}>
+          <button className="button primary account-logout" disabled={disabled} onClick={() => void cloud.logout()}>
             Đăng xuất
           </button>
         )}

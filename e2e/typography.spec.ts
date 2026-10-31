@@ -9,7 +9,7 @@ test("Vietnamese headings use the bundled font and supporting text stays readabl
     return {
       font: css("main h1").fontFamily,
       body: parseFloat(css("body").fontSize),
-      label: parseFloat(css(".stat-label").fontSize),
+      label: parseFloat(css(".page-subtitle").fontSize),
     };
   });
   expect(styles.font).toContain("Noto Serif");
@@ -21,9 +21,7 @@ test("Vietnamese headings use the bundled font and supporting text stays readabl
   ).toBeLessThanOrEqual(0.5);
   await page.goto("/");
   expect(
-    await page
-      .locator(".front-vocab-card .small-label")
-      .evaluate((node) => parseFloat(getComputedStyle(node).letterSpacing)),
+    await page.locator(".hero-label").evaluate((node) => parseFloat(getComputedStyle(node).letterSpacing)),
   ).toBeLessThanOrEqual(0.5);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
 });

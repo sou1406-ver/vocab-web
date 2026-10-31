@@ -37,31 +37,21 @@ test("brand kit logo follows theme and viewport, with matching app icons", async
   expect(box?.height).toBe(48);
 });
 
-test("V2 study layout returns with readable cards and study actions", async ({ page }, testInfo) => {
-  await page.setViewportSize({ width: 1440, height: 1000 });
-  await page.goto("/");
-  await expect(page.getByRole("heading", { name: "Hôm nay, học một chút." })).toBeVisible();
-  await expect(page.locator(".hero-art")).toBeVisible();
-  await expect(page.locator(".sidebar-note")).toHaveCount(0);
-  await expect(page.locator(".goal-panel")).toBeVisible();
-  await expect(page.getByRole("button", { name: "Bắt đầu học", exact: true })).toHaveCount(1);
+test("Today keeps its daily goal inside a compact responsive hero", async ({ page }, testInfo) => {
   for (const width of [1440, 1024]) {
     await page.setViewportSize({ width, height: 1000 });
-    await page.evaluate(() => document.fonts.ready);
-    const layout = await page.evaluate(() => {
-      const card = document.querySelector<HTMLElement>(".front-vocab-card")!;
-      const meaning = card.querySelector<HTMLElement>(".art-meaning")!;
-      const caption = card.querySelector<HTMLElement>(".art-bottom")!;
-      return {
-        end: meaning.offsetTop + meaning.offsetHeight,
-        caption: caption.offsetTop,
-        height: card.clientHeight,
-        scroll: card.scrollHeight,
-      };
-    });
-    expect(layout.caption).toBeGreaterThanOrEqual(layout.end + 8);
-    expect(layout.scroll).toBeLessThanOrEqual(layout.height);
-    if (width === 1440) await page.screenshot({ path: `test-results/vocab-v2-restored-${testInfo.project.name}.png` });
+    await page.goto("/");
+    await expect(page.getByRole("heading", { name: "Hôm nay, học một chút." })).toBeVisible();
+    await expect(page.locator(".goal-panel, .hero-art, .sidebar-note")).toHaveCount(0);
+    await expect(page.getByRole("button", { name: "Bắt đầu học", exact: true })).toHaveCount(1);
+    const hero = (await page.locator(".today-hero").boundingBox())!;
+    const goal = (await page.locator(".goal-circle").boundingBox())!;
+    expect(hero.height).toBeLessThan(360);
+    expect(goal.x).toBeGreaterThanOrEqual(hero.x);
+    expect(goal.x + goal.width).toBeLessThanOrEqual(hero.x + hero.width);
+    expect(goal.y + goal.height).toBeLessThanOrEqual(hero.y + hero.height);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+    if (width === 1440) await page.screenshot({ path: testInfo.outputPath("today-compact.png") });
   }
 });
 

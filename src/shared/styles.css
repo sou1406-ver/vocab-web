@@ -174,14 +174,14 @@
   .eyebrow {
     font-size: 14px;
     font-weight: 700;
-    letter-spacing: 1.8px;
+    letter-spacing: 0.3px;
     color: var(--muted);
     line-height: 1.6;
   }
   .small-label {
     font-size: 14px;
     font-weight: 600;
-    letter-spacing: 1px;
+    letter-spacing: 0.3px;
     color: var(--muted);
   }
   .sr-only {
@@ -1327,7 +1327,7 @@
   }
   .leaderboard-columns {
     display: grid;
-    grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1fr);
     gap: 24px;
     margin-bottom: 28px;
     align-items: start;
@@ -2031,9 +2031,9 @@
   }
   .avatar-options {
     display: grid;
-    grid-template-columns: repeat(6, minmax(0, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(44px, 1fr));
     gap: 8px;
-    max-width: 360px;
+    max-width: 100%;
   }
   .avatar-option {
     width: 100%;
@@ -3158,5 +3158,186 @@
   }
   .account-import h3 {
     font-size: 16px;
+  }
+}
+
+@layer components {
+  :root {
+    --rank-gold: #8a5c05;
+    --rank-silver: #5b6674;
+    --rank-bronze: #96512e;
+  }
+  :root[data-theme="dark"] {
+    --rank-gold: #e9c76a;
+    --rank-silver: #c8d1dc;
+    --rank-bronze: #e3ad85;
+  }
+  .today-page .today-hero {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    margin-bottom: 22px;
+  }
+  .today-hero .hero-copy {
+    padding: 28px 32px;
+  }
+  .today-hero .hero-label {
+    letter-spacing: 0.3px;
+  }
+  .today-hero .hero-copy h2 {
+    margin: 12px 0 8px;
+    font-size: clamp(28px, 2.6vw, 38px);
+  }
+  .today-hero .hero-copy > .today-workload {
+    max-width: none;
+    font-size: 20px;
+    line-height: 1.5;
+    color: #f4f6ef;
+  }
+  .today-due {
+    color: var(--accent);
+  }
+  .today-hero .hero-button {
+    margin-top: 18px;
+  }
+  .today-hero .hero-copy > .hero-footnote {
+    margin-top: 12px;
+    font-size: 14px;
+    line-height: 1.5;
+    max-width: 520px;
+    color: #d2dfc9;
+  }
+  .today-daily-goal {
+    padding: 24px 36px;
+    display: grid;
+    justify-items: center;
+    gap: 10px;
+  }
+  .today-daily-goal > a {
+    font-size: 14px;
+    color: #f4f6ef;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+  .today-page .goal-circle {
+    width: 154px;
+    height: 154px;
+    margin: 0;
+    background: conic-gradient(var(--accent) var(--progress), #ffffff26 0);
+  }
+  .today-page .goal-circle > div {
+    background: var(--hero);
+    color: #f4f6ef;
+  }
+  .today-page .goal-circle b span,
+  .today-page .goal-circle small {
+    color: #d2dfc9;
+  }
+  .today-highlights {
+    display: grid;
+    grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+    gap: 22px;
+    margin-bottom: 22px;
+  }
+  .today-highlights .panel {
+    margin: 0;
+    padding: 22px;
+  }
+  .today-highlights .cultivation-card {
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  .today-highlights .cultivation-avatar {
+    width: 76px;
+    height: 76px;
+  }
+  .today-highlights .cultivation-card h2 {
+    font-size: 24px;
+  }
+  .today-highlights .cultivation-card > .button {
+    min-height: 44px;
+    padding: 8px 14px;
+    font-size: 14px;
+  }
+  .streak-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 8px;
+  }
+  .streak-icon {
+    color: var(--brand-ink);
+  }
+  .streak-card h2 {
+    font-size: 20px;
+  }
+  .today-streak-count {
+    color: var(--brand-ink);
+    font-size: 36px;
+    font-weight: 700;
+  }
+  .cultivation-meter {
+    display: flow-root;
+    position: relative;
+  }
+  .cultivation-meter .progress-track {
+    height: 8px;
+    margin: 12px 0;
+  }
+  .cultivation-meter::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    top: 9px;
+    height: 14px;
+    width: 2px;
+    background: var(--ink);
+    border-radius: 1px;
+  }
+  .cultivator-row[data-rank] .cultivator-rank {
+    font-size: 24px;
+    font-weight: 750;
+  }
+  .cultivator-row[data-rank="1"] .cultivator-rank {
+    color: var(--rank-gold);
+  }
+  .cultivator-row[data-rank="2"] .cultivator-rank {
+    color: var(--rank-silver);
+  }
+  .cultivator-row[data-rank="3"] .cultivator-rank {
+    color: var(--rank-bronze);
+  }
+  .leaderboard-login {
+    display: grid;
+    justify-items: start;
+    gap: 14px;
+  }
+  .empty-state > .button {
+    margin-top: 16px;
+  }
+}
+@layer responsive {
+  @media (max-width: 1000px) {
+    .today-highlights {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+  @media (max-width: 680px) {
+    .today-page .today-hero {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .today-hero .hero-copy {
+      padding: 24px;
+    }
+    .today-daily-goal {
+      padding: 0 24px 24px;
+    }
+    .today-page .goal-circle {
+      width: 134px;
+      height: 134px;
+    }
+    .today-highlights .cultivation-card-copy {
+      flex-basis: 60%;
+    }
   }
 }

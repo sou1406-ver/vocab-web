@@ -31,7 +31,7 @@ test("React Bits save indicator follows actual save, failure and recovery withou
     };
   });
   await page.goto("/");
-  await expect(page.locator(".stat-card").first()).toHaveCSS("border-top-width", "1px");
+  await expect(page.locator(".today-highlights .panel").first()).toHaveCSS("border-top-width", "1px");
   await page.goto("/settings");
   const mark = page.locator(".save-status.status-mark");
   await expect(mark).toHaveAttribute("data-status", "done");

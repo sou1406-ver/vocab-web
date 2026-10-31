@@ -32,7 +32,10 @@ test("learn, reload, finish, and retry without duplicated credit", async ({ page
   await page.getByRole("button", { name: "Xem kết quả" }).click();
   await expect(page.getByText("Luyện thêm không tăng bậc ôn")).toBeVisible();
   await page.getByRole("link", { name: "Hoàn tất", exact: true }).click();
-  await expect(page.locator(".stat-number").first()).toHaveText("2/ 10 từ");
+  await expect(page.getByRole("progressbar", { name: "Mục tiêu từ mới hôm nay", exact: true })).toHaveAttribute(
+    "aria-valuenow",
+    "2",
+  );
 });
 
 test("search, keyboard dialog, theme and no horizontal overflow", async ({ page }) => {
@@ -142,13 +145,13 @@ test("overdue backlog stays visible after ending a short review batch", async ({
   await page.getByRole("button", { name: "Khôi phục bản sao này" }).click();
   await expect(page.getByText("Đã nhập dữ liệu.", { exact: false })).toBeVisible();
   await page.goto("/");
-  await expect(page.getByText("43 từ đang đợi bạn.", { exact: false })).toBeVisible();
-  await page.getByRole("button", { name: "Bắt đầu ôn", exact: true }).click();
+  await expect(page.getByText("43 từ cần ôn", { exact: true })).toBeVisible();
+  await page.getByRole("button", { name: "Bắt đầu học", exact: true }).click();
   await expect(page.locator(".study-counter")).toHaveText("1 / 20");
   await page.getByRole("button", { name: "Chưa nhớ, xem đáp án" }).click();
   await page.getByRole("button", { name: "Kết thúc tại đây" }).click();
   await page.getByRole("link", { name: "Hoàn tất", exact: true }).click();
-  await expect(page.getByText("42 từ đang đợi bạn.", { exact: false })).toBeVisible();
+  await expect(page.getByText("42 từ cần ôn", { exact: true })).toBeVisible();
 });
 
 test("dark mode and compact sidebar remain accessible", async ({ page }) => {

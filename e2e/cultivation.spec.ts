@@ -60,9 +60,17 @@ test("cultivation frames advance by learned words while keeping the selected Dic
   await expect(page.getByRole("heading", { name: "Luyện Khí", exact: true })).toBeVisible();
   await expect(portrait).toHaveClass(/cultivation-avatar--1\b/);
   await expect(portrait.locator("img")).toHaveAttribute("src", original!);
-  await expect(page.locator(".cultivation-card")).toContainText("10 từ đã học");
+  await expect(page.locator(".cultivation-card")).toContainText("10/600");
   await page.goto("/leaderboard");
   await expect(page.getByRole("heading", { name: "Bảng tu luyện.", exact: true })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Hồ sơ tu luyện", exact: true })).toHaveCount(0);
+  await expect(page.getByText("Tối đa 50 người", { exact: true })).toHaveCount(0);
+  await expect(page.getByRole("link", { name: "Cài đặt username & hiển thị", exact: true })).toHaveCount(0);
+  await expect(page.getByRole("link", { name: "Học thêm từ", exact: true })).toHaveClass(/primary/);
+  expect((await page.locator(".cultivation-meter .progress-track").boundingBox())!.height).toBeGreaterThanOrEqual(8);
+  const board = (await page.locator(".leaderboard-columns").boundingBox())!;
+  const list = (await page.locator(".leaderboard-columns > section").boundingBox())!;
+  expect(Math.abs(board.width - list.width)).toBeLessThan(2);
   await expect(page.getByRole("button", { name: "Đăng nhập bằng Google", exact: true })).toBeVisible();
   await expect(page.locator(".cultivator-row")).toHaveCount(0);
   await page.getByText("12 cảnh giới tu luyện", { exact: true }).click();
