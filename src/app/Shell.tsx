@@ -1,14 +1,12 @@
 "use client";
 import { Fragment, useEffect, useState, useRef, type ReactNode } from "react";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { useApp } from "../state/provider";
 import { Icon, Logo, WordDialog, type IconName } from "../shared/ui";
 import { WordContext } from "./context";
 import type { Word } from "../domain/types";
-import { CultivationAvatar } from "../components/CultivationAvatar";
-import { countLearnedWords } from "../domain/cultivation";
-import { bookOfWord } from "../data/catalog";
+import { AccountMenu } from "../components/AccountMenu";
 import { AccountSetup } from "../components/AccountSetup";
 import StatusMark from "../components/react-bits/StatusMark";
 import { useCloud } from "../state/cloud-provider";
@@ -27,7 +25,6 @@ export function Shell({ children }: { children: ReactNode }) {
   const { data, ready, error, busy, change, clearError } = useApp();
   const cloud = useCloud();
   const pathname = usePathname();
-  const router = useRouter();
   const [word, setWord] = useState<Word | null>(null);
   const opener = useRef<HTMLElement | null>(null);
   const [online, setOnline] = useState(true);
@@ -188,13 +185,7 @@ export function Shell({ children }: { children: ReactNode }) {
               >
                 <Icon name={resolvedTheme === "dark" ? "sun" : "moon"} />
               </button>
-              <button className="avatar" onClick={() => router.push("/settings")} aria-label="Mở hồ sơ">
-                <CultivationAvatar
-                  words={countLearnedWords(data.progress, (id) => Boolean(bookOfWord(id)))}
-                  seed={data.settings.avatarSeed ?? (data.settings.name.trim() || "Vocab guest")}
-                  decorative
-                />
-              </button>
+              <AccountMenu key={cloud.user?.uid ?? "guest"} />
             </div>
           </header>
           {!online && (

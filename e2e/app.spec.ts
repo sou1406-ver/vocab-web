@@ -44,6 +44,7 @@ test("search, keyboard dialog, theme and no horizontal overflow", async ({ page 
   await page.keyboard.press("Escape");
   await expect(page.getByRole("dialog")).not.toBeVisible();
   await page.getByRole("button", { name: "Mở hồ sơ" }).click();
+  await page.getByRole("link", { name: "Tài khoản & cài đặt", exact: true }).click();
   await page.getByLabel("Giao diện", { exact: true }).selectOption("dark");
   await page.getByRole("button", { name: "Lưu tuỳ chọn" }).click();
   await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");

@@ -1941,13 +1941,26 @@
   }
   .settings-columns {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-areas: "preferences account" "preferences backup";
+    grid-template-rows: auto 1fr;
+    align-items: start;
     gap: 24px;
   }
   .local-notice {
     display: flex;
     align-items: start;
     gap: 17px;
+  .settings-preferences {
+    grid-area: preferences;
+  }
+  .settings-columns > .account-panel {
+    grid-area: account;
+    margin-bottom: 0;
+  }
+  .settings-columns > .backup-panel {
+    grid-area: backup;
+  }
     background: var(--soft-green);
     border: 1px solid var(--line);
     padding: 22px;
@@ -2621,6 +2634,8 @@
     }
     .progress-stats .stat-card:last-child {
       grid-column: 1 / -1;
+      grid-template-areas: "account" "preferences" "backup";
+      grid-template-rows: auto;
     }
     .compact-word-list > button {
       flex-wrap: wrap;
@@ -3002,6 +3017,126 @@
   .account-panel p {
     margin-block: 12px;
   }
+    padding: 20px 24px;
+  }
+  .account-panel .section-heading {
+    margin-bottom: 12px;
+    gap: 12px;
+  }
+  .account-panel .section-heading .button {
+    min-height: 44px;
+    flex-shrink: 0;
+  }
+  .account-summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .account-summary .account-name {
+    margin: 0;
+  }
+  .account-details {
+    margin-top: 12px;
+    border-top: 1px solid var(--line);
+  }
+  .account-details summary {
+    padding-block: 12px;
+    min-height: 44px;
+    cursor: pointer;
+    color: var(--green);
+    font-weight: 600;
+  }
+  .account-details .username-settings {
+    margin: 0 0 16px;
+  }
+  .account-details .username-form {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 8px 12px;
+    margin-top: 8px;
+  }
+  .account-details .username-form label,
+  .account-details .username-form .field-hint {
+    grid-column: 1 / -1;
+  }
+  .account-details .username-form .button {
+    grid-column: 2;
+    grid-row: 2;
+  }
+  .account-menu {
+    position: relative;
+  }
+  .account-menu > .avatar {
+    width: 44px;
+    height: 44px;
+    cursor: pointer;
+  }
+  .account-menu-position {
+    position: absolute;
+    z-index: 50;
+    right: 0;
+    top: 100%;
+    width: min(288px, calc(100vw - 32px));
+    padding-top: 10px;
+  }
+  .account-menu-card {
+    padding: 8px;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    background: var(--surface);
+    color: var(--ink);
+    box-shadow: 0 12px 32px rgb(0 0 0 / 16%);
+  }
+  .account-menu-identity {
+    display: grid;
+    gap: 4px;
+    padding: 10px 12px 14px;
+    margin-bottom: 4px;
+    border-bottom: 1px solid var(--line);
+    overflow-wrap: anywhere;
+  }
+  .account-menu-identity span {
+    font-size: 14px;
+    color: var(--muted);
+  }
+  .account-menu-card > a,
+  .account-menu-card > button {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    min-height: 44px;
+    padding: 10px 12px;
+    border: 0;
+    border-radius: 10px;
+    color: var(--ink);
+    background: transparent;
+    text-align: left;
+    text-decoration: none;
+    font-size: 15px;
+    cursor: pointer;
+  }
+  .account-menu-card > a:hover,
+  .account-menu-card > button:hover,
+  .account-menu-card > a:focus-visible,
+  .account-menu-card > button:focus-visible {
+    background: var(--surface-soft);
+  }
+  @media (max-width: 540px) {
+    .account-panel {
+      padding: 16px;
+    }
+    .account-panel .section-heading h2 {
+      font-size: 18px;
+    }
+    .account-details .username-form {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .account-details .username-form .button {
+      grid-column: auto;
+      grid-row: auto;
+    }
   .account-name {
     display: grid;
     gap: 4px;

@@ -35,32 +35,42 @@ export function AccountPanel() {
     <section className="panel account-panel" aria-labelledby="account-heading">
       <div className="section-heading">
         <h2 id="account-heading">Tài khoản & đồng bộ</h2>
+        {cloud.user && (
+          <button className="button secondary" disabled={disabled} onClick={() => void cloud.logout()}>
+            Đăng xuất
+          </button>
+        )}
       </div>
       {cloud.loading ? (
         <p role="status">Đang mở tài khoản…</p>
       ) : cloud.user ? (
         <>
-          <p className="account-name">
-            <strong>{cloud.account ? `@${cloud.account.username}` : "Tài khoản Google"}</strong>
-            <span>{cloud.user.email}</span>
-          </p>
-          <UsernameSettings />
-          <StatusMark
-            status={
-              cloud.status === "synced"
-                ? "done"
-                : cloud.status === "error" || cloud.status === "conflict"
-                  ? "failed"
-                  : cloud.status === "offline"
-                    ? "pending"
-                    : "running"
-            }
-            size={18}
-            label={syncLabels[cloud.status]}
-          />
-          <p className="muted">
-            Tiến độ, từ riêng và cài đặt được đồng bộ giữa các máy. Lượt bài đang làm giữ riêng trên mỗi máy.
-          </p>
+          <div className="account-summary">
+            <p className="account-name">
+              <strong>{cloud.account ? `@${cloud.account.username}` : "Tài khoản Google"}</strong>
+              <span>{cloud.user.email}</span>
+            </p>
+            <StatusMark
+              status={
+                cloud.status === "synced"
+                  ? "done"
+                  : cloud.status === "error" || cloud.status === "conflict"
+                    ? "failed"
+                    : cloud.status === "offline"
+                      ? "pending"
+                      : "running"
+              }
+              size={18}
+              label={syncLabels[cloud.status]}
+            />
+          </div>
+          <details className="account-details">
+            <summary>Quản lý tài khoản</summary>
+            <UsernameSettings />
+            <p className="muted">
+              Tiến độ, từ riêng và cài đặt được đồng bộ giữa các máy. Lượt bài đang làm giữ riêng trên mỗi máy.
+            </p>
+          </details>
           {cloud.guestAvailable && (
             <div className="account-import" aria-label="Nhập tiến độ trên máy">
               <h3>Mang tiến độ trên máy vào tài khoản?</h3>
@@ -101,16 +111,13 @@ export function AccountPanel() {
               </div>
             </div>
           )}
-          <div className="import-actions">
-            <button className="button secondary" disabled={disabled} onClick={() => void cloud.logout()}>
-              Đăng xuất
-            </button>
-            {(cloud.status === "error" || cloud.status === "offline") && (
+          {(cloud.status === "error" || cloud.status === "offline") && (
+            <div className="import-actions">
               <button className="button secondary" disabled={disabled} onClick={cloud.retry}>
                 Thử đồng bộ lại
               </button>
-            )}
-          </div>
+            </div>
+          )}
         </>
       ) : (
         <>

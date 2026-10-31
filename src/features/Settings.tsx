@@ -90,9 +90,9 @@ export default function Settings() {
           <p className="page-subtitle">Điều chỉnh mục tiêu và giữ một bản sao hành trình học.</p>
         </div>
       </div>
-      <AccountPanel />
       <div className="settings-columns">
-        <section className="panel">
+        <AccountPanel />
+        <section className="panel settings-preferences">
           <div className="section-heading">
             <h2>Nhịp học & giao diện</h2>
             <Icon name="settings" />

@@ -24,6 +24,7 @@ test("Google accounts must finish username setup before sync; rename and hide re
   const popupReady = page.waitForEvent("popup");
   await page.getByRole("button", { name: "Đăng nhập bằng Google", exact: true }).click();
   const popup = await popupReady;
+  await popup.waitForLoadState("load");
   await popup.getByRole("button", { name: /Add new account/ }).click();
   expect(popup.url()).toContain("127.0.0.1:9099/emulator/auth/handler");
   await popup.getByLabel("Email", { exact: true }).fill(`${username}@example.test`);
@@ -63,6 +64,14 @@ test("Google accounts must finish username setup before sync; rename and hide re
   await expect(row).toBeVisible();
   await expect(page.locator(".cultivator-list")).not.toContainText("Google Display Name");
   await page.goto("/settings");
+  const panel = page.getByRole("region", { name: "Tài khoản & đồng bộ", exact: true });
+  await expect(panel.getByRole("button", { name: "Đăng xuất", exact: true })).toBeVisible();
+  await expect(page.getByRole("textbox", { name: "Username", exact: true })).toBeHidden();
+  expect((await panel.boundingBox())!.height).toBeLessThan(340);
+  await page.getByRole("button", { name: "Đổi giao diện sáng tối", exact: true }).click();
+  await page.screenshot({ path: testInfo.outputPath("compact-account-dark.png"), fullPage: true });
+  expect((await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa"]).analyze()).violations).toEqual([]);
+  await page.getByText("Quản lý tài khoản", { exact: true }).click();
   await page.getByRole("textbox", { name: "Username", exact: true }).fill(renamed);
   await page.getByRole("button", { name: "Đổi username", exact: true }).click();
   await expect(page.locator(".account-name strong")).toHaveText(`@${renamed}`);
@@ -74,6 +83,7 @@ test("Google accounts must finish username setup before sync; rename and hide re
   await expect(page.locator(".cultivator-row").filter({ hasText: renamed })).toHaveCount(0);
   await page.goto("/settings");
   await page.reload();
+  await page.getByText("Quản lý tài khoản", { exact: true }).click();
   await expect(hidden).toBeChecked();
   await expect(page.locator(".account-name strong")).toHaveText(`@${renamed}`);
   await hidden.click();
@@ -83,4 +93,10 @@ test("Google accounts must finish username setup before sync; rename and hide re
   expect((await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa"]).analyze()).violations).toEqual([]);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await page.screenshot({ path: testInfo.outputPath("username-leaderboard.png"), fullPage: true });
+  const avatar = page.getByRole("button", { name: "Mở hồ sơ", exact: true });
+  await avatar.click();
+  const menu = page.getByRole("navigation", { name: "Tài khoản", exact: true });
+  await expect(menu).toContainText(`@${renamed}`);
+  await menu.getByRole("button", { name: "Đăng xuất", exact: true }).click();
+  await expect(page.getByRole("button", { name: "Đăng nhập bằng Google", exact: true })).toBeVisible();
 });
