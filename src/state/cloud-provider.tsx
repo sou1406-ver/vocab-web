@@ -50,7 +50,7 @@ export function CloudProvider({ store, children }: { store: StoreApi<AppState>; 
     let request = 0;
     let unsubscribe: (() => void) | undefined;
     let stopProfile: (() => void) | undefined;
-    const useGuest = () =>
+    const restoreGuest = () =>
       store.getState().profileKey === "guest" ? Promise.resolve() : store.getState().switchProfile("guest");
     void Promise.all([import("../lib/firebase"), import("../data/account-profile")])
       .then(([firebase, accountApi]) => {
@@ -77,7 +77,7 @@ export function CloudProvider({ store, children }: { store: StoreApi<AppState>; 
             }));
             // Cancel a previous profile load without opening a new account before
             // its unique username has been confirmed. Guest data stays on this device.
-            void useGuest().then(() => {
+            void restoreGuest().then(() => {
               if (!active || ticket !== request || user) return;
               setState((previous) => ({ ...previous, loading: false, status: "synced" }));
             });
@@ -159,7 +159,7 @@ export function CloudProvider({ store, children }: { store: StoreApi<AppState>; 
             sync.current = null;
             stopProfile?.();
             stopProfile = undefined;
-            void useGuest();
+            void restoreGuest();
             setState((previous) => ({
               ...previous,
               user: null,
@@ -172,7 +172,7 @@ export function CloudProvider({ store, children }: { store: StoreApi<AppState>; 
       })
       .catch(() => {
         if (!active) return;
-        void useGuest();
+        void restoreGuest();
         setState((previous) => ({
           ...previous,
           user: null,
