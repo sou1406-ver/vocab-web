@@ -6,16 +6,20 @@ import { useApp } from "../state/provider";
 import { Icon, Logo, WordDialog, type IconName } from "../shared/ui";
 import { WordContext } from "./context";
 import type { Word } from "../domain/types";
-import { UserAvatar } from "../components/UserAvatar";
+import { CultivationAvatar } from "../components/CultivationAvatar";
+import { countLearnedWords } from "../domain/cultivation";
+import { bookOfWord } from "../data/catalog";
 import StatusMark from "../components/react-bits/StatusMark";
 import { useCloud } from "../state/cloud-provider";
 import { syncLabels } from "../components/AccountPanel";
+import { LeaderboardSync } from "../components/LeaderboardSync";
 const links: { to: string; label: string; icon: IconName; end?: boolean; group?: string }[] = [
   { to: "/", label: "Hôm nay", icon: "home", end: true },
   { to: "/lessons", label: "Bài học", icon: "book", group: "HỌC TẬP" },
   { to: "/library", label: "Thư viện", icon: "search" },
   { to: "/knowledge", label: "Kiến thức", icon: "leaf" },
   { to: "/progress", label: "Tiến độ", icon: "chart", group: "THEO DÕI" },
+  { to: "/leaderboard", label: "Bảng tu luyện", icon: "target" },
 ];
 export function Shell({ children }: { children: ReactNode }) {
   const { data, ready, error, busy, change, clearError } = useApp();
@@ -71,6 +75,7 @@ export function Shell({ children }: { children: ReactNode }) {
   }).format();
   return (
     <WordContext.Provider value={(selected) => void inspect(selected)}>
+      <LeaderboardSync />
       <a className="skip-link" href="#main">
         Đến nội dung chính
       </a>
@@ -173,7 +178,11 @@ export function Shell({ children }: { children: ReactNode }) {
                 <Icon name={resolvedTheme === "dark" ? "sun" : "moon"} />
               </button>
               <button className="avatar" onClick={() => router.push("/settings")} aria-label="Mở hồ sơ">
-                <UserAvatar seed={data.settings.avatarSeed ?? (data.settings.name.trim() || "Vocab guest")} />
+                <CultivationAvatar
+                  words={countLearnedWords(data.progress, (id) => Boolean(bookOfWord(id)))}
+                  seed={data.settings.avatarSeed ?? (data.settings.name.trim() || "Vocab guest")}
+                  decorative
+                />
               </button>
             </div>
           </header>

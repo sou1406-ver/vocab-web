@@ -212,3 +212,14 @@ Ngày 26/10/2026. Nội dung tách theo quyển để thêm sách mà không đ�
 - **URL:** `/books/<bookId>/lessons/<n>`, sinh tĩnh cho mọi bài; `/lessons/<n>` chuyển hướng 308 về `toeic-600`.
 
 Chưa làm: builder chung cho quyển mới (mỗi quyển tự viết builder), lọc theo quyển trong Thư viện, tách tiến độ hiển thị theo quyển trong lịch sử phiên.
+
+## Tu luyện và bảng xếp hạng (2026-10-31)
+
+- Không thêm điểm EXP hoặc cấp độ vào snapshot. `schemaVersion: 2`, fingerprint catalog và cách chấm/lịch ôn giữ nguyên. Đếm mỗi ID có `progress.tested` một lần và chỉ nhận ID thuộc sách qua `bookOfWord`; từ riêng/ID đã bỏ không tăng số từ xếp hạng. Làm lại một từ không cộng thêm.
+- 12 cảnh giới theo số từ: Phàm Nhân 0, Luyện Khí 10, Trúc Cơ 25, Kim Đan 50, Nguyên Anh 80, Hóa Thần 120, Luyện Hư 180, Hợp Thể 250, Đại Thừa 330, Độ Kiếp 420, Chân Tiên 520, Tiên Đế 600. Đây là thước đo tích lũy từ đã học và kiểm tra, không chứng minh đã nhớ vững.
+- Avatar vẫn là 20 ảnh Notionists DiceBear tĩnh. Khung CSS và huy hiệu Lucide đổi theo cảnh giới; gương mặt/seed đã chọn không đổi khi tiến hóa. Không sinh hình hoặc gọi API ảnh khi sử dụng.
+- Collection mới `leaderboard/{uid}` chỉ tồn tại khi người dùng chủ động tham gia. Trường bắt buộc: `version: 1`, `nickname` (2–32 ký tự, không email), `avatar` (index 0–19), `learnedCount` (số nguyên 0–100000), `updatedAt` (server timestamp). UID là ID document, không sao chép email, snapshot hay nhật ký học sang collection này.
+- Người đã đăng nhập được đọc hồ sơ công khai và query tối đa 50 mục, sắp `learnedCount` giảm dần. Cùng số từ được cùng hạng. Không suy đoán thứ hạng ngoài top 50. Chỉ chủ UID được ghi/xóa hồ sơ; validator được áp dụng cho cả create/update. Collection `users/{uid}` tiếp tục riêng tư.
+- Khi trạng thái tài khoản đã đồng bộ, số từ và index avatar cập nhật cho hồ sơ đã tham gia. Transaction đọc lại document và không tạo lại hồ sơ đã rời bảng. Không tự đăng ký lại và không dùng tiến độ khách hoặc tài khoản khác để ghi điểm.
+- Rời bảng xóa duy nhất hồ sơ công khai, giữ nguyên tiến độ học. Biệt danh công khai được nhập riêng, không tự dùng tên/email Google. Lựa chọn tham gia được xác định từ document cloud, không thêm field snapshot hoặc migration.
+- Điểm là bản tóm tắt do client tính từ tiến độ đồng bộ; rules kiểm tra quyền, kiểu và giới hạn nhưng không xác minh việc học hoặc chống sửa điểm ở client. Bảng dùng để khích lệ học, không phải bảng thi có thưởng/được máy chủ chấm độc lập.

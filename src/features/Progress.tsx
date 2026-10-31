@@ -6,6 +6,7 @@ import { dayKey, statusOf } from "../domain/learning";
 import { Icon, ProgressBar } from "../shared/ui";
 import { useWord } from "../app/context";
 import { exerciseProgress } from "../domain/exercise-progress";
+import { CultivationCard } from "../components/CultivationCard";
 
 export default function Progress() {
   const { data } = useApp();
@@ -41,6 +42,7 @@ export default function Progress() {
           <p className="page-subtitle">Một hành trình dài được tạo nên từ những lượt học nhỏ.</p>
         </div>
       </div>
+      <CultivationCard />
       <section className="stats-grid progress-stats">
         <div className="stat-card">
           <span className="stat-icon green">
