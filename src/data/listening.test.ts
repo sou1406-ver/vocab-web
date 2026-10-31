@@ -29,14 +29,20 @@ const source: Catalog = {
     { id: 2, title: "", translation: "", topicId: "one" },
     { id: 3, title: "", translation: "", topicId: "two" },
   ],
-  words: [root, word("employ"), word("enroll", 2), word("require", 2), word("abandon", 3), word("visit", 3)],
+  words: [root, word("employ"), word("enroll"), word("require"), word("abandon", 3), word("visit", 3)],
 };
 describe("Listening questions", () => {
-  it("prioritizes distinct family forms with exactly one normalized correct choice", () => {
+  it("uses lesson roots before distinct family forms with exactly one normalized correct choice", () => {
     for (let n = 0; n < 12; n++) {
-      const [q] = makeListeningQuestions([root], source, "listen-choice", `s-${n}`);
+      const [q] = makeListeningQuestions(
+        [root],
+        { ...source, words: [root, word("employ"), word("unseen", 2)] },
+        "listen-choice",
+        `s-${n}`,
+      );
       if (q.kind !== "listen-choice") throw new Error("choice");
-      expect(new Set(q.options)).toEqual(new Set(["engage", "engagement", "engaged", "engaging"]));
+      expect(q.options).toContain("employ");
+      expect(q.options.filter((option) => root.family.some((form) => form.text === option))).toHaveLength(2);
       expect(q.options.filter((option) => option.trim().toLowerCase() === q.answer)).toHaveLength(1);
       expect(q.prompt).toBe(LISTEN_PROMPTS[q.kind]);
       expect(q.prompt.toLowerCase()).not.toContain(root.text);

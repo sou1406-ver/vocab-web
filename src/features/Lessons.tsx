@@ -7,8 +7,7 @@ import { useApp } from "../state/provider";
 import { Icon, ProgressBar, Empty } from "../shared/ui";
 import { statusOf, makeRecognitionQuestions } from "../domain/learning";
 import { useWord } from "../app/context";
-import { exerciseEntry, loadClozeLesson, makeWordFormQuestions } from "../data/cloze";
-import { shuffleSeeded } from "../domain/random";
+import { exerciseEntry, loadClozeLesson, makeWordFormQuestions, makeCatalogClozeQuestions } from "../data/cloze";
 import { makeBuildQuestions } from "../data/build";
 import { makeSynonymQuestions } from "../data/synonyms";
 import { makeMatchQuestions } from "../data/match";
@@ -70,14 +69,12 @@ export default function Lessons({ bookId, lessonId: id }: { bookId?: string; les
         if (
           !controller.signal.aborted &&
           (await startExercises(
-            (sessionId) =>
+            (sessionId, snapshot) =>
               kind === "word-form"
                 ? makeWordFormQuestions(questions, catalog.words)
-                : questions.map((q) =>
-                    q.kind === "cloze-choice"
-                      ? { ...q, options: shuffleSeeded(q.options, `${sessionId}:${q.sourceId}`) }
-                      : q,
-                  ),
+                : kind === "cloze-choice"
+                  ? makeCatalogClozeQuestions(questions, catalog, sessionId, snapshot.progress)
+                  : questions,
             `${kind === "cloze-choice" ? "Điền chỗ trống" : kind === "word-form" ? "Dạng từ · Gõ" : "Dạng từ"} · ${lesson.title}`,
           ))
         )
@@ -99,7 +96,7 @@ export default function Lessons({ bookId, lessonId: id }: { bookId?: string; les
       try {
         if (
           await startExercises(
-            (id) => makeListeningQuestions(words, catalog, kind, id),
+            (id, snapshot) => makeListeningQuestions(words, catalog, kind, id, snapshot.progress),
             `${kind === "listen-choice" ? "Nghe chọn từ" : "Nghe gõ từ"} · ${lesson.translation}`,
           )
         )
@@ -123,7 +120,7 @@ export default function Lessons({ bookId, lessonId: id }: { bookId?: string; les
       try {
         if (
           await startExercises(
-            (sessionId) => makeSynonymQuestions(words, catalog.words, kind, sessionId),
+            (sessionId, snapshot) => makeSynonymQuestions(words, catalog.words, kind, sessionId, snapshot.progress),
             `${kind === "synonym-choice" ? "Đồng nghĩa / trái nghĩa" : "Gần nghĩa trong câu"} · ${lesson.title}`,
           )
         )
@@ -154,7 +151,7 @@ export default function Lessons({ bookId, lessonId: id }: { bookId?: string; les
         const batch = [...words.slice(offset), ...words.slice(0, offset)].slice(0, 6);
         if (
           await startExercises(
-            (sessionId) => makeRecognitionQuestions(batch, catalog.words, sessionId, catalog.lessons),
+            (sessionId, snapshot) => makeRecognitionQuestions(batch, catalog.words, sessionId, snapshot.progress),
             title,
           )
         )
@@ -266,7 +263,7 @@ export default function Lessons({ bookId, lessonId: id }: { bookId?: string; les
           </section>
         )}
         {synonymGroups.map((group) => {
-          const count = makeSynonymQuestions(words, catalog.words, group.kind, "preview").length;
+          const count = makeSynonymQuestions(words, catalog.words, group.kind, "preview", data.progress).length;
           return (
             count > 0 && (
               <section className="panel cloze-practice" aria-label={group.title} key={group.kind}>

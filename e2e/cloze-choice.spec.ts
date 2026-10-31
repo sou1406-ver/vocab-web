@@ -2,7 +2,6 @@ import { test, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 import { readFileSync } from "node:fs";
 import type { Catalog, ClozeChoiceQuestion, StudySession } from "../src/domain/types";
-import { shuffleSeeded } from "../src/domain/random";
 const manifest = JSON.parse(
   readFileSync(new URL("../src/content/books/toeic-600/exercise-manifest.json", import.meta.url), "utf8"),
 ) as { lessons: { lessonId: number; version: string; url: string; kinds: Record<string, number> }[] };
@@ -126,8 +125,21 @@ test("catalog cloze answers vary in position and keep their saved order after re
   expect(examples.some((q) => q.options.indexOf(q.answer) > 0)).toBe(true);
   for (const q of questions) {
     const original = sourceQuestions.find((item) => item.sourceId === q.sourceId)!;
-    expect(q.options).toEqual(shuffleSeeded(original.options, `${session.id}:${q.sourceId}`));
-    expect([...q.options].sort()).toEqual([...original.options].sort());
+    if (q.sourceId.startsWith("catalog:example:")) {
+      expect(original.options).toEqual([]);
+      const target = catalog.words.find((word) => word.id === q.wordId)!;
+      const allowed = new Set(
+        catalog.words
+          .filter((word) => word.lesson === target.lesson)
+          .flatMap((word) => [word.text, ...word.family.map((form) => form.text)])
+          .map((text) => text.trim().toLowerCase()),
+      );
+      expect(q.options).toHaveLength(4);
+      for (const option of q.options) expect(allowed.has(option.trim().toLowerCase())).toBe(true);
+    } else {
+      expect(q.options).toHaveLength(4);
+      expect([...q.options].sort()).toEqual([...original.options].sort());
+    }
   }
   const options = page.locator(".answer-option");
   await expect(options).toHaveText(questions[0].options.map(optionText));

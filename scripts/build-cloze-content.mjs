@@ -20,7 +20,7 @@ export async function buildClozeContent(bookId, words, catalogLessons, part5 = {
   for (const { id: lessonId } of catalogLessons) {
     const authored = part5[String(lessonId)]?.part5 ?? [];
     const result = convertLesson(lessonId, authored, words);
-    const examples = createCatalogCloze(lessonId, words, catalogLessons);
+    const examples = createCatalogCloze(lessonId, words);
     const items = [...result.questions, ...examples];
     catalogQuestions += examples.length;
     sourceQuestions += authored.length;

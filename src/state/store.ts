@@ -23,7 +23,7 @@ export interface AppState {
   change: (reduce: (data: Snapshot) => Snapshot) => Promise<boolean>;
   start: (words: Word[], mode: SessionMode, title: string, returnTo?: string) => Promise<boolean>;
   startExercises: (
-    questions: Question[] | ((sessionId: string) => Question[]),
+    questions: Question[] | ((sessionId: string, snapshot: Snapshot) => Question[]),
     title: string,
     returnTo?: string,
   ) => Promise<boolean>;
@@ -93,7 +93,7 @@ export function createAppStore() {
     startExercises: (questions, title, returnTo) =>
       get().change((data) => {
         const id = crypto.randomUUID();
-        const list = typeof questions === "function" ? questions(id) : questions;
+        const list = typeof questions === "function" ? questions(id, data) : questions;
         const catalog = sessionCatalog(
           data,
           list.map((q) => q.wordId),

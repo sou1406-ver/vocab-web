@@ -5,7 +5,7 @@ const catalog = defaultBook.catalog;
 const clozeLessons = defaultBook.exercises.lessons;
 import { validateSnapshot } from "./validation";
 import { beginExerciseSession, answerQuestion, emptySnapshot } from "../domain/learning";
-import { validateClozePack } from "./cloze";
+import { makeCatalogClozeQuestions, validateClozePack } from "./cloze";
 import { readFileSync, readdirSync } from "node:fs";
 
 const word = catalog.words.find((w) => w.text === "agreement")!;
@@ -16,6 +16,29 @@ const source = {
   answer: "A",
 };
 describe("Authored cloze choices", () => {
+  it("accepts option-free catalog sources without allowing them in saved sessions", () => {
+    const q = {
+      kind: "cloze-choice" as const,
+      wordId: word.id,
+      sourceId: `catalog:example:${word.id}:0`,
+      sourceVersion: "raw-pack",
+      prompt: "They reached an ________.",
+      answer: word.text,
+      options: [],
+    };
+    const expected = { lessonId: 1, version: "raw-pack", count: 1 };
+    const pack = { ...expected, questions: [q] };
+    expect(validateClozePack(pack, expected, catalog)).toEqual([q]);
+    const rawSession = beginExerciseSession(emptySnapshot(), catalog, [q], "Cloze", "raw", 1);
+    expect(() => validateSnapshot(rawSession)).toThrow();
+    const prepared = makeCatalogClozeQuestions([q], catalog, "ready");
+    expect(prepared).toHaveLength(1);
+    const ready = beginExerciseSession(emptySnapshot(), catalog, prepared, "Cloze", "ready", 1);
+    expect(validateSnapshot(JSON.parse(JSON.stringify(ready)))).toEqual(ready);
+    expect(() =>
+      validateClozePack({ ...pack, questions: [{ ...q, sourceId: "v1:part5:1:10" }] }, expected, catalog),
+    ).toThrow();
+  });
   it("accepts catalog example IDs alongside old Part 5 IDs and preserves both in saved sessions", () => {
     const old = { ...convertLesson(1, [source], catalog.words).questions[0], sourceVersion: "mixed-pack" };
     const example = {

@@ -1,3 +1,4 @@
+import { distractorPool, type TestedProgress } from "../domain/distractors";
 import { catalogFor } from "./catalog";
 import { normalizeAnswer } from "../domain/learning";
 import { shuffleSeeded } from "../domain/random";
@@ -30,6 +31,7 @@ export function makeSynonymQuestions(
   all: readonly Word[],
   kind: SynonymQuestion["kind"],
   sessionId: string,
+  progress: TestedProgress = {},
 ): SynonymQuestion[] {
   const entries = all.map(profile);
   const questions: SynonymQuestion[] = [];
@@ -71,34 +73,27 @@ export function makeSynonymQuestions(
         for (const term of entry.terms) unsafe.add(normalizeAnswer(term));
       }
     const names = new Set<string>();
-    // Lesson numbers are per book, so topics come from the target word's own book.
-    const catalog = catalogFor(word.id);
-    const topicsByLesson = new Map(catalog.lessons.map((lesson) => [lesson.id, lesson.topicId]));
-    const topic = topicsByLesson.get(word.lesson);
-    const nearby = (entry: ReturnType<typeof profile>) =>
-      entry.word.lesson === word.lesson || (topic !== undefined && topicsByLesson.get(entry.word.lesson) === topic);
-    // Collect nearby aliases first so a duplicate from another topic cannot take their priority.
-    const [localPool, fallbackPool] = [entries.filter(nearby), entries.filter((entry) => !nearby(entry))].map(
-      (scope) => {
-        const pool: string[] = [];
-        for (const entry of scope) {
-          if (entry.pos !== target.pos || entry.word.id === word.id) continue;
-          for (const term of entry.terms) {
-            const key = normalizeAnswer(term);
-            if (forbidden.has(key) || unsafe.has(key) || names.has(key)) continue;
-            names.add(key);
-            pool.push(term);
-          }
-        }
-        return pool;
-      },
-    );
-    if (localPool.length + fallbackPool.length < 3) continue;
+    const pool: string[] = [];
+    for (const candidate of distractorPool(word, all, progress, sessionId)) {
+      const entry = profile(candidate);
+      const key = entry.text;
+      if (
+        candidate.id === word.id ||
+        forbidden.has(key) ||
+        unsafe.has(key) ||
+        names.has(key) ||
+        entry.synonyms.has(target.text) ||
+        entry.family.has(target.text) ||
+        [...entry.synonyms].some((term) => target.synonyms.has(term))
+      )
+        continue;
+      names.add(key);
+      pool.push(candidate.text.trim());
+    }
+    if (pool.length < 3) continue;
     const sourceId = `${kind}:${word.id}:${kind === "synonym-context" ? exampleIndex : direction}`;
     const answer = shuffleSeeded(answers, `${sessionId}:${sourceId}:answer`)[0];
-    const wrong = shuffleSeeded(localPool, `${sessionId}:${sourceId}:distractors`).slice(0, 3);
-    if (wrong.length < 3)
-      wrong.push(...shuffleSeeded(fallbackPool, `${sessionId}:${sourceId}:fallback`).slice(0, 3 - wrong.length));
+    const wrong = pool.slice(0, 3);
     questions.push({
       kind,
       wordId: word.id,
@@ -108,7 +103,7 @@ export function makeSynonymQuestions(
       direction,
       ...(kind === "synonym-context" ? { target: word.text } : {}),
       sourceId,
-      sourceVersion: catalog.version,
+      sourceVersion: catalogFor(word.id).version,
     });
   }
   return questions;

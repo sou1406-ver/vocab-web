@@ -11,6 +11,7 @@ import type {
   RecognitionQuestion,
 } from "./types";
 import { shuffleSeeded } from "./random";
+import { distractorPool, type TestedProgress } from "./distractors";
 
 export const INTERVALS = [1, 3, 7, 14, 30, 60];
 export const TIMEZONE = "Asia/Ho_Chi_Minh";
@@ -95,23 +96,12 @@ export function revealQuestionLetter(snapshot: Snapshot, sessionId: string, inde
     },
   };
 }
-function distractorPool(word: Word, all: Word[], lessons: Catalog["lessons"], seed: string): Word[] {
-  const topics = new Map(lessons.map((lesson) => [lesson.id, lesson.topicId]));
-  const topic = topics.get(word.lesson);
-  const tiers: Word[][] = Array.from({ length: 6 }, () => []);
-  for (const candidate of all) {
-    const distance =
-      candidate.lesson === word.lesson ? 0 : topic !== undefined && topics.get(candidate.lesson) === topic ? 1 : 2;
-    tiers[(candidate.pos === word.pos ? 0 : 3) + distance].push(candidate);
-  }
-  return tiers.flatMap((tier, index) => shuffleSeeded(tier, `${seed}:${word.id}:pool:${index}`));
-}
 export function makeQuestions(
   words: Word[],
   all: Word[],
   mode: SessionMode,
   sessionId = "preview",
-  lessons: Catalog["lessons"] = [],
+  progress: TestedProgress = {},
 ): Question[] {
   return words.map((word, i) => {
     const match = word.examples.find((example) =>
@@ -129,13 +119,16 @@ export function makeQuestions(
     if (kind !== 0) return { wordId: word.id, kind: "recall", prompt: word.meaning, answer: word.text, options: [] };
     const meanings = new Set([word.meaning]);
     const choices = [word.meaning];
-    for (const candidate of distractorPool(word, all, lessons, sessionId)) {
+    for (const candidate of distractorPool(word, all, progress, sessionId)) {
+      if (!candidate.meaning.trim()) continue;
       if (candidate.text === word.text || meanings.has(candidate.meaning)) continue;
       if (candidate.meaning.split(/[;,]/).some((part) => word.meaning.includes(part.trim()))) continue;
       choices.push(candidate.meaning);
       meanings.add(candidate.meaning);
       if (choices.length === 4) break;
     }
+    if (choices.length < 2)
+      return { wordId: word.id, kind: "recall", prompt: word.meaning, answer: word.text, options: [] };
     return {
       wordId: word.id,
       kind: "meaning",
@@ -161,7 +154,7 @@ export function beginSession(
     id,
     title,
     mode,
-    questions: makeQuestions(words, catalog.words, mode, id, catalog.lessons),
+    questions: makeQuestions(words, catalog.words, mode, id, snapshot.progress),
     contentVersion: catalog.version,
     index: 0,
     phase: mode === "learn" ? "learn" : "question",
@@ -175,7 +168,7 @@ export function makeRecognitionQuestions(
   words: Word[],
   all: Word[],
   sessionId = "preview",
-  lessons: Catalog["lessons"] = [],
+  progress: TestedProgress = {},
 ): RecognitionQuestion[] {
   const glosses = (value: string) =>
     normalizeAnswer(value)
@@ -184,12 +177,13 @@ export function makeRecognitionQuestions(
       .filter(Boolean);
   return words.flatMap((word): RecognitionQuestion[] => {
     const related = new Set([word.text, ...word.synonyms, ...word.family.map((f) => f.text)].map(normalizeAnswer));
-    const pool = distractorPool(word, all, lessons, sessionId);
+    const pool = distractorPool(word, all, progress, sessionId);
     const chosen = [word];
     const names = new Set([normalizeAnswer(word.text)]);
     const meanings = new Set([normalizeAnswer(word.meaning)]);
     for (const candidate of pool) {
       if (
+        !candidate.meaning.trim() ||
         candidate.id === word.id ||
         related.has(normalizeAnswer(candidate.text)) ||
         names.has(normalizeAnswer(candidate.text)) ||

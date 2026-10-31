@@ -49,35 +49,32 @@ describe("Recognition in both directions", () => {
     );
     expect(pools.size).toBeGreaterThan(1);
   });
-  it("fills from the same topic before the rest of the book and still excludes unsafe near words", () => {
+  it("only borrows tested roots beyond the current lesson", () => {
     const template = catalog.words[0];
-    const make = (id: string, lesson: number, meaning = id): Word => ({
+    const make = (id: string, lesson: number): Word => ({
       ...template,
       id,
       text: id,
-      meaning,
+      meaning: id,
       lesson,
       synonyms: [],
       family: [],
     });
-    const target = make("target", 12, "mục tiêu");
-    const all = [
-      target,
-      ...[1, 2, 3].map((i) => make(`outside-${i}`, 1)),
-      make("unsafe", 12, "mục tiêu"),
-      make("local", 12),
-      make("topic-a", 13),
-      make("topic-b", 13),
-    ];
-    const lessons = [
-      { id: 1, title: "Outside", translation: "", topicId: "other" },
-      { id: 12, title: "Target", translation: "", topicId: "same" },
-      { id: 13, title: "Nearby", translation: "", topicId: "same" },
-    ];
-    expect(new Set(makeRecognitionQuestions([target], all, "topic", lessons)[1].options)).toEqual(
-      new Set(["target", "local", "topic-a", "topic-b"]),
-    );
-    expect(makeRecognitionQuestions([target], all.slice(0, 6), "fallback", lessons)[1].options).toHaveLength(4);
+    const target = make("target", 12);
+    const all = [target, make("local", 12), make("tested-a", 13), make("tested-b", 1), make("unseen", 13)];
+    const p = {
+      startedAt: 1,
+      startedDay: "2026-10-31",
+      box: 1,
+      dueAt: 2,
+      correct: 1,
+      incorrect: 0,
+      tested: true,
+      policyVersion: 1 as const,
+    };
+    expect(
+      new Set(makeRecognitionQuestions([target], all, "tested", { "tested-a": p, "tested-b": p })[1].options),
+    ).toEqual(new Set(["target", "local", "tested-a", "tested-b"]));
   });
   it("shuffles by session ID, stays stable within a session and varies across sessions", () => {
     const words = catalog.words.slice(0, 6);

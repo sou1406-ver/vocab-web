@@ -35,9 +35,10 @@ describe("App store isolation", () => {
     store.setState({ ready: true, data: persisted });
     let seed = "";
     expect(
-      await store.getState().startExercises((id) => {
+      await store.getState().startExercises((id, snapshot) => {
+        expect(snapshot).toBe(persisted);
         seed = id;
-        return makeRecognitionQuestions(catalog.words.slice(0, 2), catalog.words, id);
+        return makeRecognitionQuestions(catalog.words.slice(0, 2), catalog.words, id, snapshot.progress);
       }, "Recognition"),
     ).toBe(true);
     expect(persisted.session!.id).toBe(seed);
