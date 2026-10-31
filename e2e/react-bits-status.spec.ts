@@ -100,6 +100,19 @@ test("React Bits save indicator follows actual save, failure and recovery withou
     transition: "none",
   });
   await expect(page.locator("html")).not.toHaveClass(/theme-switching/);
+  for (const selector of [
+    "html",
+    "body",
+    "main h1",
+    "main h2",
+    "main label",
+    "main legend",
+    "main .deep-roots-toggle strong",
+    "main .secondary",
+  ]) {
+    await expect(page.locator(selector).first(), selector).toHaveCSS("color", "rgb(244, 246, 239)");
+  }
+  await expect(page.locator("body")).toHaveCSS("background-color", "rgb(14, 21, 18)");
   await expect(mark).toHaveAttribute("data-status", "done");
   expect((await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa"]).analyze()).violations).toEqual([]);
   await page.screenshot({ path: testInfo.outputPath("status-mark-dark.png") });

@@ -24,6 +24,7 @@ test("guest sees the storage warning once while practice and progress remain sav
   await expect(page.locator(".answer-feedback")).toBeVisible();
   await expect(page.getByRole("heading", { name: "Đăng nhập để giữ tiến độ" })).toHaveCount(0);
   await page.getByRole("button", { name: "Kết thúc tại đây", exact: true }).click();
+  await expect(page.getByRole("heading", { name: "Một lượt học, thêm vững vàng.", exact: true })).toBeVisible();
   await page.goto("/books/toeic-600/lessons/1");
   await page.getByRole("button", { name: "Luyện chọn nghĩa / chọn từ", exact: true }).click();
   await expect(page.locator(".answer-option")).toHaveCount(4);

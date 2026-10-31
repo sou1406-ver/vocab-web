@@ -27,6 +27,7 @@ test("recognition practice preserves both directions, feedback and retry", async
   await page.locator(".answer-option").filter({ hasText: word.text }).click();
   await expect(page.getByText("Chính xác. Bạn nhớ rồi!")).toBeVisible();
   await page.getByRole("button", { name: "Xem kết quả", exact: true }).click();
+  await expect(page.getByRole("heading", { name: "Một lượt học, thêm vững vàng.", exact: true })).toBeVisible();
   await page.goto("/books/toeic-600/lessons/1");
   await page.getByRole("button", { name: "Luyện chọn nghĩa / chọn từ", exact: true }).click();
   await expect(page.locator(".question-prompt p")).toHaveText(catalog.words.filter((w) => w.lesson === 1)[6].text);

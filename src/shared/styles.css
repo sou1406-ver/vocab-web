@@ -112,9 +112,13 @@ html.theme-switching *::after {
     --red: #ffb4a4;
     --red-bg: #472c29;
     --shadow: none;
+    color: var(--ink);
+    background: var(--bg);
   }
   body {
     min-width: 320px;
+    color: var(--ink);
+    background: var(--bg);
   }
   h1,
   h2,

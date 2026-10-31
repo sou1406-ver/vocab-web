@@ -85,6 +85,11 @@ test("lookup/save do not count as learning, accessible dialog and blocked local 
   await page.getByRole("button", { name: "Tra agreement", exact: true }).click();
   const dialog = page.getByRole("dialog", { name: "Chi tiết từ" });
   await dialog.getByRole("button", { name: "Lưu vào bộ cá nhân", exact: true }).click();
+  await expect(dialog.getByRole("button", { name: "Bỏ lưu từ", exact: true })).toBeVisible();
+  // Scan the settled saved state, after its button colors and dialog finish animating.
+  await dialog.evaluate((node) =>
+    Promise.all(node.getAnimations({ subtree: true }).map((animation) => animation.finished)),
+  );
   const result = await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa"]).analyze();
   expect(result.violations.map((v) => v.id)).toEqual([]);
   await page.keyboard.press("Escape");
