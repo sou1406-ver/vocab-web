@@ -17,6 +17,16 @@ export function projectRevealed(value: string, answer: string, revealed: readonl
   return chars.join("");
 }
 
+// Visible cells use code points; native selection ranges use UTF-16 offsets.
+export function slotSelection(value: string, index: number, answer: string, revealed: readonly number[] = []) {
+  const chars = Array.from(value);
+  const locked = revealedIndices(answer, revealed);
+  let slot = Math.min(index, chars.length);
+  while (locked.has(slot)) slot++;
+  const start = chars.slice(0, slot).join("").length;
+  return { start, end: start + (chars[slot]?.length ?? 0) };
+}
+
 // Apply a native-input edit to editable cells while preserving locked hint positions.
 export function editRevealed(previous: string, next: string, answer: string, revealed: readonly number[]) {
   const old = Array.from(previous);

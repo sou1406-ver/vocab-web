@@ -11,12 +11,31 @@ test("letter slots support native editing, phrase spaces and submission", async 
   const input = page.getByRole("textbox", { name: "Đáp án của bạn" });
   await expect(page.locator(".letter-slot")).toHaveCount(9);
   await expect(input).toBeFocused();
+  await expect(input).toHaveAttribute("lang", "en");
+  await expect(input).toHaveAttribute("spellcheck", "false");
   await input.fill("agreemenx");
   await input.press("End");
   await input.press("Backspace");
   await input.press("t");
   await expect(input).toHaveValue("agreement");
   await expect(page.locator(".letter-slot").last()).toHaveText("t");
+  const tapSlot = async (index: number) => {
+    const box = await page.locator(`[data-slot-index="${index}"]`).boundingBox();
+    if (testInfo.project.name === "mobile")
+      await page.touchscreen.tap(box!.x + box!.width / 2, box!.y + box!.height / 2);
+    else await page.mouse.click(box!.x + box!.width / 2, box!.y + box!.height / 2);
+  };
+  for (const key of ["Backspace", "Delete"]) {
+    await input.fill("definition");
+    await tapSlot(4); // Select N, immediately after I.
+    await input.press(key);
+    await expect(input).toHaveValue("defiition");
+  }
+  await input.fill("definition");
+  await tapSlot(4);
+  await input.press("x");
+  await expect(input).toHaveValue("defixition");
+  await input.fill("agreement");
   const rows = await page
     .locator(".letter-slot")
     .evaluateAll((nodes) => nodes.map((node) => (node as HTMLElement).offsetTop));

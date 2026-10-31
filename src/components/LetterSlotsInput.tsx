@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState, type RefObject } from "react";
-import { editRevealed, projectRevealed, revealedIndices } from "./letter-slots-edit";
+import { editRevealed, projectRevealed, revealedIndices, slotSelection } from "./letter-slots-edit";
 
 interface Props {
   id: string;
@@ -36,6 +36,8 @@ export function LetterSlotsInput({ id, answer, value, onChange, disabled, inputR
         id={id}
         className="letter-slots-input"
         type="text"
+        lang="en"
+        inputMode="text"
         autoComplete="off"
         autoCapitalize="off"
         autoCorrect="off"
@@ -69,10 +71,10 @@ export function LetterSlotsInput({ id, answer, value, onChange, disabled, inputR
               event.clientY <= box.bottom
             );
           });
-          let index = cell ? Math.min(Number(cell.dataset.slotIndex), displayed.length) : displayed.length;
-          while (locked.has(index)) index++;
-          event.currentTarget.setSelectionRange(index, index);
-          setSelection({ start: index, end: index });
+          const index = cell ? Number(cell.dataset.slotIndex) : entered.length;
+          const range = slotSelection(displayed, index, answer, revealed);
+          event.currentTarget.setSelectionRange(range.start, range.end);
+          setSelection(range);
         }}
         onSelect={(event) => updateSelection(event.currentTarget)}
       />
@@ -80,8 +82,13 @@ export function LetterSlotsInput({ id, answer, value, onChange, disabled, inputR
         {Array.from({ length: count }, (_, index) => {
           const char = entered[index] ?? "";
           const gap = /\s/.test(template[index] ?? "") && (!char || /\s/.test(char));
-          const selected = selection.end > selection.start && index >= selection.start && index < selection.end;
-          const active = selection.start === selection.end && index === selection.start;
+          const offset = entered.slice(0, index).join("").length;
+          const selected =
+            !!char &&
+            selection.end > selection.start &&
+            selection.start < offset + char.length &&
+            selection.end > offset;
+          const active = selection.start === selection.end && index <= entered.length && offset === selection.start;
           return (
             <span
               key={index}

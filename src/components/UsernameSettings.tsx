@@ -25,6 +25,7 @@ export function UsernameSettings() {
           onChange={(event) => setDraft({ uid, value: event.target.value })}
           autoComplete="username"
           autoCapitalize="none"
+          lang="en"
           autoCorrect="off"
           spellCheck={false}
           pattern="[a-z0-9_]{3,20}"

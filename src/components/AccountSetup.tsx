@@ -35,6 +35,7 @@ export function AccountSetup({ theme }: { theme: string }) {
             onChange={(event) => setUsername(event.target.value)}
             autoComplete="username"
             autoCapitalize="none"
+            lang="en"
             autoCorrect="off"
             spellCheck={false}
             pattern="[a-z0-9_]{3,20}"
