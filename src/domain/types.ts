@@ -160,6 +160,7 @@ export interface Snapshot {
     timezone: string;
     theme: "light" | "dark" | "system";
     avatarSeed?: string;
+    deepRoots?: boolean;
     // Book shown on Today/Lessons/Progress. Absent in older snapshots, which means the default book.
     bookId?: string;
   };

@@ -220,7 +220,7 @@ export function materialize(confirmed: CommittedChange[], pending: Change[] = []
     if (change.kind !== "patch" && change.kind !== "import") throw new Error("Không đọc được phiên bản đồng bộ.");
     const patch = change.patch;
     if (patch.settings) {
-      const fields = ["name", "dailyNew", "timezone", "theme", "avatarSeed", "bookId"];
+      const fields = ["name", "dailyNew", "timezone", "theme", "avatarSeed", "bookId", "deepRoots"];
       if (Object.keys(patch.settings).some((key) => !fields.includes(key)))
         throw new Error("Cài đặt đồng bộ không hợp lệ.");
       // Importing guest data must not overwrite preferences already set on the account.

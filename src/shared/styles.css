@@ -990,6 +990,198 @@
     color: var(--muted);
     font-size: 15px;
   }
+  .word-analysis,
+  .word-roots {
+    margin-top: 22px;
+    padding-top: 18px;
+    border-top: 1px solid var(--line);
+  }
+  .word-analysis h3,
+  .word-roots h3 {
+    font-size: 16px;
+    margin-bottom: 14px;
+  }
+  .word-part-form,
+  .word-root-match {
+    margin-top: 14px;
+  }
+  .part-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    list-style: none;
+    margin: 10px 0;
+    padding: 0;
+  }
+  .part-chip {
+    display: grid;
+    gap: 3px;
+    min-width: 68px;
+    max-width: 100%;
+    padding: 9px 12px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: var(--surface-soft);
+    overflow-wrap: anywhere;
+  }
+  .part-role {
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .part-meaning {
+    max-width: 220px;
+    font-size: 13px;
+    color: var(--muted);
+  }
+  .part-chip--root {
+    background: var(--soft-green);
+    border-color: var(--green);
+  }
+  .part-chip--prefix,
+  .part-chip--suffix {
+    border-bottom: 2px solid var(--green);
+  }
+  .root-logic {
+    margin: 14px 0;
+    padding-left: 14px;
+    border-left: 3px solid var(--green);
+  }
+  .deep-roots-toggle {
+    display: flex;
+    align-items: start;
+    gap: 12px;
+    min-height: 44px;
+    padding: 16px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: var(--surface-soft);
+    cursor: pointer;
+  }
+  .settings-form .deep-roots-toggle > input {
+    width: 20px;
+    height: 20px;
+    min-height: 20px;
+    flex-shrink: 0;
+    margin: 3px 0 0;
+    padding: 0;
+    accent-color: var(--green);
+  }
+  .deep-roots-toggle small {
+    display: block;
+    color: var(--muted);
+    font-size: 14px;
+    font-weight: 400;
+    margin-top: 5px;
+  }
+  .roots-intro {
+    margin-bottom: 24px;
+  }
+  .roots-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+    gap: 18px;
+  }
+  .root-card {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 0;
+    min-height: 180px;
+  }
+  .root-card:hover {
+    border-color: var(--green);
+  }
+  .root-card h2 {
+    font-size: 24px;
+    color: var(--ink);
+  }
+  .root-card > .muted {
+    margin-top: auto;
+    font-size: 14px;
+  }
+  .root-core-image {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    background: var(--soft-green);
+  }
+  .root-core-image > svg {
+    color: var(--green);
+  }
+  .root-core-image h2 {
+    font-size: 18px;
+    margin-bottom: 8px;
+  }
+  .root-origin {
+    margin: 20px 0;
+    color: var(--muted);
+  }
+  .root-word-list {
+    display: grid;
+    gap: 20px;
+    margin-top: 24px;
+  }
+  .root-word-list .panel {
+    margin-bottom: 0;
+  }
+  .root-word-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 14px;
+  }
+  .root-word-heading > div {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .root-word-heading h2 {
+    font-size: 26px;
+    overflow-wrap: anywhere;
+  }
+  .root-word-meaning {
+    margin: 14px 0;
+  }
+  .root-book-badge,
+  .root-expansion-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 10px;
+    border-radius: 8px;
+    font-size: 13px;
+    background: var(--surface-soft);
+    color: var(--muted);
+  }
+  .root-book-badge {
+    min-height: 44px;
+    color: var(--green);
+    background: var(--soft-green);
+  }
+  .root-book-badge:hover {
+    text-decoration: underline;
+  }
+  .root-word-family {
+    border-top: 1px solid var(--line);
+    margin-top: 20px;
+    padding-top: 16px;
+  }
+  .root-word-family h3 {
+    font-size: 16px;
+  }
+  .root-word-family ul {
+    list-style: none;
+    padding: 0;
+    margin: 12px 0 0;
+  }
+  .root-word-family li {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 10px 0;
+  }
   .word-family {
     border-top: 1px solid var(--line);
     padding-top: 19px;

@@ -2,6 +2,7 @@ import { readFile, writeFile, mkdir, readdir, rm } from "node:fs/promises";
 import { createHash } from "node:crypto";
 import { buildClozeContent } from "./build-cloze-content.mjs";
 import { buildToeic600 } from "./books/toeic-600.mjs";
+import { validateRootsContent } from "./lib/roots-content.mjs";
 
 // Each book is declared in content/books/<id>/book.json and converted by the builder it names.
 // Output: src/content/books/<id>/*.json, public/exercises/<id>/ and src/content/books/registry.ts.
@@ -44,6 +45,9 @@ for (const { book, payload } of books) {
   }
 }
 
+// Root expansion is validated separately and never participates in the catalog hash.
+const rootsContent = validateRootsContent(await read("content/roots/roots.json"), new Set(owners.keys()));
+console.log(`Roots: ${rootsContent.roots.length} groups validated.`);
 const output = new URL("src/content/books/", root);
 await rm(output, { recursive: true, force: true });
 await rm(new URL("public/exercises/", root), { recursive: true, force: true });

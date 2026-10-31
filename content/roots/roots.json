@@ -1,0 +1,3374 @@
+{
+  "version": 1,
+  "source": "Root set modelled on 18 Chợ Ngôn Ngữ reels; explanations written independently. Verify etymology against Wiktionary before release.",
+  "affixes": {
+    "-able": "có thể … (tính từ)",
+    "-al": "thuộc về … (tính từ)",
+    "-ament": "danh từ chỉ trạng thái (biến thể của -ment)",
+    "-ance": "danh từ chỉ trạng thái/hành động",
+    "-ancy": "danh từ chỉ trạng thái",
+    "-ant": "người/vật làm … ; tính từ",
+    "-ary": "thuộc về … (tính từ)",
+    "-ate": "hậu tố tạo động từ/tính từ",
+    "-ation": "danh từ chỉ hành động/kết quả",
+    "-ative": "có tính chất …",
+    "-atory": "nơi chốn",
+    "-ature": "danh từ chỉ trạng thái/kết quả",
+    "-e": "e câm cuối từ, không mang nghĩa",
+    "-ee": "người được …",
+    "-ence": "danh từ chỉ trạng thái",
+    "-ency": "danh từ chỉ xu hướng/trạng thái",
+    "-ent": "tính từ; người/vật",
+    "-er": "người/vật làm …",
+    "-ible": "có thể … (biến thể của -able)",
+    "-ion": "danh từ chỉ hành động/kết quả",
+    "-ious": "mang tính … (biến thể của -ous)",
+    "-it": "đuôi danh từ (từ Latin spiritus)",
+    "-ity": "danh từ chỉ tính chất",
+    "-ive": "có tính chất … (tính từ)",
+    "-ly": "trạng từ",
+    "-ment": "danh từ chỉ hành động/kết quả",
+    "-or": "người/vật làm …",
+    "-ory": "nơi chốn; có tính chất",
+    "-ous": "có nhiều …, mang tính … (tính từ)",
+    "-uate": "hậu tố tạo động từ (biến thể của -ate)",
+    "-ure": "danh từ chỉ hành động/kết quả",
+    "a-": "hướng tới",
+    "ab-": "rời khỏi, tách ra",
+    "ad-": "hướng tới",
+    "ag-": "hướng tới (biến thể của ad-)",
+    "as-": "hướng tới (biến thể của ad-)",
+    "at-": "hướng tới (biến thể của ad-)",
+    "be-": "làm cho (nhấn mạnh, quá mức)",
+    "co-": "cùng nhau",
+    "col-": "cùng nhau (biến thể của com-)",
+    "com-": "cùng nhau; hoàn toàn",
+    "con-": "cùng nhau; hoàn toàn",
+    "contra-": "ngược lại, chống lại",
+    "cor-": "hoàn toàn (biến thể của com-)",
+    "de-": "xuống; rời khỏi; nhấn mạnh",
+    "di-": "tách ra, rời đi (biến thể của dis-)",
+    "dis-": "tách ra; làm mất",
+    "down-": "xuống",
+    "e-": "ra ngoài (biến thể của ex-)",
+    "en-": "ở giữa (từ inter- qua tiếng Pháp)",
+    "enter-": "ở giữa (từ inter- qua tiếng Pháp)",
+    "equi-": "ngang bằng",
+    "ex-": "ra ngoài",
+    "im-": "vào trong (biến thể của in-)",
+    "in-": "vào trong",
+    "inter-": "ở giữa",
+    "ir-": "vào trong (biến thể của in-)",
+    "main-": "bằng tay (từ manu-)",
+    "manu-": "bằng tay",
+    "ob-": "hướng về, đối diện",
+    "oc-": "chắn phía trước (biến thể của ob-)",
+    "per-": "xuyên qua",
+    "post-": "phía sau",
+    "pre-": "trước",
+    "pro-": "về phía trước",
+    "re-": "lại; ngược lại, trở về",
+    "se-": "tách riêng ra",
+    "sub-": "ở dưới",
+    "sus-": "từ dưới lên (biến thể của sub-)",
+    "tra-": "băng qua (biến thể của trans-)",
+    "tran-": "băng qua (biến thể của trans-)",
+    "trans-": "băng qua, chuyển sang",
+    "un-": "không",
+    "under-": "ở dưới",
+    "up-": "lên",
+    "ver-": "sự thật (từ verus)"
+  },
+  "roots": [
+    {
+      "id": "tempor",
+      "forms": ["tempor", "tempo"],
+      "origin": "Latin tempus, temporis",
+      "meaning": "thời gian",
+      "image": "chiếc đồng hồ cát đang chảy",
+      "words": [
+        {
+          "text": "tempo",
+          "pos": "n",
+          "parts": [
+            {
+              "text": "tempo",
+              "role": "root"
+            }
+          ],
+          "meaning": "nhịp độ, tốc độ",
+          "logic": "thời gian trôi nhanh hay chậm → nhịp độ",
+          "family": []
+        },
+        {
+          "text": "temporary",
+          "pos": "adj",
+          "parts": [
+            {
+              "text": "tempor",
+              "role": "root"
+            },
+            {
+              "text": "-ary",
+              "role": "suffix"
+            }
+          ],
+          "meaning": "tạm thời",
+          "logic": "thuộc về một khoảng thời gian → chỉ tồn tại một lúc",
+          "family": [
+            {
+              "text": "temporarily",
+              "pos": "adv",
+              "meaning": "tạm thời"
+            }
+          ]
+        },
+        {
+          "text": "contemporary",
+          "pos": "adj",
+          "parts": [
+            {
+              "text": "con-",
+              "role": "prefix"
+            },
+            {
+              "text": "tempor",
+              "role": "root"
+            },
+            {
+              "text": "-ary",
+              "role": "suffix"
+            }
+          ],
+          "meaning": "đương thời, đương đại",
+          "logic": "cùng một thời gian → cùng thời đại",
+          "family": [
+            {
+              "text": "contemporary",
+              "pos": "n",
+              "meaning": "người cùng thời"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "temper",
+      "forms": ["temper"],
+      "origin": "Latin temperare",
+      "meaning": "pha trộn cho cân bằng, điều hòa",
+      "image": "pha nước nóng với nước lạnh cho vừa",
+      "words": [
+        {
+          "text": "temper",
+          "pos": "v",
+          "parts": [
+            {
+              "text": "temper",
+              "role": "root"
+            }
+          ],
+          "meaning": "làm dịu, điều hòa",
+          "logic": "pha cho cân bằng → làm dịu bớt",
+          "family": [
+            {
+              "text": "temper",
+              "pos": "n",
+              "meaning": "tính khí, cơn nóng giận"
+            }
+          ]
+        },
+        {
+          "text": "temperature",
+          "pos": "n",
+          "parts": [
+            {
+              "text": "temper",
+              "role": "root"
+            },
+            {
+              "text": "-ature",
+              "role": "suffix"
+            }
+          ],
+          "meaning": "nhiệt độ",
+          "logic": "trạng thái sau khi được điều hòa → mức nóng lạnh",
+          "family": []
+        },
+        {
+          "text": "temperament",
+          "pos": "n",
+          "parts": [
+            {
+              "text": "temper",
+              "role": "root"
+            },
+            {
+              "text": "-ament",
+              "role": "suffix"
+            }
+          ],
+          "meaning": "tính khí, khí chất",
+          "logic": "sự pha trộn các yếu tố trong một người → tính khí",
+          "family": [
+            {
+              "text": "temperamental",
+              "pos": "adj",
+              "meaning": "tính khí thất thường"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "tempt",
+      "forms": ["tempt"],
+      "origin": "Latin temptare",
+      "meaning": "thử, dò xét",
+      "image": "đưa tay ra thử chạm vào miếng bánh",
+      "words": [
+        {
+          "text": "tempt",
+          "pos": "v",
+          "parts": [
+            {
+              "text": "tempt",
+              "role": "root"
+            }
+          ],
+          "meaning": "cám dỗ, lôi kéo",
+          "logic": "thử lòng ai đó → dụ dỗ họ làm điều gì",
+          "family": [
+            {
+              "text": "temptation",
+              "pos": "n",
+              "meaning": "sự cám dỗ",
+              "book": {
+                "wordId": "tempt-40",
+                "match": "family",
+                "lesson": 40
+              }
+            },
+            {
+              "text": "tempting",
+              "pos": "adj",
+              "meaning": "hấp dẫn, lôi cuốn",
+              "book": {
+                "wordId": "tempt-40",
+                "match": "family",
+                "lesson": 40
+              }
+            }
+          ],
+          "book": {
+            "wordId": "tempt-40",
+            "match": "headword",
+            "lesson": 40
+          }
+        },
+        {
+          "text": "attempt",
+          "pos": "v",
+          "parts": [
+            {
+              "text": "at-",
+              "role": "prefix"
+            },
+            {
+              "text": "tempt",
+              "role": "root"
+            }
+          ],
+          "meaning": "cố gắng, thử làm",
+          "logic": "thử hướng tới một mục tiêu → cố gắng làm",
+          "family": [
+            {
+              "text": "attempt",
+              "pos": "n",
+              "meaning": "sự cố gắng"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "temn",
+      "forms": ["tempt", "temn"],
+      "origin": "Latin temnere",
+      "meaning": "coi khinh",
+      "image": "nhìn từ trên xuống với vẻ coi thường",
+      "note": "Khác gốc với tempt (thử) dù viết giống nhau.",
+      "words": [
+        {
+          "text": "contempt",
+          "pos": "n",
+          "parts": [
+            {
+              "text": "con-",
+              "role": "prefix"
+            },
+            {
+              "text": "tempt",
+              "role": "root"
+            }
+          ],
+          "meaning": "sự khinh thường",
+          "logic": "hoàn toàn coi khinh → sự khinh miệt",
+          "family": [
+            {
+              "text": "contemptible",
+              "pos": "adj",
+              "meaning": "đáng khinh"
+            },
+            {
+              "text": "contemptuous",
+              "pos": "adj",
+              "meaning": "tỏ vẻ khinh thường"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "rupt",
+      "forms": ["rupt"],
+      "origin": "Latin rumpere, ruptus",
+      "meaning": "làm vỡ, làm đứt",
+      "image": "một vật bị nứt vỡ làm đôi",
+      "words": [
+        {
+          "text": "interrupt",
+          "pos": "v",
+          "parts": [
+            {
+              "text": "inter-",
+              "role": "prefix"
+            },
+            {
+              "text": "rupt",
+              "role": "root"
+            }
+          ],
+          "meaning": "làm gián đoạn, ngắt lời",
+          "logic": "phá vỡ ngay giữa chừng → làm gián đoạn",
+          "family": [
+            {
+              "text": "interruption",
+              "pos": "n",
+              "meaning": "sự gián đoạn"
+            },
+            {
+              "text": "uninterrupted",
+              "pos": "adj",
+              "meaning": "liên tục, không gián đoạn"
+            }
+          ]
+        },
+        {
+          "text": "erupt",
+          "pos": "v",
+          "parts": [
+            {
+              "text": "e-",
+              "role": "prefix"
+            },
+            {
+              "text": "rupt",
+              "role": "root"
+            }
+          ],
+          "meaning": "phun trào, bùng nổ",
+          "logic": "vỡ ra phía ngoài → phun trào",
+          "family": [
+            {
+              "text": "eruption",
+              "pos": "n",
+              "meaning": "sự phun trào"
+            }
+          ]
+        },
+        {
+          "text": "disrupt",
+          "pos": "v",
+          "parts": [
+            {
+              "text": "dis-",
+              "role": "prefix"
+            },
+            {
+              "text": "rupt",
+              "role": "root"
+            }
+          ],
+          "meaning": "làm gián đoạn, làm rối loạn",
+          "logic": "phá vỡ cho tan tác → làm rối loạn",
+          "family": [
+            {
+              "text": "disruption",
+              "pos": "n",
+              "meaning": "sự gián đoạn",
+              "book": {
+                "wordId": "disruption-26",
+                "match": "headword",
+                "lesson": 26
+              }
+            },
+            {
+              "text": "disruptive",
+              "pos": "adj",
+              "meaning": "gây rối",
+              "book": {
+                "wordId": "disruption-26",
+                "match": "family",
+                "lesson": 26
+              }
+            }
+          ],
+          "book": {
+            "wordId": "disruption-26",
+            "match": "family",
+            "lesson": 26
+          }
+        },
+        {
+          "text": "corrupt",
+          "pos": "adj",
+          "parts": [
+            {
+              "text": "cor-",
+              "role": "prefix"
+            },
+            {
+              "text": "rupt",
+              "role": "root"
+            }
+          ],
+          "meaning": "tham nhũng, thối nát",
+          "logic": "bị phá hỏng hoàn toàn → hư hỏng, thối nát",
+          "family": [
+            {
+              "text": "corrupt",
+              "pos": "v",
+              "meaning": "làm hư hỏng"
+            },
+            {
+              "text": "corruption",
+              "pos": "n",
+              "meaning": "sự tham nhũng"
+            }
+          ]
+        },
+        {
+          "text": "bankrupt",
+          "pos": "adj",
+          "parts": [
+            {
+              "text": "bank",
+              "role": "word"
+            },
+            {
+              "text": "rupt",
+              "role": "root"
+            }
+          ],
+          "meaning": "phá sản",
+          "logic": "quầy tiền (bank) bị đập vỡ → phá sản",
+          "family": [
+            {
+              "text": "bankruptcy",
+              "pos": "n",
+              "meaning": "sự phá sản"
+            }
+          ]
+        },
+        {
+          "text": "abrupt",
+          "pos": "adj",
+          "parts": [
+            {
+              "text": "ab-",
+              "role": "prefix"
+            },
+            {
+              "text": "rupt",
+              "role": "root"
+            }
+          ],
+          "meaning": "đột ngột",
+          "logic": "bị cắt đứt rời ra → đột ngột",
+          "family": [
+            {
+              "text": "abruptly",
+              "pos": "adv",
+              "meaning": "một cách đột ngột"
+            }
+          ]
+        },
+        {
+          "text": "rupture",
+          "pos": "n",
+          "parts": [
+            {
+              "text": "rupt",
+              "role": "root"
+            },
+            {
+              "text": "-ure",
+              "role": "suffix"
+            }
+          ],
+          "meaning": "sự vỡ, sự rạn nứt",
+          "logic": "kết quả của việc làm vỡ → chỗ vỡ",
+          "family": [
+            {
+              "text": "rupture",
+              "pos": "v",
+              "meaning": "làm vỡ"
+            }
+          ]
+        },
+        {
+          "text": "irrupt",
+          "pos": "v",
+          "parts": [
+            {
+              "text": "ir-",
+              "role": "prefix"
+            },
+            {
+              "text": "rupt",
+              "role": "root"
+            }
+          ],
+          "meaning": "xông vào, ập vào",
+          "logic": "phá vỡ để vào trong → xông vào",
+          "family": []
+        }
+      ]
+    },
+    {
+      "id": "tract",
+      "forms": ["tract"],
+      "origin": "Latin trahere, tractus",
+      "meaning": "kéo",
+      "image": "kéo một chiếc xe bằng dây",
+      "words": [
+        {
+          "text": "attract",
+          "pos": "v",
+          "parts": [
+            {
+              "text": "at-",
+              "role": "prefix"
+            },
+            {
+              "text": "tract",
+              "role": "root"
+            }
+          ],
+          "meaning": "thu hút",
+          "logic": "kéo về phía mình → thu hút",
+          "family": [
+            {
+              "text": "attraction",
+              "pos": "n",
+              "meaning": "sự thu hút; điểm tham quan",
+              "book": {
+                "wordId": "attract-2",
+                "match": "family",
+                "lesson": 2
+              }
+            },
+            {
+              "text": "attractive",
+              "pos": "adj",
+              "meaning": "hấp dẫn",
+              "book": {
+                "wordId": "attract-2",
+                "match": "family",
+                "lesson": 2
+              }
+            }
+          ],
+          "book": {
+            "wordId": "attract-2",
+            "match": "headword",
+            "lesson": 2
+          }
+        },
+        {
+          "text": "distract",
+          "pos": "v",
+          "parts": [
+            {
+              "text": "dis-",
+              "role": "prefix"
+            },
+            {
+              "text": "tract",
+              "role": "root"
+            }
+          ],
+          "meaning": "làm xao nhãng",
+          "logic": "kéo (sự chú ý) ra xa → làm mất tập trung",
+          "family": [
+            {
+              "text": "distraction",
+              "pos": "n",
+              "meaning": "sự xao nhãng",
+              "book": {
+                "wordId": "distraction-47",
+                "match": "headword",
+                "lesson": 47
+              }
+            },
+            {
+              "text": "distracted",
+              "pos": "adj",
+              "meaning": "mất tập trung",
+              "book": {
+                "wordId": "distraction-47",
+                "match": "family",
+                "lesson": 47
+              }
+            }
+          ],
+          "book": {
+            "wordId": "distraction-47",
+            "match": "family",
+            "lesson": 47
+          }
+        },
+        {
+          "text": "extract",
+          "pos": "v",
+          "parts": [
+            {
+              "text": "ex-",
+              "role": "prefix"
+            },
+            {
+              "text": "tract",
+              "role": "root"
+            }
+          ],
+          "meaning": "rút ra, chiết xuất",
+          "logic": "kéo ra ngoài → rút ra",
+          "family": [
+            {
+              "text": "extract",
+              "pos": "n",
+              "meaning": "đoạn trích; chất chiết xuất"
+            }
+          ]
+        },
+        {
+          "text": "contract",
+          "pos": "n",
+          "parts": [
+            {
+              "text": "con-",
+              "role": "prefix"
+            },
+            {
+              "text": "tract",
+              "role": "root"
+            }
+          ],
+          "meaning": "hợp đồng",
+          "logic": "kéo hai bên lại với nhau → thỏa thuận ràng buộc",
+          "family": [
+            {
+              "text": "contract",
+              "pos": "v",
+              "meaning": "co lại; ký hợp đồng"
+            }
+          ]
+        },
+        {
+          "text": "subtract",
+          "pos": "v",
+          "parts": [
+            {
+              "text": "sub-",
+              "role": "prefix"
+            },
+            {
+              "text": "tract",
+              "role": "root"
+            }
+          ],
+          "meaning": "trừ đi",
+          "logic": "kéo phần dưới ra khỏi tổng → trừ đi",
+          "family": [
+            {
+              "text": "subtraction",
+              "pos": "n",
+              "meaning": "phép trừ",
+              "book": {
+                "wordId": "subtract-20",
+                "match": "family",
+                "lesson": 20
+              }
+            }
+          ],
+          "book": {
+            "wordId": "subtract-20",
+            "match": "headword",
+            "lesson": 20
+          }
+        },
+        {
+          "text": "retract",
+          "pos": "v",
+          "parts": [
+            {
+              "text": "re-",
+              "role": "prefix"
+            },
+            {
+              "text": "tract",
+              "role": "root"
+            }
+          ],
+          "meaning": "rút lại",
+          "logic": "kéo trở về → rút lại (lời nói, móng vuốt)",
+          "family": []
+        },
+        {
+          "text": "tractor",
+          "pos": "n",
+          "parts": [
+            {
+              "text": "tract",
+              "role": "root"
+            },
+            {
+              "text": "-or",
+              "role": "suffix"
+            }
+          ],
+          "meaning": "máy kéo",
+          "logic": "vật dùng để kéo → máy kéo",
+          "family": []
+        },
+        {
+          "text": "traction",
+          "pos": "n",
+          "parts": [
+            {
+              "text": "tract",
+              "role": "root"
+            },
+            {
+              "text": "-ion",
+              "role": "suffix"
+            }
+          ],
+          "meaning": "lực kéo, độ bám",
+          "logic": "hành động kéo → lực kéo; sự lôi cuốn",
+          "family": []
+        }
+      ]
+    },
+    {
+      "id": "pel",
+      "forms": ["pel", "puls"],
+      "origin": "Latin pellere, pulsus",
+      "meaning": "đẩy, xua",
+      "image": "dùng hai tay đẩy một chiếc hộp",
+      "words": [
+        {
+          "text": "compel",
+          "pos": "v",
+          "parts": [
+            {
+              "text": "com-",
+              "role": "prefix"
+            },
+            {
+              "text": "pel",
+              "role": "root"
+            }
+          ],
+          "meaning": "ép buộc",
+          "logic": "nhiều lực cùng đẩy về một hướng → ép buộc",
+          "family": [
+            {
+              "text": "compulsion",
+              "pos": "n",
+              "meaning": "sự ép buộc; sự thôi thúc"
+            }
+          ]
+        },
+        {
+          "text": "expel",
+          "pos": "v",
+          "parts": [
+            {
+              "text": "ex-",
+              "role": "prefix"
+            },
+            {
+              "text": "pel",
+              "role": "root"
+            }
+          ],
+          "meaning": "trục xuất, đuổi",
+          "logic": "đẩy ra ngoài → trục xuất",
+          "family": [
+            {
+              "text": "expulsion",
+              "pos": "n",
+              "meaning": "sự trục xuất"
+            }
+          ]
+        },
+        {
+          "text": "repel",
+          "pos": "v",
+          "parts": [
+            {
+              "text": "re-",
+              "role": "prefix"
+            },
+            {
+              "text": "pel",
+              "role": "root"
+            }
+          ],
+          "meaning": "đẩy lùi, xua đuổi",
+          "logic": "đẩy ngược trở lại → đẩy lùi",
+          "family": [
+            {
+              "text": "repulsion",
+              "pos": "n",
+              "meaning": "sự đẩy lùi; sự ghê sợ"
+            },
+            {
+              "text": "repellent",
+              "pos": "n",
+              "meaning": "thuốc chống (côn trùng)",
+              "book": {
+                "wordId": "repel-28",
+                "match": "family",
+                "lesson": 28
+              }
+            }
+          ],
+          "book": {
+            "wordId": "repel-28",
+            "match": "headword",
+            "lesson": 28
+          }
+        },
+        {
+          "text": "propel",
+          "pos": "v",
+          "parts": [
+            {
+              "text": "pro-",
+              "role": "prefix"
+            },
+            {
+              "text": "pel",
+              "role": "root"
+            }
+          ],
+          "meaning": "đẩy tới",
+          "logic": "đẩy về phía trước → làm chuyển động",
+          "family": [
+            {
+              "text": "propeller",
+              "pos": "n",
+              "meaning": "chân vịt, cánh quạt"
+            }
+          ]
+        },
+        {
+          "text": "impel",
+          "pos": "v",
+          "parts": [
+            {
+              "text": "im-",
+              "role": "prefix"
+            },
+            {
+              "text": "pel",
+              "role": "root"
+            }
+          ],
+          "meaning": "thúc đẩy",
+          "logic": "đẩy từ bên trong → thôi thúc",
+          "family": [
+            {
+              "text": "impulse",
+              "pos": "n",
+              "meaning": "sự bốc đồng; xung lực"
+            }
+          ]
+        },
+        {
+          "text": "dispel",
+          "pos": "v",
+          "parts": [
+            {
+              "text": "dis-",
+              "role": "prefix"
+            },
+            {
+              "text": "pel",
+              "role": "root"
+            }
+          ],
+          "meaning": "xua tan",
+          "logic": "đẩy cho tản ra → xua tan",
+          "family": []
+        }
+      ]
+    },
+    {
+      "id": "dict",
+      "forms": ["dict", "dic"],
+      "origin": "Latin dicere, dictus (nói); dicare (tuyên bố)",
+      "meaning": "nói",
+      "image": "một người mở miệng nói ra",
+      "words": [
+        {
+          "text": "predict",
+          "pos": "v",
+          "parts": [
+            {
+              "text": "pre-",
+              "role": "prefix"
+            },
+            {
+              "text": "dict",
+              "role": "root"
+            }
+          ],
+          "meaning": "dự đoán",
+          "logic": "nói ra trước → dự đoán",
+          "family": [
+            {
+              "text": "prediction",
+              "pos": "n",
+              "meaning": "lời dự đoán",
+              "book": {
+                "wordId": "predict-32",
+                "match": "family",
+                "lesson": 32
+              }
+            },
+            {
+              "text": "predictable",
+              "pos": "adj",
+              "meaning": "có thể đoán trước",
+              "book": {
+                "wordId": "predict-32",
+                "match": "family",
+                "lesson": 32
+              }
+            }
+          ],
+          "book": {
+            "wordId": "predict-32",
+            "match": "headword",
+            "lesson": 32
+          }
+        },
+        {
+          "text": "verdict",
+          "pos": "n",
+          "parts": [
+            {
+              "text": "ver-",
+              "role": "prefix"
+            },
+            {
+              "text": "dict",
+              "role": "root"
+            }
+          ],
+          "meaning": "phán quyết",
+          "logic": "lời nói ra sự thật → phán quyết",
+          "family": []
+        },
+        {
+          "text": "contradict",
+          "pos": "v",
+          "parts": [
+            {
+              "text": "contra-",
+              "role": "prefix"
+            },
+            {
+              "text": "dict",
+              "role": "root"
+            }
+          ],
+          "meaning": "mâu thuẫn, phản bác",
+          "logic": "nói ngược lại → phản bác",
+          "family": [
+            {
+              "text": "contradiction",
+              "pos": "n",
+              "meaning": "sự mâu thuẫn"
+            }
+          ]
+        },
+        {
+          "text": "dictate",
+          "pos": "v",
+          "parts": [
+            {
+              "text": "dict",
+              "role": "root"
+            },
+            {
+              "text": "-ate",
+              "role": "suffix"
+            }
+          ],
+          "meaning": "đọc cho chép; ra lệnh",
+          "logic": "nói ra để người khác làm theo → đọc chính tả, ra lệnh",
+          "family": [
+            {
+              "text": "dictation",
+              "pos": "n",
+              "meaning": "bài chính tả"
+            }
+          ]
+        },
+        {
+          "text": "diction",
+          "pos": "n",
+          "parts": [
+            {
+              "text": "dict",
+              "role": "root"
+            },
+            {
+              "text": "-ion",
+              "role": "suffix"
+            }
+          ],
+          "meaning": "cách dùng từ, cách phát âm",
+          "logic": "cách nói ra → cách diễn đạt",
+          "family": [
+            {
+              "text": "dictionary",
+              "pos": "n",
+              "meaning": "từ điển"
+            }
+          ]
+        },
+        {
+          "text": "indicate",
+          "pos": "v",
+          "parts": [
+            {
+              "text": "in-",
+              "role": "prefix"
+            },
+            {
+              "text": "dic",
+              "role": "root"
+            },
+            {
+              "text": "-ate",
+              "role": "suffix"
+            }
+          ],
+          "meaning": "chỉ ra, cho thấy",
+          "logic": "nói ra điều ở bên trong → chỉ ra",
+          "family": [
+            {
+              "text": "indication",
+              "pos": "n",
+              "meaning": "dấu hiệu",
+              "book": {
+                "wordId": "indicator-30",
+                "match": "family",
+                "lesson": 30
+              }
+            },
+            {
+              "text": "indicator",
+              "pos": "n",
+              "meaning": "chỉ số, chỉ báo",
+              "book": {
+                "wordId": "indicator-30",
+                "match": "headword",
+                "lesson": 30
+              }
+            }
+          ],
+          "book": {
+            "wordId": "indicator-30",
+            "match": "family",
+            "lesson": 30
+          }
+        },
+        {
+          "text": "abdicate",
+          "pos": "v",
+          "parts": [
+            {
+              "text": "ab-",
+              "role": "prefix"
+            },
+            {
+              "text": "dic",
+              "role": "root"
+            },
+            {
+              "text": "-ate",
+              "role": "suffix"
+            }
+          ],
+          "meaning": "thoái vị, từ bỏ",
+          "logic": "tuyên bố rời khỏi (ngôi vị) → thoái vị",
+          "family": []
+        }
+      ]
+    },
+    {
+      "id": "ject",
+      "forms": ["ject"],
+      "origin": "Latin jacere, jactus",
+      "meaning": "ném",
+      "image": "ném một quả bóng đi",
+      "words": [
+        {
+          "text": "project",
+          "pos": "n",
+          "parts": [
+            {
+              "text": "pro-",
+              "role": "prefix"
+            },
+            {
+              "text": "ject",
+              "role": "root"
+            }
+          ],
+          "meaning": "dự án",
+          "logic": "ném (ý tưởng) về phía trước → kế hoạch",
+          "family": [
+            {
+              "text": "project",
+              "pos": "v",
+              "meaning": "dự kiến; chiếu",
+              "book": {
+                "wordId": "project-25",
+                "match": "headword",
+                "lesson": 25
+              }
+            },
+            {
+              "text": "projector",
+              "pos": "n",
+              "meaning": "máy chiếu"
+            },
+            {
+              "text": "projection",
+              "pos": "n",
+              "meaning": "sự dự báo; hình chiếu",
+              "book": {
+                "wordId": "project-25",
+                "match": "family",
+                "lesson": 25
+              }
+            }
+          ],
+          "book": {
+            "wordId": "project-25",
+            "match": "headword",
+            "lesson": 25
+          }
+        },
+        {
+          "text": "inject",
+          "pos": "v",
+          "parts": [
+            {
+              "text": "in-",
+              "role": "prefix"
+            },
+            {
+              "text": "ject",
+              "role": "root"
+            }
+          ],
+          "meaning": "tiêm, đưa vào",
+          "logic": "ném vào bên trong → tiêm",
+          "family": [
+            {
+              "text": "injection",
+              "pos": "n",
+              "meaning": "mũi tiêm"
+            }
+          ]
+        },
+        {
+          "text": "reject",
+          "pos": "v",
+          "parts": [
+            {
+              "text": "re-",
+              "role": "prefix"
+            },
+            {
+              "text": "ject",
+              "role": "root"
+            }
+          ],
+          "meaning": "từ chối, bác bỏ",
+          "logic": "ném trả lại → không chấp nhận",
+          "family": [
+            {
+              "text": "rejection",
+              "pos": "n",
+              "meaning": "sự từ chối",
+              "book": {
+                "wordId": "reject-13",
+                "match": "family",
+                "lesson": 13
+              }
+            }
+          ],
+          "book": {
+            "wordId": "reject-13",
+            "match": "headword",
+            "lesson": 13
+          }
+        },
+        {
+          "text": "object",
+          "pos": "v",
+          "parts": [
+            {
+              "text": "ob-",
+              "role": "prefix"
+            },
+            {
+              "text": "ject",
+              "role": "root"
+            }
+          ],
+          "meaning": "phản đối",
+          "logic": "ném về phía đối diện → phản đối",
+          "family": [
+            {
+              "text": "object",
+              "pos": "n",
+              "meaning": "đồ vật; mục tiêu"
+            },
+            {
+              "text": "objection",
+              "pos": "n",
+              "meaning": "sự phản đối"
+            }
+          ]
+        },
+        {
+          "text": "subject",
+          "pos": "n",
+          "parts": [
+            {
+              "text": "sub-",
+              "role": "prefix"
+            },
+            {
+              "text": "ject",
+              "role": "root"
+            }
+          ],
+          "meaning": "chủ đề; đối tượng",
+          "logic": "đặt ở bên dưới (để xem xét) → chủ đề, đối tượng",
+          "family": [
+            {
+              "text": "subject to",
+              "pos": "adj",
+              "meaning": "phụ thuộc vào, có thể bị",
+              "book": {
+                "wordId": "subject-to-30",
+                "match": "headword",
+                "lesson": 30
+              }
+            },
+            {
+              "text": "subjective",
+              "pos": "adj",
+              "meaning": "chủ quan",
+              "book": {
+                "wordId": "subjective-31",
+                "match": "headword",
+                "lesson": 31
+              }
+            }
+          ],
+          "book": {
+            "wordId": "subjective-31",
+            "match": "family",
+            "lesson": 31
+          }
+        },
+        {
+          "text": "eject",
+          "pos": "v",
+          "parts": [
+            {
+              "text": "e-",
+              "role": "prefix"
+            },
+            {
+              "text": "ject",
+              "role": "root"
+            }
+          ],
+          "meaning": "đẩy ra, phóng ra",
+          "logic": "ném ra ngoài → phóng ra",
+          "family": []
+        },
+        {
+          "text": "trajectory",
+          "pos": "n",
+          "parts": [
+            {
+              "text": "tra-",
+              "role": "prefix"
+            },
+            {
+              "text": "ject",
+              "role": "root"
+            },
+            {
+              "text": "-ory",
+              "role": "suffix"
+            }
+          ],
+          "meaning": "quỹ đạo, đường bay",
+          "logic": "đường vật được ném băng qua → quỹ đạo",
+          "family": []
+        }
+      ]
+    },
+    {
+      "id": "tend",
+      "forms": ["tend", "tens", "tent"],
+      "origin": "Latin tendere, tensus/tentus",
+      "meaning": "duỗi ra, vươn ra, căng",
+      "image": "kéo căng một sợi dây thun",
+      "words": [
+        {
+          "text": "attend",
+          "pos": "v",
+          "parts": [
+            {
+              "text": "at-",
+              "role": "prefix"
+            },
+            {
+              "text": "tend",
+              "role": "root"
+            }
+          ],
+          "meaning": "tham dự; chú ý",
+          "logic": "vươn (sự chú ý) về phía → tham dự, để tâm",
+          "family": [
+            {
+              "text": "attendance",
+              "pos": "n",
+              "meaning": "sự có mặt",
+              "book": {
+                "wordId": "attend-5",
+                "match": "family",
+                "lesson": 5
+              }
+            },
+            {
+              "text": "attendee",
+              "pos": "n",
+              "meaning": "người tham dự",
+              "book": {
+                "wordId": "attend-5",
+                "match": "family",
+                "lesson": 5
+              }
+            },
+            {
+              "text": "attention",
+              "pos": "n",
+              "meaning": "sự chú ý"
+            }
+          ],
+          "book": {
+            "wordId": "attend-5",
+            "match": "headword",
+            "lesson": 5
+          }
+        },
+        {
+          "text": "extend",
+          "pos": "v",
+          "parts": [
+            {
+              "text": "ex-",
+              "role": "prefix"
+            },
+            {
+              "text": "tend",
+              "role": "root"
+            }
+          ],
+          "meaning": "kéo dài, mở rộng",
+          "logic": "duỗi ra ngoài → mở rộng",
+          "family": [
+            {
+              "text": "extension",
+              "pos": "n",
+              "meaning": "sự gia hạn; số máy lẻ",
+              "book": {
+                "wordId": "extend-37",
+                "match": "family",
+                "lesson": 37
+              }
+            },
+            {
+              "text": "extensive",
+              "pos": "adj",
+              "meaning": "rộng rãi",
+              "book": {
+                "wordId": "extend-37",
+                "match": "family",
+                "lesson": 37
+              }
+            },
+            {
+              "text": "extent",
+              "pos": "n",
+              "meaning": "mức độ",
+              "book": {
+                "wordId": "extend-37",
+                "match": "family",
+                "lesson": 37
+              }
+            }
+          ],
+          "book": {
+            "wordId": "extend-37",
+            "match": "headword",
+            "lesson": 37
+          }
+        },
+        {
+          "text": "intend",
+          "pos": "v",
+          "parts": [
+            {
+              "text": "in-",
+              "role": "prefix"
+            },
+            {
+              "text": "tend",
+              "role": "root"
+            }
+          ],
+          "meaning": "có ý định",
+          "logic": "hướng tâm trí vào bên trong (một việc) → dự định",
+          "family": [
+            {
+              "text": "intention",
+              "pos": "n",
+              "meaning": "ý định",
+              "book": {
+                "wordId": "intend-40",
+                "match": "family",
+                "lesson": 40
+              }
+            },
+            {
+              "text": "intent",
+              "pos": "n",
+              "meaning": "ý định",
+              "book": {
+                "wordId": "intend-40",
+                "match": "family",
+                "lesson": 40
+              }
+            }
+          ],
+          "book": {
+            "wordId": "intend-40",
+            "match": "headword",
+            "lesson": 40
+          }
+        },
+        {
+          "text": "pretend",
+          "pos": "v",
+          "parts": [
+            {
+              "text": "pre-",
+              "role": "prefix"
+            },
+            {
+              "text": "tend",
+              "role": "root"
+            }
+          ],
+          "meaning": "giả vờ",
+          "logic": "đưa ra phía trước (một vẻ ngoài) → giả vờ",
+          "family": [
+            {
+              "text": "pretense",
+              "pos": "n",
+              "meaning": "sự giả vờ"
+            }
+          ]
+        },
+        {
+          "text": "tension",
+          "pos": "n",
+          "parts": [
+            {
+              "text": "tens",
+              "role": "root"
+            },
+            {
+              "text": "-ion",
+              "role": "suffix"
+            }
+          ],
+          "meaning": "sự căng thẳng",
+          "logic": "trạng thái bị kéo căng → căng thẳng",
+          "family": [
+            {
+              "text": "tense",
+              "pos": "adj",
+              "meaning": "căng thẳng"
+            }
+          ]
+        },
+        {
+          "text": "intense",
+          "pos": "adj",
+          "parts": [
+            {
+              "text": "in-",
+              "role": "prefix"
+            },
+            {
+              "text": "tens",
+              "role": "root"
+            }
+          ],
+          "meaning": "mãnh liệt, dữ dội",
+          "logic": "căng hết mức → mãnh liệt",
+          "family": [
+            {
+              "text": "intensity",
+              "pos": "n",
+              "meaning": "cường độ"
+            },
+            {
+              "text": "intensive",
+              "pos": "adj",
+              "meaning": "chuyên sâu"
+            }
+          ]
+        },
+        {
+          "text": "tendency",
+          "pos": "n",
+          "parts": [
+            {
+              "text": "tend",
+              "role": "root"
+            },
+            {
+              "text": "-ency",
+              "role": "suffix"
+            }
+          ],
+          "meaning": "khuynh hướng",
+          "logic": "tính chất vươn về một phía → khuynh hướng",
+          "family": [
+            {
+              "text": "tend",
+              "pos": "v",
+              "meaning": "có xu hướng"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "voc",
+      "forms": ["voc", "vok"],
+      "origin": "Latin vocare (gọi); vox, vocis (giọng)",
+      "meaning": "gọi; giọng nói",
+      "image": "một người cất tiếng gọi lớn",
+      "words": [
+        {
+          "text": "evoke",
+          "pos": "v",
+          "parts": [
+            {
+              "text": "e-",
+              "role": "prefix"
+            },
+            {
+              "text": "voke",
+              "role": "root"
+            }
+          ],
+          "meaning": "gợi lên",
+          "logic": "gọi ra ngoài → gợi lên (ký ức, cảm xúc)",
+          "family": [
+            {
+              "text": "evocation",
+              "pos": "n",
+              "meaning": "sự gợi lên"
+            }
+          ]
+        },
+        {
+          "text": "invoke",
+          "pos": "v",
+          "parts": [
+            {
+              "text": "in-",
+              "role": "prefix"
+            },
+            {
+              "text": "voke",
+              "role": "root"
+            }
+          ],
+          "meaning": "viện dẫn; khẩn cầu",
+          "logic": "gọi vào (sự trợ giúp) → viện dẫn",
+          "family": [
+            {
+              "text": "invocation",
+              "pos": "n",
+              "meaning": "sự khẩn cầu"
+            }
+          ]
+        },
+        {
+          "text": "provoke",
+          "pos": "v",
+          "parts": [
+            {
+              "text": "pro-",
+              "role": "prefix"
+            },
+            {
+              "text": "voke",
+              "role": "root"
+            }
+          ],
+          "meaning": "khiêu khích, gây ra",
+          "logic": "gọi ra phía trước → kích động",
+          "family": [
+            {
+              "text": "provocation",
+              "pos": "n",
+              "meaning": "sự khiêu khích"
+            },
+            {
+              "text": "provocative",
+              "pos": "adj",
+              "meaning": "khiêu khích"
+            }
+          ]
+        },
+        {
+          "text": "convoke",
+          "pos": "v",
+          "parts": [
+            {
+              "text": "con-",
+              "role": "prefix"
+            },
+            {
+              "text": "voke",
+              "role": "root"
+            }
+          ],
+          "meaning": "triệu tập",
+          "logic": "gọi mọi người lại với nhau → triệu tập",
+          "family": []
+        },
+        {
+          "text": "revoke",
+          "pos": "v",
+          "parts": [
+            {
+              "text": "re-",
+              "role": "prefix"
+            },
+            {
+              "text": "voke",
+              "role": "root"
+            }
+          ],
+          "meaning": "thu hồi, hủy bỏ",
+          "logic": "gọi trở về → thu hồi",
+          "family": []
+        },
+        {
+          "text": "advocate",
+          "pos": "v",
+          "parts": [
+            {
+              "text": "ad-",
+              "role": "prefix"
+            },
+            {
+              "text": "voc",
+              "role": "root"
+            },
+            {
+              "text": "-ate",
+              "role": "suffix"
+            }
+          ],
+          "meaning": "ủng hộ, bênh vực",
+          "logic": "lên tiếng hướng về (ai đó) → bênh vực",
+          "family": [
+            {
+              "text": "advocate",
+              "pos": "n",
+              "meaning": "người ủng hộ"
+            }
+          ]
+        },
+        {
+          "text": "vocal",
+          "pos": "adj",
+          "parts": [
+            {
+              "text": "voc",
+              "role": "root"
+            },
+            {
+              "text": "-al",
+              "role": "suffix"
+            }
+          ],
+          "meaning": "thuộc về giọng; lên tiếng mạnh mẽ",
+          "logic": "thuộc về giọng nói → (về) giọng",
+          "family": [
+            {
+              "text": "vocalist",
+              "pos": "n",
+              "meaning": "ca sĩ"
+            }
+          ]
+        },
+        {
+          "text": "vocation",
+          "pos": "n",
+          "parts": [
+            {
+              "text": "voc",
+              "role": "root"
+            },
+            {
+              "text": "-ation",
+              "role": "suffix"
+            }
+          ],
+          "meaning": "nghề nghiệp, thiên hướng",
+          "logic": "tiếng gọi (dẫn tới một công việc) → nghề, thiên chức",
+          "family": []
+        },
+        {
+          "text": "equivocate",
+          "pos": "v",
+          "parts": [
+            {
+              "text": "equi-",
+              "role": "prefix"
+            },
+            {
+              "text": "voc",
+              "role": "root"
+            },
+            {
+              "text": "-ate",
+              "role": "suffix"
+            }
+          ],
+          "meaning": "nói nước đôi",
+          "logic": "dùng giọng ngang bằng cho hai nghĩa → nói mập mờ",
+          "family": []
+        }
+      ]
+    },
+    {
+      "id": "scrib",
+      "forms": ["scrib", "script"],
+      "origin": "Latin scribere, scriptus",
+      "meaning": "viết",
+      "image": "cầm bút viết lên giấy",
+      "words": [
+        {
+          "text": "describe",
+          "pos": "v",
+          "parts": [
+            {
+              "text": "de-",
+              "role": "prefix"
+            },
+            {
+              "text": "scrib",
+              "role": "root"
+            },
+            {
+              "text": "-e",
+              "role": "suffix"
+            }
+          ],
+          "meaning": "mô tả",
+          "logic": "viết xuống (từng chi tiết) → mô tả",
+          "family": [
+            {
+              "text": "description",
+              "pos": "n",
+              "meaning": "sự mô tả",
+              "book": {
+                "wordId": "description-41",
+                "match": "headword",
+                "lesson": 41
+              }
+            }
+          ],
+          "book": {
+            "wordId": "description-41",
+            "match": "family",
+            "lesson": 41
+          }
+        },
+        {
+          "text": "prescribe",
+          "pos": "v",
+          "parts": [
+            {
+              "text": "pre-",
+              "role": "prefix"
+            },
+            {
+              "text": "scrib",
+              "role": "root"
+            },
+            {
+              "text": "-e",
+              "role": "suffix"
+            }
+          ],
+          "meaning": "kê đơn; quy định",
+          "logic": "viết ra trước (để làm theo) → kê đơn, quy định",
+          "family": [
+            {
+              "text": "prescription",
+              "pos": "n",
+              "meaning": "đơn thuốc"
+            }
+          ]
+        },
+        {
+          "text": "subscribe",
+          "pos": "v",
+          "parts": [
+            {
+              "text": "sub-",
+              "role": "prefix"
+            },
+            {
+              "text": "scrib",
+              "role": "root"
+            },
+            {
+              "text": "-e",
+              "role": "suffix"
+            }
+          ],
+          "meaning": "đăng ký, đặt mua",
+          "logic": "viết (tên) ở dưới → ký tên đồng ý, đặt mua",
+          "family": [
+            {
+              "text": "subscription",
+              "pos": "n",
+              "meaning": "sự đăng ký",
+              "book": {
+                "wordId": "subscribe-45",
+                "match": "family",
+                "lesson": 45
+              }
+            },
+            {
+              "text": "subscriber",
+              "pos": "n",
+              "meaning": "người đăng ký",
+              "book": {
+                "wordId": "subscribe-45",
+                "match": "family",
+                "lesson": 45
+              }
+            }
+          ],
+          "book": {
+            "wordId": "subscribe-45",
+            "match": "headword",
+            "lesson": 45
+          }
+        },
+        {
+          "text": "inscribe",
+          "pos": "v",
+          "parts": [
+            {
+              "text": "in-",
+              "role": "prefix"
+            },
+            {
+              "text": "scrib",
+              "role": "root"
+            },
+            {
+              "text": "-e",
+              "role": "suffix"
+            }
+          ],
+          "meaning": "khắc, ghi lên",
+          "logic": "viết vào (bề mặt) → khắc, đề tặng",
+          "family": [
+            {
+              "text": "inscription",
+              "pos": "n",
+              "meaning": "dòng chữ khắc"
+            }
+          ]
+        },
+        {
+          "text": "transcribe",
+          "pos": "v",
+          "parts": [
+            {
+              "text": "trans-",
+              "role": "prefix"
+            },
+            {
+              "text": "scrib",
+              "role": "root"
+            },
+            {
+              "text": "-e",
+              "role": "suffix"
+            }
+          ],
+          "meaning": "chép lại; phiên âm",
+          "logic": "viết chuyển sang (dạng khác) → chép lại",
+          "family": [
+            {
+              "text": "transcript",
+              "pos": "n",
+              "meaning": "bản ghi chép"
+            }
+          ]
+        },
+        {
+          "text": "manuscript",
+          "pos": "n",
+          "parts": [
+            {
+              "text": "manu-",
+              "role": "prefix"
+            },
+            {
+              "text": "script",
+              "role": "root"
+            }
+          ],
+          "meaning": "bản thảo",
+          "logic": "viết bằng tay → bản thảo",
+          "family": []
+        },
+        {
+          "text": "postscript",
+          "pos": "n",
+          "parts": [
+            {
+              "text": "post-",
+              "role": "prefix"
+            },
+            {
+              "text": "script",
+              "role": "root"
+            }
+          ],
+          "meaning": "tái bút (P.S.)",
+          "logic": "viết phía sau → phần ghi thêm",
+          "family": []
+        }
+      ]
+    },
+    {
+      "id": "grad",
+      "forms": ["grad", "gress"],
+      "origin": "Latin gradi, gressus (bước); gradus (bậc)",
+      "meaning": "bước, bậc",
+      "image": "bước lên từng bậc cầu thang",
+      "words": [
+        {
+          "text": "degrade",
+          "pos": "v",
+          "parts": [
+            {
+              "text": "de-",
+              "role": "prefix"
+            },
+            {
+              "text": "grad",
+              "role": "root"
+            },
+            {
+              "text": "-e",
+              "role": "suffix"
+            }
+          ],
+          "meaning": "làm suy giảm; hạ cấp",
+          "logic": "bước xuống bậc dưới → làm giảm giá trị",
+          "family": [
+            {
+              "text": "degradation",
+              "pos": "n",
+              "meaning": "sự suy thoái"
+            }
+          ]
+        },
+        {
+          "text": "downgrade",
+          "pos": "v",
+          "parts": [
+            {
+              "text": "down-",
+              "role": "prefix"
+            },
+            {
+              "text": "grade",
+              "role": "root"
+            }
+          ],
+          "meaning": "hạ cấp",
+          "logic": "xuống một bậc → hạ cấp",
+          "family": [
+            {
+              "text": "upgrade",
+              "pos": "v",
+              "meaning": "nâng cấp"
+            }
+          ]
+        },
+        {
+          "text": "graduate",
+          "pos": "v",
+          "parts": [
+            {
+              "text": "grad",
+              "role": "root"
+            },
+            {
+              "text": "-uate",
+              "role": "suffix"
+            }
+          ],
+          "meaning": "tốt nghiệp",
+          "logic": "bước qua một bậc học → tốt nghiệp",
+          "family": [
+            {
+              "text": "graduate",
+              "pos": "n",
+              "meaning": "người đã tốt nghiệp"
+            },
+            {
+              "text": "undergraduate",
+              "pos": "n",
+              "meaning": "sinh viên đại học"
+            },
+            {
+              "text": "gradual",
+              "pos": "adj",
+              "meaning": "dần dần"
+            }
+          ]
+        },
+        {
+          "text": "progress",
+          "pos": "n",
+          "parts": [
+            {
+              "text": "pro-",
+              "role": "prefix"
+            },
+            {
+              "text": "gress",
+              "role": "root"
+            }
+          ],
+          "meaning": "sự tiến bộ",
+          "logic": "bước về phía trước → tiến bộ",
+          "family": [
+            {
+              "text": "progress",
+              "pos": "v",
+              "meaning": "tiến triển",
+              "book": {
+                "wordId": "progress-27",
+                "match": "headword",
+                "lesson": 27
+              }
+            },
+            {
+              "text": "progressive",
+              "pos": "adj",
+              "meaning": "tiến bộ",
+              "book": {
+                "wordId": "progress-27",
+                "match": "family",
+                "lesson": 27
+              }
+            }
+          ],
+          "book": {
+            "wordId": "progress-27",
+            "match": "headword",
+            "lesson": 27
+          }
+        },
+        {
+          "text": "regress",
+          "pos": "v",
+          "parts": [
+            {
+              "text": "re-",
+              "role": "prefix"
+            },
+            {
+              "text": "gress",
+              "role": "root"
+            }
+          ],
+          "meaning": "thoái lui",
+          "logic": "bước ngược trở lại → thụt lùi",
+          "family": []
+        },
+        {
+          "text": "ingress",
+          "pos": "n",
+          "parts": [
+            {
+              "text": "in-",
+              "role": "prefix"
+            },
+            {
+              "text": "gress",
+              "role": "root"
+            }
+          ],
+          "meaning": "lối vào; sự đi vào",
+          "logic": "bước vào bên trong → lối vào",
+          "family": [
+            {
+              "text": "egress",
+              "pos": "n",
+              "meaning": "lối ra"
+            }
+          ]
+        },
+        {
+          "text": "congress",
+          "pos": "n",
+          "parts": [
+            {
+              "text": "con-",
+              "role": "prefix"
+            },
+            {
+              "text": "gress",
+              "role": "root"
+            }
+          ],
+          "meaning": "đại hội; quốc hội",
+          "logic": "cùng bước tới một nơi → cuộc họp lớn",
+          "family": []
+        },
+        {
+          "text": "digress",
+          "pos": "v",
+          "parts": [
+            {
+              "text": "di-",
+              "role": "prefix"
+            },
+            {
+              "text": "gress",
+              "role": "root"
+            }
+          ],
+          "meaning": "lạc đề",
+          "logic": "bước tách khỏi (đường chính) → lạc đề",
+          "family": [
+            {
+              "text": "digression",
+              "pos": "n",
+              "meaning": "sự lạc đề"
+            }
+          ]
+        },
+        {
+          "text": "transgress",
+          "pos": "v",
+          "parts": [
+            {
+              "text": "trans-",
+              "role": "prefix"
+            },
+            {
+              "text": "gress",
+              "role": "root"
+            }
+          ],
+          "meaning": "vi phạm, vượt quá giới hạn",
+          "logic": "bước băng qua (ranh giới) → vi phạm",
+          "family": []
+        },
+        {
+          "text": "aggressive",
+          "pos": "adj",
+          "parts": [
+            {
+              "text": "ag-",
+              "role": "prefix"
+            },
+            {
+              "text": "gress",
+              "role": "root"
+            },
+            {
+              "text": "-ive",
+              "role": "suffix"
+            }
+          ],
+          "meaning": "hung hăng; quyết liệt",
+          "logic": "bước tới tấn công → hung hăng",
+          "family": [
+            {
+              "text": "aggression",
+              "pos": "n",
+              "meaning": "sự gây hấn",
+              "book": {
+                "wordId": "aggressively-23",
+                "match": "family",
+                "lesson": 23
+              }
+            }
+          ],
+          "book": {
+            "wordId": "aggressively-23",
+            "match": "family",
+            "lesson": 23
+          }
+        }
+      ]
+    },
+    {
+      "id": "serv-keep",
+      "forms": ["serv"],
+      "origin": "Latin servare",
+      "meaning": "giữ gìn, bảo vệ",
+      "image": "đậy nắp hũ mứt để giữ lâu",
+      "note": "Cùng chữ serv với gốc 'phục vụ' (servire) nhưng khác nguồn.",
+      "words": [
+        {
+          "text": "preserve",
+          "pos": "v",
+          "parts": [
+            {
+              "text": "pre-",
+              "role": "prefix"
+            },
+            {
+              "text": "serv",
+              "role": "root"
+            },
+            {
+              "text": "-e",
+              "role": "suffix"
+            }
+          ],
+          "meaning": "bảo tồn, giữ gìn",
+          "logic": "giữ gìn từ trước → bảo tồn",
+          "family": [
+            {
+              "text": "preserves",
+              "pos": "n",
+              "meaning": "mứt"
+            },
+            {
+              "text": "preservation",
+              "pos": "n",
+              "meaning": "sự bảo tồn"
+            }
+          ]
+        },
+        {
+          "text": "conserve",
+          "pos": "v",
+          "parts": [
+            {
+              "text": "con-",
+              "role": "prefix"
+            },
+            {
+              "text": "serv",
+              "role": "root"
+            },
+            {
+              "text": "-e",
+              "role": "suffix"
+            }
+          ],
+          "meaning": "tiết kiệm, bảo tồn",
+          "logic": "cùng giữ gìn → tiết kiệm (tài nguyên)",
+          "family": [
+            {
+              "text": "conservation",
+              "pos": "n",
+              "meaning": "sự bảo tồn",
+              "book": {
+                "wordId": "conservative-23",
+                "match": "family",
+                "lesson": 23
+              }
+            },
+            {
+              "text": "conservative",
+              "pos": "adj",
+              "meaning": "bảo thủ; thận trọng",
+              "book": {
+                "wordId": "conservative-23",
+                "match": "headword",
+                "lesson": 23
+              }
+            }
+          ],
+          "book": {
+            "wordId": "conservative-23",
+            "match": "family",
+            "lesson": 23
+          }
+        },
+        {
+          "text": "reserve",
+          "pos": "v",
+          "parts": [
+            {
+              "text": "re-",
+              "role": "prefix"
+            },
+            {
+              "text": "serv",
+              "role": "root"
+            },
+            {
+              "text": "-e",
+              "role": "suffix"
+            }
+          ],
+          "meaning": "đặt trước; để dành",
+          "logic": "giữ lại (cho sau) → đặt trước",
+          "family": [
+            {
+              "text": "reservation",
+              "pos": "n",
+              "meaning": "sự đặt chỗ",
+              "book": {
+                "wordId": "reservation-39",
+                "match": "headword",
+                "lesson": 39
+              }
+            },
+            {
+              "text": "reserve",
+              "pos": "n",
+              "meaning": "khu bảo tồn; nguồn dự trữ",
+              "book": {
+                "wordId": "reservation-39",
+                "match": "family",
+                "lesson": 39
+              }
+            }
+          ],
+          "book": {
+            "wordId": "reservation-39",
+            "match": "family",
+            "lesson": 39
+          }
+        },
+        {
+          "text": "observe",
+          "pos": "v",
+          "parts": [
+            {
+              "text": "ob-",
+              "role": "prefix"
+            },
+            {
+              "text": "serv",
+              "role": "root"
+            },
+            {
+              "text": "-e",
+              "role": "suffix"
+            }
+          ],
+          "meaning": "quan sát; tuân thủ",
+          "logic": "giữ (mắt) hướng về → quan sát; giữ (luật) → tuân thủ",
+          "family": [
+            {
+              "text": "observation",
+              "pos": "n",
+              "meaning": "sự quan sát"
+            },
+            {
+              "text": "observatory",
+              "pos": "n",
+              "meaning": "đài quan sát"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "serv-serve",
+      "forms": ["serv"],
+      "origin": "Latin servire",
+      "meaning": "phục vụ",
+      "image": "bưng khay đồ uống mời khách",
+      "words": [
+        {
+          "text": "serve",
+          "pos": "v",
+          "parts": [
+            {
+              "text": "serv",
+              "role": "root"
+            },
+            {
+              "text": "-e",
+              "role": "suffix"
+            }
+          ],
+          "meaning": "phục vụ; đáp ứng",
+          "logic": "phục vụ",
+          "family": [
+            {
+              "text": "servant",
+              "pos": "n",
+              "meaning": "người hầu",
+              "book": {
+                "wordId": "service-39",
+                "match": "family",
+                "lesson": 39
+              }
+            },
+            {
+              "text": "server",
+              "pos": "n",
+              "meaning": "người phục vụ; máy chủ"
+            },
+            {
+              "text": "service",
+              "pos": "n",
+              "meaning": "dịch vụ",
+              "book": {
+                "wordId": "service-39",
+                "match": "headword",
+                "lesson": 39
+              }
+            }
+          ],
+          "book": {
+            "wordId": "service-39",
+            "match": "family",
+            "lesson": 39
+          }
+        },
+        {
+          "text": "deserve",
+          "pos": "v",
+          "parts": [
+            {
+              "text": "de-",
+              "role": "prefix"
+            },
+            {
+              "text": "serv",
+              "role": "root"
+            },
+            {
+              "text": "-e",
+              "role": "suffix"
+            }
+          ],
+          "meaning": "xứng đáng",
+          "logic": "phục vụ hết lòng → đáng được nhận",
+          "family": [
+            {
+              "text": "deserved",
+              "pos": "adj",
+              "meaning": "xứng đáng"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "clud",
+      "forms": ["clud", "clus"],
+      "origin": "Latin claudere, clausus",
+      "meaning": "đóng lại",
+      "image": "đóng một cánh cửa",
+      "words": [
+        {
+          "text": "conclude",
+          "pos": "v",
+          "parts": [
+            {
+              "text": "con-",
+              "role": "prefix"
+            },
+            {
+              "text": "clud",
+              "role": "root"
+            },
+            {
+              "text": "-e",
+              "role": "suffix"
+            }
+          ],
+          "meaning": "kết thúc; kết luận",
+          "logic": "đóng lại hoàn toàn → kết thúc, chốt lại",
+          "family": [
+            {
+              "text": "conclusion",
+              "pos": "n",
+              "meaning": "kết luận",
+              "book": {
+                "wordId": "conclude-27",
+                "match": "family",
+                "lesson": 27
+              }
+            },
+            {
+              "text": "conclusive",
+              "pos": "adj",
+              "meaning": "mang tính quyết định",
+              "book": {
+                "wordId": "conclude-27",
+                "match": "family",
+                "lesson": 27
+              }
+            }
+          ],
+          "book": {
+            "wordId": "conclude-27",
+            "match": "headword",
+            "lesson": 27
+          }
+        },
+        {
+          "text": "include",
+          "pos": "v",
+          "parts": [
+            {
+              "text": "in-",
+              "role": "prefix"
+            },
+            {
+              "text": "clud",
+              "role": "root"
+            },
+            {
+              "text": "-e",
+              "role": "suffix"
+            }
+          ],
+          "meaning": "bao gồm",
+          "logic": "đóng vào bên trong → bao gồm",
+          "family": [
+            {
+              "text": "inclusion",
+              "pos": "n",
+              "meaning": "sự bao gồm"
+            },
+            {
+              "text": "inclusive",
+              "pos": "adj",
+              "meaning": "bao gồm tất cả"
+            }
+          ]
+        },
+        {
+          "text": "exclude",
+          "pos": "v",
+          "parts": [
+            {
+              "text": "ex-",
+              "role": "prefix"
+            },
+            {
+              "text": "clud",
+              "role": "root"
+            },
+            {
+              "text": "-e",
+              "role": "suffix"
+            }
+          ],
+          "meaning": "loại trừ",
+          "logic": "đóng (cửa) để ở ngoài → loại ra",
+          "family": [
+            {
+              "text": "exclusion",
+              "pos": "n",
+              "meaning": "sự loại trừ"
+            },
+            {
+              "text": "exclusive",
+              "pos": "adj",
+              "meaning": "độc quyền, dành riêng"
+            }
+          ]
+        },
+        {
+          "text": "preclude",
+          "pos": "v",
+          "parts": [
+            {
+              "text": "pre-",
+              "role": "prefix"
+            },
+            {
+              "text": "clud",
+              "role": "root"
+            },
+            {
+              "text": "-e",
+              "role": "suffix"
+            }
+          ],
+          "meaning": "ngăn trước, loại trừ khả năng",
+          "logic": "đóng lại từ trước → ngăn không cho xảy ra",
+          "family": [
+            {
+              "text": "preclusion",
+              "pos": "n",
+              "meaning": "sự ngăn ngừa"
+            }
+          ],
+          "book": {
+            "wordId": "preclude-39",
+            "match": "headword",
+            "lesson": 39
+          }
+        },
+        {
+          "text": "seclude",
+          "pos": "v",
+          "parts": [
+            {
+              "text": "se-",
+              "role": "prefix"
+            },
+            {
+              "text": "clud",
+              "role": "root"
+            },
+            {
+              "text": "-e",
+              "role": "suffix"
+            }
+          ],
+          "meaning": "tách biệt, ẩn dật",
+          "logic": "đóng lại tách riêng → cô lập",
+          "family": [
+            {
+              "text": "seclusion",
+              "pos": "n",
+              "meaning": "sự ẩn dật"
+            }
+          ]
+        },
+        {
+          "text": "occlude",
+          "pos": "v",
+          "parts": [
+            {
+              "text": "oc-",
+              "role": "prefix"
+            },
+            {
+              "text": "clud",
+              "role": "root"
+            },
+            {
+              "text": "-e",
+              "role": "suffix"
+            }
+          ],
+          "meaning": "bít, che khuất",
+          "logic": "đóng chắn phía trước → bít lại",
+          "family": []
+        }
+      ]
+    },
+    {
+      "id": "spir",
+      "forms": ["spir"],
+      "origin": "Latin spirare",
+      "meaning": "thở",
+      "image": "hít một hơi thật sâu",
+      "words": [
+        {
+          "text": "inspire",
+          "pos": "v",
+          "parts": [
+            {
+              "text": "in-",
+              "role": "prefix"
+            },
+            {
+              "text": "spir",
+              "role": "root"
+            },
+            {
+              "text": "-e",
+              "role": "suffix"
+            }
+          ],
+          "meaning": "truyền cảm hứng",
+          "logic": "thổi hơi thở vào trong (ai đó) → truyền cảm hứng",
+          "family": [
+            {
+              "text": "inspiration",
+              "pos": "n",
+              "meaning": "nguồn cảm hứng",
+              "book": {
+                "wordId": "inspiration-2",
+                "match": "headword",
+                "lesson": 2
+              }
+            },
+            {
+              "text": "inspirational",
+              "pos": "adj",
+              "meaning": "truyền cảm hứng",
+              "book": {
+                "wordId": "inspiration-2",
+                "match": "family",
+                "lesson": 2
+              }
+            }
+          ],
+          "book": {
+            "wordId": "inspiration-2",
+            "match": "family",
+            "lesson": 2
+          }
+        },
+        {
+          "text": "conspire",
+          "pos": "v",
+          "parts": [
+            {
+              "text": "con-",
+              "role": "prefix"
+            },
+            {
+              "text": "spir",
+              "role": "root"
+            },
+            {
+              "text": "-e",
+              "role": "suffix"
+            }
+          ],
+          "meaning": "âm mưu",
+          "logic": "cùng thở (thì thầm) với nhau → âm mưu",
+          "family": [
+            {
+              "text": "conspiracy",
+              "pos": "n",
+              "meaning": "âm mưu"
+            },
+            {
+              "text": "conspirator",
+              "pos": "n",
+              "meaning": "kẻ chủ mưu"
+            }
+          ]
+        },
+        {
+          "text": "expire",
+          "pos": "v",
+          "parts": [
+            {
+              "text": "ex-",
+              "role": "prefix"
+            },
+            {
+              "text": "spir",
+              "role": "root"
+            },
+            {
+              "text": "-e",
+              "role": "suffix"
+            }
+          ],
+          "meaning": "hết hạn",
+          "logic": "thở hơi cuối ra ngoài → chấm dứt, hết hạn",
+          "family": [
+            {
+              "text": "expiration",
+              "pos": "n",
+              "meaning": "sự hết hạn",
+              "book": {
+                "wordId": "expiration-3",
+                "match": "headword",
+                "lesson": 3
+              }
+            }
+          ],
+          "book": {
+            "wordId": "expiration-3",
+            "match": "family",
+            "lesson": 3
+          }
+        },
+        {
+          "text": "respire",
+          "pos": "v",
+          "parts": [
+            {
+              "text": "re-",
+              "role": "prefix"
+            },
+            {
+              "text": "spir",
+              "role": "root"
+            },
+            {
+              "text": "-e",
+              "role": "suffix"
+            }
+          ],
+          "meaning": "hô hấp",
+          "logic": "thở lại liên tục → hô hấp",
+          "family": [
+            {
+              "text": "respiration",
+              "pos": "n",
+              "meaning": "sự hô hấp"
+            },
+            {
+              "text": "respiratory",
+              "pos": "adj",
+              "meaning": "thuộc hô hấp"
+            }
+          ]
+        },
+        {
+          "text": "perspire",
+          "pos": "v",
+          "parts": [
+            {
+              "text": "per-",
+              "role": "prefix"
+            },
+            {
+              "text": "spir",
+              "role": "root"
+            },
+            {
+              "text": "-e",
+              "role": "suffix"
+            }
+          ],
+          "meaning": "đổ mồ hôi",
+          "logic": "hơi thở xuyên qua da → toát mồ hôi",
+          "family": [
+            {
+              "text": "perspiration",
+              "pos": "n",
+              "meaning": "mồ hôi"
+            }
+          ]
+        },
+        {
+          "text": "aspire",
+          "pos": "v",
+          "parts": [
+            {
+              "text": "a-",
+              "role": "prefix"
+            },
+            {
+              "text": "spir",
+              "role": "root"
+            },
+            {
+              "text": "-e",
+              "role": "suffix"
+            }
+          ],
+          "meaning": "khao khát",
+          "logic": "thở hướng tới (mục tiêu) → khao khát",
+          "family": [
+            {
+              "text": "aspiration",
+              "pos": "n",
+              "meaning": "khát vọng"
+            }
+          ]
+        },
+        {
+          "text": "transpire",
+          "pos": "v",
+          "parts": [
+            {
+              "text": "tran-",
+              "role": "prefix"
+            },
+            {
+              "text": "spir",
+              "role": "root"
+            },
+            {
+              "text": "-e",
+              "role": "suffix"
+            }
+          ],
+          "meaning": "hóa ra, lộ ra; xảy ra",
+          "logic": "thoát hơi qua (bề mặt) → lộ ra",
+          "family": []
+        },
+        {
+          "text": "spirit",
+          "pos": "n",
+          "parts": [
+            {
+              "text": "spir",
+              "role": "root"
+            },
+            {
+              "text": "-it",
+              "role": "suffix"
+            }
+          ],
+          "meaning": "tinh thần",
+          "logic": "hơi thở của sự sống → tinh thần",
+          "family": [
+            {
+              "text": "spiritual",
+              "pos": "adj",
+              "meaning": "thuộc tinh thần"
+            },
+            {
+              "text": "dispirit",
+              "pos": "v",
+              "meaning": "làm nản lòng"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "labor",
+      "forms": ["labor"],
+      "origin": "Latin labor",
+      "meaning": "lao động, vất vả",
+      "image": "lắp ráp bánh răng bằng tay",
+      "words": [
+        {
+          "text": "collaborate",
+          "pos": "v",
+          "parts": [
+            {
+              "text": "col-",
+              "role": "prefix"
+            },
+            {
+              "text": "labor",
+              "role": "root"
+            },
+            {
+              "text": "-ate",
+              "role": "suffix"
+            }
+          ],
+          "meaning": "hợp tác",
+          "logic": "cùng nhau lao động → hợp tác",
+          "family": [
+            {
+              "text": "collaboration",
+              "pos": "n",
+              "meaning": "sự hợp tác",
+              "book": {
+                "wordId": "collaboration-26",
+                "match": "headword",
+                "lesson": 26
+              }
+            },
+            {
+              "text": "collaborator",
+              "pos": "n",
+              "meaning": "người cộng tác",
+              "book": {
+                "wordId": "collaboration-26",
+                "match": "family",
+                "lesson": 26
+              }
+            },
+            {
+              "text": "collaborative",
+              "pos": "adj",
+              "meaning": "mang tính hợp tác",
+              "book": {
+                "wordId": "collaboration-26",
+                "match": "family",
+                "lesson": 26
+              }
+            }
+          ],
+          "book": {
+            "wordId": "collaboration-26",
+            "match": "family",
+            "lesson": 26
+          }
+        },
+        {
+          "text": "elaborate",
+          "pos": "adj",
+          "parts": [
+            {
+              "text": "e-",
+              "role": "prefix"
+            },
+            {
+              "text": "labor",
+              "role": "root"
+            },
+            {
+              "text": "-ate",
+              "role": "suffix"
+            }
+          ],
+          "meaning": "công phu, tỉ mỉ",
+          "logic": "dồn công sức làm ra → công phu",
+          "family": [
+            {
+              "text": "elaborate",
+              "pos": "v",
+              "meaning": "giải thích chi tiết"
+            },
+            {
+              "text": "elaboration",
+              "pos": "n",
+              "meaning": "sự trau chuốt"
+            }
+          ]
+        },
+        {
+          "text": "belabor",
+          "pos": "v",
+          "parts": [
+            {
+              "text": "be-",
+              "role": "prefix"
+            },
+            {
+              "text": "labor",
+              "role": "root"
+            }
+          ],
+          "meaning": "nói đi nói lại quá mức",
+          "logic": "dồn công quá mức → lặp lại quá nhiều",
+          "family": []
+        },
+        {
+          "text": "laboratory",
+          "pos": "n",
+          "parts": [
+            {
+              "text": "labor",
+              "role": "root"
+            },
+            {
+              "text": "-atory",
+              "role": "suffix"
+            }
+          ],
+          "meaning": "phòng thí nghiệm",
+          "logic": "nơi làm việc → phòng thí nghiệm",
+          "family": [
+            {
+              "text": "lab",
+              "pos": "n",
+              "meaning": "phòng thí nghiệm"
+            }
+          ]
+        },
+        {
+          "text": "laborious",
+          "pos": "adj",
+          "parts": [
+            {
+              "text": "labor",
+              "role": "root"
+            },
+            {
+              "text": "-ious",
+              "role": "suffix"
+            }
+          ],
+          "meaning": "tốn sức, vất vả",
+          "logic": "đầy công sức → vất vả",
+          "family": [
+            {
+              "text": "laboriously",
+              "pos": "adv",
+              "meaning": "một cách vất vả"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "tain",
+      "forms": ["tain", "ten", "tent"],
+      "origin": "Latin tenere",
+      "meaning": "giữ, nắm",
+      "image": "nắm chặt một vật trong tay",
+      "words": [
+        {
+          "text": "sustain",
+          "pos": "v",
+          "parts": [
+            {
+              "text": "sus-",
+              "role": "prefix"
+            },
+            {
+              "text": "tain",
+              "role": "root"
+            }
+          ],
+          "meaning": "duy trì; chịu đựng",
+          "logic": "giữ từ dưới đỡ lên → duy trì",
+          "family": [
+            {
+              "text": "sustainable",
+              "pos": "adj",
+              "meaning": "bền vững"
+            },
+            {
+              "text": "sustenance",
+              "pos": "n",
+              "meaning": "thức ăn nuôi sống"
+            }
+          ]
+        },
+        {
+          "text": "maintain",
+          "pos": "v",
+          "parts": [
+            {
+              "text": "main-",
+              "role": "prefix"
+            },
+            {
+              "text": "tain",
+              "role": "root"
+            }
+          ],
+          "meaning": "duy trì, bảo trì",
+          "logic": "giữ bằng tay → duy trì",
+          "family": [
+            {
+              "text": "maintenance",
+              "pos": "n",
+              "meaning": "sự bảo trì",
+              "book": {
+                "wordId": "maintain-17",
+                "match": "family",
+                "lesson": 17
+              }
+            }
+          ],
+          "book": {
+            "wordId": "maintain-17",
+            "match": "headword",
+            "lesson": 17
+          }
+        },
+        {
+          "text": "contain",
+          "pos": "v",
+          "parts": [
+            {
+              "text": "con-",
+              "role": "prefix"
+            },
+            {
+              "text": "tain",
+              "role": "root"
+            }
+          ],
+          "meaning": "chứa đựng; kiềm chế",
+          "logic": "giữ mọi thứ cùng bên trong → chứa đựng",
+          "family": [
+            {
+              "text": "container",
+              "pos": "n",
+              "meaning": "thùng chứa"
+            }
+          ]
+        },
+        {
+          "text": "retain",
+          "pos": "v",
+          "parts": [
+            {
+              "text": "re-",
+              "role": "prefix"
+            },
+            {
+              "text": "tain",
+              "role": "root"
+            }
+          ],
+          "meaning": "giữ lại",
+          "logic": "giữ lại (không cho đi) → duy trì",
+          "family": [
+            {
+              "text": "retention",
+              "pos": "n",
+              "meaning": "sự giữ lại"
+            }
+          ]
+        },
+        {
+          "text": "obtain",
+          "pos": "v",
+          "parts": [
+            {
+              "text": "ob-",
+              "role": "prefix"
+            },
+            {
+              "text": "tain",
+              "role": "root"
+            }
+          ],
+          "meaning": "đạt được, có được",
+          "logic": "giữ được (thứ hướng tới) → có được",
+          "family": [
+            {
+              "text": "obtainment",
+              "pos": "n",
+              "meaning": "sự đạt được"
+            }
+          ],
+          "book": {
+            "wordId": "obtain-17",
+            "match": "headword",
+            "lesson": 17
+          }
+        },
+        {
+          "text": "detain",
+          "pos": "v",
+          "parts": [
+            {
+              "text": "de-",
+              "role": "prefix"
+            },
+            {
+              "text": "tain",
+              "role": "root"
+            }
+          ],
+          "meaning": "giam giữ, giữ lại",
+          "logic": "giữ lại (không cho rời) → giam giữ",
+          "family": [
+            {
+              "text": "detention",
+              "pos": "n",
+              "meaning": "sự giam giữ"
+            }
+          ]
+        },
+        {
+          "text": "entertain",
+          "pos": "v",
+          "parts": [
+            {
+              "text": "enter-",
+              "role": "prefix"
+            },
+            {
+              "text": "tain",
+              "role": "root"
+            }
+          ],
+          "meaning": "giải trí, tiếp đãi",
+          "logic": "giữ (khách) ở giữa → tiếp đãi, mua vui",
+          "family": [
+            {
+              "text": "entertainment",
+              "pos": "n",
+              "meaning": "sự giải trí",
+              "book": {
+                "wordId": "entertainment-41",
+                "match": "headword",
+                "lesson": 41
+              }
+            },
+            {
+              "text": "entertainer",
+              "pos": "n",
+              "meaning": "người làm nghề giải trí",
+              "book": {
+                "wordId": "entertainment-41",
+                "match": "family",
+                "lesson": 41
+              }
+            }
+          ],
+          "book": {
+            "wordId": "entertainment-41",
+            "match": "family",
+            "lesson": 41
+          }
+        }
+      ]
+    }
+  ]
+}

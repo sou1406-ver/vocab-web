@@ -81,6 +81,7 @@ export function validateSnapshot(value: unknown): Snapshot {
     !["light", "dark", "system"].includes(settings.theme as string) ||
     (settings.avatarSeed !== undefined &&
       (!nonempty(settings.avatarSeed) || (settings.avatarSeed as string).length > 200)) ||
+    (settings.deepRoots !== undefined && typeof settings.deepRoots !== "boolean") ||
     // Unknown book IDs stay valid so a backup survives a book being renamed or removed.
     (settings.bookId !== undefined &&
       (typeof settings.bookId !== "string" ||

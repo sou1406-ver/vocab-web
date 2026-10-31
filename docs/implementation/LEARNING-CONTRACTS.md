@@ -223,3 +223,12 @@ Chưa làm: builder chung cho quyển mới (mỗi quyển tự viết builder),
 - Khi trạng thái tài khoản đã đồng bộ, số từ và index avatar cập nhật cho hồ sơ đã tham gia. Transaction đọc lại document và không tạo lại hồ sơ đã rời bảng. Không tự đăng ký lại và không dùng tiến độ khách hoặc tài khoản khác để ghi điểm.
 - Rời bảng xóa duy nhất hồ sơ công khai, giữ nguyên tiến độ học. Biệt danh công khai được nhập riêng, không tự dùng tên/email Google. Lựa chọn tham gia được xác định từ document cloud, không thêm field snapshot hoặc migration.
 - Điểm là bản tóm tắt do client tính từ tiến độ đồng bộ; rules kiểm tra quyền, kiểu và giới hạn nhưng không xác minh việc học hoặc chống sửa điểm ở client. Bảng dùng để khích lệ học, không phải bảng thi có thưởng/được máy chủ chấm độc lập.
+
+## Phân tích từ hai mức và gốc từ mở rộng
+
+- Mức cơ bản luôn có khi `family[].parts` gồm ít nhất hai mảnh: hiển thị mảnh và nghĩa phụ tố từ `data/generated/affixes.json`. Mảnh thân từ chưa có phân tích gốc được ghi là thân từ, không suy đoán ngữ nguyên.
+- `settings.deepRoots?: boolean` mặc định tắt khi bị lược bỏ. Validator nhận snapshot schema 2 cũ không có field này, chỉ nhận boolean khi có; luồng đồng bộ chấp nhận field optional. Bật/tắt không đổi tiến độ, catalog hoặc scoringVersion.
+- Khi tắt, không quảng bá mục gốc từ trên thẻ hoặc menu và không tải component phân tích sâu vào thẻ. Đường dẫn `/roots` và `/roots/[id]` vẫn đọc trực tiếp được. Khi bật, mục “Bản chất từ” tìm khớp nguyên từ trong từ chính/family, dùng phân tích được cung cấp và liên kết tới gốc. Các trang gốc không đưa vào sitemap.
+- Nguồn độc lập `content/roots/roots.json`: 19 gốc, 110 từ; nghĩa phụ tố của phân tích sâu dùng bảng `affixes` đi kèm nguồn (có thể khác nghĩa khái quát trong bảng phụ tố mức cơ bản). Đây là nội dung mở rộng, không trộn vào words/lessons/topics hoặc fingerprint.
+- Build và validate-content kiểm tra ID gốc duy nhất, mỗi phụ tố trong parts có trong bảng affixes, mọi `book.wordId` của từ chính/family đều tồn tại. Nhãn bài/link tra lại sách và bài thực qua `bookOfWord`, không dựa vào số bài ghi chú nếu bị lệch. `bank` trong `bankrupt` là thành tố từ ghép (`role: word`), không phải phụ tố.
+- Trang gốc hiển thị hình ảnh cốt lõi dưới dạng mô tả ghi nhớ trong dữ liệu, origin, chip phân tích, logic và family. Từ có liên kết sách gắn “Trong sách · Bài N”; còn lại là “Mở rộng”. Không tạo bài tập, từ mới, event hoặc progress cho các từ mở rộng.

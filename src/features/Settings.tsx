@@ -18,6 +18,7 @@ export default function Settings() {
   const name = draft.name ?? data.settings.name;
   const goal = draft.dailyNew ?? data.settings.dailyNew;
   const theme = draft.theme ?? data.settings.theme;
+  const deepRoots = draft.deepRoots ?? data.settings.deepRoots ?? false;
   const [avatarSeed, setAvatarSeed] = useState<string>();
   const selectedAvatar = avatarSeed ?? data.settings.avatarSeed ?? (name.trim() || "Vocab guest");
   const [notice, setNotice] = useState("");
@@ -36,6 +37,7 @@ export default function Settings() {
           name: name.trim().slice(0, 60),
           dailyNew: goal,
           theme,
+          deepRoots,
           ...(avatarSeed === undefined ? {} : { avatarSeed }),
         },
       }))
@@ -122,6 +124,18 @@ export default function Settings() {
                 ))}
               </div>
             </fieldset>
+            <label className="deep-roots-toggle">
+              <input
+                type="checkbox"
+                aria-label="Học sâu: gốc từ"
+                checked={deepRoots}
+                onChange={(event) => setDraft((value) => ({ ...value, deepRoots: event.target.checked }))}
+              />
+              <span>
+                <strong>Học sâu: gốc từ</strong>
+                <small>Hiện bản chất từ, nguồn gốc và kho từ mở rộng. Phần này không tính vào tiến độ học.</small>
+              </span>
+            </label>
             <label htmlFor="daily-goal">Mục tiêu từ mới mỗi ngày</label>
             <select
               id="daily-goal"

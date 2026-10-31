@@ -13,11 +13,12 @@ import StatusMark from "../components/react-bits/StatusMark";
 import { useCloud } from "../state/cloud-provider";
 import { syncLabels } from "../components/AccountPanel";
 import { LeaderboardSync } from "../components/LeaderboardSync";
-const links: { to: string; label: string; icon: IconName; end?: boolean; group?: string }[] = [
+const links: { to: string; label: string; icon: IconName; end?: boolean; group?: string; deep?: boolean }[] = [
   { to: "/", label: "Hôm nay", icon: "home", end: true },
   { to: "/lessons", label: "Bài học", icon: "book", group: "HỌC TẬP" },
   { to: "/library", label: "Thư viện", icon: "search" },
   { to: "/knowledge", label: "Kiến thức", icon: "leaf" },
+  { to: "/roots", label: "Gốc từ", icon: "leaf", group: "HỌC SÂU", deep: true },
   { to: "/progress", label: "Tiến độ", icon: "chart", group: "THEO DÕI" },
   { to: "/leaderboard", label: "Bảng tu luyện", icon: "target" },
 ];
@@ -31,6 +32,7 @@ export function Shell({ children }: { children: ReactNode }) {
   const [online, setOnline] = useState(true);
   const [resolvedTheme, setResolvedTheme] = useState("light");
   const studying = pathname === "/study";
+  const visibleLinks = links.filter((link) => !link.deep || data.settings.deepRoots === true);
   useEffect(() => {
     const sync = () => setOnline(navigator.onLine);
     sync();
@@ -42,6 +44,7 @@ export function Shell({ children }: { children: ReactNode }) {
     };
   }, []);
   useEffect(() => {
+    setWord(null);
     document.querySelector<HTMLElement>("main h1")?.focus({ preventScroll: true });
   }, [pathname]);
   useEffect(() => {
@@ -86,7 +89,7 @@ export function Shell({ children }: { children: ReactNode }) {
           </Link>
           <div className="sidebar-caption">GÓC HỌC CỦA BẠN</div>
           <nav className="main-nav" aria-label="Điều hướng chính">
-            {links.map((link) => (
+            {visibleLinks.map((link) => (
               <Fragment key={link.to}>
                 {link.group && <div className="nav-section-label">{link.group}</div>}
                 <Link
@@ -218,8 +221,8 @@ export function Shell({ children }: { children: ReactNode }) {
         </div>
         {!studying && (
           <nav className="mobile-nav" aria-label="Điều hướng trên điện thoại">
-            {links
-              .filter((link) => link.to !== "/progress")
+            {visibleLinks
+              .filter((link) => link.to !== "/progress" && link.to !== "/leaderboard")
               .map((link) => (
                 <Link className={pathname === link.to ? "active" : undefined} key={link.to} href={link.to}>
                   <Icon name={link.icon} />

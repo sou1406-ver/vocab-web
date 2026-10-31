@@ -1,5 +1,6 @@
 import { readFile, readdir } from "node:fs/promises";
 import assert from "node:assert/strict";
+import { validateRootsContent } from "./lib/roots-content.mjs";
 const root = new URL("../", import.meta.url);
 const json = async (path) => JSON.parse(await readFile(new URL(path, root), "utf8"));
 const bookIds = (await readdir(new URL("src/content/books/", root), { withFileTypes: true }))
@@ -25,6 +26,7 @@ for (const id of bookIds) {
   }
   summaries.push(`${id}: ${catalog.words.length} entries/${catalog.lessons.length} lessons`);
 }
+validateRootsContent(await json("content/roots/roots.json"), ids);
 const articles = await json("content/knowledge/manifest.json");
 const slugs = new Set();
 for (const article of articles) {

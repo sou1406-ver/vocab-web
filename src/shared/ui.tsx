@@ -8,6 +8,7 @@ import { brandIcons } from "./brand-icons";
 import { setWordSaved } from "../domain/personal";
 import { speak } from "../lib/speech";
 import { useEnglishVoices } from "../lib/use-english-voices";
+import { WordAnalysis } from "../components/WordAnalysis";
 
 const iconAliases = {
   book: "lessons",
@@ -132,6 +133,7 @@ export function WordContent({ word }: { word: Word }) {
       <p className="muted" lang="en">
         {word.definition}
       </p>
+      <WordAnalysis word={word} />
       {word.examples.slice(0, 2).map((example, i) => (
         <blockquote key={i}>
           <p lang="en">{example.text}</p>
