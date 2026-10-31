@@ -41,7 +41,7 @@ service cloud.firestore {
         && p.username == d.username && p.hiddenLeaderboard == false
         && getAfter(username(d.username)).data.uid == uid
         && d.avatar is int && d.avatar >= 0 && d.avatar < 20
-        && d.learnedCount is int && d.learnedCount >= 0 && d.learnedCount <= 100000
+        && d.learnedCount is int && d.learnedCount >= 0 && d.learnedCount <= 2000
         && d.updatedAt is timestamp && d.updatedAt == request.time;
     }
     function head(uid) { return /databases/$(database)/documents/users/$(uid)/sync/state; }

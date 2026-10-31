@@ -168,7 +168,7 @@ describe.skipIf(process.env.FIREBASE_SYNC_EMULATOR_TEST !== "1")(
         { avatar: 20 },
         { learnedCount: -1 },
         { learnedCount: 1.5 },
-        { learnedCount: 100001 },
+        { learnedCount: 2001 },
         { username: "" },
         { username: "email@example.test" },
         { email: "private@example.test" },
@@ -188,6 +188,17 @@ describe.skipIf(process.env.FIREBASE_SYNC_EMULATOR_TEST !== "1")(
       await expect(getDocs(query(collection(a.db, "leaderboard"), limit(51)))).rejects.toMatchObject({
         code: "permission-denied",
       });
+    });
+    it("allows the maximum learned count on both create and update", async () => {
+      const username = (await getDoc(doc(b.db, "profiles", b.uid))).data()!.username;
+      const ranking = doc(b.db, "leaderboard", b.uid);
+      expect((await getDoc(ranking)).exists()).toBe(false);
+      const valid = { version: 1, username, avatar: 0, learnedCount: 2000, updatedAt: serverTimestamp() };
+      await setDoc(ranking, valid);
+      expect((await getDoc(ranking)).data()!.learnedCount).toBe(2000);
+      await setDoc(ranking, { ...valid, learnedCount: 0 });
+      await setDoc(ranking, valid);
+      expect((await getDoc(ranking)).data()!.learnedCount).toBe(2000);
     });
     it("updates completed profiles without recreating hidden or stale rankings", async () => {
       await syncLeaderboardCount(a.uid, 50, 3, () => true, a.db);
