@@ -31,11 +31,14 @@ export default function Leaderboard() {
     setConsent(false);
     setWorking(false);
     if (!uid) return;
-    const fail = () => {
+    const fail = (reason: unknown) => {
+      const denied = reason && typeof reason === "object" && "code" in reason && reason.code === "permission-denied";
       if (active)
         setConnection((state) => ({
           ...state,
-          error: "Chưa tải được bảng tu luyện. Hãy kiểm tra kết nối và thử lại.",
+          error: denied
+            ? "Bảng tu luyện online chưa được bật. Cảnh giới cá nhân vẫn sử dụng bình thường."
+            : "Chưa tải được bảng tu luyện. Hãy kiểm tra kết nối và thử lại.",
         }));
     };
     void import("../data/leaderboard-cloud")
@@ -64,7 +67,14 @@ export default function Leaderboard() {
   }, [uid, attempt]);
   const current = connection.uid === uid ? connection : initial;
   const nickname = draft && draft.uid === uid ? draft.value : (current.own?.nickname ?? "");
-  const canSave = ready && uid && profileKey === `user:${uid}` && cloud.status === "synced" && !working;
+  const canSave =
+    ready &&
+    uid &&
+    current.ready &&
+    !current.error &&
+    profileKey === `user:${uid}` &&
+    cloud.status === "synced" &&
+    !working;
   const save = async (event: FormEvent) => {
     event.preventDefault();
     if (!canSave || (!current.own && !consent)) return;
