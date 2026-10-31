@@ -7,11 +7,10 @@ import { applyImport, previewImport, type ImportPreview } from "../data/imports"
 import { Icon } from "../shared/ui";
 import { dayKey } from "../domain/learning";
 import { UserAvatar } from "../components/UserAvatar";
+import { avatarSeeds, avatarSource } from "../lib/avatar";
 import { SpeechPreferences } from "../components/SpeechPreferences";
 import { AccountPanel } from "../components/AccountPanel";
 import type { Snapshot } from "../domain/types";
-
-const initialAvatarSeeds = Array.from({ length: 12 }, (_, i) => `vocab-avatar-${i + 1}`);
 
 export default function Settings() {
   const { data, busy, change } = useApp();
@@ -20,12 +19,7 @@ export default function Settings() {
   const goal = draft.dailyNew ?? data.settings.dailyNew;
   const theme = draft.theme ?? data.settings.theme;
   const [avatarSeed, setAvatarSeed] = useState<string>();
-  const [avatarSeeds, setAvatarSeeds] = useState<string[] | null>(null);
   const selectedAvatar = avatarSeed ?? data.settings.avatarSeed ?? (name.trim() || "Vocab guest");
-  const avatarOptions = avatarSeeds ?? [
-    selectedAvatar,
-    ...initialAvatarSeeds.filter((seed) => seed !== selectedAvatar).slice(0, 11),
-  ];
   const [notice, setNotice] = useState("");
   const [error, setError] = useState("");
   const [preview, setPreview] = useState<ImportPreview | null>(null);
@@ -114,31 +108,19 @@ export default function Settings() {
             <fieldset className="avatar-picker">
               <legend>Ảnh đại diện</legend>
               <div className="avatar-options">
-                {avatarOptions.map((seed, i) => (
+                {avatarSeeds.map((seed, i) => (
                   <button
                     key={seed}
                     type="button"
                     className="avatar-option"
                     aria-label={`Chọn avatar ${i + 1}`}
-                    aria-pressed={seed === selectedAvatar}
-                    onClick={() => {
-                      setAvatarSeeds(avatarOptions);
-                      setAvatarSeed(seed);
-                    }}
+                    aria-pressed={avatarSource(seed) === avatarSource(selectedAvatar)}
+                    onClick={() => setAvatarSeed(seed)}
                   >
                     <UserAvatar seed={seed} />
                   </button>
                 ))}
               </div>
-              <button
-                className="text-link"
-                type="button"
-                onClick={() =>
-                  setAvatarSeeds([selectedAvatar, ...Array.from({ length: 11 }, () => crypto.randomUUID())])
-                }
-              >
-                Đổi bộ avatar
-              </button>
             </fieldset>
             <label htmlFor="daily-goal">Mục tiêu từ mới mỗi ngày</label>
             <select
