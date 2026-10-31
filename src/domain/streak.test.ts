@@ -38,4 +38,13 @@ describe("Vietnam learning streak", () => {
   it("ignores invalid timestamps and future events", () => {
     expect(learningStreak([{ at: NaN }, event("2026-11-01T08:00:00Z")], Date.parse("2026-10-31T12:00:00Z"))).toBe(0);
   });
+  it("counts a newly answered event ahead of the store clock on the same Vietnam day", () => {
+    const clock = Date.parse("2026-10-31T16:59:30Z");
+    expect(
+      learningStreak(
+        [event("2026-10-30T08:00:00Z"), event("2026-10-31T16:59:45Z"), event("2026-10-31T17:00:00Z")],
+        clock,
+      ),
+    ).toBe(2);
+  });
 });

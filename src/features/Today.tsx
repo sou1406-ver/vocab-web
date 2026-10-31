@@ -29,7 +29,7 @@ export function Today() {
     .slice(0, 5);
   const dailyGoal = Math.min(100, (introduced / data.settings.dailyNew) * 100);
   const streak = learningStreak(data.events, at);
-  const studiedToday = data.events.some((event) => event.at <= at && dayKey(event.at) === dayKey(at));
+  const studiedToday = data.events.some((event) => Number.isFinite(event.at) && dayKey(event.at) === dayKey(at));
   const doPrimary = async () => {
     if (active) return router.push("/study");
     const words = due.length ? due.slice(0, 20).map((id) => all.find((word) => word.id === id)!) : nextWords;

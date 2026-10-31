@@ -79,9 +79,9 @@
     gap: 6px;
   }
   .feedback-title .status-mark {
-    --sm-color: currentColor;
-    --sm-done: currentColor;
-    --sm-error: currentColor;
+    --sm-color: var(--green);
+    --sm-done: var(--green);
+    --sm-error: var(--amber);
   }
   @keyframes rb-status-spin {
     to {

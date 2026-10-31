@@ -19,6 +19,7 @@ test("today uses the remaining daily goal, keeps the streak and replaces empty p
   await page.getByRole("button", { name: "Bắt đầu học", exact: true }).click();
   await page.getByRole("button", { name: "Đã xem, thử nhớ lại", exact: true }).click();
   await page.getByRole("button", { name: "Chưa nhớ, xem đáp án", exact: true }).click();
+  await expect(page.locator(".answer-feedback")).toBeVisible();
   await page.goto("/");
   await expect(page.locator(".today-workload")).toHaveText("14 từ mới");
   await expect(page.locator(".today-streak-count")).toContainText("1");

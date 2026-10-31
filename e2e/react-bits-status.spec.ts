@@ -140,6 +140,11 @@ test("React Bits answer marks preserve feedback text, keyboard flow and reduced 
   await page.getByRole("button", { name: "Kiểm tra", exact: true }).click();
   await expect(mark).toHaveAttribute("data-status", "done");
   await expect(page.getByText("Chính xác. Bạn nhớ rồi!", { exact: true })).toBeVisible();
+  const doneColors = await mark.evaluate((node) => ({
+    glyph: getComputedStyle(node.querySelector("svg")!).color,
+    text: getComputedStyle(node.parentElement!).color,
+  }));
+  expect(doneColors.glyph).toBe(doneColors.text);
   await expect(page.getByRole("button", { name: "Từ tiếp theo", exact: true })).toBeFocused();
   expect(await mark.locator(".status-mark__check").evaluate((node) => getComputedStyle(node).transitionProperty)).toBe(
     "none",

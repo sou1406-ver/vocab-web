@@ -1814,11 +1814,15 @@ html.theme-switching *::after {
     color: var(--amber);
   }
   .feedback-title {
+    color: var(--green);
     display: flex;
     align-items: center;
     gap: 10px;
     margin-bottom: 15px;
     font-size: 16px;
+  }
+  .needs-practice .feedback-title {
+    color: var(--amber);
   }
   .answer-feedback > p {
     margin-top: 8px;
