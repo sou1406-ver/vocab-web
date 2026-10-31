@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState, useRef, type ReactNode } from "react";
+import { Fragment, useEffect, useState, useRef, type ReactNode } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useApp } from "../state/provider";
@@ -10,12 +10,12 @@ import { UserAvatar } from "../components/UserAvatar";
 import StatusMark from "../components/react-bits/StatusMark";
 import { useCloud } from "../state/cloud-provider";
 import { syncLabels } from "../components/AccountPanel";
-const links: { to: string; label: string; icon: IconName; end?: boolean }[] = [
+const links: { to: string; label: string; icon: IconName; end?: boolean; group?: string }[] = [
   { to: "/", label: "Hôm nay", icon: "home", end: true },
-  { to: "/lessons", label: "Bài học", icon: "book" },
+  { to: "/lessons", label: "Bài học", icon: "book", group: "HỌC TẬP" },
   { to: "/library", label: "Thư viện", icon: "search" },
   { to: "/knowledge", label: "Kiến thức", icon: "leaf" },
-  { to: "/progress", label: "Tiến độ", icon: "chart" },
+  { to: "/progress", label: "Tiến độ", icon: "chart", group: "THEO DÕI" },
 ];
 export function Shell({ children }: { children: ReactNode }) {
   const { data, ready, error, busy, change, clearError } = useApp();
@@ -82,26 +82,29 @@ export function Shell({ children }: { children: ReactNode }) {
           <div className="sidebar-caption">GÓC HỌC CỦA BẠN</div>
           <nav className="main-nav" aria-label="Điều hướng chính">
             {links.map((link) => (
-              <Link
-                key={link.to}
-                href={link.to}
-                aria-current={
-                  pathname === link.to || (link.to !== "/" && pathname.startsWith(link.to + "/")) ? "page" : undefined
-                }
-                aria-label={link.label}
-                className={
-                  pathname === link.to || (link.to !== "/" && pathname.startsWith(link.to + "/"))
-                    ? "nav-item active"
-                    : "nav-item"
-                }
-              >
-                <Icon name={link.icon} />
-                <span>{link.label}</span>
-                <span className="nav-dot" />
-              </Link>
+              <Fragment key={link.to}>
+                {link.group && <div className="nav-section-label">{link.group}</div>}
+                <Link
+                  href={link.to}
+                  aria-current={
+                    pathname === link.to || (link.to !== "/" && pathname.startsWith(link.to + "/")) ? "page" : undefined
+                  }
+                  aria-label={link.label}
+                  className={
+                    pathname === link.to || (link.to !== "/" && pathname.startsWith(link.to + "/"))
+                      ? "nav-item active"
+                      : "nav-item"
+                  }
+                >
+                  <Icon name={link.icon} />
+                  <span>{link.label}</span>
+                  <span className="nav-dot" />
+                </Link>
+              </Fragment>
             ))}
           </nav>
           <div className="sidebar-footer">
+            <div className="nav-section-label">TÀI KHOẢN</div>
             <Link href="/settings" className="sidebar-settings" aria-label="Cài đặt và sao lưu">
               <Icon name="settings" />
               <span>Cài đặt & sao lưu</span>

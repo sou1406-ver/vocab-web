@@ -5,12 +5,14 @@ import { activeBook } from "../data/catalog";
 import { dayKey, statusOf } from "../domain/learning";
 import { Icon, ProgressBar } from "../shared/ui";
 import { useWord } from "../app/context";
+import { exerciseProgress } from "../domain/exercise-progress";
 
 export default function Progress() {
   const { data } = useApp();
   const inspect = useWord();
   const catalog = activeBook(data.settings).catalog;
   const all = [...catalog.words, ...data.customWords];
+  const exerciseGroups = exerciseProgress(data.events, new Set(all.map((word) => word.id)));
   const learned = catalog.words.filter((w) => data.progress[w.id]?.tested).length;
   const stable = catalog.words.filter((w) => (data.progress[w.id]?.box ?? 0) >= 5).length;
   const correct = data.events.filter((e) => e.correct).length;
@@ -76,6 +78,43 @@ export default function Progress() {
             </div>
           </div>
         </div>
+      </section>
+      <section className="exercise-results" aria-labelledby="exercise-results-title">
+        <div className="section-heading">
+          <h2 id="exercise-results-title">Theo nhóm bài tập</h2>
+          <span className="muted">Độ chính xác · {activeBook(data.settings).shortTitle}</span>
+        </div>
+        <div className="exercise-results-grid">
+          {exerciseGroups.map((group) => (
+            <article
+              className={`exercise-result-card exercise-result-card--${group.id}`}
+              key={group.id}
+              aria-labelledby={`exercise-${group.id}`}
+            >
+              <div className="exercise-result-heading">
+                <div>
+                  <h3 id={`exercise-${group.id}`}>{group.title}</h3>
+                  <p className="muted">{group.description}</p>
+                </div>
+                <strong className="exercise-result-value">
+                  {group.accuracy === null ? "—" : `${group.accuracy}%`}
+                </strong>
+              </div>
+              <ProgressBar
+                value={group.accuracy ?? 0}
+                label={`${group.title}: ${group.accuracy === null ? "chưa có kết quả" : `${group.accuracy}% đúng`}`}
+              />
+              <p className="muted">
+                {group.total
+                  ? `${group.correct}/${group.total} câu tự trả lời đúng`
+                  : "Chưa làm bài nào — thử một lượt để xem kết quả."}
+              </p>
+            </article>
+          ))}
+        </div>
+        <p className="quiet-note">
+          Tính theo câu đã trả lời có ghi dạng bài, gồm cả luyện thêm. Đây là kết quả làm bài, chưa phải mức thành thạo.
+        </p>
       </section>
       <div className="progress-columns">
         <section className="panel activity-panel">
