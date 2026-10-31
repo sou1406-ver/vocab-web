@@ -9,10 +9,12 @@ import { bookOfWord } from "../data/catalog";
 import { countLearnedWords } from "../domain/cultivation";
 import { CultivationAvatar } from "./CultivationAvatar";
 import { syncLabels } from "./AccountPanel";
+import { useContentReviewer } from "../lib/use-content-reviewer";
 
 export function AccountMenu() {
   const { data, ready, busy } = useApp();
   const cloud = useCloud();
+  const reviewer = useContentReviewer();
   const [open, setOpen] = useState(false);
   const root = useRef<HTMLDivElement>(null);
   const trigger = useRef<HTMLButtonElement>(null);
@@ -92,6 +94,11 @@ export function AccountMenu() {
             <Link href="/settings" onClick={() => setOpen(false)}>
               <Settings size={18} aria-hidden="true" /> Tài khoản & cài đặt
             </Link>
+            {reviewer.allowed && (
+              <Link href="/review" onClick={() => setOpen(false)}>
+                Kiểm tra nội dung
+              </Link>
+            )}
             {cloud.user ? (
               <button
                 disabled={disabled}

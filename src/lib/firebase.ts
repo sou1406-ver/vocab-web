@@ -4,6 +4,7 @@ import {
   getAuth,
   GoogleAuthProvider,
   onAuthStateChanged,
+  onIdTokenChanged,
   signInWithPopup,
   signOut,
   type User,
@@ -23,6 +24,7 @@ import {
   type Firestore,
 } from "firebase/firestore";
 import type { Change, CommittedChange } from "../data/sync";
+import { hasContentReviewRole } from "./content-review";
 
 // Firebase web configuration is public. Data access is enforced by firestore.rules.
 // Only the new project is used; the V1 production project is never initialized.
@@ -60,6 +62,32 @@ export function loginGoogle() {
 }
 export function logoutGoogle() {
   return signOut(firebaseClient().auth);
+}
+export function observeContentReviewer(uid: string, next: (allowed: boolean) => void) {
+  let active = true;
+  let request = 0;
+  const auth = firebaseClient().auth;
+  const unsubscribe = onIdTokenChanged(auth, (user) => {
+    const ticket = ++request;
+    if (user?.uid !== uid) return next(false);
+    void user
+      .getIdTokenResult()
+      .then((token) => {
+        if (active && ticket === request) next(hasContentReviewRole(token.claims));
+      })
+      .catch(() => {
+        if (active && ticket === request) next(false);
+      });
+  });
+  // Refresh once on mount so newly granted access appears after a page reload.
+  void auth.currentUser?.getIdToken(true).catch(() => {
+    if (active) next(false);
+  });
+  return () => {
+    active = false;
+    request++;
+    unsubscribe();
+  };
 }
 export interface CloudTransport {
   subscribe: (next: (changes: CommittedChange[]) => void, error: (error: unknown) => void) => () => void;

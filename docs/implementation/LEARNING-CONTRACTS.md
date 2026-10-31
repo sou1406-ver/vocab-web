@@ -242,3 +242,9 @@ Chưa làm: builder chung cho quyển mới (mỗi quyển tự viết builder),
 - Rules kiểm tra tài khoản hoàn tất trước mọi read/write nhật ký học và trước truy vấn BXH. Hồ sơ/reservation được đọc để chọn username trước bước này; người chưa hoàn tất chỉ có thể đọc record BXH của chính mình phục vụ transaction, không được ghi hoặc query bảng chung.
 - Cache hồ sơ đã xác nhận được lưu riêng theo project + UID để tài khoản đã hoàn tất tiếp tục học offline; cache không chứa email và không đi vào snapshot/backup. Giá trị pending không được coi là username đã xác nhận. Rules luôn kiểm tra hồ sơ/reservation thật phía server.
 - Người dùng cũ chưa có hồ sơ username phải hoàn tất bước này khi đăng nhập bằng phiên bản mới; nhật ký và tiến độ cloud cũ được giữ nguyên. Client username và bộ rules tương ứng được phát hành cùng đợt. Người dùng đã duyệt triển khai ngày 2026-10-31; rules đã được deploy vào project `vocab-web-next`.
+
+## Quyền kiểm tra nội dung
+
+- Firebase ID token có claim `contentReviewer: true` mới mở công cụ `/review` và mục tương ứng trong menu avatar. Email ở client không phải cơ chế cấp quyền. Claim không nằm trong snapshot, backup hay hồ sơ học.
+- Công cụ chỉ đọc catalog/gói bài tập và dùng lại bộ sinh câu hỏi với seed xem trước; không tạo session/event, không đổi tiến độ và không đọc dữ liệu của tài khoản khác. Nội dung gốc vẫn là nội dung công khai; đây không phải quyền quản trị Firestore hay chỉnh sửa nội dung.
+- Script cấp quyền giới hạn ở tài khoản Google đã xác minh khớp chính xác email được chỉ định bằng `--email`, project `vocab-web-next`, xác nhận UID trước khi cập nhật riêng claim reviewer. Không thay rules hoặc quyền đọc/ghi `users/{uid}`; mọi dữ liệu học vẫn chỉ chủ UID truy cập.
