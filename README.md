@@ -1,73 +1,119 @@
 # Vocab Learn
 
-Một app Next.js duy nhất ở thư mục gốc, lấy V2 làm nền. Giữ giao diện V2 (hero xanh, thẻ từ, sidebar và tiến độ), font tiếng Việt/chữ lớn và các sửa lỗi lưu/học. Không còn app hoặc package riêng trong thư mục v1/v2.
+Web học từ vựng TOEIC (600 Essential Words) cho người Việt: học theo bài, ôn lặp lại ngắt quãng, 8 dạng bài tập, đồng bộ tiến độ qua tài khoản Google.
 
-## Chạy
+Bản chạy: <https://vocab-web-beta.vercel.app/> · Next.js 16 · React 19 · Firebase Auth + Firestore.
 
-Node.js24, chỉ cài dependency một lần:
+## Tính năng
 
-```powershell
+**Học và ôn**
+
+- 600 từ / 50 bài / 10 chủ đề; mỗi từ có IPA, nghĩa, ví dụ kèm bản dịch, family, đồng nghĩa, trái nghĩa.
+- Ôn lặp lại ngắt quãng: 6 hộp, khoảng cách 1 → 3 → 7 → 14 → 30 → 60 ngày. Ngày học tính theo giờ Việt Nam.
+- Luyện thêm (practice) không làm đổi lịch ôn.
+
+**8 dạng bài tập**
+
+| Dạng                             | Kiểu trả lời     |
+| -------------------------------- | ---------------- |
+| Gõ từ theo ô chữ                 | gõ, có gợi ý chữ |
+| Điền chỗ trống                   | chọn 1/4         |
+| Chọn nghĩa / chọn từ             | chọn 1/4         |
+| Dạng từ (Part 5)                 | chọn 1/4 hoặc gõ |
+| Ghép từ (gốc + phụ tố)           | bấm mảnh ghép    |
+| Đồng nghĩa / gần nghĩa trong câu | chọn 1/4         |
+| Nối từ theo chủ đề               | nối 6 cặp        |
+| Nghe                             | chọn 1/4 hoặc gõ |
+
+- Gợi ý ô chữ: được lộ tối đa `floor(số chữ cái × 0.3)` chữ mà vẫn tính đúng; vượt mức thì tính là có hỗ trợ.
+- Đáp án nhiễu chỉ lấy từ trong bài đang học, từ đã học hoặc family của chúng — không có từ lạ để đoán bằng loại trừ.
+
+**Phân tích từ**
+
+- Mức 1 (luôn hiện): tách tiền tố / hậu tố, ví dụ `agree` · `-ment`.
+- Mức 2 (tuỳ chọn, bật trong Cài đặt → _Học sâu: gốc từ_): gốc Latin, ví dụ `inter-` + `rupt` → "phá vỡ ngay giữa chừng". Có trang `/roots` cho từng gốc, gồm cả từ mở rộng ngoài sách.
+
+**Tài khoản**
+
+- Học không cần tài khoản (lưu trên trình duyệt).
+- Đăng nhập Google để đồng bộ nhiều thiết bị; lần đầu đăng nhập phải tạo username (duy nhất, `a-z 0-9 _`, 3–20 ký tự).
+- Bảng xếp hạng theo số từ đã học, hiển thị username; có thể ẩn trong Cài đặt.
+- Sao lưu / khôi phục file JSON; nhập được dữ liệu từ web cũ (có xem trước).
+
+## Chạy local
+
+Cần Node.js 24 (tối thiểu 20.9).
+
+```bash
 npm ci
-npm run dev
+npm run dev        # http://127.0.0.1:5174
 ```
 
-Mở [bản local](http://127.0.0.1:5174/). Không đổi host/port nếu muốn tiếp tục kho dữ liệu hiện có.
+Giữ nguyên host/port `127.0.0.1:5174`: dữ liệu trình duyệt gắn với địa chỉ này.
 
-```powershell
-npm run typecheck
-npm run lint
-npm run format:check
-npm test
-npm run build
-npm run start
+| Lệnh                                          | Việc                                     |
+| --------------------------------------------- | ---------------------------------------- |
+| `npm run build`                               | sinh catalog + kiểm tra nội dung + build |
+| `npm run start`                               | chạy bản build (cùng port 5174)          |
+| `npm test`                                    | unit test                                |
+| `npm run typecheck` · `lint` · `format:check` | kiểm tra code                            |
+| `npm run e2e`                                 | test trình duyệt (Playwright)            |
+
+E2E bằng Edge có sẵn trên máy: đặt `PW_CHANNEL=msedge`. Đặt `E2E_PRODUCTION=1` để test trên bản build.
+
+Test rules Firestore cần Java 21:
+
+```bash
+FIREBASE_SYNC_EMULATOR_TEST=1 npx firebase-tools emulators:exec --only auth,firestore --project demo-vocab-sync \
+  "npx vitest run src/data/sync-emulator.test.ts src/data/usernames-emulator.test.ts"
 ```
-
-`dev` và `start` cùng port5174; dừng server đang chạy trước khi đổi. `preview` là alias của `start`, không là app thứ hai.
-
-E2E dùng Chromium hoặc Edge sẵn trên máy:
-
-```powershell
-$env:PW_CHANNEL='msedge'
-npm run e2e -- --workers=1
-```
-
-Đặt `E2E_PRODUCTION=1` để test dùng server production đã build. CI cũng dùng một package, một lockfile và cùng bộ lệnh.
 
 ## Cấu trúc
 
-- `src/`: App Router, UI, domain, local repository và tests logic.
-- `content/knowledge/`: MDX đã duyệt và manifest bài đọc.
-- `e2e/`: Playwright test các luồng học/đọc/import và UI.
-- `public/`: logo SVG sáng/tối, favicon và app icon từ bộ logo người dùng cung cấp.
-- `data/`: dữ liệu V1 được tận dụng, gồm nguồn/enrichment/bản dịch/bài tập và `generated/`.
-- `tools/`, `scripts/`: pipeline Python và validator/builder catalog.
-- `design-system/`: quy tắc giao diện V2 hiện tại.
-- `docs/reference/`: cấu hình Firebase client công khai để tham chiếu khi làm Auth/sync.
+| Thư mục                    | Nội dung                                                 |
+| -------------------------- | -------------------------------------------------------- |
+| `src/app/`                 | route Next.js                                            |
+| `src/features/`            | màn hình (Hôm nay, Bài học, Học, Tiến độ, Cài đặt, BXH…) |
+| `src/domain/`              | logic học, chấm điểm, sinh câu hỏi, đáp án nhiễu         |
+| `src/data/`                | lưu trữ IndexedDB, validator, đồng bộ Firestore          |
+| `content/books/<bookId>/`  | khai báo từng quyển sách                                 |
+| `content/roots/roots.json` | dữ liệu gốc từ (mức 2)                                   |
+| `content/knowledge/`       | bài đọc MDX                                              |
+| `data/`                    | dữ liệu nguồn và bản sinh từ pipeline Python             |
+| `scripts/`                 | builder catalog, gói bài tập, validator                  |
+| `e2e/`                     | test Playwright                                          |
 
-Đã bỏ UI/router/build Vite của V1, cấu hình/package/cache cũ và bản minimal bị hủy. Git và archive local bị ignore còn khả năng phục hồi; chỉ có một source app hoạt động.
+## Nội dung
 
-## Nội dung và tiến độ
+Không sửa tay file sinh ra trong `src/content/` và `public/exercises/`.
 
-Sửa nguồn ở `data/source`, `data/enrich`, `data/translations`, chạy `npm run data`. Python sinh `data/generated`, builder sinh `src/content/books/<bookId>/` và `public/exercises/<bookId>/`. Không sửa tay output. Bài sách/ETS/cụm từ chưa có UI được giữ làm dữ liệu nguồn.
+1. Sửa nguồn ở `data/source`, `data/enrich`, `data/translations`.
+2. `npm run data` — Python sinh `data/generated/`, builder sinh `src/content/books/<bookId>/` và `public/exercises/<bookId>/`.
 
-### Thêm một quyển sách
+**Thêm một quyển sách**
 
-Mỗi quyển khai báo ở `content/books/<bookId>/book.json` (id trùng tên thư mục, `title`, `shortTitle`, `builder`, `expectedEntries`, `expectedLessons`). Viết builder trong `scripts/books/<bookId>.mjs` trả về `{ payload: { lessons, topics, words }, warnings, part5 }` rồi đăng ký trong `builders` của `scripts/build-content.mjs`. Chạy `npm run data:catalog`: builder sinh catalog, gói bài tập và `src/content/books/registry.ts`.
+1. Tạo `content/books/<bookId>/book.json` (`id` trùng tên thư mục, `title`, `shortTitle`, `builder`, `expectedEntries`, `expectedLessons`).
+2. Viết builder `scripts/books/<bookId>.mjs` trả về `{ payload: { lessons, topics, words }, warnings, part5 }`, đăng ký trong `scripts/build-content.mjs`.
+3. ID từ phải có tiền tố `<bookId>:` (riêng `toeic-600` giữ ID cũ). URL bài: `/books/<bookId>/lessons/<n>`.
+4. `npm run data:catalog`.
 
-ID từ của quyển mới phải bắt đầu bằng `<bookId>:` (ví dụ `ielts-starter:ticket-1`); builder và `validate:content` báo lỗi nếu thiếu tiền tố hoặc trùng ID giữa các quyển. Riêng `toeic-600` có `legacyWordIds: true` để giữ ID cũ của người học. Số bài (`lesson`) đánh riêng trong từng quyển; URL bài là `/books/<bookId>/lessons/<n>`, link cũ `/lessons/<n>` chuyển về TOEIC.
+**Gốc từ**: sửa `content/roots/roots.json`. Mọi phụ tố trong `parts` phải có trong bảng `affixes`; `book.wordId` phải tồn tại trong catalog — build sẽ báo lỗi nếu sai.
 
-Lưu/đọc/backup vẫn dùng database `vocab-learn-v2`, store `snapshots`, schemaVersion2, ID và fingerprint cũ. Đây là tên kho dữ liệu tương thích, không phải một app V2 riêng. Import V1/backup có preview; không xóa dữ liệu trình duyệt/cloud khi gộp mã.
+## Dữ liệu người học
 
-## Deploy và phần tiếp theo
+- Trình duyệt: IndexedDB `vocab-learn-v2`, store `snapshots`, `schemaVersion: 2`. Không đổi tên/ID để giữ tiến độ cũ.
+- Cloud (Firestore, project `vocab-web-next`): `users/{uid}/…` (nhật ký đồng bộ, chỉ chủ tài khoản), `profiles/{uid}`, `usernames/{name}`, `leaderboard/{uid}`. Quy tắc ở `firestore.rules`.
+- Hợp đồng dữ liệu và luật chấm điểm: [LEARNING-CONTRACTS.md](docs/implementation/LEARNING-CONTRACTS.md).
 
-Vercel dùng repo root (Root Directory mặc định), Next.js, Node24, `npm ci`, `npm run build`. `vercel.json` ở root. `SITE_URL` tùy chọn cho canonical/sitemap; không điền domain giả.
+## Deploy
 
-Firebase SDK và rules còn giữ, chưa có Auth/cloudsync trong app local. G6 sẽ dùng staging/Emulator và CLI hiện hành. Chưa deploy hoặc thay web Firebase cũ trên cloud. Cần rà nguồn/quyền dùng catalog trước khi phát hành công khai.
+- **Web**: Vercel, nhánh `main`, cấu hình sẵn trong `vercel.json`. Biến môi trường `SITE_URL` tuỳ chọn (domain thật cho sitemap).
+- **Firebase**: thêm domain Vercel vào Authentication → Authorized domains. Đổi `firestore.rules` thì đợi CI (job `firebase-emulator`) xanh rồi mới deploy:
 
-Xem [kết quả gộp app](docs/implementation/SINGLE-APP.md) và [kế hoạch sản phẩm](docs/BUILD-FROM-SCRATCH.md). Các báo cáo mốc cũ chỉ là lịch sử, không dùng đường dẫn/lệnh cũ để chạy app hiện tại.
+  ```bash
+  npx firebase-tools deploy --only firestore:rules --project vocab-web-next
+  ```
 
-Phần review lõi học, các thay đổi tương thích và đề xuất trước khi mở rộng bài tập nằm trong [Learning contracts](docs/implementation/LEARNING-CONTRACTS.md).
+## Lưu ý
 
-Trong trang mỗi bài có “Luyện điền chỗ trống”: câu V1 được đóng gói theo bài và chỉ tải khi mở. Báo cáo câu bỏ qua nằm trong `src/content/books/<bookId>/exercise-report.json`.
-
-Skill dành cho agent chỉ giữ local trong `.agents/` hoặc `.claude/`, bị ignore và không cần để build/chạy app. Không đưa lại bộ skill vào Git.
+Nội dung 600 Essential Words có bản quyền; app dùng cho mục đích cá nhân. Cần xem lại quyền sử dụng trước khi phát hành công khai.
