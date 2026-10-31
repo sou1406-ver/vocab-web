@@ -79,8 +79,27 @@ test("React Bits save indicator follows actual save, failure and recovery withou
   expect((await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa"]).analyze()).violations).toEqual([]);
   await page.evaluate(() => window.scrollTo(0, 0));
   await page.screenshot({ path: testInfo.outputPath("status-mark-light.png") });
+  await page.evaluate(() => {
+    const root = document.documentElement;
+    const observer = new MutationObserver((records) => {
+      if (!records.some((record) => record.attributeName === "data-theme")) return;
+      Object.assign(window, {
+        __themeTransition: {
+          switching: root.classList.contains("theme-switching"),
+          transition: getComputedStyle(document.querySelector(".primary")!).transitionProperty,
+        },
+      });
+      observer.disconnect();
+    });
+    observer.observe(root, { attributes: true, attributeFilter: ["data-theme"] });
+  });
   await page.getByRole("button", { name: "Đổi giao diện sáng tối", exact: true }).click();
   await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
+  expect(await page.evaluate(() => (window as unknown as { __themeTransition: unknown }).__themeTransition)).toEqual({
+    switching: true,
+    transition: "none",
+  });
+  await expect(page.locator("html")).not.toHaveClass(/theme-switching/);
   await expect(mark).toHaveAttribute("data-status", "done");
   expect((await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa"]).analyze()).violations).toEqual([]);
   await page.screenshot({ path: testInfo.outputPath("status-mark-dark.png") });

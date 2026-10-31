@@ -47,14 +47,27 @@ export function Shell({ children }: { children: ReactNode }) {
   }, [pathname]);
   useEffect(() => {
     const media = matchMedia("(prefers-color-scheme: dark)");
+    const root = document.documentElement;
+    let frame = 0;
     const apply = () => {
       const theme = data.settings.theme === "system" ? (media.matches ? "dark" : "light") : data.settings.theme;
-      document.documentElement.dataset.theme = theme;
+      cancelAnimationFrame(frame);
+      root.classList.add("theme-switching");
+      // Apply the transition override before changing the color tokens.
+      void root.offsetWidth;
+      root.dataset.theme = theme;
       setResolvedTheme(theme);
+      frame = requestAnimationFrame(() => {
+        frame = requestAnimationFrame(() => root.classList.remove("theme-switching"));
+      });
     };
     apply();
     media.addEventListener("change", apply);
-    return () => media.removeEventListener("change", apply);
+    return () => {
+      media.removeEventListener("change", apply);
+      cancelAnimationFrame(frame);
+      root.classList.remove("theme-switching");
+    };
   }, [data.settings.theme]);
   const inspect = async (selected: Word) => {
     opener.current = document.activeElement instanceof HTMLElement ? document.activeElement : null;

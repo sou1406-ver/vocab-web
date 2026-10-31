@@ -1,4 +1,9 @@
 @layer reset, base, components, responsive;
+html.theme-switching *,
+html.theme-switching *::before,
+html.theme-switching *::after {
+  transition: none !important;
+}
 @layer reset {
   *,
   *::before,
