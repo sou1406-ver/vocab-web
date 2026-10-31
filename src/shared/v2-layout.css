@@ -34,11 +34,11 @@
     font-size: 14px;
     letter-spacing: 1.3px;
     color: var(--muted);
-    margin: 0 12px 20px;
+    margin: 0 12px 12px;
   }
   .sidebar-footer {
     margin-top: auto;
-    padding-top: 12px;
+    padding-top: 8px;
     flex-shrink: 0;
   }
   .sidebar-settings {
@@ -54,15 +54,6 @@
   .sidebar-settings:hover {
     color: var(--green);
     background: var(--soft-green);
-  }
-  .build-label {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin: 22px 8px 0;
-    color: var(--muted);
-    font-size: 14px;
   }
   .nav-dot {
     width: 5px;
@@ -437,6 +428,24 @@
   }
 }
 @layer responsive {
+  @media (min-width: 681px) and (max-height: 700px) {
+    .sidebar {
+      padding-top: 16px;
+      padding-bottom: 16px;
+    }
+    .sidebar .brand {
+      margin-bottom: 12px;
+    }
+    .sidebar-caption {
+      display: none;
+    }
+    .sidebar .main-nav {
+      gap: 2px;
+    }
+    .sidebar .nav-section-label {
+      padding: 6px 12px 3px;
+    }
+  }
   @media (max-width: 1190px) {
     .hero-copy {
       padding: 29px;
@@ -463,8 +472,7 @@
       height: 100%;
       object-fit: contain;
     }
-    .sidebar-caption,
-    .build-label {
+    .sidebar-caption {
       display: none;
     }
     .sidebar-settings {

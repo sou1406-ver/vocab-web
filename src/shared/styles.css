@@ -347,7 +347,7 @@
     border-right: 1px solid var(--line);
     display: flex;
     flex-direction: column;
-    padding: 36px 20px 20px;
+    padding: 24px 20px 20px;
   }
   .sidebar > .brand,
   .sidebar-caption {
@@ -357,7 +357,7 @@
     display: flex;
     align-items: center;
     gap: 10px;
-    margin: 0 6px 48px;
+    margin: 0 6px 24px;
     font-size: 31px;
     font-weight: 750;
     letter-spacing: -1.8px;
@@ -376,7 +376,7 @@
   }
   .main-nav {
     display: grid;
-    gap: 7px;
+    gap: 4px;
     min-height: 0;
     overflow-y: auto;
     align-content: start;
@@ -386,8 +386,8 @@
     display: flex;
     align-items: center;
     gap: 13px;
-    min-height: 48px;
-    padding: 12px 16px;
+    min-height: 44px;
+    padding: 8px 14px;
     font-size: 15px;
     font-weight: 500;
     border-radius: 9px;
@@ -1214,6 +1214,9 @@
     font-weight: 600;
     letter-spacing: 0.1em;
   }
+  .sidebar .nav-section-label {
+    padding: 10px 12px 4px;
+  }
   @media (max-width: 900px) {
     .nav-section-label {
       display: none;
@@ -1948,10 +1951,6 @@
     align-items: start;
     gap: 24px;
   }
-  .local-notice {
-    display: flex;
-    align-items: start;
-    gap: 17px;
   .settings-preferences {
     grid-area: preferences;
   }
@@ -1962,6 +1961,10 @@
   .settings-columns > .backup-panel {
     grid-area: backup;
   }
+  .local-notice {
+    display: flex;
+    align-items: start;
+    gap: 17px;
     background: var(--soft-green);
     border: 1px solid var(--line);
     padding: 22px;
@@ -2631,12 +2634,12 @@
     }
     .settings-columns {
       grid-template-columns: 1fr;
+      grid-template-areas: "account" "preferences" "backup";
+      grid-template-rows: auto;
       gap: 18px;
     }
     .progress-stats .stat-card:last-child {
       grid-column: 1 / -1;
-      grid-template-areas: "account" "preferences" "backup";
-      grid-template-rows: auto;
     }
     .compact-word-list > button {
       flex-wrap: wrap;
@@ -3014,10 +3017,6 @@
 @layer components {
   .account-panel {
     margin-bottom: 24px;
-  }
-  .account-panel p {
-    margin-block: 12px;
-  }
     padding: 20px 24px;
   }
   .account-panel .section-heading {
@@ -3138,6 +3137,10 @@
       grid-column: auto;
       grid-row: auto;
     }
+  }
+  .account-panel p {
+    margin-block: 12px;
+  }
   .account-name {
     display: grid;
     gap: 4px;

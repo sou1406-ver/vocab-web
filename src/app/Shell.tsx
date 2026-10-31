@@ -122,9 +122,6 @@ export function Shell({ children }: { children: ReactNode }) {
               <Icon name="settings" />
               <span>Cài đặt & sao lưu</span>
             </Link>
-            <div className="build-label">
-              Vocab Learn <span>BẢN THỬ NGHIỆM</span>
-            </div>
           </div>
         </aside>
         <div className="workspace">

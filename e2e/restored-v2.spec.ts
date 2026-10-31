@@ -77,7 +77,7 @@ test("short desktop and compact sidebars scroll the menu while keeping settings 
       await menu.evaluate((node) => {
         node.scrollTop = node.scrollHeight;
       });
-      await menu.getByRole("link", { name: "Tiến độ", exact: true }).focus();
+      await menu.getByRole("link", { name: "Bảng tu luyện", exact: true }).focus();
       await page.keyboard.press("Tab");
       await expect(settings).toBeFocused();
       await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
@@ -91,4 +91,24 @@ test("short desktop and compact sidebars scroll the menu while keeping settings 
       await expect(page).toHaveURL(/\/settings$/);
     }
   }
+});
+
+test("desktop sidebar shows every destination without scrolling at ordinary laptop heights", async ({
+  page,
+}, testInfo) => {
+  test.skip(testInfo.project.name !== "desktop", "The sidebar is hidden on mobile.");
+  await page.goto("/settings");
+  await page.getByRole("checkbox", { name: "Học sâu: gốc từ", exact: true }).check();
+  await page.getByRole("button", { name: "Lưu tuỳ chọn", exact: true }).click();
+  await expect(page.getByRole("status").filter({ hasText: "Đã lưu tuỳ chọn" })).toBeVisible();
+  const menu = page.getByRole("navigation", { name: "Điều hướng chính", exact: true });
+  for (const height of [600, 768, 900]) {
+    await page.setViewportSize({ width: 1440, height });
+    expect(await menu.evaluate((node) => node.scrollHeight <= node.clientHeight)).toBe(true);
+    for (const link of await menu.getByRole("link").all()) await expect(link).toBeInViewport();
+    await expect(menu.getByRole("link", { name: "Hôm nay", exact: true })).toBeInViewport();
+    await expect(page.getByRole("link", { name: "Cài đặt và sao lưu", exact: true })).toBeInViewport();
+  }
+  await expect(page.getByText("BẢN THỬ NGHIỆM", { exact: true })).toHaveCount(0);
+  await page.screenshot({ path: testInfo.outputPath("sidebar-all-links.png") });
 });
