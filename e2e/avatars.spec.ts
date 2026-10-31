@@ -34,4 +34,10 @@ test("avatar selection persists and refreshing the list keeps the current choice
   expect(result.violations.map((v) => ({ id: v.id, nodes: v.nodes.map((n) => n.target) }))).toEqual([]);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await page.screenshot({ path: testInfo.outputPath("avatar-picker.png"), fullPage: true });
+  await page.getByRole("button", { name: "Đổi giao diện sáng tối", exact: true }).click();
+  await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
+  expect(await artwork()).toEqual(selected);
+  await expect(picker.locator(".user-avatar").first()).toHaveCSS("filter", "brightness(0.82) saturate(0.8)");
+  expect((await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa"]).analyze()).violations).toEqual([]);
+  await page.screenshot({ path: testInfo.outputPath("avatar-picker-dark.png"), fullPage: true });
 });
