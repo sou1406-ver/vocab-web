@@ -18,6 +18,7 @@ import { WordDialog } from "../shared/ui";
 import { Today } from "./Today";
 import { StudySession } from "./Study";
 import type { Question, Snapshot, Word } from "../domain/types";
+import { auditFlagLabels, auditLeaderboard, type RawLeaderboardEntry } from "../domain/leaderboard-audit";
 
 const ContentPreview = dynamic(() => import("./ContentReviewTools"), {
   loading: () => <p role="status">Đang mở nội dung…</p>,
@@ -39,6 +40,7 @@ const areas = [
       ["avatar", "Khung avatar"],
       ["progress", "Giả lập tiến độ"],
       ["exercise", "Thử dạng bài"],
+      ["leaderboard", "Bảng xếp hạng"],
     ],
   },
 ] as const;
@@ -49,6 +51,7 @@ const panels: Record<string, () => ReactNode> = {
   avatar: () => <AvatarPanel />,
   progress: () => <ProgressPanel />,
   exercise: () => <ExercisePanel />,
+  leaderboard: () => <LeaderboardAudit />,
 };
 
 export default function AdminTools() {
@@ -563,5 +566,150 @@ function SandboxRun({ run }: { run: Run }) {
       {data.session ? <StudySession /> : !error && <p role="status">Đang mở lượt thử…</p>}
       <WordDialog word={word} close={() => setWord(null)} opener={opener} />
     </WordContext.Provider>
+  );
+}
+
+function LeaderboardAudit() {
+  const cloud = useCloud();
+  const uid = cloud.user?.uid;
+  const [result, setResult] = useState<{ rows: RawLeaderboardEntry[]; limit: number; at: number }>();
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [onlyFlagged, setOnlyFlagged] = useState(false);
+  const load = async () => {
+    setLoading(true);
+    setError("");
+    try {
+      const api = await import("../data/leaderboard-cloud");
+      const fetched = await api.fetchLeaderboardAudit();
+      setResult({ ...fetched, at: Date.now() });
+    } catch (reason) {
+      setError(reason instanceof Error ? reason.message : "Không tải được bảng xếp hạng.");
+    } finally {
+      setLoading(false);
+    }
+  };
+  useEffect(() => {
+    if (uid) void load();
+    // Load once per signed-in admin; the button reloads on demand.
+  }, [uid]);
+  if (!uid) return <p className="panel">Đăng nhập tài khoản admin để kiểm tra bảng xếp hạng.</p>;
+  const totalWords = books.reduce((sum, book) => sum + book.catalog.words.length, 0);
+  const audit = result ? auditLeaderboard(result.rows, totalWords, result.at) : undefined;
+  const shown = audit ? audit.entries.filter((item) => !onlyFlagged || item.flags.length) : [];
+  const peak = audit ? Math.max(1, ...audit.realms) : 1;
+  const date = new Intl.DateTimeFormat("vi", { day: "numeric", month: "numeric", year: "numeric" });
+  return (
+    <div className="admin-stack">
+      <section className="panel" aria-labelledby="audit-title">
+        <div className="section-heading">
+          <h2 id="audit-title">Kiểm tra bảng xếp hạng</h2>
+          <button className="button secondary" type="button" disabled={loading} onClick={() => void load()}>
+            {loading ? "Đang tải…" : "Tải lại"}
+          </button>
+        </div>
+        <p className="muted">
+          Chỉ đọc: không sửa hay ẩn ai. Đọc tối đa {result?.limit ?? 50} người đầu bảng
+          {result?.limit === 50 ? " (deploy quy tắc Firestore mới để xem tới 500)." : "."}
+        </p>
+        {error && (
+          <p role="alert" className="inline-error">
+            {error}
+          </p>
+        )}
+        {audit && (
+          <dl className="audit-summary">
+            <div>
+              <dt>Số người</dt>
+              <dd>{audit.entries.length}</dd>
+            </div>
+            <div>
+              <dt>Có cảnh báo</dt>
+              <dd className={audit.flagged ? "audit-warn" : undefined}>{audit.flagged}</dd>
+            </div>
+            <div>
+              <dt>Trung bình</dt>
+              <dd>{audit.average} từ</dd>
+            </div>
+            <div>
+              <dt>Cao nhất</dt>
+              <dd>{audit.highest} từ</dd>
+            </div>
+          </dl>
+        )}
+      </section>
+      {audit && (
+        <section className="panel" aria-labelledby="audit-realms-title">
+          <h2 id="audit-realms-title">Phân bố cảnh giới</h2>
+          <ul className="audit-realms">
+            {cultivationRealms.map((realm, index) => (
+              <li key={realm.name}>
+                <span>{realm.name}</span>
+                <span className="audit-bar" aria-hidden="true">
+                  <i style={{ width: `${(audit.realms[index] / peak) * 100}%` }} />
+                </span>
+                <b>{audit.realms[index]}</b>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+      {audit && (
+        <section className="panel" aria-labelledby="audit-list-title">
+          <div className="section-heading">
+            <h2 id="audit-list-title">Danh sách</h2>
+            <label className="audit-filter">
+              <input type="checkbox" checked={onlyFlagged} onChange={(event) => setOnlyFlagged(event.target.checked)} />
+              Chỉ hiện mục có cảnh báo
+            </label>
+          </div>
+          {shown.length ? (
+            <div className="admin-table-wrap" tabIndex={0} role="region" aria-label="Danh sách bảng xếp hạng">
+              <table className="admin-table">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Username</th>
+                    <th scope="col">Từ</th>
+                    <th scope="col">Cảnh giới</th>
+                    <th scope="col">Cập nhật</th>
+                    <th scope="col">Cảnh báo</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {shown.map((item) => (
+                    <tr key={item.id}>
+                      <td>{audit.entries.indexOf(item) + 1}</td>
+                      <td>
+                        {item.entry ? `@${item.entry.username}` : <code>{item.id}</code>}
+                        {item.id === uid && " · Bạn"}
+                      </td>
+                      <td>{item.entry?.learnedCount ?? "?"}</td>
+                      <td>{item.entry ? cultivationOf(item.entry.learnedCount).name : "—"}</td>
+                      <td>{item.entry ? date.format(item.entry.updatedAt) : "—"}</td>
+                      <td>
+                        {item.flags.length ? (
+                          <span className="audit-flags">
+                            {item.flags.map((flag) => (
+                              <span className="status-badge learning" key={flag}>
+                                {auditFlagLabels[flag]}
+                              </span>
+                            ))}
+                          </span>
+                        ) : (
+                          <span className="status-badge started">Ổn</span>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          ) : (
+            <p className="muted">{onlyFlagged ? "Không có mục nào cần chú ý." : "Bảng xếp hạng đang trống."}</p>
+          )}
+        </section>
+      )}
+    </div>
   );
 }

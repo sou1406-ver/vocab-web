@@ -4437,3 +4437,83 @@ html.theme-switching *::after {
     }
   }
 }
+/* Admin leaderboard check. */
+@layer components {
+  .audit-summary {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 12px;
+    margin: 16px 0 0;
+  }
+  .audit-summary > div {
+    padding: 14px 16px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: var(--surface-soft);
+  }
+  .audit-summary dt {
+    color: var(--muted);
+    font-size: 13px;
+  }
+  .audit-summary dd {
+    margin: 4px 0 0;
+    font-size: 24px;
+    font-weight: 700;
+  }
+  .audit-summary dd.audit-warn {
+    color: var(--amber);
+  }
+  .audit-realms {
+    display: grid;
+    gap: 8px;
+    margin: 14px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+  .audit-realms li {
+    display: grid;
+    grid-template-columns: 110px minmax(0, 1fr) 36px;
+    align-items: center;
+    gap: 12px;
+    font-size: 14px;
+  }
+  .audit-realms b {
+    text-align: right;
+  }
+  .audit-bar {
+    height: 10px;
+    border-radius: 99px;
+    background: var(--surface-soft);
+    overflow: hidden;
+  }
+  .audit-bar i {
+    display: block;
+    height: 100%;
+    border-radius: inherit;
+    background: var(--green);
+  }
+  .audit-filter {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 44px;
+    font-size: 14px;
+  }
+  .audit-filter input {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--green);
+  }
+  .audit-flags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+}
+@layer responsive {
+  @media (max-width: 760px) {
+    .audit-summary {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+}

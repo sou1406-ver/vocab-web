@@ -1,6 +1,7 @@
 import {
   collection,
   doc,
+  getDocs,
   limit,
   onSnapshot,
   orderBy,
@@ -95,4 +96,22 @@ export async function syncLeaderboardCount(
       return;
     tx.set(ref, { version: 1, username: account.username, avatar, learnedCount, updatedAt: serverTimestamp() });
   });
+}
+
+// Admin audit: raw documents (malformed ones included) for the read-only leaderboard check.
+// Reviewers may list up to 500 once the matching rule is deployed; otherwise the public 50 limit applies.
+export async function fetchLeaderboardAudit(db: Firestore = firebaseClient().db) {
+  const read = async (max: number) =>
+    (await getDocs(query(collection(db, "leaderboard"), orderBy("learnedCount", "desc"), limit(max)))).docs.map(
+      (entry) => {
+        const data = entry.data({ serverTimestamps: "estimate" });
+        return { id: entry.id, data: { ...data, updatedAt: data.updatedAt?.toMillis?.() ?? data.updatedAt } };
+      },
+    );
+  try {
+    return { rows: await read(500), limit: 500 };
+  } catch (error) {
+    if (!(error && typeof error === "object" && "code" in error && error.code === "permission-denied")) throw error;
+    return { rows: await read(50), limit: 50 };
+  }
 }
