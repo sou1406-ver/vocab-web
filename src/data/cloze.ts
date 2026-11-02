@@ -1,3 +1,4 @@
+import { applyExerciseEdits, originalOf } from "./content-edits";
 import { wordsById, type Book, type ExerciseEntry } from "./catalog";
 import { record, validateSnapshot } from "./validation";
 import { emptySnapshot, normalizeAnswer } from "../domain/learning";
@@ -185,7 +186,18 @@ export function validateClozePack(
 export async function loadClozeLesson(book: Book, lessonId: number, signal?: AbortSignal) {
   const entry = exerciseEntry(book, lessonId);
   if (!entry?.count) throw new Error("Bài này chưa có câu điền chỗ trống phù hợp.");
-  const response = await fetch(entry.url, { signal });
-  if (!response.ok) throw new Error("Không tải được bài tập. Hãy thử lại.");
-  return validateClozePack(await response.json(), entry, book.catalog);
+  // The bundled pack is checked against the original catalog; admin edits are layered on afterwards.
+  const base = originalOf(book);
+  const bundled = base.exercises.find((item) => item.lessonId === lessonId);
+  let pack: ClozeChoiceQuestion[] = [];
+  if (bundled?.url && bundled.count) {
+    const response = await fetch(bundled.url, { signal });
+    if (!response.ok) throw new Error("Không tải được bài tập. Hãy thử lại.");
+    pack = validateClozePack(await response.json(), bundled, {
+      ...book.catalog,
+      words: base.words,
+      version: base.version,
+    });
+  }
+  return applyExerciseEdits(book, lessonId, pack);
 }

@@ -245,6 +245,16 @@ Chưa làm: builder chung cho quyển mới (mỗi quyển tự viết builder),
 
 ## Quyền kiểm tra nội dung
 
-- Firebase ID token có claim `contentReviewer: true` mới mở công cụ `/review` và mục tương ứng trong menu avatar. Email ở client không phải cơ chế cấp quyền. Claim không nằm trong snapshot, backup hay hồ sơ học.
-- Công cụ chỉ đọc catalog/gói bài tập và dùng lại bộ sinh câu hỏi với seed xem trước; không tạo session/event, không đổi tiến độ và không đọc dữ liệu của tài khoản khác. Nội dung gốc vẫn là nội dung công khai; đây không phải quyền quản trị Firestore hay chỉnh sửa nội dung.
+- Firebase ID token có claim `contentReviewer: true` mới mở trang `/admin` (khu “Kiểm soát nội dung” và “Kiểm tra tính năng”) và mục “Admin” trong menu avatar; `/review` cũ chuyển hướng sang `/admin#content`. Email ở client không phải cơ chế cấp quyền. Claim không nằm trong snapshot, backup hay hồ sơ học.
+- Phần xem trước chỉ đọc catalog/gói bài tập và dùng lại bộ sinh câu hỏi với seed xem trước; sandbox thử dạng bài/giả lập tiến độ chạy trên store trong bộ nhớ. Không tạo session/event thật, không đổi tiến độ và không đọc dữ liệu học của tài khoản khác.
+- Kiểm tra BXH chỉ đọc `leaderboard/*` (tối đa 500 với claim reviewer, 50 nếu rules chưa có quy tắc đó) và gắn cảnh báo; không sửa hay ẩn ai.
 - Script cấp quyền giới hạn ở tài khoản Google đã xác minh khớp chính xác email được chỉ định bằng `--email`, project `vocab-web-next`, xác nhận UID trước khi cập nhật riêng claim reviewer. Không thay rules hoặc quyền đọc/ghi `users/{uid}`; mọi dữ liệu học vẫn chỉ chủ UID truy cập.
+
+## Chỉnh sửa nội dung từ Admin (2026-11-03)
+
+- Bản sửa lưu ở Firestore `contentEdits/{kind~bookId~target}`: `version: 1`, `kind` (`word` | `lesson` | `topic` | `exercise`), `bookId`, `target`, `data` (JSON dạng chuỗi), `hidden`, `lessonId` (chỉ exercise), `updatedAt` server timestamp, `updatedBy` UID. Ai cũng đọc được (đọc qua REST, không cần SDK); chỉ token có `contentReviewer: true` được ghi/xoá.
+- Bản sửa luôn được ghép lên catalog gốc trong bundle; xoá bản sửa là trở về nội dung gốc. Bản sai định dạng, sai quyển hoặc trỏ tới bài/chủ đề không tồn tại bị bỏ qua, không làm hỏng web.
+- Từ: sửa giữ nguyên ID; từ mới có ID `<bookId>:<slug>-<ngẫu nhiên>` (kể cả `toeic-600`; ID cũ không đổi), nằm cuối bài của nó. “Xoá” là ẩn: từ biến khỏi bài, ôn tập, thư viện, đếm tu luyện; progress/event của ID đó vẫn giữ trong snapshot và sync, bỏ ẩn là hiện lại nguyên tiến độ.
+- Có bản sửa word/lesson/topic thì `catalog.version = <fingerprint gốc>+e<hash bản sửa>`; không sửa thì giữ nguyên fingerprint. Lượt học tạo trước bản sửa nhận nhánh “Nội dung bài học đã cập nhật” sẵn có. Fingerprint gốc của bundle và quy tắc build không đổi.
+- Câu bài tập biên soạn: gói gốc vẫn được kiểm tra với catalog/version gốc rồi mới ghép bản sửa (sửa theo `sourceId`, ẩn, thêm `sourceId` mới dạng `admin:...`). Bài có bản sửa đổi `version` của gói thành `<version gốc>+e<hash>`, câu ghi `sourceVersion` mới; câu của từ đã ẩn bị bỏ. Không đổi catalog.version.
+- Client lưu bản sửa vào localStorage `vocab:content-edits:v1`, áp dụng trước khi mở store; mỗi trình duyệt hỏi Firestore tối đa 15 phút/lần (admin lưu xong thì làm mới ngay). Bản mới chỉ áp dụng ngay khi không có lượt học dở; nếu đang học thì áp dụng ở lần mở sau. Trang tĩnh dựng sẵn (gốc từ, phụ tố, kiến thức) vẫn theo nội dung gốc.

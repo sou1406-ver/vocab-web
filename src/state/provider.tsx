@@ -4,6 +4,7 @@ import { createContext, useContext, useEffect, useState, type ReactNode } from "
 import { useStore } from "zustand";
 import { createAppStore, connectBrowserStore, memoryPersistence } from "./store";
 import { CloudProvider } from "./cloud-provider";
+import { startContentEdits } from "./content-sync";
 import type { Snapshot } from "../domain/types";
 
 const StoreContext = createContext<ReturnType<typeof createAppStore> | null>(null);
@@ -11,6 +12,8 @@ const SandboxContext = createContext(false);
 export function AppProvider({ children }: { children: ReactNode }) {
   const [store] = useState(createAppStore);
   useEffect(() => {
+    // Admin content edits (cached) apply before the store opens, so screens never show stale words.
+    startContentEdits(store);
     void store.getState().init();
     return connectBrowserStore(store);
   }, [store]);

@@ -25,16 +25,11 @@ import {
 } from "firebase/firestore";
 import type { Change, CommittedChange } from "../data/sync";
 import { hasContentReviewRole } from "./content-review";
+import { firebaseConfig } from "./firebase-config";
 
 // Firebase web configuration is public. Data access is enforced by firestore.rules.
 // Only the new project is used; the V1 production project is never initialized.
-const emulated = process.env.NEXT_PUBLIC_FIREBASE_EMULATORS === "1";
-const config = {
-  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY || "AIzaSyCwcc6NYcrLS8CbnSvIJZ2AX4W50D8uENo",
-  authDomain: "vocab-web-next.firebaseapp.com",
-  projectId: emulated ? "demo-vocab-sync" : "vocab-web-next",
-  appId: "1:670784686937:web:533efebb0ae99a195d9a48",
-};
+const config = firebaseConfig;
 let client: ReturnType<typeof initialize> | undefined;
 function initialize() {
   const app = getApps().find((a) => a.name === "vocab-web-next") ?? initializeApp(config, "vocab-web-next");

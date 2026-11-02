@@ -21,13 +21,27 @@ export function createLibrary(books: readonly Book[]) {
   if (!books.length) throw new Error("No books");
   const byId = new Map(books.map((book) => [book.id, book]));
   const owner = new Map<string, Book>();
-  for (const book of books) for (const word of book.catalog.words) owner.set(word.id, book);
-  const words = books.flatMap((book) => book.catalog.words);
+  const words: Word[] = [];
+  const wordsById = new Map<string, Word>();
+  // Rebuilds the lookups in place (same array and map objects), e.g. after admin content edits change a catalog.
+  const refresh = () => {
+    owner.clear();
+    wordsById.clear();
+    words.length = 0;
+    for (const book of books)
+      for (const word of book.catalog.words) {
+        owner.set(word.id, book);
+        wordsById.set(word.id, word);
+        words.push(word);
+      }
+  };
+  refresh();
   return {
     books,
     defaultBook: books[0],
     words,
-    wordsById: new Map(words.map((word) => [word.id, word])),
+    wordsById,
+    refresh,
     bookById: (id: string | undefined) => (id === undefined ? undefined : byId.get(id)),
     bookOfWord: (wordId: string | undefined) => (wordId === undefined ? undefined : owner.get(wordId)),
     bookByVersion: (version: string) => books.find((book) => book.catalog.version === version),
