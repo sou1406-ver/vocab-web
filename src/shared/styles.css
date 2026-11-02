@@ -778,7 +778,8 @@ html.theme-switching *::after {
     font-size: 24px;
     font-weight: 500;
     margin-bottom: 9px;
-    overflow-wrap: anywhere;
+    overflow-wrap: break-word;
+    hyphens: auto;
   }
   .lesson-card > p {
     font-size: 14px;
@@ -919,6 +920,7 @@ html.theme-switching *::after {
     font-size: 27px;
     font-family: var(--font-reading);
     font-weight: 500;
+    /* Headwords are what learners copy: never insert a hyphen, only break as a last resort. */
     overflow-wrap: anywhere;
   }
   .vocab-ipa {
@@ -2103,9 +2105,20 @@ html.theme-switching *::after {
     font-size: 14px;
   }
   .file-input {
-    width: 100%;
-    margin-top: 12px;
-    font-size: 14px;
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+  .file-upload:has(+ .file-input:focus-visible) {
+    outline: 2px solid var(--green);
+    outline-offset: 3px;
+  }
+  .file-upload:has(+ .file-input:disabled) {
+    cursor: progress;
+    opacity: 0.7;
   }
   .inline-error {
     font-size: 14px;
@@ -2444,7 +2457,7 @@ html.theme-switching *::after {
       display: none;
     }
     .lesson-card h2 {
-      font-size: 22px;
+      font-size: clamp(18px, 5.4vw, 22px);
     }
     .lesson-card > p {
       font-size: 14px;
@@ -2502,7 +2515,7 @@ html.theme-switching *::after {
       display: none;
     }
     .vocabulary-card h2 {
-      font-size: 23px;
+      font-size: clamp(18px, 5vw, 23px);
     }
     .vocabulary-card > p {
       font-size: 14px;
