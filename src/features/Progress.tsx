@@ -7,6 +7,7 @@ import { Icon, ProgressBar } from "../shared/ui";
 import { useWord } from "../app/context";
 import { exerciseProgress } from "../domain/exercise-progress";
 import { CultivationCard } from "../components/CultivationCard";
+import { replaySkills, skillLabels, summariseSkills } from "../domain/skills";
 
 export default function Progress() {
   const { data } = useApp();
@@ -17,6 +18,10 @@ export default function Progress() {
   const learned = catalog.words.filter((w) => data.progress[w.id]?.tested).length;
   const stable = catalog.words.filter((w) => (data.progress[w.id]?.box ?? 0) >= 5).length;
   const correct = data.events.filter((e) => e.correct).length;
+  const skills = summariseSkills(
+    replaySkills(data.events, data.settings.timezone),
+    catalog.words.map((word) => word.id),
+  );
   const days = Array.from({ length: 7 }, (_, i) => {
     const at = Date.now() - (6 - i) * 86400000;
     const key = dayKey(at, data.settings.timezone);
@@ -164,6 +169,43 @@ export default function Progress() {
               <p className="muted">Chưa có từ cần luyện lại.</p>
             )}
           </section>
+          {(skills.recognition.tested > 0 || skills.recall.tested > 0) && (
+            <section className="panel skills-panel" aria-labelledby="skills-title">
+              <div className="section-heading">
+                <h2 id="skills-title">Hai kỹ năng</h2>
+                <span className="muted">Bản xem trước</span>
+              </div>
+              <div className="skills-grid">
+                {(["recognition", "recall"] as const).map((skill) => (
+                  <div className={`skill-card skill-card--${skill}`} key={skill}>
+                    <h3>{skillLabels[skill]}</h3>
+                    <p className="muted">{skill === "recognition" ? "Chọn đúng đáp án" : "Tự gõ ra đáp án"}</p>
+                    <ProgressBar
+                      value={(skills[skill].tested / catalog.words.length) * 100}
+                      label={`${skillLabels[skill]}: ${skills[skill].tested} trên ${catalog.words.length} từ đã kiểm tra`}
+                    />
+                    <dl>
+                      <div>
+                        <dt>Đã kiểm tra</dt>
+                        <dd>{skills[skill].tested}</dd>
+                      </div>
+                      <div>
+                        <dt>Nhớ ổn định</dt>
+                        <dd>{skills[skill].stable}</dd>
+                      </div>
+                      <div>
+                        <dt>Đến hạn</dt>
+                        <dd>{skills[skill].due}</dd>
+                      </div>
+                    </dl>
+                  </div>
+                ))}
+              </div>
+              <p className="quiet-note">
+                Tính từ các câu trả lời có ghi dạng bài. Lịch ôn hiện vẫn dùng một mốc chung cho mỗi từ.
+              </p>
+            </section>
+          )}
           <section className="exercise-results" aria-labelledby="exercise-results-title">
             <div className="section-heading">
               <h2 id="exercise-results-title">Theo nhóm bài tập</h2>
