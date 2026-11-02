@@ -195,8 +195,19 @@ export function CloudProvider({ store, children }: { store: StoreApi<AppState>; 
           }));
         }));
     connectRef.current = connect;
+    // The learning store opens IndexedDB first, so its own error and retry flow sees any storage failure.
+    let stopWaiting: (() => void) | undefined;
+    const storeOpened = new Promise<void>((resolve) => {
+      const opened = (state: AppState) => state.ready || Boolean(state.error);
+      if (opened(store.getState())) return resolve();
+      stopWaiting = store.subscribe((state) => {
+        if (!opened(state)) return;
+        stopWaiting?.();
+        resolve();
+      });
+    });
     // Guests who never signed in on this browser skip the Firebase download until a sign-in button appears.
-    void hasStoredAuthUser().then((stored) => {
+    void storeOpened.then(hasStoredAuthUser).then((stored) => {
       if (!active) return;
       if (stored) {
         void connect();
@@ -207,6 +218,7 @@ export function CloudProvider({ store, children }: { store: StoreApi<AppState>; 
       });
     });
     return () => {
+      stopWaiting?.();
       connectRef.current = null;
       active = false;
       request++;

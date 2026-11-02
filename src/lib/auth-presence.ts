@@ -12,8 +12,8 @@ export async function hasStoredAuthUser(): Promise<boolean> {
   } catch {
     /* Storage blocked: fall through to IndexedDB. */
   }
-  if (typeof indexedDB === "undefined" || typeof indexedDB.databases !== "function") return true;
   try {
+    if (typeof indexedDB === "undefined" || typeof indexedDB.databases !== "function") return true;
     // Listing first means we never open, and so never create, a database Firebase has not made yet.
     if (!(await indexedDB.databases()).some((database) => database.name === DATABASE)) return false;
     return await new Promise<boolean>((resolve) => {
