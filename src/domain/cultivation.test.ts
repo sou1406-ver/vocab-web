@@ -1,5 +1,12 @@
 import { describe, expect, it } from "vitest";
-import { cultivationOf, cultivationRealms, countLearnedWords, rankCultivators, readCultivator } from "./cultivation";
+import {
+  cultivationOf,
+  cultivationRealms,
+  countLearnedWords,
+  rankCultivators,
+  readCultivator,
+  rivalAhead,
+} from "./cultivation";
 import { emptySnapshot } from "./learning";
 
 describe("Cultivation based on learned vocabulary", () => {
@@ -52,5 +59,21 @@ describe("Cultivation based on learned vocabulary", () => {
       { version: 2 },
     ])
       expect(() => readCultivator("a", { ...profile, ...patch })).toThrow();
+  });
+});
+
+describe("rivalAhead", () => {
+  const row = (id: string, learnedCount: number) => ({ id, learnedCount });
+  const ranked = [row("a", 50), row("b", 30), row("c", 30), row("d", 10)];
+  it("returns the nearest learner with more words", () => {
+    expect(rivalAhead(ranked, "d")?.id).toBe("c");
+    expect(rivalAhead(ranked, "b")?.id).toBe("a");
+  });
+  it("skips learners tied on the same count", () => {
+    expect(rivalAhead(ranked, "c")?.id).toBe("a");
+  });
+  it("has no rival for the leader or an unknown id", () => {
+    expect(rivalAhead(ranked, "a")).toBeUndefined();
+    expect(rivalAhead(ranked, "zz")).toBeUndefined();
   });
 });

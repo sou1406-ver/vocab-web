@@ -3938,3 +3938,246 @@ html.theme-switching *::after {
     }
   }
 }
+/* Leaderboard: podium for the top three, progress bars and the realm journey. */
+@layer components {
+  :root {
+    --rank-gold-bg: #fbf1d6;
+    --rank-silver-bg: #eef1f5;
+    --rank-bronze-bg: #f8e9df;
+  }
+  :root[data-theme="dark"] {
+    --rank-gold-bg: #33291a;
+    --rank-silver-bg: #232a33;
+    --rank-bronze-bg: #33241c;
+  }
+  .cultivator-list {
+    margin-top: 20px;
+  }
+  .cultivator-podium,
+  .cultivator-rest {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .cultivator-podium {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 16px;
+    margin-bottom: 8px;
+  }
+  .cultivator-row.podium-spot {
+    --medal: var(--rank-silver);
+    --medal-bg: var(--rank-silver-bg);
+    position: relative;
+    display: flex;
+    flex: 0 1 220px;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    min-width: 0;
+    padding: 26px 14px 18px;
+    border: 1px solid var(--line);
+    border-top: 4px solid var(--medal);
+    border-radius: var(--radius);
+    background: linear-gradient(to bottom, var(--medal-bg), var(--surface) 75%);
+    text-align: center;
+  }
+  .cultivator-row.podium-spot[data-rank="1"] {
+    --medal: var(--rank-gold);
+    --medal-bg: var(--rank-gold-bg);
+    order: 2;
+    padding-top: 38px;
+    padding-bottom: 30px;
+  }
+  .cultivator-row.podium-spot[data-rank="2"] {
+    order: 1;
+  }
+  .cultivator-row.podium-spot[data-rank="3"] {
+    --medal: var(--rank-bronze);
+    --medal-bg: var(--rank-bronze-bg);
+    order: 3;
+  }
+  .cultivator-row.podium-spot.is-self {
+    background: linear-gradient(to bottom, var(--medal-bg), var(--soft-green) 85%);
+    border-radius: var(--radius);
+  }
+  .podium-spot .cultivation-avatar {
+    width: 72px;
+    height: 72px;
+  }
+  .podium-spot[data-rank="1"] .cultivation-avatar {
+    width: 92px;
+    height: 92px;
+  }
+  .podium-crown {
+    position: absolute;
+    top: 10px;
+    color: var(--rank-gold);
+  }
+  .cultivator-row.podium-spot .cultivator-rank {
+    display: grid;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    margin-top: -20px;
+    border: 2px solid var(--surface);
+    border-radius: 50%;
+    background: var(--medal);
+    color: var(--surface);
+    font-size: 14px;
+    font-weight: 700;
+    z-index: 2;
+  }
+  .podium-spot .cultivator-score {
+    text-align: center;
+  }
+  .podium-spot .cultivator-score strong {
+    color: var(--medal);
+  }
+  .cultivator-gap {
+    display: block;
+    margin-top: 4px;
+    color: var(--green);
+    font-size: 12px;
+    font-weight: 600;
+  }
+  .cultivator-rest .cultivator-row {
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+  .cultivator-bar {
+    display: block;
+    height: 5px;
+    margin-top: 6px;
+    border-radius: 99px;
+    background: var(--surface-soft);
+    overflow: hidden;
+  }
+  .cultivator-bar i {
+    display: block;
+    height: 100%;
+    border-radius: inherit;
+    background: var(--green);
+  }
+  .cultivation-realms .section-heading {
+    margin-bottom: 4px;
+  }
+  .cultivation-realms ol {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 14px;
+  }
+  .cultivation-realms li {
+    position: relative;
+    padding: 16px 6px 14px;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    background: var(--surface);
+  }
+  .cultivation-realms li.is-reached {
+    background: var(--surface-soft);
+  }
+  .cultivation-realms li.is-current {
+    border-color: var(--green);
+    background: var(--soft-green);
+    box-shadow: 0 0 0 2px var(--soft-green);
+  }
+  .cultivation-realms li.is-locked .cultivation-avatar {
+    filter: grayscale(0.85);
+    opacity: 0.55;
+  }
+  .realm-here {
+    position: absolute;
+    top: -11px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 2px 8px;
+    border-radius: 99px;
+    background: var(--green);
+    color: var(--on-green);
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+}
+@layer responsive {
+  @media (max-width: 1050px) {
+    .cultivation-realms ol {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 600px) {
+    .cultivator-podium {
+      gap: 8px;
+    }
+    .cultivator-row.podium-spot {
+      padding: 22px 6px 14px;
+      grid-template-columns: none;
+    }
+    .cultivator-row.podium-spot[data-rank="1"] {
+      padding-top: 32px;
+      padding-bottom: 22px;
+    }
+    .podium-spot .cultivation-avatar {
+      width: 56px;
+      height: 56px;
+    }
+    .podium-spot[data-rank="1"] .cultivation-avatar {
+      width: 68px;
+      height: 68px;
+    }
+    .podium-spot .cultivator-score strong {
+      font-size: 18px;
+    }
+    .cultivation-realms ol {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+    }
+  }
+}
+@layer components {
+  .cultivator-self-note {
+    margin: 4px 0 8px;
+    color: var(--green);
+    font-size: 14px;
+    font-weight: 600;
+    text-align: center;
+  }
+}
+@layer components {
+  .podium-spot .cultivator-name {
+    width: 100%;
+  }
+  .podium-spot .cultivator-name strong {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+@layer responsive {
+  @media (max-width: 600px) {
+    .podium-spot .cultivator-name strong {
+      font-size: clamp(12px, 3.6vw, 14px);
+    }
+    .cultivation-realms ol {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .cultivation-realms.panel {
+      padding: 20px 16px;
+    }
+    .cultivation-realms li {
+      gap: 4px;
+      padding: 16px 6px 12px;
+    }
+    .cultivation-realms li .cultivation-avatar {
+      width: 48px;
+      height: 48px;
+    }
+    .cultivation-realms li > strong {
+      font-size: 14px;
+      white-space: nowrap;
+    }
+  }
+}

@@ -1,9 +1,19 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { Crown } from "lucide-react";
 import { avatarSeeds } from "../lib/avatar";
 import { useCloud } from "../state/cloud-provider";
-import { cultivationOf, cultivationRealms, rankCultivators, type Cultivator } from "../domain/cultivation";
+import { useApp } from "../state/provider";
+import { bookOfWord } from "../data/catalog";
+import {
+  countLearnedWords,
+  cultivationOf,
+  cultivationRealms,
+  rankCultivators,
+  rivalAhead,
+  type Cultivator,
+} from "../domain/cultivation";
 import { CultivationAvatar } from "../components/CultivationAvatar";
 import { CultivationCard } from "../components/CultivationCard";
 
@@ -12,6 +22,7 @@ const initial: Connection = { rows: [], own: null, ready: false, error: "" };
 
 export default function Leaderboard() {
   const cloud = useCloud();
+  const { data } = useApp();
   const uid = cloud.user?.uid;
   const [connection, setConnection] = useState<Connection>(initial);
   const [attempt, setAttempt] = useState(0);
@@ -56,6 +67,20 @@ export default function Leaderboard() {
   }, [uid, attempt]);
   const current = connection.uid === uid ? connection : initial;
   const rankings = rankCultivators(current.rows);
+  const podium = rankings.slice(0, 3);
+  const rest = rankings.slice(3);
+  const top = Math.max(1, rankings[0]?.learnedCount ?? 1);
+  // Motivating hint for the signed-in learner: how far to the next person above.
+  const self = rankings.find((entry) => entry.id === uid);
+  const rival = self && rivalAhead(rankings, self.id);
+  const selfNote = !self
+    ? ""
+    : rival
+      ? `Còn ${rival.learnedCount - self.learnedCount + 1} từ để vượt ${rival.username}`
+      : "Bạn đang dẫn đầu";
+  const ownWords = countLearnedWords(data.progress, (id) => Boolean(bookOfWord(id)));
+  const ownRealm = cultivationOf(ownWords).index;
+  const ownSeed = data.settings.avatarSeed ?? (data.settings.name.trim() || "Vocab guest");
   return (
     <div className="page leaderboard-page">
       <div className="page-heading">
@@ -99,31 +124,62 @@ export default function Leaderboard() {
           ) : !current.ready ? (
             <p role="status">Đang tải bảng tu luyện…</p>
           ) : rankings.length ? (
-            <ol className="cultivator-list">
-              {rankings.map((entry) => (
-                <li
-                  className={entry.id === uid ? "cultivator-row is-self" : "cultivator-row"}
-                  data-rank={entry.rank <= 3 ? entry.rank : undefined}
-                  key={entry.id}
-                >
-                  <span className="cultivator-rank" aria-label={`Hạng ${entry.rank}`}>
-                    #{entry.rank}
-                  </span>
-                  <CultivationAvatar words={entry.learnedCount} seed={avatarSeeds[entry.avatar]} decorative />
-                  <div className="cultivator-name">
-                    <strong>{entry.username}</strong>
-                    <small>
-                      {cultivationOf(entry.learnedCount).name}
-                      {entry.id === uid ? " · Bạn" : ""}
-                    </small>
-                  </div>
-                  <span className="cultivator-score">
-                    <strong>{entry.learnedCount}</strong>
-                    <small>từ đã học</small>
-                  </span>
-                </li>
-              ))}
-            </ol>
+            <div className="cultivator-list">
+              <ol className="cultivator-podium">
+                {podium.map((entry) => (
+                  <li
+                    className={`cultivator-row podium-spot${entry.id === uid ? " is-self" : ""}`}
+                    data-rank={entry.rank <= 3 ? entry.rank : undefined}
+                    key={entry.id}
+                  >
+                    {entry.rank === 1 && <Crown className="podium-crown" size={22} aria-hidden="true" />}
+                    <CultivationAvatar words={entry.learnedCount} seed={avatarSeeds[entry.avatar]} decorative />
+                    <span className="cultivator-rank" aria-label={`Hạng ${entry.rank}`}>
+                      {entry.rank}
+                    </span>
+                    <div className="cultivator-name">
+                      <strong title={entry.username}>{entry.username}</strong>
+                      <small>
+                        {cultivationOf(entry.learnedCount).name}
+                        {entry.id === uid ? " · Bạn" : ""}
+                      </small>
+                    </div>
+                    <span className="cultivator-score">
+                      <strong>{entry.learnedCount}</strong>
+                      <small>từ đã học</small>
+                    </span>
+                  </li>
+                ))}
+              </ol>
+              {self && podium.includes(self) && <p className="cultivator-self-note">{selfNote}</p>}
+              {rest.length > 0 && (
+                <ol className="cultivator-rest" start={4}>
+                  {rest.map((entry) => (
+                    <li className={entry.id === uid ? "cultivator-row is-self" : "cultivator-row"} key={entry.id}>
+                      <span className="cultivator-rank" aria-label={`Hạng ${entry.rank}`}>
+                        #{entry.rank}
+                      </span>
+                      <CultivationAvatar words={entry.learnedCount} seed={avatarSeeds[entry.avatar]} decorative />
+                      <div className="cultivator-name">
+                        <strong>{entry.username}</strong>
+                        <small>
+                          {cultivationOf(entry.learnedCount).name}
+                          {entry.id === uid ? " · Bạn" : ""}
+                        </small>
+                        <span className="cultivator-bar" aria-hidden="true">
+                          <i style={{ width: `${Math.max(2, (entry.learnedCount / top) * 100)}%` }} />
+                        </span>
+                        {entry === self && <small className="cultivator-gap">{selfNote}</small>}
+                      </div>
+                      <span className="cultivator-score">
+                        <strong>{entry.learnedCount}</strong>
+                        <small>từ đã học</small>
+                      </span>
+                    </li>
+                  ))}
+                </ol>
+              )}
+            </div>
           ) : (
             <p className="quiet-note">Chưa có đạo hữu tham gia. Hãy mở đầu hành trình này.</p>
           )}
@@ -132,18 +188,28 @@ export default function Leaderboard() {
           )}
         </section>
       </div>
-      <details className="panel cultivation-realms">
-        <summary>12 cảnh giới tu luyện</summary>
+      <section className="panel cultivation-realms" aria-labelledby="realms-title">
+        <div className="section-heading">
+          <h2 id="realms-title">12 cảnh giới tu luyện</h2>
+          <span className="muted">
+            Bạn đang ở cảnh giới {ownRealm + 1}/{cultivationRealms.length}
+          </span>
+        </div>
         <ol>
-          {cultivationRealms.map((realm) => (
-            <li key={realm.name}>
-              <CultivationAvatar words={realm.words} decorative />
+          {cultivationRealms.map((realm, index) => (
+            <li
+              key={realm.name}
+              className={index < ownRealm ? "is-reached" : index === ownRealm ? "is-current" : "is-locked"}
+              aria-current={index === ownRealm ? "step" : undefined}
+            >
+              <CultivationAvatar words={realm.words} seed={ownSeed} decorative />
               <strong>{realm.name}</strong>
               <span>{realm.words} từ</span>
+              {index === ownRealm && <em className="realm-here">Bạn ở đây</em>}
             </li>
           ))}
         </ol>
-      </details>
+      </section>
     </div>
   );
 }

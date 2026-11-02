@@ -77,3 +77,11 @@ export function rankCultivators(entries: readonly Cultivator[]) {
     return { ...entry, rank };
   });
 }
+
+// The closest learner with strictly more words, so a tie never counts as someone to overtake.
+export function rivalAhead<T extends { id: string; learnedCount: number }>(ranked: readonly T[], id: string) {
+  const index = ranked.findIndex((entry) => entry.id === id);
+  if (index < 0) return undefined;
+  const own = ranked[index].learnedCount;
+  return ranked.slice(0, index).findLast((entry) => entry.learnedCount > own);
+}
