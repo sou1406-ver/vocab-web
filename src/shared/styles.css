@@ -4259,3 +4259,101 @@ html.theme-switching *::after {
     display: none;
   }
 }
+/* Word-part chips that open the root or affix page, and the affix pages themselves. */
+@layer components {
+  .part-chip:has(> .part-chip-link) {
+    padding: 0;
+    transition:
+      border-color var(--motion-fast),
+      background-color var(--motion-fast);
+  }
+  .part-chip-link {
+    position: relative;
+    display: grid;
+    gap: 3px;
+    height: 100%;
+    padding: 9px 26px 9px 12px;
+    border-radius: inherit;
+    color: inherit;
+    text-decoration: none;
+  }
+  .part-chip-link::after {
+    content: "→" / "";
+    position: absolute;
+    top: 8px;
+    right: 9px;
+    color: var(--green);
+    font-size: 13px;
+    font-weight: 700;
+  }
+  .part-chip:has(> .part-chip-link:hover) {
+    border-color: var(--green);
+    background: var(--soft-green);
+  }
+  .part-chip-link:focus-visible {
+    outline: 2px solid var(--green);
+    outline-offset: 2px;
+  }
+  .affix-section {
+    margin-bottom: 22px;
+  }
+  .affix-word-list {
+    margin: 8px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+  .affix-word-list li {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 8px 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .affix-word-list li:last-child {
+    border-bottom: 0;
+  }
+  .affix-word-list b {
+    font-size: 17px;
+  }
+  .affix-word-meaning {
+    flex: 1 1 200px;
+    min-width: 0;
+    color: var(--muted);
+  }
+  .affix-group {
+    margin-bottom: 30px;
+  }
+  .affix-group h2 {
+    margin-bottom: 14px;
+  }
+  .affix-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 190px), 1fr));
+    gap: 14px;
+  }
+  .affix-card {
+    display: grid;
+    align-content: start;
+    gap: 6px;
+    margin: 0;
+    padding: 18px;
+    color: var(--ink);
+  }
+  .affix-card:hover {
+    border-color: var(--green);
+  }
+  .affix-card b {
+    font-family: var(--font-reading);
+    font-size: 24px;
+    font-weight: 500;
+  }
+  .affix-card span {
+    color: var(--muted);
+    font-size: 14px;
+  }
+  .roots-affix-link {
+    display: inline-flex;
+    margin-bottom: 22px;
+  }
+}

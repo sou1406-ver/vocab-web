@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { findWordRoots, rootsContent } from "../data/roots";
+import { affixHref } from "../data/affixes";
 import type { Word } from "../domain/types";
 import { PartChips } from "./PartChips";
 
@@ -19,6 +20,7 @@ export default function DeepWordRoots({ word }: { word: Word }) {
             parts={match.word.parts.map((part) => ({
               ...part,
               meaning: part.role === "root" ? match.root.meaning : rootsContent.affixes[part.text],
+              href: part.role === "root" ? `/roots/${match.root.id}` : affixHref(part.role, part.text),
             }))}
           />
           <p className="root-logic">{match.word.logic}</p>

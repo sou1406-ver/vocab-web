@@ -14,6 +14,9 @@ export default function Page() {
         </div>
       </div>
       <p className="roots-intro muted">Kho mở rộng để tham khảo, chưa tính vào tiến độ và chưa có bài tập riêng.</p>
+      <Link className="text-link roots-affix-link" href="/affixes">
+        Xem tiền tố & hậu tố →
+      </Link>
       <div className="roots-grid">
         {roots.map((root) => (
           <Link className="panel root-card" href={`/roots/${root.id}`} key={root.id}>

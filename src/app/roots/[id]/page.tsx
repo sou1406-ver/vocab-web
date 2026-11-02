@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { Lightbulb } from "lucide-react";
 import { roots, rootById, rootsContent } from "../../../data/roots";
 import { PartChips } from "../../../components/PartChips";
+import { affixHref } from "../../../data/affixes";
 import { RootBookBadge } from "../../../components/RootBookBadge";
 
 export function generateStaticParams() {
@@ -60,6 +61,7 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
               parts={word.parts.map((part) => ({
                 ...part,
                 meaning: part.role === "root" ? root.meaning : rootsContent.affixes[part.text],
+                href: part.role === "root" ? undefined : affixHref(part.role, part.text),
               }))}
             />
             <p className="root-logic">{word.logic}</p>
