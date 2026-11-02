@@ -53,6 +53,8 @@ export function CloudProvider({ store, children }: { store: StoreApi<AppState>; 
   const prepare = useCallback(() => void connectRef.current?.(), []);
   useEffect(() => {
     let active = true;
+    // The ref is a generation counter, not a DOM node: cleanup bumps it so in-flight work from this run is ignored.
+    const generation = lifetime;
     let request = 0;
     let unsubscribe: (() => void) | undefined;
     let stopProfile: (() => void) | undefined;
@@ -222,7 +224,7 @@ export function CloudProvider({ store, children }: { store: StoreApi<AppState>; 
       connectRef.current = null;
       active = false;
       request++;
-      lifetime.current++;
+      generation.current++;
       unsubscribe?.();
       stopProfile?.();
       sync.current?.stop();
