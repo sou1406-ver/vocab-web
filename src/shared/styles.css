@@ -1241,6 +1241,7 @@ html.theme-switching *::after {
     }
   }
   .exercise-results {
+    margin-top: 28px;
     margin-bottom: 28px;
   }
   .cultivation-avatar {
