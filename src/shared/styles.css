@@ -4361,3 +4361,37 @@ html.theme-switching *::after {
     margin-bottom: 22px;
   }
 }
+/* Keyboard shortcut hints on the study screen; hidden where there is no physical keyboard. */
+@layer components {
+  .shortcut-hint {
+    grid-column: 1 / -1;
+    margin: 4px 0 0;
+    color: var(--muted);
+    font-size: 13px;
+  }
+  .answer-feedback .shortcut-hint {
+    margin-left: 12px;
+  }
+  .shortcut-hint kbd {
+    display: inline-block;
+    min-width: 22px;
+    padding: 1px 6px;
+    border: 1px solid var(--line);
+    border-bottom-width: 2px;
+    border-radius: 6px;
+    background: var(--surface);
+    color: var(--ink);
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.5;
+    text-align: center;
+  }
+}
+@layer responsive {
+  @media (hover: none), (pointer: coarse) {
+    .shortcut-hint {
+      display: none;
+    }
+  }
+}

@@ -19,6 +19,8 @@ import { ListenPrompt } from "../components/ListenPrompt";
 import { useEnglishVoices } from "../lib/use-english-voices";
 import StatusMark from "../components/react-bits/StatusMark";
 import { GuestStudyNotice } from "../components/GuestStudyNotice";
+import { CHOICE_KINDS, studyShortcut } from "../domain/study-shortcuts";
+import { speak } from "../lib/speech";
 
 export default function Study() {
   return (
@@ -58,6 +60,30 @@ export function StudySession() {
     else nextRef.current?.focus({ preventScroll: true });
     if (session?.phase === "feedback") feedbackRef.current?.scrollIntoView({ block: "nearest" });
   }, [session?.id, session?.index, session?.phase]);
+  // Keyboard shortcuts: 1–4 / A–D choose, Enter moves on, R replays listening audio. Typing and open dialogs are left alone.
+  useEffect(() => {
+    const onKey = (event: KeyboardEvent) => {
+      if (event.defaultPrevented || event.repeat || event.altKey || event.ctrlKey || event.metaKey) return;
+      const target = event.target instanceof Element ? event.target : null;
+      if (target?.closest("input, textarea, select, [contenteditable='true']")) return;
+      if (document.querySelector("[role='dialog']")) return;
+      const current = session?.questions[session.index];
+      if (!session || !current || busy) return;
+      const listening = current.kind === "listen-choice" || current.kind === "listen-type";
+      const options = CHOICE_KINDS.includes(current.kind) && "options" in current ? (current.options ?? []) : [];
+      const action = studyShortcut(event.key, { phase: session.phase, choices: options.length, listening });
+      if (!action) return;
+      // A focused button already turns Enter into a click; acting here too would skip a question.
+      if (action.type === "next" && target?.closest("button, a")) return;
+      event.preventDefault();
+      if (action.type === "next") void advance();
+      else if (action.type === "replay") {
+        if (voices.length && typeof current.answer === "string") speak(current.answer);
+      } else if (!listening || voices.length) void answer(options[action.index]);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [session, busy, voices.length, advance, answer]);
   if (!session)
     return (
       <div className="page">
@@ -393,6 +419,7 @@ export function StudySession() {
                     key={option}
                     lang={question.kind === "meaning" ? "vi" : "en"}
                     className={`answer-option${feedback && option === question.answer ? " correct-option" : ""}${feedback && !feedback.correct && option === feedback.input ? " wrong-option" : ""}`}
+                    aria-keyshortcuts={`${i + 1} ${String.fromCharCode(65 + i)}`}
                     disabled={busy || session.phase === "feedback" || cannotHear}
                     onClick={() => void answer(option)}
                   >
@@ -401,6 +428,18 @@ export function StudySession() {
                     {feedback && option === question.answer && <Icon name="check" size={18} />}
                   </button>
                 ))}
+                {session.phase === "question" && (
+                  <p className="shortcut-hint" aria-hidden="true">
+                    Phím tắt: <kbd>1</kbd>–<kbd>{question.options.length}</kbd> hoặc <kbd>A</kbd>–
+                    <kbd>{String.fromCharCode(64 + question.options.length)}</kbd> để chọn
+                    {listening && (
+                      <>
+                        {" "}
+                        · <kbd>R</kbd> nghe lại
+                      </>
+                    )}
+                  </p>
+                )}
               </div>
             ) : (
               <form
@@ -482,10 +521,19 @@ export function StudySession() {
                   question.kind !== "build" &&
                   question.kind !== "synonym-context" &&
                   word.examples[0]?.translation && <p className="muted">{word.examples[0].translation}</p>}
-                <button className="button primary" ref={nextRef} disabled={busy} onClick={() => void advance()}>
+                <button
+                  className="button primary"
+                  ref={nextRef}
+                  disabled={busy}
+                  aria-keyshortcuts="Enter"
+                  onClick={() => void advance()}
+                >
                   {session.index + 1 === session.questions.length ? "Xem kết quả" : "Từ tiếp theo"}
                   <Icon name="arrow" size={18} />
                 </button>
+                <span className="shortcut-hint" aria-hidden="true">
+                  hoặc nhấn <kbd>Enter</kbd>
+                </span>
               </div>
             ) : (
               <div className="question-help">
