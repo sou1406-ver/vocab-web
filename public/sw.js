@@ -4,6 +4,7 @@
  * - Page navigations: network first, cached copy when offline, a small offline page otherwise.
  * - RSC fetches are never cached: when they fail the router falls back to a full navigation, served above.
  * - Other same-origin files (avatars, icons, exercise packs): network first with a cached fallback.
+ * - Roots pages: when the learner opens /roots, the index pages and every root/prefix page linked from /roots are stored.
  * Cross-origin requests (Firebase, Google sign-in) are never touched.
  */
 const VERSION = new URL(self.location.href).searchParams.get("v") || "dev";
@@ -13,6 +14,10 @@ const CORE_ROUTES = ["/", "/lessons", "/library", "/study", "/progress", "/setti
 const STATIC_ASSET = /\/_next\/static\/[^"'\s)\\]+/g;
 // Lesson pages are listed by the app itself (it knows the catalog); only these paths are accepted.
 const LESSON_PATH = /^\/books\/[a-z0-9-]+\/lessons\/\d+$/;
+// Deep-learning pages: the index pages, then whatever root and affix pages /roots links to (read from its HTML,
+// so the app never has to ship the roots data just to list them).
+const ROOTS_INDEX = ["/roots", "/affixes", "/particles", "/core-words"];
+const ROOTS_LINK = /href="(\/(?:roots\/[a-z0-9-]+|affixes\/(?:prefix|suffix)-[a-z0-9-]+))"/g;
 
 // Stores pages (skipping ones already cached unless refresh is set) and every hashed asset their HTML references.
 async function cachePages(routes, refresh) {
@@ -41,8 +46,18 @@ async function cachePages(routes, refresh) {
   );
 }
 
+async function cacheRoots() {
+  await cachePages(ROOTS_INDEX, false);
+  const index = await (await caches.open(PAGES)).match("/roots");
+  if (!index) return;
+  const links = new Set();
+  for (const match of (await index.text()).matchAll(ROOTS_LINK)) links.add(match[1]);
+  await cachePages([...links].slice(0, 300), false);
+}
+
 self.addEventListener("message", (event) => {
   const { type, urls } = event.data || {};
+  if (type === "cache-roots") return event.waitUntil(cacheRoots());
   if (type !== "cache-lessons" || !Array.isArray(urls)) return;
   const routes = urls.filter((url) => typeof url === "string" && LESSON_PATH.test(url)).slice(0, 500);
   event.waitUntil(cachePages(routes, false));

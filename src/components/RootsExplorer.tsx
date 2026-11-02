@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Search, X } from "lucide-react";
 import { filterRootsCards, type RootsCard, type RootsKind } from "../data/roots-search";
 
@@ -13,6 +13,13 @@ const sections: { kind: RootsKind; title: string }[] = [
 ];
 export function RootsExplorer({ cards }: { cards: RootsCard[] }) {
   const [query, setQuery] = useState("");
+  useEffect(() => {
+    // Opening the collection is the signal the learner wants it: ask the offline cache to keep every root page.
+    // `ready` waits for the worker on a first visit and simply never resolves when none is registered (development).
+    void navigator.serviceWorker?.ready.then((registration) =>
+      registration.active?.postMessage({ type: "cache-roots" }),
+    );
+  }, []);
   const [kind, setKind] = useState<RootsKind | "all">("all");
   const found = useMemo(() => filterRootsCards(cards, query, kind), [cards, query, kind]);
   const counts = useMemo(
