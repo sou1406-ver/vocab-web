@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
 import { AppProvider } from "../state/provider";
 import { Shell } from "./Shell";
+import { ServiceWorker } from "./ServiceWorker";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -25,6 +26,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <AppProvider>
           <Shell>{children}</Shell>
         </AppProvider>
+        <ServiceWorker />
       </body>
     </html>
   );
