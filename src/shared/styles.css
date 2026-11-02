@@ -89,28 +89,29 @@ html.theme-switching *::after {
   }
   :root[data-theme="dark"] {
     color-scheme: dark;
-    --bg: #0e1512;
-    --surface: #1e2b25;
-    --surface-soft: #24332c;
+    --bg: #0b110e;
+    --surface: #151f1a;
+    --surface-soft: #1b2721;
     --ink: #f4f6ef;
     --muted: #b0bcac;
     --green: #6cc790;
     --green-hover: #84d6a3;
     --on-green: #0e1512;
-    --soft-green: #1f3a2c;
+    --soft-green: #183024;
     --brand: #ff6a4d;
     --brand-ink: #ff6a4d;
-    --brand-soft: #3a2823;
-    --line: rgba(255, 255, 255, 0.08);
-    --card-top-line: rgba(255, 255, 255, 0.1);
+    --brand-soft: #2e201c;
+    --line: rgba(255, 255, 255, 0.07);
+    --card-top-line: rgba(255, 255, 255, 0.09);
     --accent: #e6edb7;
     --accent-ink: #234a37;
-    --amber-bg: #463a26;
+    --amber-bg: #372d1d;
     --amber: #efd092;
-    --blue-bg: #293748;
+    --blue-bg: #1f2a38;
     --blue: #bdd1e8;
     --red: #ffb4a4;
-    --red-bg: #472c29;
+    --red-bg: #3a2321;
+    --hero: #143a2c;
     --shadow: none;
     color: var(--ink);
     background: var(--bg);
@@ -3660,11 +3661,13 @@ html.theme-switching *::after {
     --plum: #6b4a8a;
     --plum-bg: #f2ecf7;
     --lift-shadow: 0 12px 28px #263d281a;
+    --hero-glow: #3d8a6566;
   }
   :root[data-theme="dark"] {
     --plum: #d6bff0;
-    --plum-bg: #352a42;
+    --plum-bg: #2a2134;
     --lift-shadow: 0 12px 28px #00000059;
+    --hero-glow: #3d8a652e;
   }
   .tone-0 {
     --tone: var(--green);
@@ -3756,7 +3759,7 @@ html.theme-switching *::after {
   }
   .today-page .today-hero {
     isolation: isolate;
-    background: radial-gradient(120% 140% at 100% 0%, #3d8a6566 0%, transparent 55%),
+    background: radial-gradient(120% 140% at 100% 0%, var(--hero-glow) 0%, transparent 55%),
       radial-gradient(70% 110% at 0% 100%, #e6edb71c 0%, transparent 60%), var(--hero);
   }
   .today-page .today-hero::after {
@@ -3807,6 +3810,45 @@ html.theme-switching *::after {
     .topic-match-card:hover,
     .today-hero .hero-button:hover:not(:disabled) {
       transform: none;
+    }
+  }
+}
+/* Floating, rounded sidebar that matches the card radius. */
+@layer components {
+  /* Columns grow by the sidebar's outer margin so its content keeps the old width. */
+  .app-shell {
+    grid-template-columns: 246px minmax(0, 1fr);
+  }
+  .sidebar {
+    top: 12px;
+    height: calc(100dvh - 24px);
+    margin: 12px 0 12px 12px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+  }
+}
+@layer responsive {
+  @media (min-width: 1600px) {
+    .app-shell {
+      grid-template-columns: 272px minmax(0, 1fr);
+    }
+  }
+  @media (max-width: 1190px) {
+    .app-shell {
+      grid-template-columns: 217px minmax(0, 1fr);
+    }
+  }
+  @media (max-width: 900px) {
+    .app-shell {
+      grid-template-columns: 84px minmax(0, 1fr);
+    }
+    .sidebar {
+      top: 8px;
+      height: calc(100dvh - 16px);
+      margin: 8px 0 8px 8px;
+      padding-left: 8px;
+      padding-right: 8px;
     }
   }
 }
