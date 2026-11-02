@@ -4050,8 +4050,9 @@ html.theme-switching *::after {
     font-weight: 600;
   }
   .cultivator-list .cultivator-row {
-    padding-left: 8px;
-    padding-right: 8px;
+    column-gap: 16px;
+    padding-left: 20px;
+    padding-right: 20px;
   }
   .cultivator-bar {
     display: block;
@@ -4215,6 +4216,15 @@ html.theme-switching *::after {
     .honour-spot {
       padding-left: 4px;
       padding-right: 4px;
+    }
+  }
+}
+@layer responsive {
+  @media (max-width: 600px) {
+    .cultivator-list .cultivator-row {
+      column-gap: 10px;
+      padding-left: 12px;
+      padding-right: 12px;
     }
   }
 }
