@@ -4395,3 +4395,45 @@ html.theme-switching *::after {
     }
   }
 }
+/* Admin: two areas (content control, feature check) above their own tabs. */
+@layer components {
+  .admin-areas {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+    margin-bottom: 22px;
+  }
+  .admin-areas [role="tab"] {
+    display: grid;
+    gap: 4px;
+    min-height: 76px;
+    padding: 16px 20px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--surface);
+    color: var(--ink);
+    text-align: left;
+  }
+  .admin-areas [role="tab"] strong {
+    font-size: 17px;
+  }
+  .admin-areas [role="tab"] small {
+    color: var(--muted);
+    font-size: 13px;
+  }
+  .admin-areas [role="tab"][aria-selected="true"] {
+    border-color: var(--green);
+    background: var(--soft-green);
+    box-shadow: inset 0 0 0 1px var(--green);
+  }
+  .admin-intro {
+    margin-bottom: 16px;
+  }
+}
+@layer responsive {
+  @media (max-width: 600px) {
+    .admin-areas {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+}

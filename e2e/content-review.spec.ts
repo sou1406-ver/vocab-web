@@ -2,22 +2,17 @@ import { scanAccessibility, waitForSaved } from "./app-ready";
 import { test, expect } from "@playwright/test";
 import type { Snapshot } from "../src/domain/types";
 
-test("guests cannot open reviewer tools or see an admin menu entry", async ({ page }) => {
+test("guests cannot open admin tools or see an admin menu entry", async ({ page }) => {
   await page.goto("/review");
-  await expect(page.getByRole("heading", { name: "Kiểm tra nội dung", exact: true })).toBeVisible();
-  await expect(page.getByRole("region", { name: "Bộ lọc nội dung" })).toHaveCount(0);
-  await page.getByRole("button", { name: "Mở hồ sơ", exact: true }).click();
-  await expect(page.getByRole("link", { name: "Kiểm tra nội dung", exact: true })).toHaveCount(0);
-  await expect(page.getByRole("link", { name: "Admin · Kiểm thử", exact: true })).toHaveCount(0);
-});
-
-test("guests cannot open admin test tools", async ({ page }) => {
-  await page.goto("/admin");
-  await expect(page.getByRole("heading", { name: "Admin · Kiểm thử", exact: true })).toBeVisible();
+  await expect(page).toHaveURL(/\/admin#content$/);
+  await expect(page.getByRole("heading", { name: "Admin", exact: true })).toBeVisible();
   await expect(
     page.getByText("Khu vực này dành cho tài khoản được cấp quyền kiểm tra nội dung.", { exact: true }),
   ).toBeVisible();
-  await expect(page.getByRole("tablist", { name: "Công cụ admin" })).toHaveCount(0);
+  await expect(page.getByRole("tablist", { name: "Khu vực admin" })).toHaveCount(0);
+  await expect(page.getByRole("region", { name: "Bộ lọc nội dung" })).toHaveCount(0);
+  await page.getByRole("button", { name: "Mở hồ sơ", exact: true }).click();
+  await expect(page.getByRole("link", { name: "Admin", exact: true })).toHaveCount(0);
 });
 
 test("only the reviewer claim opens all exercise previews without recording learning", async ({
@@ -43,7 +38,7 @@ test("only the reviewer claim opens all exercise previews without recording lear
   await page.getByRole("textbox", { name: "Username", exact: true }).fill(name);
   await page.getByRole("button", { name: "Tạo tài khoản", exact: true }).click();
   await expect(page.getByRole("heading", { name: "Chọn username", exact: true })).toHaveCount(0);
-  await page.goto("/review");
+  await page.goto("/admin#content");
   await expect(
     page.getByText("Khu vực này dành cho tài khoản được cấp quyền kiểm tra nội dung.", { exact: true }),
   ).toBeVisible();
@@ -95,7 +90,7 @@ test("only the reviewer claim opens all exercise previews without recording lear
   expect(after?.progress ?? {}).toEqual(before?.progress ?? {});
   expect(after?.session ?? null).toEqual(before?.session ?? null);
   await page.getByRole("button", { name: "Mở hồ sơ", exact: true }).click();
-  await expect(page.getByRole("link", { name: "Kiểm tra nội dung", exact: true })).toBeVisible();
+  await expect(page.getByRole("link", { name: "Admin", exact: true })).toBeVisible();
   await page.keyboard.press("Escape");
   expect((await scanAccessibility(page)).violations).toEqual([]);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);

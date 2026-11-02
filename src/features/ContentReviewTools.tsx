@@ -12,6 +12,7 @@ import {
 } from "../data/preview-questions";
 import type { ClozeChoiceQuestion, Question } from "../domain/types";
 
+// Read-only preview of every exercise generator, embedded in the admin content area.
 export default function ContentReviewTools() {
   const { data } = useApp();
   const [bookId, setBookId] = useState(activeBook(data.settings).id);
@@ -46,16 +47,10 @@ export default function ContentReviewTools() {
   const authoredFormat = needsAuthoredPack(format);
   const loading = authoredFormat && !!exerciseEntry(book, lesson.id)?.count && pack?.key !== key;
   return (
-    <div className="page content-review-page">
-      <div className="page-heading">
-        <div>
-          <p className="eyebrow">CHỈ XEM · KHÔNG GHI KẾT QUẢ</p>
-          <h1 tabIndex={-1}>Kiểm tra nội dung</h1>
-          <p className="page-subtitle">
-            Xem đề, đáp án và đáp án nhiễu theo đúng bộ sinh bài tập. Không tạo lượt học hoặc thay tiến độ.
-          </p>
-        </div>
-      </div>
+    <div className="content-review-page">
+      <p className="muted admin-intro">
+        Xem đề, đáp án và đáp án nhiễu theo đúng bộ sinh bài tập. Chỉ xem: không tạo lượt học hoặc thay tiến độ.
+      </p>
       <section className="panel review-controls" aria-label="Bộ lọc nội dung">
         <label>
           Giáo trình

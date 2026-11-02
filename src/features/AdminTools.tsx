@@ -1,5 +1,6 @@
 "use client";
-import { useEffect, useRef, useState, type KeyboardEvent } from "react";
+import { useEffect, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
+import dynamic from "next/dynamic";
 import { SandboxProvider, useApp } from "../state/provider";
 import { useCloud } from "../state/cloud-provider";
 import { activeBook, bookById, books } from "../data/catalog";
@@ -18,62 +19,142 @@ import { Today } from "./Today";
 import { StudySession } from "./Study";
 import type { Question, Snapshot, Word } from "../domain/types";
 
-const tabs = [
-  ["system", "Hệ thống"],
-  ["avatar", "Khung avatar"],
-  ["progress", "Giả lập tiến độ"],
-  ["exercise", "Thử dạng bài"],
+const ContentPreview = dynamic(() => import("./ContentReviewTools"), {
+  loading: () => <p role="status">Đang mở nội dung…</p>,
+});
+
+const areas = [
+  {
+    id: "content",
+    label: "Kiểm soát nội dung",
+    hint: "Xem trước, sửa, thêm và ẩn nội dung học",
+    tabs: [["preview", "Xem trước bài tập"]],
+  },
+  {
+    id: "features",
+    label: "Kiểm tra tính năng",
+    hint: "Hệ thống, khung avatar, giả lập tiến độ, chạy thử dạng bài",
+    tabs: [
+      ["system", "Hệ thống"],
+      ["avatar", "Khung avatar"],
+      ["progress", "Giả lập tiến độ"],
+      ["exercise", "Thử dạng bài"],
+    ],
+  },
 ] as const;
-type Tab = (typeof tabs)[number][0];
+type Area = (typeof areas)[number]["id"];
+const panels: Record<string, () => ReactNode> = {
+  preview: () => <ContentPreview />,
+  system: () => <SystemPanel />,
+  avatar: () => <AvatarPanel />,
+  progress: () => <ProgressPanel />,
+  exercise: () => <ExercisePanel />,
+};
 
 export default function AdminTools() {
-  const [tab, setTab] = useState<Tab>("system");
+  const [area, setArea] = useState<Area>("content");
+  const [tabs, setTabs] = useState<Record<Area, string>>({ content: "preview", features: "system" });
+  // #content / #features deep-link to an area, e.g. the old /review address redirects to #content.
+  useEffect(() => {
+    const fromHash = window.location.hash.slice(1);
+    if (areas.some((item) => item.id === fromHash)) setArea(fromHash as Area);
+  }, []);
+  const chooseArea = (next: Area) => {
+    setArea(next);
+    window.history.replaceState(null, "", `#${next}`);
+  };
+  const current = areas.find((item) => item.id === area)!;
+  return (
+    <div className="page admin-page">
+      <div className="page-heading">
+        <div>
+          <p className="eyebrow">CHỈ DÀNH CHO ADMIN</p>
+          <h1 tabIndex={-1}>Admin</h1>
+          <p className="page-subtitle">Kiểm soát nội dung học và kiểm tra các tính năng của web.</p>
+        </div>
+      </div>
+      <TabList
+        label="Khu vực admin"
+        className="admin-areas"
+        items={areas.map((item) => ({
+          id: item.id,
+          label: (
+            <>
+              <strong>{item.label}</strong>
+              <small>{item.hint}</small>
+            </>
+          ),
+        }))}
+        value={area}
+        onChange={(id) => chooseArea(id as Area)}
+        idPrefix="admin-area"
+      />
+      <div id={`admin-area-panel-${area}`} role="tabpanel" aria-labelledby={`admin-area-tab-${area}`}>
+        <TabList
+          label={current.label}
+          className="admin-tabs"
+          items={current.tabs.map(([id, label]) => ({ id, label }))}
+          value={tabs[area]}
+          onChange={(id) => setTabs((previous) => ({ ...previous, [area]: id }))}
+          idPrefix={`admin-${area}`}
+        />
+        <div
+          id={`admin-${area}-panel-${tabs[area]}`}
+          role="tabpanel"
+          aria-labelledby={`admin-${area}-tab-${tabs[area]}`}
+          className="admin-panel"
+        >
+          {panels[tabs[area]]?.()}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// Accessible tabs: arrow keys move between tabs, only the selected tab is in the Tab order.
+function TabList({
+  label,
+  className,
+  items,
+  value,
+  onChange,
+  idPrefix,
+}: {
+  label: string;
+  className: string;
+  items: { id: string; label: ReactNode }[];
+  value: string;
+  onChange: (id: string) => void;
+  idPrefix: string;
+}) {
   const refs = useRef<Record<string, HTMLButtonElement | null>>({});
   const move = (event: KeyboardEvent, index: number) => {
     const step = event.key === "ArrowRight" ? 1 : event.key === "ArrowLeft" ? -1 : 0;
     if (!step) return;
     event.preventDefault();
-    const next = tabs[(index + step + tabs.length) % tabs.length][0];
-    setTab(next);
+    const next = items[(index + step + items.length) % items.length].id;
+    onChange(next);
     refs.current[next]?.focus();
   };
   return (
-    <div className="page admin-page">
-      <div className="page-heading">
-        <div>
-          <p className="eyebrow">CHỈ DÀNH CHO ADMIN · KHÔNG GHI TIẾN ĐỘ THẬT</p>
-          <h1 tabIndex={-1}>Admin · Kiểm thử</h1>
-          <p className="page-subtitle">
-            Xem tình trạng hệ thống, khung avatar từng cảnh giới, giả lập tiến độ và chạy thử từng dạng bài trong
-            sandbox chỉ nằm trong bộ nhớ.
-          </p>
-        </div>
-      </div>
-      <div className="admin-tabs" role="tablist" aria-label="Công cụ admin">
-        {tabs.map(([id, label], index) => (
-          <button
-            key={id}
-            ref={(node) => {
-              refs.current[id] = node;
-            }}
-            id={`admin-tab-${id}`}
-            role="tab"
-            aria-selected={tab === id}
-            aria-controls={`admin-panel-${id}`}
-            tabIndex={tab === id ? 0 : -1}
-            onClick={() => setTab(id)}
-            onKeyDown={(event) => move(event, index)}
-          >
-            {label}
-          </button>
-        ))}
-      </div>
-      <div id={`admin-panel-${tab}`} role="tabpanel" aria-labelledby={`admin-tab-${tab}`} className="admin-panel">
-        {tab === "system" && <SystemPanel />}
-        {tab === "avatar" && <AvatarPanel />}
-        {tab === "progress" && <ProgressPanel />}
-        {tab === "exercise" && <ExercisePanel />}
-      </div>
+    <div className={className} role="tablist" aria-label={label}>
+      {items.map((item, index) => (
+        <button
+          key={item.id}
+          ref={(node) => {
+            refs.current[item.id] = node;
+          }}
+          id={`${idPrefix}-tab-${item.id}`}
+          role="tab"
+          aria-selected={value === item.id}
+          aria-controls={`${idPrefix}-panel-${item.id}`}
+          tabIndex={value === item.id ? 0 : -1}
+          onClick={() => onChange(item.id)}
+          onKeyDown={(event) => move(event, index)}
+        >
+          {item.label}
+        </button>
+      ))}
     </div>
   );
 }

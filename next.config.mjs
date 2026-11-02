@@ -18,5 +18,9 @@ export default withMDX({
     },
   ],
   // Lesson URLs gained a book segment; old links only ever pointed at the original TOEIC book.
-  redirects: () => [{ source: "/lessons/:id(\\d+)", destination: "/books/toeic-600/lessons/:id", permanent: true }],
+  redirects: () => [
+    { source: "/lessons/:id(\\d+)", destination: "/books/toeic-600/lessons/:id", permanent: true },
+    // Content review moved into the admin page's content area.
+    { source: "/review", destination: "/admin#content", permanent: false },
+  ],
 });
