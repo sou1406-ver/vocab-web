@@ -1322,12 +1322,13 @@ html.theme-switching *::after {
     margin-top: 28px;
     margin-bottom: 28px;
   }
-  /* Realm frames climb four tiers (jade, azure, gold, flame); each tier goes plain ring, gradient ring, glowing ring. */
+  /* Realm frames climb four tiers (jade, silver, gold, flame); each tier goes plain ring, two-tone ring, double ring.
+     Tones stay earthy and low-saturation, and no tier glows, so the frames read as metal and stone, not neon. */
   :root {
     --realm-jade: #3f8a63;
     --realm-jade-hi: #a5d6b0;
-    --realm-azure: #2c7486;
-    --realm-azure-hi: #93d3dd;
+    --realm-silver: #56636c;
+    --realm-silver-hi: #b9c2c7;
     --realm-gold: #a87414;
     --realm-gold-hi: #f0cf72;
     --realm-flame: #b23a2a;
@@ -1336,8 +1337,8 @@ html.theme-switching *::after {
   :root[data-theme="dark"] {
     --realm-jade: #5fbf88;
     --realm-jade-hi: #c4ecce;
-    --realm-azure: #52b4c6;
-    --realm-azure-hi: #bdeff4;
+    --realm-silver: #9aa6ad;
+    --realm-silver-hi: #dde3e6;
     --realm-gold: #e0b64f;
     --realm-gold-hi: #fbe7a6;
     --realm-flame: #ef6a4f;
@@ -1413,8 +1414,8 @@ html.theme-switching *::after {
   .cultivation-avatar--4,
   .cultivation-avatar--5,
   .cultivation-avatar--6 {
-    --realm-color: var(--realm-azure);
-    --realm-hi: var(--realm-azure-hi);
+    --realm-color: var(--realm-silver);
+    --realm-hi: var(--realm-silver-hi);
   }
   .cultivation-avatar--7,
   .cultivation-avatar--8,
@@ -1463,9 +1464,10 @@ html.theme-switching *::after {
       var(--realm-flame-hi),
       var(--realm-gold-hi)
     );
+    /* A second solid gold rim marks the top realm instead of a blurred glow. */
     box-shadow:
-      0 0 0 3px color-mix(in srgb, var(--realm-gold) 28%, transparent),
-      0 0 18px 2px color-mix(in srgb, var(--realm-flame) 35%, transparent);
+      0 0 0 2px var(--surface),
+      0 0 0 4px var(--realm-gold);
   }
   .cultivation-avatar--11 .cultivation-avatar-badge {
     border-color: var(--realm-gold);
