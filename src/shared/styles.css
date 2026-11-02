@@ -3953,20 +3953,22 @@ html.theme-switching *::after {
   .cultivator-list {
     margin-top: 20px;
   }
-  .cultivator-podium,
-  .cultivator-rest {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+  .honour-panel {
+    margin-bottom: 28px;
+  }
+  .honour-panel .cultivator-podium {
+    margin-top: 12px;
   }
   .cultivator-podium {
     display: flex;
     justify-content: center;
     align-items: flex-end;
     gap: 16px;
-    margin-bottom: 8px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
   }
-  .cultivator-row.podium-spot {
+  .honour-spot {
     --medal: var(--rank-silver);
     --medal-bg: var(--rank-silver-bg);
     position: relative;
@@ -3983,30 +3985,30 @@ html.theme-switching *::after {
     background: linear-gradient(to bottom, var(--medal-bg), var(--surface) 75%);
     text-align: center;
   }
-  .cultivator-row.podium-spot[data-rank="1"] {
+  .honour-spot[data-rank="1"] {
     --medal: var(--rank-gold);
     --medal-bg: var(--rank-gold-bg);
     order: 2;
     padding-top: 38px;
     padding-bottom: 30px;
   }
-  .cultivator-row.podium-spot[data-rank="2"] {
+  .honour-spot[data-rank="2"] {
     order: 1;
   }
-  .cultivator-row.podium-spot[data-rank="3"] {
+  .honour-spot[data-rank="3"] {
     --medal: var(--rank-bronze);
     --medal-bg: var(--rank-bronze-bg);
     order: 3;
   }
-  .cultivator-row.podium-spot.is-self {
+  .honour-spot.is-self {
     background: linear-gradient(to bottom, var(--medal-bg), var(--soft-green) 85%);
     border-radius: var(--radius);
   }
-  .podium-spot .cultivation-avatar {
+  .honour-spot .cultivation-avatar {
     width: 72px;
     height: 72px;
   }
-  .podium-spot[data-rank="1"] .cultivation-avatar {
+  .honour-spot[data-rank="1"] .cultivation-avatar {
     width: 92px;
     height: 92px;
   }
@@ -4015,7 +4017,7 @@ html.theme-switching *::after {
     top: 10px;
     color: var(--rank-gold);
   }
-  .cultivator-row.podium-spot .cultivator-rank {
+  .honour-spot .cultivator-rank {
     display: grid;
     place-items: center;
     width: 30px;
@@ -4029,10 +4031,10 @@ html.theme-switching *::after {
     font-weight: 700;
     z-index: 2;
   }
-  .podium-spot .cultivator-score {
+  .honour-spot .cultivator-score {
     text-align: center;
   }
-  .podium-spot .cultivator-score strong {
+  .honour-spot .cultivator-score strong {
     color: var(--medal);
   }
   .cultivator-gap {
@@ -4042,7 +4044,7 @@ html.theme-switching *::after {
     font-size: 12px;
     font-weight: 600;
   }
-  .cultivator-rest .cultivator-row {
+  .cultivator-list .cultivator-row {
     padding-left: 8px;
     padding-right: 8px;
   }
@@ -4111,23 +4113,23 @@ html.theme-switching *::after {
     .cultivator-podium {
       gap: 8px;
     }
-    .cultivator-row.podium-spot {
+    .honour-spot {
       padding: 22px 6px 14px;
       grid-template-columns: none;
     }
-    .cultivator-row.podium-spot[data-rank="1"] {
+    .honour-spot[data-rank="1"] {
       padding-top: 32px;
       padding-bottom: 22px;
     }
-    .podium-spot .cultivation-avatar {
+    .honour-spot .cultivation-avatar {
       width: 56px;
       height: 56px;
     }
-    .podium-spot[data-rank="1"] .cultivation-avatar {
+    .honour-spot[data-rank="1"] .cultivation-avatar {
       width: 68px;
       height: 68px;
     }
-    .podium-spot .cultivator-score strong {
+    .honour-spot .cultivator-score strong {
       font-size: 18px;
     }
     .cultivation-realms ol {
@@ -4137,19 +4139,10 @@ html.theme-switching *::after {
   }
 }
 @layer components {
-  .cultivator-self-note {
-    margin: 4px 0 8px;
-    color: var(--green);
-    font-size: 14px;
-    font-weight: 600;
-    text-align: center;
-  }
-}
-@layer components {
-  .podium-spot .cultivator-name {
+  .honour-spot .cultivator-name {
     width: 100%;
   }
-  .podium-spot .cultivator-name strong {
+  .honour-spot .cultivator-name strong {
     display: block;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -4158,7 +4151,7 @@ html.theme-switching *::after {
 }
 @layer responsive {
   @media (max-width: 600px) {
-    .podium-spot .cultivator-name strong {
+    .honour-spot .cultivator-name strong {
       font-size: clamp(12px, 3.6vw, 14px);
     }
     .cultivation-realms ol {
@@ -4192,7 +4185,7 @@ html.theme-switching *::after {
   .cultivator-score small {
     font-size: 13px;
   }
-  .podium-spot[data-rank="1"] .cultivator-name strong {
+  .honour-spot[data-rank="1"] .cultivator-name strong {
     font-size: 20px;
   }
 }
@@ -4201,8 +4194,8 @@ html.theme-switching *::after {
     .cultivator-name strong {
       font-size: 16px;
     }
-    .podium-spot .cultivator-name strong,
-    .podium-spot[data-rank="1"] .cultivator-name strong {
+    .honour-spot .cultivator-name strong,
+    .honour-spot[data-rank="1"] .cultivator-name strong {
       font-size: clamp(12px, 3.9vw, 15px);
     }
     .cultivator-name small,
@@ -4214,7 +4207,7 @@ html.theme-switching *::after {
     .cultivator-podium {
       gap: 6px;
     }
-    .cultivator-row.podium-spot {
+    .honour-spot {
       padding-left: 4px;
       padding-right: 4px;
     }
