@@ -4640,3 +4640,30 @@ html.theme-switching *::after {
     }
   }
 }
+/* Admin exercise editor list. */
+@layer components {
+  .admin-exercise-list {
+    margin: 10px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+  .admin-exercise-list li {
+    display: grid;
+    gap: 6px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .admin-exercise-list li.is-hidden .admin-exercise-prompt {
+    text-decoration: line-through;
+    text-decoration-color: var(--muted);
+  }
+  .admin-exercise-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+  }
+  .admin-exercise-prompt {
+    font-size: 16px;
+  }
+}

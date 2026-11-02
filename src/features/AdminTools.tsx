@@ -29,6 +29,9 @@ const WordEditor = dynamic(() => import("./AdminContent").then((module) => modul
 const LessonEditor = dynamic(() => import("./AdminContent").then((module) => module.LessonEditor), {
   loading: () => <p role="status">Đang mở trình sửa bài học…</p>,
 });
+const ExerciseEditor = dynamic(() => import("./AdminContent").then((module) => module.ExerciseEditor), {
+  loading: () => <p role="status">Đang mở trình sửa câu bài tập…</p>,
+});
 
 const areas = [
   {
@@ -38,6 +41,7 @@ const areas = [
     tabs: [
       ["words", "Từ vựng"],
       ["lessons", "Bài & chủ đề"],
+      ["exercises", "Câu bài tập"],
       ["preview", "Xem trước bài tập"],
     ],
   },
@@ -59,6 +63,7 @@ const panels: Record<string, () => ReactNode> = {
   preview: () => <ContentPreview />,
   words: () => <WordEditor />,
   lessons: () => <LessonEditor />,
+  exercises: () => <ExerciseEditor />,
   system: () => <SystemPanel />,
   avatar: () => <AvatarPanel />,
   progress: () => <ProgressPanel />,

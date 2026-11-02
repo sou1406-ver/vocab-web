@@ -178,3 +178,66 @@ test("an admin edits, hides, adds and reverts content that learners then see", a
   await expect((await libraryMeaning(page, "abide by")).getByText("tuân thủ, chấp hành")).toBeVisible();
   await expect(await libraryMeaning(page, `zeta${run}`)).toHaveCount(0);
 });
+
+test("an admin edits authored exercise questions that a learner then practises", async ({
+  page,
+  browser,
+  request,
+}, testInfo) => {
+  test.skip(process.env.FIREBASE_SYNC_EMULATOR_TEST !== "1", "Requires local Firebase emulators.");
+  test.skip(testInfo.project.name !== "desktop", "One run is enough: the flow writes shared emulator data.");
+  test.setTimeout(150000);
+  const run = crypto.randomUUID().slice(0, 6);
+  await signInAsReviewer(page, request, `ex_${run}`);
+  await page.goto("/admin#content");
+  await page.getByRole("tab", { name: "Câu bài tập", exact: true }).click();
+  const panel = page.locator(".admin-panel");
+  const all = panel.locator(".admin-exercise-list > li");
+  // The learner practises fill-in-the-blank questions, so edit those (the list also holds word-form ones).
+  const items = all.filter({ hasText: "Điền chỗ trống" });
+  await expect(items.first()).toBeVisible();
+  const total = await all.count();
+  const hiddenPrompt = (await items.nth(1).locator(".admin-exercise-prompt").textContent())!.trim();
+
+  await items.first().getByRole("button", { name: "Sửa", exact: true }).click();
+  await page.getByLabel("Câu đề (dùng ___ cho chỗ trống) *").fill(`Edited ___ ${run}.`);
+  await page.getByRole("button", { name: "Lưu", exact: true }).click();
+  await expect(page.getByRole("status").filter({ hasText: "Đã lưu câu bài tập." })).toBeVisible();
+  await items.nth(1).getByRole("button", { name: "Ẩn", exact: true }).click();
+  await expect(items.nth(1).getByText("Đã ẩn", { exact: true })).toBeVisible();
+  await page.getByRole("button", { name: "Thêm câu vào bài 1", exact: true }).click();
+  await page.getByLabel("Câu đề (dùng ___ cho chỗ trống) *").fill(`Brand new ___ ${run}.`);
+  await page.getByLabel("Các lựa chọn (cách nhau dấu phẩy)").fill("alpha, beta, gamma");
+  await page.getByRole("button", { name: "Lưu", exact: true }).click();
+  await expect(all).toHaveCount(total + 1);
+  expect((await scanAccessibility(page)).violations).toEqual([]);
+  await page.screenshot({ path: testInfo.outputPath("exercise-editor.png"), fullPage: true });
+
+  const learner = await browser.newContext();
+  const other = await learner.newPage();
+  await other.goto("/books/toeic-600/lessons/1");
+  await other.getByRole("button", { name: /Luyện điền chỗ trống/ }).click();
+  await expect(other).toHaveURL(/\/study$/);
+  const prompts = await other.evaluate(
+    () =>
+      new Promise<string[]>((resolve) => {
+        const open = indexedDB.open("vocab-learn-v2", 1);
+        open.onsuccess = () => {
+          const read = open.result.transaction("snapshots").objectStore("snapshots").get("guest");
+          read.onsuccess = () =>
+            resolve((read.result?.session?.questions ?? []).map((q: { prompt: string }) => q.prompt));
+        };
+      }),
+  );
+  expect(prompts).toContain(`Edited ___ ${run}.`);
+  expect(prompts).toContain(`Brand new ___ ${run}.`);
+  expect(prompts).not.toContain(hiddenPrompt);
+  await learner.close();
+
+  await items.first().getByRole("button", { name: "Hoàn tác", exact: true }).click();
+  await expect(page.getByRole("status").filter({ hasText: "Đã đưa câu về bản gốc." })).toBeVisible();
+  await items.nth(1).getByRole("button", { name: "Hiện lại", exact: true }).click();
+  await expect(page.getByRole("status").filter({ hasText: "Đã hiện lại câu bài tập." })).toBeVisible();
+  await items.last().getByRole("button", { name: "Ẩn", exact: true }).click();
+  await expect(items.last().getByText("Đã ẩn", { exact: true })).toBeVisible();
+});

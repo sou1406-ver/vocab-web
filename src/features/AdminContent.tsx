@@ -1,12 +1,19 @@
 "use client";
-import { useState, type FormEvent } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import { useApp, useAppStore } from "../state/provider";
 import { useCloud } from "../state/cloud-provider";
 import { activeBook, bookById, books, type Book } from "../data/catalog";
-import { appliedEdits, originalOf, type ContentEdit } from "../data/content-edits";
+import {
+  appliedEdits,
+  isCatalogExample,
+  isExerciseQuestion,
+  originalOf,
+  type ContentEdit,
+} from "../data/content-edits";
+import { loadBundledPack } from "../data/cloze";
 import { refreshContentEdits } from "../state/content-sync";
 import { isWord } from "../data/validation";
-import type { Word } from "../domain/types";
+import type { ClozeChoiceQuestion, Word } from "../domain/types";
 
 // Shared save/revert plumbing: writes to Firestore, then re-reads and applies at once in this browser.
 function useEditActions() {
@@ -640,5 +647,334 @@ function RenameRow({
         )}
       </form>
     </li>
+  );
+}
+
+const kindLabels = { "cloze-choice": "Điền chỗ trống", "word-form-choice": "Dạng từ" } as const;
+
+export function ExerciseEditor() {
+  const { data } = useApp();
+  const [bookId, setBookId] = useState(activeBook(data.settings).id);
+  const book = bookById(bookId) ?? activeBook(data.settings);
+  const [lessonId, setLessonId] = useState(book.catalog.lessons[0].id);
+  const [pack, setPack] = useState<{ key: string; questions: ClozeChoiceQuestion[]; error: string }>();
+  const [editing, setEditing] = useState<ClozeChoiceQuestion | "new" | null>(null);
+  const { busy, message, run } = useEditActions();
+  const key = `${book.id}:${lessonId}`;
+  useEffect(() => {
+    const controller = new AbortController();
+    void loadBundledPack(book, lessonId, controller.signal)
+      .then((questions) => {
+        if (!controller.signal.aborted) setPack({ key, questions, error: "" });
+      })
+      .catch((error) => {
+        if (!controller.signal.aborted)
+          setPack({
+            key,
+            questions: [],
+            error: error instanceof Error ? error.message : "Không tải được gói bài tập.",
+          });
+      });
+    return () => controller.abort();
+  }, [book, lessonId, key]);
+  const edits = new Map(
+    appliedEdits()
+      .filter((edit) => edit.bookId === book.id && edit.kind === "exercise" && edit.lessonId === lessonId)
+      .map((edit) => [edit.target, edit]),
+  );
+  const base = pack?.key === key ? pack.questions : [];
+  const rows = [
+    ...base.map((question) => {
+      const edit = edits.get(question.sourceId);
+      const current = edit && isExerciseQuestion(edit.data, question.sourceId) ? edit.data : question;
+      return { question: current, edit, added: false };
+    }),
+    ...[...edits.values()].flatMap((edit) =>
+      !base.some((question) => question.sourceId === edit.target) && isExerciseQuestion(edit.data, edit.target)
+        ? [{ question: edit.data, edit, added: true }]
+        : [],
+    ),
+  ];
+  const words = book.catalog.words.filter((word) => word.lesson === lessonId);
+  const save = (question: ClozeChoiceQuestion, hidden: boolean, done: string) =>
+    run(
+      (api, uid) =>
+        api.saveContentEdit(
+          { kind: "exercise", bookId: book.id, target: question.sourceId, data: question, hidden, lessonId },
+          uid,
+        ),
+      done,
+    );
+  return (
+    <div className="admin-stack">
+      <section className="panel" aria-labelledby="exercise-editor-title">
+        <h2 id="exercise-editor-title">Câu bài tập</h2>
+        <p className="muted">
+          Câu điền chỗ trống và dạng từ biên soạn theo bài. Câu lấy từ ví dụ trong từ vựng có đáp án nhiễu tự sinh khi
+          học, nên chỉ sửa được câu đề.
+        </p>
+        <div className="review-controls">
+          <label>
+            Giáo trình
+            <select
+              value={book.id}
+              onChange={(event) => {
+                setBookId(event.target.value);
+                setLessonId((bookById(event.target.value) ?? book).catalog.lessons[0].id);
+                setEditing(null);
+              }}
+            >
+              {books.map((item) => (
+                <option key={item.id} value={item.id}>
+                  {item.shortTitle}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label>
+            Bài học
+            <select
+              value={lessonId}
+              onChange={(event) => {
+                setLessonId(Number(event.target.value));
+                setEditing(null);
+              }}
+            >
+              {book.catalog.lessons.map((item) => (
+                <option key={item.id} value={item.id}>
+                  Bài {item.id} · {item.title}
+                </option>
+              ))}
+            </select>
+          </label>
+        </div>
+        <div className="admin-presets">
+          <button
+            className="button primary"
+            type="button"
+            disabled={busy || !words.length}
+            onClick={() => setEditing("new")}
+          >
+            Thêm câu vào bài {lessonId}
+          </button>
+        </div>
+        <Notice message={message} />
+      </section>
+      {editing && (
+        <ExerciseForm
+          key={editing === "new" ? `new:${key}` : editing.sourceId}
+          question={editing === "new" ? null : editing}
+          lessonId={lessonId}
+          words={words}
+          busy={busy}
+          onCancel={() => setEditing(null)}
+          onSave={async (question) => {
+            if (await save(question, false, "Đã lưu câu bài tập.")) setEditing(null);
+          }}
+        />
+      )}
+      <section className="panel" aria-labelledby="exercise-list-title">
+        <div className="section-heading">
+          <h2 id="exercise-list-title">Bài {lessonId}</h2>
+          <span className="muted">{rows.length} câu</span>
+        </div>
+        {pack?.key !== key ? (
+          <p role="status">Đang tải gói bài tập…</p>
+        ) : pack.error ? (
+          <p role="alert" className="inline-error">
+            {pack.error}
+          </p>
+        ) : !rows.length ? (
+          <p className="muted">Bài này chưa có câu biên soạn. Có thể thêm câu mới.</p>
+        ) : (
+          <ol className="admin-exercise-list">
+            {rows.map(({ question, edit, added }) => {
+              const word = book.catalog.words.find((item) => item.id === question.wordId);
+              return (
+                <li key={question.sourceId} className={edit?.hidden ? "is-hidden" : undefined}>
+                  <div className="admin-exercise-head">
+                    <span className="status-badge">{kindLabels[question.kind]}</span>
+                    <b lang="en">{word?.text ?? "(từ đã ẩn)"}</b>
+                    {added && <span className="status-badge reviewing">Mới</span>}
+                    {edit && !added && !edit.hidden && <span className="status-badge learning">Đã sửa</span>}
+                    {edit?.hidden && <span className="status-badge">Đã ẩn</span>}
+                  </div>
+                  <p className="admin-exercise-prompt" lang="en">
+                    {question.prompt}
+                  </p>
+                  <p className="muted">
+                    Đáp án: <strong lang="en">{question.answer}</strong>
+                    {isCatalogExample(question.sourceId)
+                      ? " · Đáp án nhiễu tự sinh"
+                      : ` · Lựa chọn: ${question.options.join(" · ")}`}
+                  </p>
+                  <div className="admin-word-actions">
+                    <button className="text-link" type="button" disabled={busy} onClick={() => setEditing(question)}>
+                      Sửa
+                    </button>
+                    {edit?.hidden ? (
+                      <button
+                        className="text-link"
+                        type="button"
+                        disabled={busy}
+                        onClick={() => void save(question, false, "Đã hiện lại câu bài tập.")}
+                      >
+                        Hiện lại
+                      </button>
+                    ) : (
+                      <button
+                        className="text-link"
+                        type="button"
+                        disabled={busy}
+                        onClick={() => void save(question, true, "Đã ẩn câu bài tập.")}
+                      >
+                        Ẩn
+                      </button>
+                    )}
+                    {edit && !added && (
+                      <button
+                        className="text-link"
+                        type="button"
+                        disabled={busy}
+                        onClick={() => void run((api) => api.removeContentEdit(edit.id), "Đã đưa câu về bản gốc.")}
+                      >
+                        Hoàn tác
+                      </button>
+                    )}
+                  </div>
+                </li>
+              );
+            })}
+          </ol>
+        )}
+      </section>
+    </div>
+  );
+}
+
+function ExerciseForm({
+  question,
+  lessonId,
+  words,
+  busy,
+  onCancel,
+  onSave,
+}: {
+  question: ClozeChoiceQuestion | null;
+  lessonId: number;
+  words: Word[];
+  busy: boolean;
+  onCancel: () => void;
+  onSave: (question: ClozeChoiceQuestion) => Promise<void>;
+}) {
+  const example = question ? isCatalogExample(question.sourceId) : false;
+  const [kind, setKind] = useState<ClozeChoiceQuestion["kind"]>(question?.kind ?? "cloze-choice");
+  const [wordId, setWordId] = useState(question?.wordId ?? words[0]?.id ?? "");
+  const [prompt, setPrompt] = useState(question?.prompt ?? "");
+  const [answer, setAnswer] = useState(question?.answer ?? words[0]?.text ?? "");
+  const [options, setOptions] = useState((question?.options ?? []).join(", "));
+  const [error, setError] = useState("");
+  const submit = (event: FormEvent) => {
+    event.preventDefault();
+    const sourceId = question?.sourceId ?? `admin:${lessonId}:${crypto.randomUUID().slice(0, 8)}`;
+    const choices = example ? [] : list(options);
+    const next: ClozeChoiceQuestion = {
+      kind,
+      wordId,
+      prompt: prompt.trim(),
+      answer: answer.trim(),
+      options: example ? [] : choices.includes(answer.trim()) ? choices : [answer.trim(), ...choices],
+      sourceId,
+      sourceVersion: question?.sourceVersion ?? "admin",
+    };
+    if (!isExerciseQuestion(next, sourceId))
+      return setError(
+        example
+          ? "Câu đề cần đúng một chỗ trống ___."
+          : "Cần câu đề có đúng một chỗ trống ___, đáp án và 2–6 lựa chọn khác nhau (gồm cả đáp án).",
+      );
+    setError("");
+    void onSave(next);
+  };
+  return (
+    <form className="panel admin-form-panel" aria-labelledby="exercise-form-title" onSubmit={submit}>
+      <h2 id="exercise-form-title">{question ? "Sửa câu bài tập" : "Thêm câu bài tập"}</h2>
+      <div className="admin-grid">
+        <label className="admin-field">
+          Dạng câu
+          <select
+            className="admin-input"
+            value={kind}
+            disabled={Boolean(question)}
+            onChange={(event) => setKind(event.target.value as ClozeChoiceQuestion["kind"])}
+          >
+            <option value="cloze-choice">Điền chỗ trống</option>
+            <option value="word-form-choice">Dạng từ</option>
+          </select>
+        </label>
+        <label className="admin-field">
+          Từ của bài
+          <select
+            className="admin-input"
+            value={wordId}
+            disabled={example}
+            onChange={(event) => {
+              setWordId(event.target.value);
+              if (!question) setAnswer(words.find((word) => word.id === event.target.value)?.text ?? "");
+            }}
+          >
+            {words.map((word) => (
+              <option key={word.id} value={word.id}>
+                {word.text}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label className="admin-field admin-span">
+          Câu đề (dùng ___ cho chỗ trống) *
+          <textarea
+            className="admin-input"
+            rows={2}
+            lang="en"
+            value={prompt}
+            onChange={(event) => setPrompt(event.target.value)}
+          />
+        </label>
+        <label className="admin-field">
+          Đáp án *
+          <input
+            className="admin-input"
+            lang="en"
+            value={answer}
+            readOnly={example}
+            onChange={(event) => setAnswer(event.target.value)}
+          />
+        </label>
+        {!example && (
+          <label className="admin-field">
+            Các lựa chọn (cách nhau dấu phẩy)
+            <input
+              className="admin-input"
+              lang="en"
+              value={options}
+              onChange={(event) => setOptions(event.target.value)}
+            />
+          </label>
+        )}
+      </div>
+      {error && (
+        <p role="alert" className="inline-error">
+          {error}
+        </p>
+      )}
+      <div className="admin-presets">
+        <button className="button primary" type="submit" disabled={busy}>
+          {busy ? "Đang lưu…" : "Lưu"}
+        </button>
+        <button className="button secondary" type="button" disabled={busy} onClick={onCancel}>
+          Huỷ
+        </button>
+      </div>
+    </form>
   );
 }

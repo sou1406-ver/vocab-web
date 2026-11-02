@@ -151,3 +151,39 @@ describe("exercise edits", () => {
     expect(applyExerciseEdits(book, entry.lessonId, pack)).toEqual([]);
   });
 });
+
+describe("catalog-example exercise sources", () => {
+  it("accept prompt edits without options, since distractors are generated at study time", () => {
+    const word = base.words[0];
+    const sourceId = `catalog:example:${word.id}:0`;
+    const raw = {
+      kind: "cloze-choice",
+      wordId: word.id,
+      prompt: "A ___ here.",
+      answer: word.text,
+      options: [],
+      sourceId,
+      sourceVersion: "x",
+    };
+    expect(
+      readEdit({
+        kind: "exercise",
+        bookId: book.id,
+        target: sourceId,
+        data: raw,
+        hidden: false,
+        lessonId: word.lesson,
+      }),
+    ).not.toBeNull();
+    expect(
+      readEdit({
+        kind: "exercise",
+        bookId: book.id,
+        target: "admin:1:x",
+        data: { ...raw, sourceId: "admin:1:x" },
+        hidden: false,
+        lessonId: word.lesson,
+      }),
+    ).toBeNull();
+  });
+});

@@ -34,8 +34,11 @@ export function fingerprint(value: unknown) {
 const text = (value: unknown, max: number) =>
   typeof value === "string" && value.trim().length > 0 && value.length <= max;
 
+// Catalog-example sources carry no options: their distractors are generated at study time.
+export const isCatalogExample = (sourceId: string) => sourceId.startsWith("catalog:example:");
 export function isExerciseQuestion(value: unknown, sourceId: string): value is ClozeChoiceQuestion {
   const q = record(value);
+  const options = q.options;
   return (
     (q.kind === "cloze-choice" || q.kind === "word-form-choice") &&
     q.sourceId === sourceId &&
@@ -43,12 +46,14 @@ export function isExerciseQuestion(value: unknown, sourceId: string): value is C
     text(q.prompt, 600) &&
     (q.prompt as string).match(/_{3,}/g)?.length === 1 &&
     text(q.answer, 120) &&
-    Array.isArray(q.options) &&
-    q.options.length >= 2 &&
-    q.options.length <= 6 &&
-    q.options.every((option) => text(option, 120)) &&
-    new Set(q.options).size === q.options.length &&
-    q.options.includes(q.answer)
+    Array.isArray(options) &&
+    (isCatalogExample(sourceId)
+      ? q.kind === "cloze-choice" && options.length === 0
+      : options.length >= 2 &&
+        options.length <= 6 &&
+        options.every((option) => text(option, 120)) &&
+        new Set(options).size === options.length &&
+        options.includes(q.answer))
   );
 }
 
