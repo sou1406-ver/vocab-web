@@ -1,5 +1,6 @@
 import { createStore, type StoreApi } from "zustand/vanilla";
 import { readSnapshot, changeSnapshot } from "../data/repository";
+import { validateSnapshot } from "../data/validation";
 import { activeBook, bookOfWord } from "../data/catalog";
 import {
   emptySnapshot,
@@ -38,7 +39,23 @@ function sessionCatalog(data: Snapshot, wordIds: readonly string[]) {
   const owned = wordIds.map((id) => bookOfWord(id)).find((book) => book !== undefined);
   return (owned ?? activeBook(data.settings)).catalog;
 }
-export function createAppStore() {
+export interface SnapshotPersistence {
+  read: (profile: string) => Promise<Snapshot>;
+  change: (reduce: (data: Snapshot) => Snapshot, profile: string) => Promise<Snapshot>;
+}
+const browserPersistence: SnapshotPersistence = { read: readSnapshot, change: changeSnapshot };
+// Keeps one snapshot in memory only: the admin sandbox runs real screens without touching IndexedDB or sync.
+export function memoryPersistence(initial: Snapshot): SnapshotPersistence {
+  let current = validateSnapshot(initial);
+  return {
+    read: async () => current,
+    change: async (reduce) => {
+      current = validateSnapshot({ ...reduce(current), revision: current.revision + 1 });
+      return current;
+    },
+  };
+}
+export function createAppStore(persistence: SnapshotPersistence = browserPersistence) {
   let profileRequest = 0;
   return createStore<AppState>((set, get) => ({
     profileKey: "guest",
@@ -52,7 +69,7 @@ export function createAppStore() {
       const request = ++profileRequest;
       set({ profileKey, ready: false, busy: false, data: emptySnapshot(), error: "" });
       try {
-        const data = await readSnapshot(profileKey);
+        const data = await persistence.read(profileKey);
         if (request === profileRequest) set({ data, ready: true, error: "" });
       } catch (e) {
         if (request === profileRequest)
@@ -65,7 +82,7 @@ export function createAppStore() {
       const profileKey = get().profileKey;
       const request = profileRequest;
       try {
-        const data = await changeSnapshot(reduce, profileKey);
+        const data = await persistence.change(reduce, profileKey);
         if (request !== profileRequest) return false;
         set({ ...(data.revision >= get().data.revision ? { data } : {}), busy: false });
         return true;
@@ -73,7 +90,7 @@ export function createAppStore() {
         if (request !== profileRequest) return false;
         set({ busy: false, error: e instanceof Error ? e.message : "Không lưu được tiến độ. Hãy thử lại." });
         try {
-          const data = await readSnapshot(profileKey);
+          const data = await persistence.read(profileKey);
           if (request === profileRequest) set({ data });
         } catch {
           /* Preserve the last readable state. */

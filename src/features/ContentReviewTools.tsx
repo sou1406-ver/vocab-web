@@ -2,28 +2,15 @@
 import { useEffect, useMemo, useState } from "react";
 import { useApp } from "../state/provider";
 import { activeBook, bookById, books } from "../data/catalog";
-import { makeQuestions, makeRecognitionQuestions, questionAnswerText } from "../domain/learning";
-import { makeBuildQuestions } from "../data/build";
-import { makeSynonymQuestions } from "../data/synonyms";
-import { makeListeningQuestions } from "../data/listening";
-import { makeMatchQuestions } from "../data/match";
-import { exerciseEntry, loadClozeLesson, makeCatalogClozeQuestions, makeWordFormQuestions } from "../data/cloze";
+import { questionAnswerText } from "../domain/learning";
+import { exerciseEntry, loadClozeLesson } from "../data/cloze";
+import {
+  needsAuthoredPack,
+  previewFormats as formats,
+  previewQuestions,
+  type PreviewFormat as Format,
+} from "../data/preview-questions";
 import type { ClozeChoiceQuestion, Question } from "../domain/types";
-
-const formats = [
-  ["recall", "Gõ từ / điền câu"],
-  ["recognition", "Chọn nghĩa / chọn từ"],
-  ["cloze-choice", "Điền chỗ trống · chọn"],
-  ["word-form-choice", "Dạng từ · chọn"],
-  ["word-form", "Dạng từ · gõ"],
-  ["build", "Ghép từ"],
-  ["synonym-choice", "Đồng nghĩa / trái nghĩa"],
-  ["synonym-context", "Gần nghĩa trong câu"],
-  ["match", "Nối từ theo chủ đề"],
-  ["listen-choice", "Nghe · chọn"],
-  ["listen-type", "Nghe · gõ"],
-] as const;
-type Format = (typeof formats)[number][0];
 
 export default function ContentReviewTools() {
   const { data } = useApp();
@@ -52,37 +39,11 @@ export default function ContentReviewTools() {
     return () => controller.abort();
   }, [book, lesson.id, key]);
   const authored = useMemo(() => (pack?.key === key ? pack.questions : []), [pack, key]);
-  const questions = useMemo((): Question[] => {
-    const words = book.catalog.words.filter((word) => word.lesson === lesson.id);
-    const seed = `content-review:${key}:${format}`;
-    switch (format) {
-      case "recall":
-        return makeQuestions(words, book.catalog.words, "practice", seed, {});
-      case "recognition":
-        return makeRecognitionQuestions(words, book.catalog.words, seed, {});
-      case "cloze-choice":
-      case "word-form-choice":
-        return makeCatalogClozeQuestions(
-          authored.filter((q) => q.kind === format),
-          book.catalog,
-          seed,
-          {},
-        );
-      case "word-form":
-        return makeWordFormQuestions(authored, book.catalog.words);
-      case "build":
-        return makeBuildQuestions(words, seed);
-      case "synonym-choice":
-      case "synonym-context":
-        return makeSynonymQuestions(words, book.catalog.words, format, seed, {});
-      case "match":
-        return makeMatchQuestions(book.catalog, lesson.topicId, {}, seed);
-      case "listen-choice":
-      case "listen-type":
-        return makeListeningQuestions(words, book.catalog, format, seed, {});
-    }
-  }, [book, lesson, key, format, authored]);
-  const authoredFormat = format === "cloze-choice" || format === "word-form-choice" || format === "word-form";
+  const questions = useMemo(
+    (): Question[] => previewQuestions(format, book, lesson, authored, `content-review:${key}:${format}`),
+    [book, lesson, key, format, authored],
+  );
+  const authoredFormat = needsAuthoredPack(format);
   const loading = authoredFormat && !!exerciseEntry(book, lesson.id)?.count && pack?.key !== key;
   return (
     <div className="page content-review-page">

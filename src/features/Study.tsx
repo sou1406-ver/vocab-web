@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { bookByVersion, bookOfWord, library } from "../data/catalog";
-import { useApp } from "../state/provider";
+import { useApp, useSandbox } from "../state/provider";
 import { Empty, Icon, ProgressBar, WordContent, Speak } from "../shared/ui";
 import { useWord } from "../app/context";
 import type { Word } from "../domain/types";
@@ -28,10 +28,15 @@ export default function Study() {
   );
 }
 
-function StudySession() {
+export function StudySession() {
   const { data, busy, advance, answer, finish, start, startExercises, change } = useApp();
   const voices = useEnglishVoices();
   const router = useRouter();
+  const sandbox = useSandbox();
+  // The admin sandbox renders this screen in place; a follow-up session stays there instead of opening /study.
+  const openStudy = () => {
+    if (!sandbox) router.push("/study");
+  };
   const inspect = useWord();
   const [input, setInput] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
@@ -83,7 +88,7 @@ function StudySession() {
           topic &&
           (await startExercises((id) => makeMatchQuestions(book.catalog, topic, data.progress, id), session.title))
         )
-          router.push("/study");
+          openStudy();
         return;
       }
       const questions =
@@ -109,10 +114,10 @@ function StudySession() {
             session.returnTo,
           )
         )
-          router.push("/study");
+          openStudy();
         return;
       }
-      if (await start(wrongWords, "practice", "Luyện lại từ vừa sai", session.returnTo)) router.push("/study");
+      if (await start(wrongWords, "practice", "Luyện lại từ vừa sai", session.returnTo)) openStudy();
     };
     return (
       <div className="page result-page">
