@@ -41,3 +41,9 @@ export function useApp() {
   return useStore(store);
 }
 export const useSandbox = () => useContext(SandboxContext);
+// The raw store, for code that must act outside React renders (e.g. applying freshly saved content edits).
+export function useAppStore() {
+  const store = useContext(StoreContext);
+  if (!store) throw new Error("Thiếu AppProvider.");
+  return store;
+}

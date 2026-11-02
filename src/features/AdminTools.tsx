@@ -23,13 +23,23 @@ import { auditFlagLabels, auditLeaderboard, type RawLeaderboardEntry } from "../
 const ContentPreview = dynamic(() => import("./ContentReviewTools"), {
   loading: () => <p role="status">Đang mở nội dung…</p>,
 });
+const WordEditor = dynamic(() => import("./AdminContent").then((module) => module.WordEditor), {
+  loading: () => <p role="status">Đang mở trình sửa từ vựng…</p>,
+});
+const LessonEditor = dynamic(() => import("./AdminContent").then((module) => module.LessonEditor), {
+  loading: () => <p role="status">Đang mở trình sửa bài học…</p>,
+});
 
 const areas = [
   {
     id: "content",
     label: "Kiểm soát nội dung",
     hint: "Xem trước, sửa, thêm và ẩn nội dung học",
-    tabs: [["preview", "Xem trước bài tập"]],
+    tabs: [
+      ["words", "Từ vựng"],
+      ["lessons", "Bài & chủ đề"],
+      ["preview", "Xem trước bài tập"],
+    ],
   },
   {
     id: "features",
@@ -47,6 +57,8 @@ const areas = [
 type Area = (typeof areas)[number]["id"];
 const panels: Record<string, () => ReactNode> = {
   preview: () => <ContentPreview />,
+  words: () => <WordEditor />,
+  lessons: () => <LessonEditor />,
   system: () => <SystemPanel />,
   avatar: () => <AvatarPanel />,
   progress: () => <ProgressPanel />,
@@ -56,7 +68,7 @@ const panels: Record<string, () => ReactNode> = {
 
 export default function AdminTools() {
   const [area, setArea] = useState<Area>("content");
-  const [tabs, setTabs] = useState<Record<Area, string>>({ content: "preview", features: "system" });
+  const [tabs, setTabs] = useState<Record<Area, string>>({ content: "words", features: "system" });
   // #content / #features deep-link to an area, e.g. the old /review address redirects to #content.
   useEffect(() => {
     const fromHash = window.location.hash.slice(1);

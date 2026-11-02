@@ -4517,3 +4517,126 @@ html.theme-switching *::after {
     }
   }
 }
+/* Admin content editor. */
+@layer components {
+  .admin-input {
+    width: 100%;
+    min-height: 44px;
+    padding: 9px 12px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: var(--surface-soft);
+    color: var(--ink);
+    font: inherit;
+    font-weight: 400;
+  }
+  textarea.admin-input {
+    resize: vertical;
+  }
+  .admin-ok {
+    margin-top: 12px;
+    color: var(--green);
+    font-weight: 600;
+  }
+  .admin-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+    margin: 14px 0 18px;
+  }
+  .admin-span {
+    grid-column: 1 / -1;
+  }
+  .admin-repeat {
+    display: grid;
+    gap: 12px;
+    margin: 0 0 18px;
+    padding: 14px 16px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+  }
+  .admin-repeat legend {
+    padding: 0 6px;
+    font-weight: 600;
+  }
+  .admin-repeat > .button {
+    justify-self: start;
+  }
+  .admin-repeat-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;
+    align-items: end;
+    gap: 12px;
+  }
+  .admin-repeat-row--family {
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.6fr) minmax(0, 1.2fr) minmax(0, 1fr) auto;
+  }
+  .admin-repeat-row .text-link {
+    min-height: 44px;
+  }
+  .admin-word-list,
+  .admin-rename-list {
+    margin: 10px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+  .admin-word-list li {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto auto;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .admin-word-list li.is-hidden .admin-word-main {
+    text-decoration: line-through;
+    text-decoration-color: var(--muted);
+  }
+  .admin-word-main {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 6px 10px;
+    min-width: 0;
+  }
+  .admin-word-main b {
+    font-size: 17px;
+  }
+  .admin-word-tags,
+  .admin-word-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .admin-word-actions .text-link {
+    min-height: 40px;
+  }
+  .admin-rename-row {
+    display: grid;
+    grid-template-columns: minmax(110px, 0.6fr) repeat(2, minmax(0, 1fr)) auto auto;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .admin-rename-label {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+    font-weight: 600;
+  }
+}
+@layer responsive {
+  @media (max-width: 760px) {
+    .admin-grid,
+    .admin-repeat-row,
+    .admin-repeat-row--family,
+    .admin-rename-row {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .admin-word-list li {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+}

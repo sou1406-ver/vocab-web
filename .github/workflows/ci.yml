@@ -43,7 +43,7 @@ jobs:
         run: >-
           npx -y firebase-tools@15.34.2 emulators:exec
           --only auth,firestore --project demo-vocab-sync
-          "npx vitest run src/data/sync-emulator.test.ts src/data/usernames-emulator.test.ts"
+          "npx vitest run src/data/sync-emulator.test.ts src/data/usernames-emulator.test.ts src/data/content-edits-emulator.test.ts"
 
   check:
     runs-on: ubuntu-latest
