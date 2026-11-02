@@ -3780,15 +3780,20 @@ html.theme-switching *::after {
   }
   .lesson-card[class*="tone-"] .lesson-number,
   .lesson-number[class*="tone-"] {
-    color: var(--tone);
-    background: var(--tone-bg);
-    font-weight: 600;
+    color: var(--surface);
+    background: var(--tone);
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    box-shadow: 0 3px 10px color-mix(in srgb, var(--tone) 30%, transparent);
   }
   .lesson-card[class*="tone-"] .lesson-card-top .small-label {
     color: var(--tone);
   }
   .lesson-number[class*="tone-"].current {
-    box-shadow: 0 0 0 2px var(--tone);
+    box-shadow:
+      0 0 0 2px var(--surface),
+      0 0 0 4px var(--tone);
   }
   .topic-match-card[class*="tone-"] {
     border-left: 4px solid var(--tone);
