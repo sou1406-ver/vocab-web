@@ -13,6 +13,9 @@ export default defineConfig({
     baseURL: "http://127.0.0.1:5174",
     channel,
     trace: "retain-on-failure",
+    // The production build registers an offline service worker; its own fetches bypass page.route, so specs that
+    // mock or count requests would see the network instead. Offline caching is checked separately.
+    serviceWorkers: "block",
     // Exercise specs represent returning guests; the notice spec overrides this.
     storageState: {
       cookies: [],
