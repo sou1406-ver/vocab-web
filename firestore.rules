@@ -7,6 +7,8 @@ rules_version = '2';
 // usernames/{name}: immutable {uid} reservation; claimed/renamed atomically with profiles.
 // leaderboard/{uid}: username, avatar, learnedCount, version, updatedAt only.
 // Summaries are visible to signed-in users; only their owner can publish/delete.
+// contentEdits/{kind~bookId~target}: admin content overrides layered over the bundled catalog.
+// Anyone may read them (learners fetch over REST); only the contentReviewer claim may write or delete.
 service cloud.firestore {
   match /databases/{database}/documents {
     function owner(uid) { return request.auth != null && request.auth.uid == uid; }
@@ -20,6 +22,19 @@ service cloud.firestore {
         && get(username(get(profile(uid)).data.username)).data.uid == uid;
     }
     function namedOwner(uid) { return owner(uid) && complete(uid); }
+    function reviewer() { return request.auth != null && request.auth.token.contentReviewer == true; }
+    function validContentEdit(id) {
+      let d = request.resource.data;
+      return d.keys().hasAll(['version', 'kind', 'bookId', 'target', 'data', 'hidden', 'updatedAt', 'updatedBy'])
+        && d.keys().hasOnly(['version', 'kind', 'bookId', 'target', 'data', 'hidden', 'lessonId', 'updatedAt', 'updatedBy'])
+        && d.version == 1 && d.kind in ['word', 'lesson', 'topic', 'exercise']
+        && d.bookId is string && d.bookId.matches('^[a-z0-9-]{1,80}$')
+        && d.target is string && d.target.size() > 0 && d.target.size() <= 200
+        && id == d.kind + '~' + d.bookId + '~' + d.target
+        && d.data is string && d.data.size() <= 50000 && d.hidden is bool
+        && (d.kind == 'exercise' ? (d.lessonId is int && d.lessonId > 0) : !d.keys().hasAny(['lessonId']))
+        && d.updatedAt == request.time && d.updatedBy == request.auth.uid;
+    }
     function validProfile(uid) {
       let d = request.resource.data;
       return d.keys().hasAll(['version', 'username', 'hiddenLeaderboard', 'updatedAt'])
@@ -94,9 +109,15 @@ service cloud.firestore {
     }
     match /leaderboard/{uid} {
       allow get: if owner(uid) || (request.auth != null && complete(request.auth.uid));
-      allow list: if request.auth != null && complete(request.auth.uid) && request.query.limit != null && request.query.limit <= 50;
+      allow list: if (request.auth != null && complete(request.auth.uid) && request.query.limit != null && request.query.limit <= 50)
+        || (reviewer() && request.query.limit != null && request.query.limit <= 500);
       allow create, update: if owner(uid) && validCultivator(uid);
       allow delete: if owner(uid) && getAfter(profile(uid)).data.hiddenLeaderboard == true;
+    }
+    match /contentEdits/{id} {
+      allow read: if true;
+      allow create, update: if reviewer() && validContentEdit(id);
+      allow delete: if reviewer();
     }
     match /users/{uid}/sync/state {
       allow read: if namedOwner(uid);
