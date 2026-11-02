@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { activeBook, bookById, books } from "../data/catalog";
 import { useApp } from "../state/provider";
-import { Icon, ProgressBar, Empty } from "../shared/ui";
+import { Icon, ProgressBar, Empty, statusTone, toneClass } from "../shared/ui";
 import { statusOf, makeRecognitionQuestions } from "../domain/learning";
 import { useWord } from "../app/context";
 import { exerciseEntry, loadClozeLesson, makeWordFormQuestions, makeCatalogClozeQuestions } from "../data/cloze";
@@ -336,10 +336,10 @@ export default function Lessons({ bookId, lessonId: id }: { bookId?: string; les
                 <b lang="en">{word.text}</b>
                 <span>{word.meaning}</span>
               </span>
-              <span className="pos">{word.pos}</span>
-              <span className={`status-badge ${data.progress[word.id] ? "started" : ""}`}>
-                {statusOf(data.progress[word.id])}
+              <span className="pos" data-pos={word.pos}>
+                {word.pos}
               </span>
+              <span className={statusTone(data.progress[word.id])}>{statusOf(data.progress[word.id])}</span>
               <Icon name="chevron" size={16} />
             </button>
           ))}
@@ -420,7 +420,11 @@ export default function Lessons({ bookId, lessonId: id }: { bookId?: string; les
           const words = catalog.words.filter((w) => w.lesson === l.id);
           const learned = words.filter((w) => data.progress[w.id]?.tested).length;
           return (
-            <Link className="lesson-card" href={`/books/${book.id}/lessons/${l.id}`} key={l.id}>
+            <Link
+              className={`lesson-card ${toneClass(catalog.topics.findIndex((t) => t.id === l.topicId))}`}
+              href={`/books/${book.id}/lessons/${l.id}`}
+              key={l.id}
+            >
               <div className="lesson-card-top">
                 <span className="lesson-number">{String(l.id).padStart(2, "0")}</span>
                 <span className="small-label">{catalog.topics.find((t) => t.id === l.topicId)?.title}</span>
@@ -449,7 +453,10 @@ export default function Lessons({ bookId, lessonId: id }: { bookId?: string; les
           {catalog.topics
             .filter((item) => topic === "all" || item.id === topic)
             .map((item) => (
-              <div className="panel topic-match-card" key={item.id}>
+              <div
+                className={`panel topic-match-card ${toneClass(catalog.topics.findIndex((t) => t.id === item.id))}`}
+                key={item.id}
+              >
                 <h3>{item.title}</h3>
                 <button
                   className="button secondary"

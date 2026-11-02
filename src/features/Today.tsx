@@ -7,7 +7,7 @@ import { useApp } from "../state/provider";
 import { dayKey, dueIds, introducedToday } from "../domain/learning";
 import { learningStreak } from "../domain/streak";
 import { CultivationCard } from "../components/CultivationCard";
-import { Icon, ProgressBar } from "../shared/ui";
+import { Icon, ProgressBar, toneClass } from "../shared/ui";
 
 export function Today() {
   const { data, start, busy } = useApp();
@@ -141,7 +141,11 @@ export function Today() {
             const count = words.filter((w) => data.progress[w.id]?.tested).length;
             return (
               <Link className="lesson-preview" href={`/books/${book.id}/lessons/${l.id}`} key={l.id}>
-                <span className={`lesson-number ${i === 0 ? "current" : ""}`}>{String(l.id).padStart(2, "0")}</span>
+                <span
+                  className={`lesson-number ${toneClass(catalog.topics.findIndex((t) => t.id === l.topicId))} ${i === 0 ? "current" : ""}`}
+                >
+                  {String(l.id).padStart(2, "0")}
+                </span>
                 <div className="lesson-preview-body">
                   <h3>{l.title}</h3>
                   <span>

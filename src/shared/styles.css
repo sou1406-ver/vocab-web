@@ -3654,3 +3654,159 @@ html.theme-switching *::after {
     }
   }
 }
+/* Colour accents: topic tones, part of speech, learning stage and gentle depth. */
+@layer components {
+  :root {
+    --plum: #6b4a8a;
+    --plum-bg: #f2ecf7;
+    --lift-shadow: 0 12px 28px #263d281a;
+  }
+  :root[data-theme="dark"] {
+    --plum: #d6bff0;
+    --plum-bg: #352a42;
+    --lift-shadow: 0 12px 28px #00000059;
+  }
+  .tone-0 {
+    --tone: var(--green);
+    --tone-bg: var(--soft-green);
+  }
+  .tone-1 {
+    --tone: var(--amber);
+    --tone-bg: var(--amber-bg);
+  }
+  .tone-2 {
+    --tone: var(--blue);
+    --tone-bg: var(--blue-bg);
+  }
+  .tone-3 {
+    --tone: var(--red);
+    --tone-bg: var(--red-bg);
+  }
+  .tone-4 {
+    --tone: var(--plum);
+    --tone-bg: var(--plum-bg);
+  }
+  .lesson-card[class*="tone-"] {
+    border-top: 3px solid var(--tone);
+  }
+  .lesson-card[class*="tone-"] .lesson-number,
+  .lesson-number[class*="tone-"] {
+    color: var(--tone);
+    background: var(--tone-bg);
+    font-weight: 600;
+  }
+  .lesson-card[class*="tone-"] .lesson-card-top .small-label {
+    color: var(--tone);
+  }
+  .lesson-number[class*="tone-"].current {
+    box-shadow: 0 0 0 2px var(--tone);
+  }
+  .topic-match-card[class*="tone-"] {
+    border-left: 4px solid var(--tone);
+  }
+  .pos[data-pos="n"] {
+    color: var(--blue);
+    background: var(--blue-bg);
+  }
+  .pos[data-pos="v"] {
+    color: var(--green);
+    background: var(--soft-green);
+  }
+  .pos[data-pos="adj"] {
+    color: var(--amber);
+    background: var(--amber-bg);
+  }
+  .pos[data-pos="adv"] {
+    color: var(--plum);
+    background: var(--plum-bg);
+  }
+  .pos[data-pos="prep"] {
+    color: var(--red);
+    background: var(--red-bg);
+  }
+  .status-badge.learning {
+    color: var(--amber);
+    background: var(--amber-bg);
+  }
+  .status-badge.reviewing {
+    color: var(--blue);
+    background: var(--blue-bg);
+  }
+  .lesson-card,
+  .vocabulary-card,
+  .topic-match-card {
+    transition:
+      transform var(--motion-enter) var(--ease-responsive),
+      box-shadow var(--motion-enter) var(--ease-responsive),
+      border-color 0.18s;
+  }
+  .lesson-preview {
+    transition: background-color var(--motion-fast);
+  }
+  @media (hover: hover) {
+    .lesson-card:hover,
+    .vocabulary-card:hover,
+    .topic-match-card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--lift-shadow);
+    }
+    .lesson-preview:hover {
+      background: var(--surface-soft);
+    }
+  }
+  .today-page .today-hero {
+    isolation: isolate;
+    background: radial-gradient(120% 140% at 100% 0%, #3d8a6566 0%, transparent 55%),
+      radial-gradient(70% 110% at 0% 100%, #e6edb71c 0%, transparent 60%), var(--hero);
+  }
+  .today-page .today-hero::after {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    right: -70px;
+    bottom: -110px;
+    width: 300px;
+    height: 300px;
+    border: 1px solid #ffffff14;
+    border-radius: 50%;
+    box-shadow:
+      0 0 0 34px #ffffff07,
+      0 0 0 68px #ffffff05;
+    pointer-events: none;
+  }
+  .today-page .goal-circle {
+    box-shadow: 0 0 0 8px #ffffff0d;
+  }
+  .today-hero .hero-button {
+    box-shadow: 0 6px 18px #0000002e;
+    transition:
+      transform var(--motion-fast) var(--ease-responsive),
+      box-shadow var(--motion-fast) var(--ease-responsive);
+  }
+  .today-hero .hero-button:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 10px 24px #00000038;
+  }
+  .streak-icon {
+    box-sizing: content-box;
+    padding: 9px;
+    border-radius: 50%;
+    background: var(--brand-soft);
+  }
+}
+@layer responsive {
+  @media (prefers-reduced-motion: reduce) {
+    .lesson-card,
+    .vocabulary-card,
+    .topic-match-card,
+    .today-hero .hero-button {
+      transition: none;
+    }
+    .lesson-card:hover,
+    .vocabulary-card:hover,
+    .topic-match-card:hover,
+    .today-hero .hero-button:hover:not(:disabled) {
+      transform: none;
+    }
+  }
+}

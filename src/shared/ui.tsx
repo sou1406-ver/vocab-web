@@ -1,6 +1,6 @@
 "use client";
 import { type ReactNode, type RefObject } from "react";
-import type { Word } from "../domain/types";
+import type { Word, WordProgress } from "../domain/types";
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { useApp } from "../state/provider";
@@ -78,6 +78,14 @@ export function Logo({ theme = "light", compact = false }: { theme?: string; com
     </picture>
   );
 }
+// Five calm tones that cycle by topic so neighbouring lessons are easy to tell apart.
+export const toneClass = (index: number) => `tone-${(((index % 5) + 5) % 5).toString()}`;
+// Colours a status badge by learning stage: new, learning, reviewing, stable.
+export function statusTone(progress?: WordProgress) {
+  if (!progress) return "status-badge";
+  if (!progress.tested) return "status-badge learning";
+  return progress.box >= 5 ? "status-badge started" : "status-badge reviewing";
+}
 export function ProgressBar({ value, label }: { value: number; label: string }) {
   return (
     <div
@@ -135,7 +143,9 @@ export function WordContent({ word }: { word: Word }) {
         <Speak text={word.text} />
       </div>
       <div className="word-meta">
-        <span className="pos">{word.pos}</span>
+        <span className="pos" data-pos={word.pos}>
+          {word.pos}
+        </span>
         <span lang="en">{word.ipa}</span>
       </div>
       <p className="word-meaning">{word.meaning}</p>
@@ -156,7 +166,9 @@ export function WordContent({ word }: { word: Word }) {
             {word.family.map((f, i) => (
               <div className="family-row" key={i}>
                 <b lang="en">{f.text}</b>
-                <span className="pos">{f.pos}</span>
+                <span className="pos" data-pos={f.pos}>
+                  {f.pos}
+                </span>
                 <span>{f.meaning}</span>
               </div>
             ))}

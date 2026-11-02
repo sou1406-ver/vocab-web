@@ -10,7 +10,7 @@ import { library, findWords } from "../data/catalog";
 import { useApp } from "../state/provider";
 import { statusOf } from "../domain/learning";
 import { useWord } from "../app/context";
-import { Empty, Icon } from "../shared/ui";
+import { Empty, Icon, statusTone } from "../shared/ui";
 
 export default function Library() {
   const { data, start, busy } = useApp();
@@ -130,7 +130,9 @@ export default function Library() {
                   <span className="small-label">
                     {word.lesson ? `BÀI ${String(word.lesson).padStart(2, "0")}` : "TỪ CỦA BẠN"}
                   </span>
-                  <span className="pos">{word.pos}</span>
+                  <span className="pos" data-pos={word.pos}>
+                    {word.pos}
+                  </span>
                 </div>
                 <h2 lang="en">{word.text}</h2>
                 <span className="vocab-ipa" lang="en">
@@ -138,9 +140,7 @@ export default function Library() {
                 </span>
                 <p>{word.meaning}</p>
                 <div className="vocabulary-card-bottom">
-                  <span className={`status-badge ${data.progress[word.id] ? "started" : ""}`}>
-                    {statusOf(data.progress[word.id])}
-                  </span>
+                  <span className={statusTone(data.progress[word.id])}>{statusOf(data.progress[word.id])}</span>
                   <Icon name="arrow" size={17} />
                 </div>
               </button>

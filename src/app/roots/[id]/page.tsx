@@ -48,7 +48,9 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
             <div className="root-word-heading">
               <div>
                 <h2 lang="en">{word.text}</h2>
-                <span className="pos">{word.pos}</span>
+                <span className="pos" data-pos={word.pos}>
+                  {word.pos}
+                </span>
               </div>
               <RootBookBadge book={word.book} />
             </div>
@@ -68,7 +70,9 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
                   {word.family.map((form, familyIndex) => (
                     <li key={`${form.text}:${familyIndex}`}>
                       <b lang="en">{form.text}</b>
-                      <span className="pos">{form.pos}</span>
+                      <span className="pos" data-pos={form.pos}>
+                        {form.pos}
+                      </span>
                       <span>{form.meaning}</span>
                       <RootBookBadge book={form.book} />
                     </li>

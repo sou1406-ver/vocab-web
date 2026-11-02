@@ -356,7 +356,11 @@ export function StudySession() {
                 question.kind !== "word-form-choice" &&
                 question.kind !== "word-form" &&
                 question.kind !== "build" &&
-                !listening && <span className="pos">{word.pos}</span>}
+                !listening && (
+                  <span className="pos" data-pos={word.pos}>
+                    {word.pos}
+                  </span>
+                )}
             </div>
             {listening && (
               <ListenPrompt
