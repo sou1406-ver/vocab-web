@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "source": "Root set modelled on 60 short reels (Chợ Ngôn Ngữ and similar); explanations written independently. Verify etymology against Wiktionary before release.",
+  "source": "Root set modelled on 73 short reels (Chợ Ngôn Ngữ and similar); explanations written independently. Verify etymology against Wiktionary before release.",
   "affixes": {
     "-a": "đuôi danh từ (Latin số nhiều)",
     "-able": "có thể … (tính từ)",
@@ -20,21 +20,26 @@
     "-atory": "nơi chốn",
     "-ature": "danh từ chỉ trạng thái/kết quả",
     "-avit": "\"ông ấy đã …\" (đuôi động từ Latin)",
+    "-ber": "đuôi tên tháng (Latin)",
     "-e": "e câm cuối từ, không mang nghĩa",
     "-ee": "người được …",
     "-el": "đuôi danh từ",
+    "-enarian": "người ở độ tuổi … (mười năm)",
     "-ence": "danh từ chỉ trạng thái",
     "-ency": "danh từ chỉ xu hướng/trạng thái",
     "-end": "thứ cần được … (danh từ)",
+    "-ennial": "thuộc về năm",
     "-ent": "tính từ; người/vật",
     "-ential": "thuộc về … (tính từ)",
     "-er": "người/vật làm …",
+    "-escence": "quá trình trở nên … (danh từ)",
     "-estic": "có phẩm chất … (tính từ)",
     "-esty": "danh từ chỉ phẩm chất",
     "-et": "nhỏ (đuôi giảm nhẹ)",
     "-ible": "có thể … (biến thể của -able)",
     "-ic": "thuộc về … (tính từ)",
     "-icity": "danh từ chỉ tính chất (từ -ic + -ity)",
+    "-id": "có tính chất … (tính từ)",
     "-ience": "danh từ chỉ trạng thái/tập hợp (biến thể của -ence)",
     "-ification": "sự làm cho … (danh từ)",
     "-ificent": "tạo ra …, có tính … (tính từ)",
@@ -52,6 +57,7 @@
     "-ious": "mang tính … (biến thể của -ous)",
     "-ish": "làm cho … (đuôi động từ)",
     "-it": "đuôi danh từ (từ Latin spiritus)",
+    "-ite": "danh từ chỉ khoáng chất",
     "-itime": "thuộc về … (đuôi tính từ)",
     "-ition": "danh từ chỉ hành động (-it + -ion)",
     "-itive": "có tính chất … (tính từ)",
@@ -71,6 +77,7 @@
     "-se": "đuôi danh từ",
     "-uate": "hậu tố tạo động từ (biến thể của -ate)",
     "-ulous": "có xu hướng … (tính từ)",
+    "-uple": "gấp … lần",
     "-ure": "danh từ chỉ hành động/kết quả",
     "-us": "đuôi danh từ (Latin)",
     "-y": "danh từ chỉ trạng thái/hành động",
@@ -85,7 +92,9 @@
     "aqua-": "nước",
     "as-": "hướng tới (biến thể của ad-)",
     "at-": "hướng tới (biến thể của ad-)",
+    "auto-": "tự mình",
     "be-": "làm cho (nhấn mạnh, quá mức)",
+    "bio-": "sự sống",
     "co-": "cùng nhau",
     "col-": "cùng nhau (biến thể của com-)",
     "com-": "cùng nhau; hoàn toàn",
@@ -107,7 +116,10 @@
     "epi-": "ở trên",
     "equi-": "ngang bằng",
     "ex-": "ra ngoài",
+    "geo-": "trái đất",
     "holo-": "toàn bộ",
+    "homi-": "con người",
+    "il-": "vào trong (biến thể của in-)",
     "im-": "vào trong; không (biến thể của in-)",
     "in-": "vào trong; không (phủ định)",
     "inter-": "ở giữa",
@@ -122,16 +134,21 @@
     "ob-": "hướng về, đối diện",
     "oc-": "chắn phía trước (biến thể của ob-)",
     "of-": "hướng về (biến thể của ob-)",
+    "para-": "bên cạnh",
     "pass-": "đi qua",
     "per-": "xuyên qua",
+    "photo-": "ánh sáng",
     "post-": "phía sau",
     "pre-": "trước",
     "prin-": "đầu tiên (từ Latin primus)",
     "pro-": "về phía trước",
     "re-": "lại; ngược lại, trở về",
+    "retro-": "lùi về sau",
     "se-": "tách riêng ra",
     "sub-": "ở dưới",
+    "sui-": "chính mình",
     "sup-": "từ dưới lên (biến thể của sub-)",
+    "super-": "ở trên, vượt quá",
     "sus-": "từ dưới lên (biến thể của sub-)",
     "sym-": "cùng nhau (biến thể của syn-)",
     "tele-": "xa",
@@ -608,6 +625,23 @@
           ],
           "meaning": "xông vào, ập vào",
           "logic": "phá vỡ để vào trong → xông vào",
+          "family": []
+        },
+        {
+          "text": "ruptible",
+          "pos": "adj",
+          "parts": [
+            {
+              "text": "rupt",
+              "role": "root"
+            },
+            {
+              "text": "-ible",
+              "role": "suffix"
+            }
+          ],
+          "meaning": "dễ vỡ",
+          "logic": "có thể bị làm vỡ → dễ vỡ",
           "family": []
         }
       ]
@@ -2350,6 +2384,44 @@
             "match": "family",
             "lesson": 23
           }
+        },
+        {
+          "text": "retrograde",
+          "pos": "adj",
+          "parts": [
+            {
+              "text": "retro-",
+              "role": "prefix"
+            },
+            {
+              "text": "grad",
+              "role": "root"
+            },
+            {
+              "text": "-e",
+              "role": "suffix"
+            }
+          ],
+          "meaning": "thụt lùi",
+          "logic": "bước lùi về sau → thoái lui",
+          "family": []
+        },
+        {
+          "text": "egress",
+          "pos": "n",
+          "parts": [
+            {
+              "text": "e-",
+              "role": "prefix"
+            },
+            {
+              "text": "gress",
+              "role": "root"
+            }
+          ],
+          "meaning": "lối ra; sự đi ra",
+          "logic": "bước ra ngoài → lối ra",
+          "family": []
         }
       ]
     },
@@ -5765,6 +5837,168 @@
           "meaning": "ảnh ba chiều",
           "logic": "ghi lại toàn bộ (hình ảnh) → ảnh toàn ký",
           "family": []
+        },
+        {
+          "text": "autograph",
+          "pos": "n",
+          "parts": [
+            {
+              "text": "auto-",
+              "role": "prefix"
+            },
+            {
+              "text": "graph",
+              "role": "root"
+            }
+          ],
+          "meaning": "chữ ký (người nổi tiếng)",
+          "logic": "tự tay viết tên mình → chữ ký",
+          "family": []
+        },
+        {
+          "text": "photograph",
+          "pos": "n",
+          "parts": [
+            {
+              "text": "photo-",
+              "role": "prefix"
+            },
+            {
+              "text": "graph",
+              "role": "root"
+            }
+          ],
+          "meaning": "bức ảnh",
+          "logic": "vẽ bằng ánh sáng → ảnh chụp",
+          "family": [
+            {
+              "text": "photograph",
+              "pos": "v",
+              "meaning": "chụp ảnh"
+            },
+            {
+              "text": "photographer",
+              "pos": "n",
+              "meaning": "nhiếp ảnh gia"
+            }
+          ]
+        },
+        {
+          "text": "geography",
+          "pos": "n",
+          "parts": [
+            {
+              "text": "geo-",
+              "role": "prefix"
+            },
+            {
+              "text": "graph",
+              "role": "root"
+            },
+            {
+              "text": "-y",
+              "role": "suffix"
+            }
+          ],
+          "meaning": "địa lý",
+          "logic": "môn ghi chép về trái đất → địa lý",
+          "family": []
+        },
+        {
+          "text": "graphite",
+          "pos": "n",
+          "parts": [
+            {
+              "text": "graph",
+              "role": "root"
+            },
+            {
+              "text": "-ite",
+              "role": "suffix"
+            }
+          ],
+          "meaning": "than chì",
+          "logic": "khoáng chất dùng để viết → than chì (ruột bút chì)",
+          "family": []
+        },
+        {
+          "text": "graphic",
+          "pos": "adj",
+          "parts": [
+            {
+              "text": "graph",
+              "role": "root"
+            },
+            {
+              "text": "-ic",
+              "role": "suffix"
+            }
+          ],
+          "meaning": "thuộc về đồ họa",
+          "logic": "thuộc về hình vẽ → đồ họa",
+          "family": [
+            {
+              "text": "graph",
+              "pos": "n",
+              "meaning": "đồ thị"
+            },
+            {
+              "text": "graphics",
+              "pos": "n",
+              "meaning": "đồ họa"
+            }
+          ]
+        },
+        {
+          "text": "paragraph",
+          "pos": "n",
+          "parts": [
+            {
+              "text": "para-",
+              "role": "prefix"
+            },
+            {
+              "text": "graph",
+              "role": "root"
+            }
+          ],
+          "meaning": "đoạn văn",
+          "logic": "dấu viết bên lề đánh dấu đoạn mới → đoạn văn",
+          "family": []
+        },
+        {
+          "text": "telegraph",
+          "pos": "n",
+          "parts": [
+            {
+              "text": "tele-",
+              "role": "prefix"
+            },
+            {
+              "text": "graph",
+              "role": "root"
+            }
+          ],
+          "meaning": "máy điện báo",
+          "logic": "viết gửi đi xa → điện báo",
+          "family": []
+        },
+        {
+          "text": "monograph",
+          "pos": "n",
+          "parts": [
+            {
+              "text": "mono-",
+              "role": "prefix"
+            },
+            {
+              "text": "graph",
+              "role": "root"
+            }
+          ],
+          "meaning": "chuyên khảo",
+          "logic": "bài viết về một chủ đề duy nhất → chuyên khảo",
+          "family": []
         }
       ]
     },
@@ -7192,6 +7426,743 @@
           }
         }
       ]
+    },
+    {
+      "id": "flu",
+      "forms": ["flu", "flux"],
+      "origin": "Latin fluere, fluxus",
+      "meaning": "chảy",
+      "image": "dòng nước chảy",
+      "words": [
+        {
+          "text": "fluid",
+          "pos": "n",
+          "parts": [
+            {
+              "text": "flu",
+              "role": "root"
+            },
+            {
+              "text": "-id",
+              "role": "suffix"
+            }
+          ],
+          "meaning": "chất lỏng",
+          "logic": "thứ có tính chảy → chất lỏng",
+          "family": [
+            {
+              "text": "fluid",
+              "pos": "adj",
+              "meaning": "lỏng; uyển chuyển"
+            }
+          ]
+        },
+        {
+          "text": "influence",
+          "pos": "n",
+          "parts": [
+            {
+              "text": "in-",
+              "role": "prefix"
+            },
+            {
+              "text": "flu",
+              "role": "root"
+            },
+            {
+              "text": "-ence",
+              "role": "suffix"
+            }
+          ],
+          "meaning": "ảnh hưởng",
+          "logic": "sức mạnh vô hình chảy vào người khác → ảnh hưởng",
+          "family": [
+            {
+              "text": "influence",
+              "pos": "v",
+              "meaning": "ảnh hưởng",
+              "book": {
+                "wordId": "influence-41",
+                "match": "headword",
+                "lesson": 41
+              }
+            },
+            {
+              "text": "influential",
+              "pos": "adj",
+              "meaning": "có ảnh hưởng",
+              "book": {
+                "wordId": "influence-41",
+                "match": "family",
+                "lesson": 41
+              }
+            }
+          ],
+          "book": {
+            "wordId": "influence-41",
+            "match": "headword",
+            "lesson": 41
+          }
+        },
+        {
+          "text": "confluence",
+          "pos": "n",
+          "parts": [
+            {
+              "text": "con-",
+              "role": "prefix"
+            },
+            {
+              "text": "flu",
+              "role": "root"
+            },
+            {
+              "text": "-ence",
+              "role": "suffix"
+            }
+          ],
+          "meaning": "chỗ hợp lưu",
+          "logic": "các dòng chảy cùng nhau → hợp lưu",
+          "family": []
+        },
+        {
+          "text": "affluent",
+          "pos": "adj",
+          "parts": [
+            {
+              "text": "af-",
+              "role": "prefix"
+            },
+            {
+              "text": "flu",
+              "role": "root"
+            },
+            {
+              "text": "-ent",
+              "role": "suffix"
+            }
+          ],
+          "meaning": "giàu có",
+          "logic": "của cải chảy tới mình → sung túc",
+          "family": [
+            {
+              "text": "affluence",
+              "pos": "n",
+              "meaning": "sự giàu có"
+            }
+          ]
+        },
+        {
+          "text": "superfluous",
+          "pos": "adj",
+          "parts": [
+            {
+              "text": "super-",
+              "role": "prefix"
+            },
+            {
+              "text": "flu",
+              "role": "root"
+            },
+            {
+              "text": "-ous",
+              "role": "suffix"
+            }
+          ],
+          "meaning": "thừa, không cần thiết",
+          "logic": "chảy tràn qua miệng → dư thừa",
+          "family": []
+        },
+        {
+          "text": "fluent",
+          "pos": "adj",
+          "parts": [
+            {
+              "text": "flu",
+              "role": "root"
+            },
+            {
+              "text": "-ent",
+              "role": "suffix"
+            }
+          ],
+          "meaning": "trôi chảy, lưu loát",
+          "logic": "lời nói chảy như dòng nước → lưu loát",
+          "family": [
+            {
+              "text": "fluency",
+              "pos": "n",
+              "meaning": "sự lưu loát"
+            }
+          ]
+        },
+        {
+          "text": "flux",
+          "pos": "n",
+          "parts": [
+            {
+              "text": "flux",
+              "role": "root"
+            }
+          ],
+          "meaning": "sự thay đổi liên tục",
+          "logic": "dòng chảy không ngừng → biến động",
+          "family": []
+        },
+        {
+          "text": "influx",
+          "pos": "n",
+          "parts": [
+            {
+              "text": "in-",
+              "role": "prefix"
+            },
+            {
+              "text": "flux",
+              "role": "root"
+            }
+          ],
+          "meaning": "dòng người/vật đổ vào",
+          "logic": "chảy vào trong → làn sóng đổ vào",
+          "family": [],
+          "book": {
+            "wordId": "influx-34",
+            "match": "headword",
+            "lesson": 34
+          }
+        },
+        {
+          "text": "refluent",
+          "pos": "adj",
+          "parts": [
+            {
+              "text": "re-",
+              "role": "prefix"
+            },
+            {
+              "text": "flu",
+              "role": "root"
+            },
+            {
+              "text": "-ent",
+              "role": "suffix"
+            }
+          ],
+          "meaning": "chảy ngược lại",
+          "logic": "chảy về phía sau → (nước) rút",
+          "family": []
+        }
+      ]
+    },
+    {
+      "id": "cid",
+      "forms": ["cid", "cis"],
+      "origin": "Latin caedere, caesus",
+      "meaning": "cắt; giết",
+      "image": "một lưỡi dao cắt đôi sợi dây",
+      "words": [
+        {
+          "text": "decide",
+          "pos": "v",
+          "parts": [
+            {
+              "text": "de-",
+              "role": "prefix"
+            },
+            {
+              "text": "cid",
+              "role": "root"
+            },
+            {
+              "text": "-e",
+              "role": "suffix"
+            }
+          ],
+          "meaning": "quyết định",
+          "logic": "cắt dứt khoát xuống → quyết định",
+          "family": [
+            {
+              "text": "decision",
+              "pos": "n",
+              "meaning": "quyết định",
+              "book": {
+                "wordId": "decision-45",
+                "match": "headword",
+                "lesson": 45
+              }
+            },
+            {
+              "text": "decisive",
+              "pos": "adj",
+              "meaning": "dứt khoát",
+              "book": {
+                "wordId": "decision-45",
+                "match": "family",
+                "lesson": 45
+              }
+            }
+          ],
+          "book": {
+            "wordId": "decision-45",
+            "match": "family",
+            "lesson": 45
+          }
+        },
+        {
+          "text": "suicide",
+          "pos": "n",
+          "parts": [
+            {
+              "text": "sui-",
+              "role": "prefix"
+            },
+            {
+              "text": "cid",
+              "role": "root"
+            },
+            {
+              "text": "-e",
+              "role": "suffix"
+            }
+          ],
+          "meaning": "sự tự sát",
+          "logic": "giết chính mình",
+          "family": []
+        },
+        {
+          "text": "homicide",
+          "pos": "n",
+          "parts": [
+            {
+              "text": "homi-",
+              "role": "prefix"
+            },
+            {
+              "text": "cid",
+              "role": "root"
+            },
+            {
+              "text": "-e",
+              "role": "suffix"
+            }
+          ],
+          "meaning": "tội giết người",
+          "logic": "giết con người → án mạng",
+          "family": []
+        },
+        {
+          "text": "precise",
+          "pos": "adj",
+          "parts": [
+            {
+              "text": "pre-",
+              "role": "prefix"
+            },
+            {
+              "text": "cis",
+              "role": "root"
+            },
+            {
+              "text": "-e",
+              "role": "suffix"
+            }
+          ],
+          "meaning": "chính xác",
+          "logic": "cắt gọn từ trước, không thừa → chính xác",
+          "family": [
+            {
+              "text": "precision",
+              "pos": "n",
+              "meaning": "độ chính xác"
+            }
+          ]
+        },
+        {
+          "text": "concise",
+          "pos": "adj",
+          "parts": [
+            {
+              "text": "con-",
+              "role": "prefix"
+            },
+            {
+              "text": "cis",
+              "role": "root"
+            },
+            {
+              "text": "-e",
+              "role": "suffix"
+            }
+          ],
+          "meaning": "ngắn gọn, súc tích",
+          "logic": "cắt bỏ hết phần thừa → súc tích",
+          "family": []
+        },
+        {
+          "text": "incise",
+          "pos": "v",
+          "parts": [
+            {
+              "text": "in-",
+              "role": "prefix"
+            },
+            {
+              "text": "cis",
+              "role": "root"
+            },
+            {
+              "text": "-e",
+              "role": "suffix"
+            }
+          ],
+          "meaning": "rạch, khắc",
+          "logic": "cắt vào trong → rạch",
+          "family": [
+            {
+              "text": "incision",
+              "pos": "n",
+              "meaning": "vết rạch"
+            }
+          ]
+        },
+        {
+          "text": "excise",
+          "pos": "v",
+          "parts": [
+            {
+              "text": "ex-",
+              "role": "prefix"
+            },
+            {
+              "text": "cis",
+              "role": "root"
+            },
+            {
+              "text": "-e",
+              "role": "suffix"
+            }
+          ],
+          "meaning": "cắt bỏ (khối u, đoạn văn)",
+          "logic": "cắt ra ngoài → cắt bỏ",
+          "family": [
+            {
+              "text": "excision",
+              "pos": "n",
+              "meaning": "sự cắt bỏ"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "luc",
+      "forms": ["luc", "lumin"],
+      "origin": "Latin lux, lucis; lumen, luminis",
+      "meaning": "ánh sáng",
+      "image": "một ngọn đèn tỏa sáng",
+      "words": [
+        {
+          "text": "lucid",
+          "pos": "adj",
+          "parts": [
+            {
+              "text": "luc",
+              "role": "root"
+            },
+            {
+              "text": "-id",
+              "role": "suffix"
+            }
+          ],
+          "meaning": "minh mẫn; rõ ràng",
+          "logic": "được ánh sáng soi rọi → sáng sủa, dễ hiểu",
+          "family": []
+        },
+        {
+          "text": "elucidate",
+          "pos": "v",
+          "parts": [
+            {
+              "text": "e-",
+              "role": "prefix"
+            },
+            {
+              "text": "luc",
+              "role": "root"
+            },
+            {
+              "text": "-id",
+              "role": "suffix"
+            },
+            {
+              "text": "-ate",
+              "role": "suffix"
+            }
+          ],
+          "meaning": "làm sáng tỏ",
+          "logic": "đưa ánh sáng chiếu ra → giải thích rõ",
+          "family": []
+        },
+        {
+          "text": "lucent",
+          "pos": "adj",
+          "parts": [
+            {
+              "text": "luc",
+              "role": "root"
+            },
+            {
+              "text": "-ent",
+              "role": "suffix"
+            }
+          ],
+          "meaning": "sáng, phát sáng",
+          "logic": "đang ở trạng thái tỏa sáng",
+          "family": []
+        },
+        {
+          "text": "translucent",
+          "pos": "adj",
+          "parts": [
+            {
+              "text": "trans-",
+              "role": "prefix"
+            },
+            {
+              "text": "luc",
+              "role": "root"
+            },
+            {
+              "text": "-ent",
+              "role": "suffix"
+            }
+          ],
+          "meaning": "trong mờ",
+          "logic": "ánh sáng xuyên qua (nhưng mờ) → trong mờ",
+          "family": []
+        },
+        {
+          "text": "luminous",
+          "pos": "adj",
+          "parts": [
+            {
+              "text": "lumin",
+              "role": "root"
+            },
+            {
+              "text": "-ous",
+              "role": "suffix"
+            }
+          ],
+          "meaning": "phát sáng, sáng chói",
+          "logic": "đầy ánh sáng → sáng chói",
+          "family": []
+        },
+        {
+          "text": "luminosity",
+          "pos": "n",
+          "parts": [
+            {
+              "text": "lumin",
+              "role": "root"
+            },
+            {
+              "text": "-osity",
+              "role": "suffix"
+            }
+          ],
+          "meaning": "độ sáng",
+          "logic": "tính chất của ánh sáng → độ sáng",
+          "family": []
+        },
+        {
+          "text": "illuminate",
+          "pos": "v",
+          "parts": [
+            {
+              "text": "il-",
+              "role": "prefix"
+            },
+            {
+              "text": "lumin",
+              "role": "root"
+            },
+            {
+              "text": "-ate",
+              "role": "suffix"
+            }
+          ],
+          "meaning": "chiếu sáng; làm sáng tỏ",
+          "logic": "đưa ánh sáng vào trong → chiếu sáng",
+          "family": [
+            {
+              "text": "illumination",
+              "pos": "n",
+              "meaning": "sự chiếu sáng",
+              "book": {
+                "wordId": "illuminate-47",
+                "match": "family",
+                "lesson": 47
+              }
+            }
+          ],
+          "book": {
+            "wordId": "illuminate-47",
+            "match": "headword",
+            "lesson": 47
+          }
+        },
+        {
+          "text": "luminescence",
+          "pos": "n",
+          "parts": [
+            {
+              "text": "lumin",
+              "role": "root"
+            },
+            {
+              "text": "-escence",
+              "role": "suffix"
+            }
+          ],
+          "meaning": "sự phát quang (ánh sáng lạnh)",
+          "logic": "quá trình trở nên sáng (như đom đóm) → phát quang",
+          "family": []
+        }
+      ]
+    },
+    {
+      "id": "sept",
+      "forms": ["sept", "septem", "septuag"],
+      "origin": "Latin septem",
+      "meaning": "bảy",
+      "image": "bảy ngón tay giơ lên",
+      "note": "Lịch La Mã cổ có 10 tháng, September là tháng 7; sau khi thêm tháng 1 và 2 vào đầu năm, nó thành tháng 9.",
+      "words": [
+        {
+          "text": "September",
+          "pos": "n",
+          "parts": [
+            {
+              "text": "septem",
+              "role": "root"
+            },
+            {
+              "text": "-ber",
+              "role": "suffix"
+            }
+          ],
+          "meaning": "tháng Chín",
+          "logic": "tháng thứ bảy của lịch La Mã cổ → nay là tháng 9",
+          "family": []
+        },
+        {
+          "text": "septennial",
+          "pos": "adj",
+          "parts": [
+            {
+              "text": "sept",
+              "role": "root"
+            },
+            {
+              "text": "-ennial",
+              "role": "suffix"
+            }
+          ],
+          "meaning": "bảy năm một lần",
+          "logic": "thuộc về bảy năm → bảy năm một lần",
+          "family": []
+        },
+        {
+          "text": "septet",
+          "pos": "n",
+          "parts": [
+            {
+              "text": "sept",
+              "role": "root"
+            },
+            {
+              "text": "-et",
+              "role": "suffix"
+            }
+          ],
+          "meaning": "nhóm bảy người (nhạc)",
+          "logic": "nhóm nhỏ bảy người → bộ bảy",
+          "family": []
+        },
+        {
+          "text": "septilateral",
+          "pos": "adj",
+          "parts": [
+            {
+              "text": "sept",
+              "role": "root"
+            },
+            {
+              "text": "i",
+              "role": "word"
+            },
+            {
+              "text": "lateral",
+              "role": "word"
+            }
+          ],
+          "meaning": "có bảy cạnh",
+          "logic": "bảy + cạnh → bảy cạnh",
+          "family": []
+        },
+        {
+          "text": "septangle",
+          "pos": "n",
+          "parts": [
+            {
+              "text": "sept",
+              "role": "root"
+            },
+            {
+              "text": "angle",
+              "role": "word"
+            }
+          ],
+          "meaning": "hình bảy góc",
+          "logic": "bảy + góc → hình bảy góc",
+          "family": []
+        },
+        {
+          "text": "septuagenarian",
+          "pos": "n",
+          "parts": [
+            {
+              "text": "septuag",
+              "role": "root"
+            },
+            {
+              "text": "-enarian",
+              "role": "suffix"
+            }
+          ],
+          "meaning": "người 70–79 tuổi",
+          "logic": "người ở tuổi bảy mươi",
+          "family": []
+        },
+        {
+          "text": "septuple",
+          "pos": "adj",
+          "parts": [
+            {
+              "text": "sept",
+              "role": "root"
+            },
+            {
+              "text": "-uple",
+              "role": "suffix"
+            }
+          ],
+          "meaning": "gấp bảy lần",
+          "logic": "gấp bảy lần",
+          "family": []
+        }
+      ]
     }
   ],
   "prefixFamilies": [
@@ -7996,6 +8967,223 @@
           "example": "a golf club in his hands",
           "meaning": "cây gậy golf trong tay anh ấy",
           "logic": "bàn tay nắm bao quanh"
+        }
+      ]
+    },
+    {
+      "word": "by",
+      "core": "ở bên cạnh",
+      "image": "một người đứng cạnh cái cây",
+      "note": "Từ 'bên cạnh' mở ra 3 hướng: đi ngang qua (go by), phụ kèm (byproduct), và dựa vào/thông qua (by car, by doing). Khác 'near': 'by' sát cạnh và ngầm có liên hệ.",
+      "senses": [
+        {
+          "example": "She's standing by that tree.",
+          "meaning": "Cô ấy đứng cạnh cái cây.",
+          "logic": "vị trí sát bên cạnh"
+        },
+        {
+          "example": "The child is standing by his mother.",
+          "meaning": "Đứa bé đứng cạnh mẹ.",
+          "logic": "sát cạnh, có thể đang nắm tay"
+        },
+        {
+          "example": "Come sit by me.",
+          "meaning": "Lại ngồi cạnh tôi.",
+          "logic": "sát cạnh, mang sắc thái thân mật (near chỉ là gần)"
+        },
+        {
+          "example": "stand by somebody",
+          "meaning": "ủng hộ ai",
+          "logic": "luôn ở bên cạnh → ủng hộ"
+        },
+        {
+          "example": "go by the station",
+          "meaning": "đi ngang qua nhà ga",
+          "logic": "di chuyển sát bên cạnh rồi đi tiếp"
+        },
+        {
+          "example": "Come in by the first door on your left.",
+          "meaning": "Vào bằng cửa đầu tiên bên trái.",
+          "logic": "đi qua cửa đó để vào (past = đi lướt qua)"
+        },
+        {
+          "example": "heart bypass surgery",
+          "meaning": "phẫu thuật bắc cầu tim",
+          "logic": "đường đi vòng qua bên cạnh chỗ tắc"
+        },
+        {
+          "example": "byproduct",
+          "meaning": "sản phẩm phụ",
+          "logic": "sinh ra bên cạnh sản phẩm chính"
+        },
+        {
+          "example": "by the way",
+          "meaning": "nhân tiện",
+          "logic": "nói thêm bên lề câu chuyện chính"
+        },
+        {
+          "example": "take a pan by its handle",
+          "meaning": "cầm chảo bằng cán",
+          "logic": "thông qua bộ phận đó để tác động"
+        },
+        {
+          "example": "We came by car.",
+          "meaning": "Chúng tôi đến bằng ô tô.",
+          "logic": "nhờ phương tiện đó để tới nơi"
+        },
+        {
+          "example": "by doing something",
+          "meaning": "bằng cách làm gì",
+          "logic": "thông qua hành động để có kết quả"
+        }
+      ]
+    }
+  ],
+  "coreWords": [
+    {
+      "word": "rule",
+      "core": "kiểm soát",
+      "image": "bàn tay cầm dây điều khiển con rối",
+      "note": "Cả 3 nghĩa đều là kiểm soát: quy tắc kiểm soát hành vi, vua kiểm soát đất nước, tòa kiểm soát kết quả vụ án.",
+      "senses": [
+        {
+          "example": "break / follow the rules",
+          "meaning": "phạm / tuân theo quy tắc",
+          "logic": "điều kiểm soát hành vi → quy tắc"
+        },
+        {
+          "example": "As a rule, I don't eat after 9 p.m.",
+          "meaning": "Thông thường tôi không ăn sau 9 giờ tối.",
+          "logic": "nguyên tắc chung → thường lệ"
+        },
+        {
+          "example": "Many people suffered during his cruel rule.",
+          "meaning": "Nhiều người khổ sở dưới sự cai trị tàn bạo của ông ta.",
+          "logic": "kiểm soát đất nước → sự cai trị"
+        },
+        {
+          "example": "The king ruled the country for 30 years.",
+          "meaning": "Nhà vua trị vì đất nước 30 năm.",
+          "logic": "kiểm soát đất nước → cai trị"
+        },
+        {
+          "example": "The judge ruled that the company was responsible.",
+          "meaning": "Thẩm phán phán quyết công ty phải chịu trách nhiệm.",
+          "logic": "kiểm soát kết quả vụ án → phán quyết"
+        },
+        {
+          "example": "rule out",
+          "meaning": "loại trừ",
+          "logic": "kiểm soát, gạt một khả năng ra ngoài"
+        }
+      ]
+    },
+    {
+      "word": "dramatic",
+      "core": "như kịch: biến đổi mạnh, bất ngờ",
+      "image": "một đường biểu đồ lao dốc đột ngột",
+      "note": "'a dramatic fall in birth rates' không phải 'sụt giảm mang tính kịch nghệ' mà là 'giảm mạnh'.",
+      "senses": [
+        {
+          "example": "dramatic arts",
+          "meaning": "nghệ thuật sân khấu",
+          "logic": "thuộc về kịch"
+        },
+        {
+          "example": "a dramatic story",
+          "meaning": "câu chuyện đầy kịch tính",
+          "logic": "tình tiết gay cấn, bất ngờ như kịch"
+        },
+        {
+          "example": "a dramatic rescue",
+          "meaning": "cuộc giải cứu ngoạn mục",
+          "logic": "gay cấn, nghẹt thở"
+        },
+        {
+          "example": "There was a dramatic fall in birth rates.",
+          "meaning": "Tỷ lệ sinh giảm mạnh.",
+          "logic": "biến động lớn, đột ngột"
+        },
+        {
+          "example": "This year saw a dramatic change.",
+          "meaning": "Năm nay có thay đổi lớn.",
+          "logic": "thay đổi mạnh"
+        },
+        {
+          "example": "dramatically",
+          "meaning": "một cách mạnh mẽ, đáng kể",
+          "logic": "mức độ biến đổi rất lớn"
+        }
+      ]
+    },
+    {
+      "word": "advance",
+      "core": "tiến về phía trước",
+      "image": "một người bước đi theo mũi tên hướng tới trước",
+      "note": "Mọi nghĩa đều là 'về phía trước': về vị trí (tiến bộ), về thời gian (sớm hơn, trả trước).",
+      "senses": [
+        {
+          "example": "scientific advances",
+          "meaning": "những tiến bộ khoa học",
+          "logic": "bước lên phía trước → tiến bộ"
+        },
+        {
+          "example": "We have seen advances in computer technology.",
+          "meaning": "Chúng ta đã thấy nhiều tiến bộ trong công nghệ máy tính.",
+          "logic": "advance in + lĩnh vực"
+        },
+        {
+          "example": "I asked the company for an advance on my salary.",
+          "meaning": "Tôi xin công ty ứng trước lương.",
+          "logic": "tiền đưa ra trước hạn → khoản ứng trước"
+        },
+        {
+          "example": "She can advance my career.",
+          "meaning": "Cô ấy có thể thúc đẩy sự nghiệp của tôi.",
+          "logic": "đẩy về phía trước → thúc đẩy"
+        },
+        {
+          "example": "The meeting was advanced by two hours.",
+          "meaning": "Cuộc họp được dời lên sớm 2 tiếng.",
+          "logic": "đẩy lên trước về thời gian"
+        },
+        {
+          "example": "advance notice / booking / warning",
+          "meaning": "thông báo / đặt chỗ / cảnh báo trước",
+          "logic": "tính từ: trước, sớm"
+        }
+      ]
+    },
+    {
+      "word": "interest",
+      "core": "ở giữa hai bên, liên kết chúng với nhau",
+      "image": "một sợi dây nối giữa người và vật",
+      "note": "Nghĩa 'tiền lãi' có gốc từ chuyện lách luật: cho vay lấy lãi bị cấm, người cho vay gọi đó là khoản bù 'ở giữa' (inter-est) thời gian chờ.",
+      "senses": [
+        {
+          "example": "an interest in music",
+          "meaning": "sự hứng thú với âm nhạc",
+          "logic": "sợi dây vô hình giữa bạn và một thứ → hứng thú"
+        },
+        {
+          "example": "pay interest on a loan",
+          "meaning": "trả lãi khoản vay",
+          "logic": "khoản ở giữa lúc vay và lúc trả → tiền lãi"
+        },
+        {
+          "example": "a 20% interest in the company",
+          "meaning": "20% cổ phần trong công ty",
+          "logic": "phần mình gắn với tài sản → cổ phần"
+        },
+        {
+          "example": "in the public's best interest",
+          "meaning": "vì lợi ích cao nhất của công chúng",
+          "logic": "thứ gắn với tiền bạc và vận mệnh → lợi ích"
+        },
+        {
+          "example": "conflict of interest",
+          "meaning": "xung đột lợi ích",
+          "logic": "lợi ích hai bên chồng nhau"
         }
       ]
     }

@@ -20,6 +20,7 @@ export function findWordRoots(word: Pick<Word, "text" | "family">) {
 
 export const prefixFamilies = rootsContent.prefixFamilies ?? [];
 export const particles = rootsContent.particles ?? [];
+export const coreWords = rootsContent.coreWords ?? [];
 export const prefixFamilyOf = (affix: string) => prefixFamilies.find((family) => family.affix === affix);
 // A root chip outside its own page links only to a root that actually lists the word,
 // so a look-alike spelling (the "sent" in "present") never points at the wrong family.

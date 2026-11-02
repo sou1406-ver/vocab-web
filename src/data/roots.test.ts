@@ -11,16 +11,18 @@ describe("Optional root content", () => {
   it("validates the supplied roots, prefix families and particles without adding expansion words to the catalog", () => {
     const before = JSON.stringify(defaultBook.catalog);
     const content = validateRootsContent(source, ids);
-    expect(content.roots).toHaveLength(40);
+    expect(content.roots).toHaveLength(44);
     expect(content.prefixFamilies?.map((family) => family.affix)).toEqual(["pre-", "sub-"]);
-    expect(content.particles?.map((particle) => particle.word)).toEqual(["off", "on", "in"]);
+    expect(content.particles?.map((particle) => particle.word)).toEqual(["off", "on", "in", "by"]);
+    expect(content.coreWords?.map((word) => word.word)).toEqual(["rule", "dramatic", "advance", "interest"]);
     expect(JSON.stringify(defaultBook.catalog)).toBe(before);
   });
   it("still accepts content without prefix families or particles", () => {
-    const { prefixFamilies, particles, ...older } = structuredClone(source);
+    const { prefixFamilies, particles, coreWords, ...older } = structuredClone(source);
     void prefixFamilies;
     void particles;
-    expect(validateRootsContent(older, ids).roots).toHaveLength(40);
+    void coreWords;
+    expect(validateRootsContent(older, ids).roots).toHaveLength(44);
   });
   it("rejects prefix families with unknown affixes and particles without senses", () => {
     const family = structuredClone(source);
@@ -32,6 +34,9 @@ describe("Optional root content", () => {
     const particle = structuredClone(source);
     particle.particles[0].senses = [];
     expect(() => validateRootsContent(particle, ids)).toThrow(/Invalid particle/);
+    const core = structuredClone(source);
+    core.coreWords[1].word = core.coreWords[0].word;
+    expect(() => validateRootsContent(core, ids)).toThrow(/Duplicate particle/);
   });
   it("links a root chip only to a root that lists the word", () => {
     expect(rootOfPart("dict", "predict")?.id).toBe("dict");

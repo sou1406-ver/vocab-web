@@ -70,10 +70,11 @@ export function validateRootsContent(value, wordIds) {
       family.words.forEach(validateAnalysis);
     }
   }
-  if (value.particles !== undefined) {
-    if (!Array.isArray(value.particles)) throw new Error("Invalid particles");
+  for (const key of ["particles", "coreWords"]) {
+    if (value[key] === undefined) continue;
+    if (!Array.isArray(value[key])) throw new Error(`Invalid ${key}`);
     const words = new Set();
-    for (const particle of value.particles) {
+    for (const particle of value[key]) {
       if (
         !object(particle) ||
         ![particle.word, particle.core, particle.image].every(text) ||

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import { particles, prefixFamilies, roots } from "../../data/roots";
+import { coreWords, particles, prefixFamilies, roots } from "../../data/roots";
 import { affixSlug } from "../../data/affix-slug";
 
 export const metadata: Metadata = { title: "Gốc từ", robots: { index: false, follow: false } };
@@ -58,6 +58,22 @@ export default function Page() {
                 <h3 lang="en">{particle.word}</h3>
                 <p>{particle.core}</p>
                 <span className="muted">{particle.senses.length} cách dùng · Khám phá →</span>
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
+      {coreWords.length > 0 && (
+        <section className="roots-extra" aria-labelledby="core-words-title">
+          <h2 id="core-words-title">
+            Từ đa nghĩa <span className="muted">· {coreWords.length}</span>
+          </h2>
+          <div className="roots-grid">
+            {coreWords.map((word) => (
+              <Link className="panel root-card" href={`/core-words#${word.word}`} key={word.word}>
+                <h3 lang="en">{word.word}</h3>
+                <p>{word.core}</p>
+                <span className="muted">{word.senses.length} cách dùng · Khám phá →</span>
               </Link>
             ))}
           </div>

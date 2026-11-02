@@ -55,4 +55,6 @@ export interface RootsContent {
   roots: RootEntry[];
   prefixFamilies?: PrefixFamily[];
   particles?: Particle[];
+  /** Everyday words with many meanings, explained the same way as particles. */
+  coreWords?: Particle[];
 }
