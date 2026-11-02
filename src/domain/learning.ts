@@ -52,10 +52,11 @@ export function emptySnapshot(): Snapshot {
     legacyArchives: [],
   };
 }
-export function statusOf(progress?: WordProgress) {
+/** `stable` comes from the two-skill rule (`isStable`); without it the legacy single box decides. */
+export function statusOf(progress?: WordProgress, stable?: boolean) {
   if (!progress) return "Chưa học";
   if (!progress.tested) return "Đang học";
-  return progress.box >= 5 ? "Nhớ ổn định" : "Đang ôn";
+  return (stable ?? progress.box >= 5) ? "Nhớ ổn định" : "Đang ôn";
 }
 export function dueIds(snapshot: Snapshot, at = Date.now()) {
   const day = dayKey(at, snapshot.settings.timezone);

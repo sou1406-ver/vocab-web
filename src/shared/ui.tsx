@@ -81,10 +81,10 @@ export function Logo({ theme = "light", compact = false }: { theme?: string; com
 // Five calm tones that cycle by topic so neighbouring lessons are easy to tell apart.
 export const toneClass = (index: number) => `tone-${(((index % 5) + 5) % 5).toString()}`;
 // Colours a status badge by learning stage: new, learning, reviewing, stable.
-export function statusTone(progress?: WordProgress) {
+export function statusTone(progress?: WordProgress, stable?: boolean) {
   if (!progress) return "status-badge";
   if (!progress.tested) return "status-badge learning";
-  return progress.box >= 5 ? "status-badge started" : "status-badge reviewing";
+  return (stable ?? progress.box >= 5) ? "status-badge started" : "status-badge reviewing";
 }
 export function ProgressBar({ value, label }: { value: number; label: string }) {
   return (

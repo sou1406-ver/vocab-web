@@ -8,14 +8,15 @@ import { Input } from "@/components/ui/input";
 import { findArticle } from "./knowledge/articles";
 import { library, findWords } from "../data/catalog";
 import { useApp } from "../state/provider";
-import { statusOf } from "../domain/learning";
 import { useWord } from "../app/context";
-import { Empty, Icon, statusTone } from "../shared/ui";
+import { useWordStatus } from "../shared/use-word-status";
+import { Empty, Icon } from "../shared/ui";
 
 export default function Library() {
   const { data, start, busy } = useApp();
   const router = useRouter();
   const inspect = useWord();
+  const wordStatus = useWordStatus();
   const params = useSearchParams();
   const setParams = (values: Record<string, string>, options?: { replace?: boolean }) => {
     const origin = params.get("from") ?? "";
@@ -140,7 +141,7 @@ export default function Library() {
                 </span>
                 <p>{word.meaning}</p>
                 <div className="vocabulary-card-bottom">
-                  <span className={statusTone(data.progress[word.id])}>{statusOf(data.progress[word.id])}</span>
+                  <span className={wordStatus(word.id).tone}>{wordStatus(word.id).label}</span>
                   <Icon name="arrow" size={17} />
                 </div>
               </button>

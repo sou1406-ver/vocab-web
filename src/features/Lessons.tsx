@@ -4,9 +4,10 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { activeBook, bookById, books } from "../data/catalog";
 import { useApp } from "../state/provider";
-import { Icon, ProgressBar, Empty, statusTone, toneClass } from "../shared/ui";
-import { statusOf, makeRecognitionQuestions } from "../domain/learning";
+import { Icon, ProgressBar, Empty, toneClass } from "../shared/ui";
+import { makeRecognitionQuestions } from "../domain/learning";
 import { useWord } from "../app/context";
+import { useWordStatus } from "../shared/use-word-status";
 import { exerciseEntry, loadClozeLesson, makeWordFormQuestions, makeCatalogClozeQuestions } from "../data/cloze";
 import { makeBuildQuestions } from "../data/build";
 import { makeSynonymQuestions } from "../data/synonyms";
@@ -16,6 +17,7 @@ import { useEnglishVoices } from "../lib/use-english-voices";
 
 export default function Lessons({ bookId, lessonId: id }: { bookId?: string; lessonId?: string }) {
   const { data, start, startExercises, busy, change } = useApp();
+  const wordStatus = useWordStatus();
   // Lesson pages name their book in the URL; the list follows the learner's active book.
   const book = bookById(bookId) ?? activeBook(data.settings);
   const catalog = book.catalog;
@@ -339,7 +341,7 @@ export default function Lessons({ bookId, lessonId: id }: { bookId?: string; les
               <span className="pos" data-pos={word.pos}>
                 {word.pos}
               </span>
-              <span className={statusTone(data.progress[word.id])}>{statusOf(data.progress[word.id])}</span>
+              <span className={wordStatus(word.id).tone}>{wordStatus(word.id).label}</span>
               <Icon name="chevron" size={16} />
             </button>
           ))}

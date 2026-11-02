@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { isStable, planReviews, replaySkills, skillOf, summariseSkills } from "./skills";
-import { INTERVALS, nextDue } from "./learning";
+import { INTERVALS, nextDue, statusOf } from "./learning";
 import type { AnswerEvent } from "./types";
 
 const DAY = 86_400_000;
@@ -172,5 +172,17 @@ describe("two-skill tie-break", () => {
     expect(planReviews(progress, skills, ["w"], firstDue + DAY).due).toEqual([
       { wordId: "w", skill: "recall", dueAt: firstDue },
     ]);
+  });
+  it("labels a word stable only by the two-skill rule when skill history exists", () => {
+    const progress = { box: 5, tested: true } as Parameters<typeof statusOf>[0];
+    expect(statusOf(progress)).toBe("Nhớ ổn định");
+    const states = {
+      recognition: { box: 5, dueAt: 0, correct: 5, incorrect: 0 },
+      recall: { box: 2, dueAt: 0, correct: 1, incorrect: 0 },
+    };
+    expect(statusOf(progress, isStable(states, 5))).toBe("Đang ôn");
+    expect(statusOf(progress, isStable({ ...states, recall: { ...states.recall, box: 5 } }, 5))).toBe("Nhớ ổn định");
+    expect(statusOf(progress, isStable(undefined, 5))).toBe("Nhớ ổn định");
+    expect(statusOf(undefined, true)).toBe("Chưa học");
   });
 });

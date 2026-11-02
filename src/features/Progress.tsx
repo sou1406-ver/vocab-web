@@ -163,7 +163,8 @@ export default function Progress() {
                       <small>{word.meaning}</small>
                     </span>
                     <span className="status-badge">
-                      {statusOf(data.progress[word.id])} · Sai {data.progress[word.id].incorrect} lần
+                      {statusOf(data.progress[word.id], isStable(replayed[word.id], data.progress[word.id].box))} · Sai{" "}
+                      {data.progress[word.id].incorrect} lần
                     </span>
                     <Icon name="chevron" size={16} />
                   </button>
