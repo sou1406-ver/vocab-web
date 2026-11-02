@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import source from "../../content/roots/roots.json";
 import { validateRootsContent } from "../../scripts/lib/roots-content.mjs";
 import { defaultBook } from "./catalog";
-import { findWordRoots, rootOfPart } from "./roots";
+import { findSenseMaps, findWordRoots, rootOfPart } from "./roots";
 import { analyseWordParts } from "./word-parts";
 
 const ids = new Set(defaultBook.catalog.words.map((word) => word.id));
@@ -37,6 +37,19 @@ describe("Optional root content", () => {
     const core = structuredClone(source);
     core.coreWords[1].word = core.coreWords[0].word;
     expect(() => validateRootsContent(core, ids)).toThrow(/Duplicate particle/);
+  });
+  it("finds core words and particles by whole headword or family form", () => {
+    const base = defaultBook.catalog.words[0];
+    expect(findSenseMaps({ ...base, text: "charge", family: [] }).map((match) => match.href)).toEqual([
+      "/core-words#charge",
+    ]);
+    expect(
+      findSenseMaps({ ...base, text: "advanced", family: [{ text: "advance", pos: "v", meaning: "" }] }).map(
+        (match) => match.kind,
+      ),
+    ).toEqual(["core"]);
+    expect(findSenseMaps({ ...base, text: "by", family: [] }).map((match) => match.href)).toEqual(["/particles#by"]);
+    expect(findSenseMaps({ ...base, text: "bypass", family: [] })).toEqual([]);
   });
   it("links a root chip only to a root that lists the word", () => {
     expect(rootOfPart("dict", "predict")?.id).toBe("dict");

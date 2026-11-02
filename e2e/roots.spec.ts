@@ -78,6 +78,17 @@ test("root discovery is off by default while basic decomposition stays available
     "/books/toeic-600/lessons/40",
   );
   await expect(page.getByText("Mở rộng", { exact: true }).first()).toBeVisible();
+  await page.goto("/library?q=charge");
+  await page
+    .locator(".vocabulary-card")
+    .filter({ has: page.getByText("charge", { exact: true }) })
+    .first()
+    .click();
+  await expect(dialog.getByRole("link", { name: /cách dùng của charge/ })).toHaveAttribute(
+    "href",
+    "/core-words#charge",
+  );
+  await page.getByRole("button", { name: "Đóng chi tiết từ", exact: true }).click();
   const snapshot = await readSnapshot(page);
   expect(snapshot.progress).toEqual({});
   expect(snapshot.events).toEqual([]);

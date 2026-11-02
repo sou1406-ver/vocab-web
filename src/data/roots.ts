@@ -1,5 +1,5 @@
 import source from "../../content/roots/roots.json";
-import type { RootsContent } from "../domain/roots";
+import type { Particle, RootsContent } from "../domain/roots";
 import type { Word } from "../domain/types";
 
 export const rootsContent = source as RootsContent;
@@ -30,3 +30,17 @@ export const rootOfPart = (form: string, word: string) =>
       root.forms.some((item) => normalized(item) === normalized(form)) &&
       root.words.some((entry) => normalized(entry.text) === normalized(word)),
   );
+
+export interface SenseMapMatch {
+  kind: "particle" | "core";
+  item: Particle;
+  href: string;
+}
+// Everyday words explained by one core image ("charge", "by"), matched on the headword or a family form.
+export function findSenseMaps(word: Pick<Word, "text" | "family">): SenseMapMatch[] {
+  const names = new Set([word.text, ...word.family.map((form) => form.text)].map(normalized));
+  return [
+    ...coreWords.map((item) => ({ kind: "core" as const, item, href: `/core-words#${item.word}` })),
+    ...particles.map((item) => ({ kind: "particle" as const, item, href: `/particles#${item.word}` })),
+  ].filter((match) => names.has(normalized(match.item.word)));
+}
