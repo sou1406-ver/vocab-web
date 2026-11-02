@@ -2,6 +2,53 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { coreWords, particles, prefixFamilies, roots } from "../../data/roots";
 import { affixSlug } from "../../data/affix-slug";
+import { RootsExplorer } from "../../components/RootsExplorer";
+import { foldText, type RootsCard } from "../../data/roots-search";
+import type { Particle, RootWord } from "../../domain/roots";
+
+const wordText = (words: RootWord[]) =>
+  words.flatMap((word) => [word.text, word.meaning, ...word.family.flatMap((form) => [form.text, form.meaning])]);
+const senseText = (item: Particle) =>
+  [item.word, item.core, ...item.senses.flatMap((sense) => [sense.example, sense.meaning])].join(" ");
+
+const cards: RootsCard[] = [
+  ...roots.map((root) => ({
+    kind: "root" as const,
+    key: root.id,
+    title: root.forms.join(" / "),
+    meaning: root.meaning,
+    href: `/roots/${root.id}`,
+    count: `${root.words.length} từ`,
+    search: foldText([...root.forms, root.meaning, root.origin, ...wordText(root.words)].join(" ")),
+  })),
+  ...prefixFamilies.map((family) => ({
+    kind: "prefix" as const,
+    key: family.affix,
+    title: family.affix,
+    meaning: family.meaning,
+    href: `/affixes/${affixSlug("prefix", family.affix)}`,
+    count: `${family.words.length} từ`,
+    search: foldText([family.affix, family.meaning, ...wordText(family.words)].join(" ")),
+  })),
+  ...particles.map((item) => ({
+    kind: "particle" as const,
+    key: item.word,
+    title: item.word,
+    meaning: item.core,
+    href: `/particles#${item.word}`,
+    count: `${item.senses.length} cách dùng`,
+    search: foldText(senseText(item)),
+  })),
+  ...coreWords.map((item) => ({
+    kind: "core" as const,
+    key: item.word,
+    title: item.word,
+    meaning: item.core,
+    href: `/core-words#${item.word}`,
+    count: `${item.senses.length} cách dùng`,
+    search: foldText(senseText(item)),
+  })),
+];
 
 export const metadata: Metadata = { title: "Gốc từ", robots: { index: false, follow: false } };
 export default function Page() {
@@ -18,67 +65,7 @@ export default function Page() {
       <Link className="text-link roots-affix-link" href="/affixes">
         Xem tiền tố & hậu tố →
       </Link>
-      <div className="roots-grid">
-        {roots.map((root) => (
-          <Link className="panel root-card" href={`/roots/${root.id}`} key={root.id}>
-            <h2 lang="en">{root.forms.join(" / ")}</h2>
-            <p>{root.meaning}</p>
-            <span className="muted">{root.words.length} từ · Khám phá →</span>
-          </Link>
-        ))}
-      </div>
-      {prefixFamilies.length > 0 && (
-        <section className="roots-extra" aria-labelledby="prefix-families-title">
-          <h2 id="prefix-families-title">
-            Họ tiền tố <span className="muted">· {prefixFamilies.length}</span>
-          </h2>
-          <div className="roots-grid">
-            {prefixFamilies.map((family) => (
-              <Link
-                className="panel root-card"
-                href={`/affixes/${affixSlug("prefix", family.affix)}`}
-                key={family.affix}
-              >
-                <h3 lang="en">{family.affix}</h3>
-                <p>{family.meaning}</p>
-                <span className="muted">{family.words.length} từ · Khám phá →</span>
-              </Link>
-            ))}
-          </div>
-        </section>
-      )}
-      {particles.length > 0 && (
-        <section className="roots-extra" aria-labelledby="particles-title">
-          <h2 id="particles-title">
-            Giới từ <span className="muted">· {particles.length}</span>
-          </h2>
-          <div className="roots-grid">
-            {particles.map((particle) => (
-              <Link className="panel root-card" href={`/particles#${particle.word}`} key={particle.word}>
-                <h3 lang="en">{particle.word}</h3>
-                <p>{particle.core}</p>
-                <span className="muted">{particle.senses.length} cách dùng · Khám phá →</span>
-              </Link>
-            ))}
-          </div>
-        </section>
-      )}
-      {coreWords.length > 0 && (
-        <section className="roots-extra" aria-labelledby="core-words-title">
-          <h2 id="core-words-title">
-            Từ đa nghĩa <span className="muted">· {coreWords.length}</span>
-          </h2>
-          <div className="roots-grid">
-            {coreWords.map((word) => (
-              <Link className="panel root-card" href={`/core-words#${word.word}`} key={word.word}>
-                <h3 lang="en">{word.word}</h3>
-                <p>{word.core}</p>
-                <span className="muted">{word.senses.length} cách dùng · Khám phá →</span>
-              </Link>
-            ))}
-          </div>
-        </section>
-      )}
+      <RootsExplorer cards={cards} />
     </div>
   );
 }

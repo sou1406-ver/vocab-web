@@ -1118,6 +1118,18 @@ html.theme-switching *::after {
   .roots-extra {
     margin-top: 40px;
   }
+  .filter-bar + .roots-extra,
+  .roots-empty + .roots-extra {
+    margin-top: 8px;
+  }
+  .filter-chip-count {
+    margin-left: 6px;
+    font-variant-numeric: tabular-nums;
+    font-weight: 600;
+  }
+  .roots-empty {
+    color: var(--muted);
+  }
   .roots-extra > h2 {
     font-size: 22px;
     margin-bottom: 16px;

@@ -21,6 +21,17 @@ test("root discovery is off by default while basic decomposition stays available
   await expect(dialog).toHaveCount(0);
   await page.goto("/roots");
   await expect(page.locator(".root-card")).toHaveCount(cardCount);
+  const search = page.getByRole("searchbox", { name: "Tìm gốc, từ hoặc nghĩa" });
+  await search.fill("keo");
+  await expect(page.locator(".root-card").filter({ hasText: "tract" })).toBeVisible();
+  await expect(page.locator(".root-card").filter({ hasText: "temper" })).toHaveCount(0);
+  await search.fill("zzzz");
+  await expect(page.getByText(/Chưa có mục nào khớp/)).toBeVisible();
+  await page.getByRole("button", { name: "Xoá tìm kiếm" }).click();
+  await page.getByRole("button", { name: /^Giới từ/ }).click();
+  await expect(page.locator(".root-card")).toHaveCount(roots.particles.length);
+  expect((await scanAccessibility(page)).violations).toEqual([]);
+  await page.getByRole("button", { name: "Tất cả", exact: true }).click();
   await page.getByRole("link", { name: /^pre-/ }).click();
   await expect(page.getByRole("heading", { level: 1, name: "pre-" })).toBeVisible();
   await expect(page.getByRole("heading", { name: "predict", exact: true })).toBeVisible();
