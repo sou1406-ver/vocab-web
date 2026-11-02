@@ -33,7 +33,9 @@ export default function Page() {
                 <Link className="panel affix-card" href={`/affixes/${entry.slug}`} key={entry.slug}>
                   <b lang="en">{entry.text}</b>
                   <span>{entry.meaning || "—"}</span>
-                  <small className="muted">{entry.rootWords.length + entry.bookWords.length} từ</small>
+                  <small className="muted">
+                    {entry.rootWords.length + entry.bookWords.length + (entry.family?.words.length ?? 0)} từ
+                  </small>
                 </Link>
               ))}
             </div>

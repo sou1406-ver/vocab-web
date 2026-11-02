@@ -2,16 +2,40 @@ import { describe, expect, it } from "vitest";
 import source from "../../content/roots/roots.json";
 import { validateRootsContent } from "../../scripts/lib/roots-content.mjs";
 import { defaultBook } from "./catalog";
-import { findWordRoots } from "./roots";
+import { findWordRoots, rootOfPart } from "./roots";
 import { analyseWordParts } from "./word-parts";
 
 const ids = new Set(defaultBook.catalog.words.map((word) => word.id));
 
 describe("Optional root content", () => {
-  it("validates the nineteen supplied roots without adding expansion words to the catalog", () => {
+  it("validates the supplied roots, prefix families and particles without adding expansion words to the catalog", () => {
     const before = JSON.stringify(defaultBook.catalog);
-    expect(validateRootsContent(source, ids).roots).toHaveLength(19);
+    const content = validateRootsContent(source, ids);
+    expect(content.roots).toHaveLength(40);
+    expect(content.prefixFamilies?.map((family) => family.affix)).toEqual(["pre-", "sub-"]);
+    expect(content.particles?.map((particle) => particle.word)).toEqual(["off", "on", "in"]);
     expect(JSON.stringify(defaultBook.catalog)).toBe(before);
+  });
+  it("still accepts content without prefix families or particles", () => {
+    const { prefixFamilies, particles, ...older } = structuredClone(source);
+    void prefixFamilies;
+    void particles;
+    expect(validateRootsContent(older, ids).roots).toHaveLength(40);
+  });
+  it("rejects prefix families with unknown affixes and particles without senses", () => {
+    const family = structuredClone(source);
+    family.prefixFamilies[0].affix = "zz-";
+    expect(() => validateRootsContent(family, ids)).toThrow(/Invalid prefix family/);
+    const familyWord = structuredClone(source);
+    familyWord.prefixFamilies[0].words[0].parts.push({ text: "-missing", role: "suffix" });
+    expect(() => validateRootsContent(familyWord, ids)).toThrow(/Unknown affix/);
+    const particle = structuredClone(source);
+    particle.particles[0].senses = [];
+    expect(() => validateRootsContent(particle, ids)).toThrow(/Invalid particle/);
+  });
+  it("links a root chip only to a root that lists the word", () => {
+    expect(rootOfPart("dict", "predict")?.id).toBe("dict");
+    expect(rootOfPart("sent", "present")).toBeUndefined();
   });
   it("rejects repeated root IDs, missing affixes and unknown book word IDs including family links", () => {
     const duplicate = structuredClone(source);

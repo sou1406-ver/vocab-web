@@ -2,10 +2,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { Lightbulb } from "lucide-react";
-import { roots, rootById, rootsContent } from "../../../data/roots";
-import { PartChips } from "../../../components/PartChips";
-import { affixHref } from "../../../data/affixes";
-import { RootBookBadge } from "../../../components/RootBookBadge";
+import { roots, rootById } from "../../../data/roots";
+import { RootWordCard } from "../../../components/RootWordCard";
 
 export function generateStaticParams() {
   return roots.map((root) => ({ id: root.id }));
@@ -45,44 +43,7 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
       {root.note && <p className="quiet-note">{root.note}</p>}
       <div className="root-word-list">
         {root.words.map((word, index) => (
-          <article className="panel root-word" key={`${word.text}:${index}`}>
-            <div className="root-word-heading">
-              <div>
-                <h2 lang="en">{word.text}</h2>
-                <span className="pos" data-pos={word.pos}>
-                  {word.pos}
-                </span>
-              </div>
-              <RootBookBadge book={word.book} />
-            </div>
-            <p className="root-word-meaning">{word.meaning}</p>
-            <PartChips
-              label={word.text}
-              parts={word.parts.map((part) => ({
-                ...part,
-                meaning: part.role === "root" ? root.meaning : rootsContent.affixes[part.text],
-                href: part.role === "root" ? undefined : affixHref(part.role, part.text),
-              }))}
-            />
-            <p className="root-logic">{word.logic}</p>
-            {word.family.length > 0 && (
-              <section className="root-word-family" aria-label={`Họ từ của ${word.text}`}>
-                <h3>Họ từ</h3>
-                <ul>
-                  {word.family.map((form, familyIndex) => (
-                    <li key={`${form.text}:${familyIndex}`}>
-                      <b lang="en">{form.text}</b>
-                      <span className="pos" data-pos={form.pos}>
-                        {form.pos}
-                      </span>
-                      <span>{form.meaning}</span>
-                      <RootBookBadge book={form.book} />
-                    </li>
-                  ))}
-                </ul>
-              </section>
-            )}
-          </article>
+          <RootWordCard word={word} root={root} key={`${word.text}:${index}`} />
         ))}
       </div>
     </div>

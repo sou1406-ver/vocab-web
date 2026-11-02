@@ -1,7 +1,9 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
+import { Lightbulb } from "lucide-react";
 import { affixBySlug, affixes } from "../../../data/affixes";
+import { RootWordCard } from "../../../components/RootWordCard";
 
 export function generateStaticParams() {
   return affixes().map((entry) => ({ slug: entry.slug }));
@@ -32,6 +34,26 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
           <p className="page-subtitle">{entry.meaning || "Chưa có ghi chú nghĩa cho phụ tố này."}</p>
         </div>
       </div>
+      {entry.family && (
+        <section className="affix-family" aria-labelledby="affix-family-title">
+          <div className="panel root-core-image">
+            <Lightbulb aria-hidden="true" size={32} />
+            <div>
+              <h2 id="affix-family-title">Hình ảnh cốt lõi</h2>
+              <p>{entry.family.image}</p>
+            </div>
+          </div>
+          <p className="affix-family-meaning">
+            <strong lang="en">{entry.text}</strong> = {entry.family.meaning}
+          </p>
+          {entry.family.note && <p className="quiet-note">{entry.family.note}</p>}
+          <div className="root-word-list">
+            {entry.family.words.map((word, index) => (
+              <RootWordCard word={word} key={`${word.text}:${index}`} />
+            ))}
+          </div>
+        </section>
+      )}
       {entry.rootWords.length > 0 && (
         <section className="panel affix-section" aria-labelledby="affix-roots-title">
           <div className="section-heading">

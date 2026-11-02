@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import { roots } from "../../data/roots";
+import { particles, prefixFamilies, roots } from "../../data/roots";
+import { affixSlug } from "../../data/affix-slug";
 
 export const metadata: Metadata = { title: "Gốc từ", robots: { index: false, follow: false } };
 export default function Page() {
@@ -26,6 +27,42 @@ export default function Page() {
           </Link>
         ))}
       </div>
+      {prefixFamilies.length > 0 && (
+        <section className="roots-extra" aria-labelledby="prefix-families-title">
+          <h2 id="prefix-families-title">
+            Họ tiền tố <span className="muted">· {prefixFamilies.length}</span>
+          </h2>
+          <div className="roots-grid">
+            {prefixFamilies.map((family) => (
+              <Link
+                className="panel root-card"
+                href={`/affixes/${affixSlug("prefix", family.affix)}`}
+                key={family.affix}
+              >
+                <h3 lang="en">{family.affix}</h3>
+                <p>{family.meaning}</p>
+                <span className="muted">{family.words.length} từ · Khám phá →</span>
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
+      {particles.length > 0 && (
+        <section className="roots-extra" aria-labelledby="particles-title">
+          <h2 id="particles-title">
+            Giới từ <span className="muted">· {particles.length}</span>
+          </h2>
+          <div className="roots-grid">
+            {particles.map((particle) => (
+              <Link className="panel root-card" href={`/particles#${particle.word}`} key={particle.word}>
+                <h3 lang="en">{particle.word}</h3>
+                <p>{particle.core}</p>
+                <span className="muted">{particle.senses.length} cách dùng · Khám phá →</span>
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
     </div>
   );
 }

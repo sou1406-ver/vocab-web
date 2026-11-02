@@ -17,7 +17,21 @@ test("root discovery is off by default while basic decomposition stays available
   await page.getByRole("button", { name: "Đóng chi tiết từ", exact: true }).click();
   await expect(dialog).toHaveCount(0);
   await page.goto("/roots");
-  await expect(page.locator(".root-card")).toHaveCount(19);
+  await expect(page.locator(".root-card")).toHaveCount(45);
+  await page.getByRole("link", { name: /^pre-/ }).click();
+  await expect(page.getByRole("heading", { level: 1, name: "pre-" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "predict", exact: true })).toBeVisible();
+  await expect(
+    page.locator(".root-word").filter({ hasText: "predict" }).getByRole("link", { name: /dict/ }),
+  ).toHaveAttribute("href", "/roots/dict");
+  expect((await scanAccessibility(page)).violations).toEqual([]);
+  await page.goto("/particles");
+  await expect(page.locator(".particle")).toHaveCount(3);
+  await page.getByRole("navigation", { name: "Chọn giới từ" }).getByRole("link", { name: "off", exact: true }).click();
+  await expect(page).toHaveURL(/#off$/);
+  expect((await scanAccessibility(page)).violations).toEqual([]);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  await page.screenshot({ path: testInfo.outputPath("particles.png"), fullPage: true });
   await page.goto("/settings");
   const setting = page.getByRole("checkbox", { name: "Học sâu: gốc từ", exact: true });
   await expect(setting).not.toBeChecked();

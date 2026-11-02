@@ -19,6 +19,21 @@ export function validateRootsContent(value, wordIds) {
         throw new Error(`Unknown book word: ${word.book?.wordId}`);
     }
   };
+  const validateAnalysis = (word) => {
+    validateWord(word);
+    if (!text(word.logic) || !Array.isArray(word.parts) || !word.parts.length || !Array.isArray(word.family))
+      throw new Error(`Invalid analysis for ${word.text}`);
+    for (const part of word.parts) {
+      if (!object(part) || !text(part.text) || !["prefix", "root", "suffix", "word"].includes(part.role))
+        throw new Error(`Invalid part for ${word.text}`);
+      if (
+        (["prefix", "suffix"].includes(part.role) || part.text.startsWith("-") || part.text.endsWith("-")) &&
+        !Object.hasOwn(value.affixes, part.text)
+      )
+        throw new Error(`Unknown affix ${part.text} in ${word.text}`);
+    }
+    word.family.forEach(validateWord);
+  };
   for (const root of value.roots) {
     if (!object(root) || !text(root.id) || !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(root.id))
       throw new Error("Invalid root id");
@@ -34,20 +49,43 @@ export function validateRootsContent(value, wordIds) {
       (root.note !== undefined && !text(root.note))
     )
       throw new Error(`Invalid root: ${root.id}`);
-    for (const word of root.words) {
-      validateWord(word);
-      if (!text(word.logic) || !Array.isArray(word.parts) || !word.parts.length || !Array.isArray(word.family))
-        throw new Error(`Invalid analysis for ${word.text}`);
-      for (const part of word.parts) {
-        if (!object(part) || !text(part.text) || !["prefix", "root", "suffix", "word"].includes(part.role))
-          throw new Error(`Invalid part for ${word.text}`);
-        if (
-          (["prefix", "suffix"].includes(part.role) || part.text.startsWith("-") || part.text.endsWith("-")) &&
-          !Object.hasOwn(value.affixes, part.text)
-        )
-          throw new Error(`Unknown affix ${part.text} in ${word.text}`);
-      }
-      word.family.forEach(validateWord);
+    root.words.forEach(validateAnalysis);
+  }
+  if (value.prefixFamilies !== undefined) {
+    if (!Array.isArray(value.prefixFamilies)) throw new Error("Invalid prefix families");
+    const affixes = new Set();
+    for (const family of value.prefixFamilies) {
+      if (
+        !object(family) ||
+        ![family.affix, family.meaning, family.image].every(text) ||
+        !family.affix.endsWith("-") ||
+        !Object.hasOwn(value.affixes, family.affix) ||
+        (family.note !== undefined && !text(family.note)) ||
+        !Array.isArray(family.words) ||
+        !family.words.length
+      )
+        throw new Error(`Invalid prefix family: ${family?.affix}`);
+      if (affixes.has(family.affix)) throw new Error(`Duplicate prefix family: ${family.affix}`);
+      affixes.add(family.affix);
+      family.words.forEach(validateAnalysis);
+    }
+  }
+  if (value.particles !== undefined) {
+    if (!Array.isArray(value.particles)) throw new Error("Invalid particles");
+    const words = new Set();
+    for (const particle of value.particles) {
+      if (
+        !object(particle) ||
+        ![particle.word, particle.core, particle.image].every(text) ||
+        !/^[a-z]+(?: [a-z]+)*$/.test(particle.word) ||
+        (particle.note !== undefined && !text(particle.note)) ||
+        !Array.isArray(particle.senses) ||
+        !particle.senses.length ||
+        !particle.senses.every((sense) => object(sense) && [sense.example, sense.meaning, sense.logic].every(text))
+      )
+        throw new Error(`Invalid particle: ${particle?.word}`);
+      if (words.has(particle.word)) throw new Error(`Duplicate particle: ${particle.word}`);
+      words.add(particle.word);
     }
   }
   return /** @type {import("../../src/domain/roots").RootsContent} */ (value);

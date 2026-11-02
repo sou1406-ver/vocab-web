@@ -1,7 +1,8 @@
 import { library } from "./catalog";
-import { roots, rootsContent } from "./roots";
+import { prefixFamilies, roots, rootsContent } from "./roots";
 import { analyseWordParts } from "./word-parts";
 import { affixSlug, bareAffix as bare, isAffixRole, type AffixRole } from "./affix-slug";
+import type { PrefixFamily } from "../domain/roots";
 
 export { affixSlug, type AffixRole };
 export interface AffixRootWord {
@@ -26,6 +27,8 @@ export interface AffixEntry {
   meaning: string;
   rootWords: AffixRootWord[];
   bookWords: AffixBookWord[];
+  /** Hand-picked words built on this prefix, with their analysis. */
+  family?: PrefixFamily;
 }
 
 const display = (role: AffixRole, text: string) => (role === "prefix" ? `${bare(text)}-` : `-${bare(text)}`);
@@ -58,6 +61,10 @@ function build() {
             meaning: word.meaning,
           });
       }
+  for (const family of prefixFamilies) {
+    const found = entry("prefix", family.affix, family.meaning);
+    if (found) found.family = family;
+  }
   for (const book of library.books)
     for (const word of book.catalog.words)
       for (const form of analyseWordParts(word))
