@@ -112,7 +112,7 @@ test("React Bits save indicator follows actual save, failure and recovery withou
   ]) {
     await expect(page.locator(selector).first(), selector).toHaveCSS("color", "rgb(244, 246, 239)");
   }
-  await expect(page.locator("body")).toHaveCSS("background-color", "rgb(14, 21, 18)");
+  await expect(page.locator("body")).toHaveCSS("background-color", "rgb(11, 17, 14)");
   await expect(mark).toHaveAttribute("data-status", "done");
   expect((await scanAccessibility(page)).violations).toEqual([]);
   await page.screenshot({ path: testInfo.outputPath("status-mark-dark.png") });
