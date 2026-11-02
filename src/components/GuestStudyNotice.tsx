@@ -12,6 +12,11 @@ export function GuestStudyNotice({ children }: { children: ReactNode }) {
   const [acknowledged, setAcknowledged] = useState<boolean | null>(null);
   useEffect(() => setAcknowledged(hasAcknowledgedGuestNotice()), []);
   const active = data.session && data.session.phase !== "complete";
+  const showsLogin = Boolean(active) && profileKey === "guest" && ready && acknowledged === false;
+  const { prepare } = cloud;
+  useEffect(() => {
+    if (showsLogin) prepare();
+  }, [showsLogin, prepare]);
   if (!active || profileKey !== "guest") return children;
   if (!ready || acknowledged === null)
     return (

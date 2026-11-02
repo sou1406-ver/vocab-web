@@ -21,6 +21,10 @@ export function AccountMenu() {
   const hovered = useRef(false);
   const id = useId();
   const disabled = cloud.loading || cloud.working || busy || !ready;
+  const { prepare, user } = cloud;
+  useEffect(() => {
+    if (open && !user) prepare();
+  }, [open, user, prepare]);
   useEffect(() => {
     if (!open) return;
     const outside = (event: PointerEvent) => {

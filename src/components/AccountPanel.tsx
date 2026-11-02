@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useCloud } from "../state/cloud-provider";
 import { useApp } from "../state/provider";
 import StatusMark from "./react-bits/StatusMark";
@@ -18,6 +18,10 @@ export function AccountPanel() {
   const { ready, busy, data } = useApp();
   const [exportedRevision, setExportedRevision] = useState<number>();
   const disabled = cloud.loading || cloud.working || busy || !ready;
+  const { prepare, user } = cloud;
+  useEffect(() => {
+    if (!user) prepare();
+  }, [user, prepare]);
   const exportConflict = () => {
     const url = URL.createObjectURL(
       new Blob([JSON.stringify({ app: "VocabLearn-v2", exportedAt: new Date().toISOString(), data })], {

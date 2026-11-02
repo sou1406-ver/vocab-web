@@ -26,6 +26,10 @@ export default function Leaderboard() {
   const uid = cloud.user?.uid;
   const [connection, setConnection] = useState<Connection>(initial);
   const [attempt, setAttempt] = useState(0);
+  const { prepare } = cloud;
+  useEffect(() => {
+    if (!uid) prepare();
+  }, [uid, prepare]);
   useEffect(() => {
     let active = true;
     const subscriptions: (() => void)[] = [];
