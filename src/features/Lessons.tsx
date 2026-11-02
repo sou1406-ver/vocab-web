@@ -44,7 +44,7 @@ export default function Lessons({ bookId, lessonId: id }: { bookId?: string; les
   if (id && !lesson)
     return (
       <div className="page">
-        <Empty title="Không tìm thấy bài này">
+        <Empty as="h1" title="Không tìm thấy bài này">
           <Link className="button primary" href="/lessons">
             Về danh sách bài
           </Link>

@@ -56,7 +56,7 @@ function StudySession() {
   if (!session)
     return (
       <div className="page">
-        <Empty title="Bắt đầu một lượt học nhỏ">
+        <Empty as="h1" title="Bắt đầu một lượt học nhỏ">
           <p>Chọn bài hoặc mở Hôm nay để tìm lượt học phù hợp.</p>
           <Link className="button primary" href="/">
             Về Hôm nay <Icon name="arrow" />
@@ -180,7 +180,7 @@ function StudySession() {
   if (!bookByVersion(session.contentVersion))
     return (
       <div className="page">
-        <Empty title="Nội dung bài học đã cập nhật">
+        <Empty as="h1" title="Nội dung bài học đã cập nhật">
           <p>Kết quả đã trả lời vẫn được giữ. Kết thúc lượt cũ rồi bắt đầu lượt mới để học nội dung hiện tại.</p>
           <button className="button primary" onClick={() => void finish()}>
             Giữ kết quả và kết thúc lượt
@@ -194,7 +194,7 @@ function StudySession() {
   if (!word)
     return (
       <div className="page">
-        <Empty title="Không tìm thấy từ của lượt này">
+        <Empty as="h1" title="Không tìm thấy từ của lượt này">
           <p>Kết quả đã trả lời vẫn được giữ.</p>
           <button className="button primary" onClick={() => void finish()}>
             Kết thúc lượt

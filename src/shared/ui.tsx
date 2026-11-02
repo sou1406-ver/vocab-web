@@ -92,13 +92,22 @@ export function ProgressBar({ value, label }: { value: number; label: string }) 
     </div>
   );
 }
-export function Empty({ title, children }: { title: string; children?: ReactNode }) {
+export function Empty({
+  title,
+  children,
+  as: Heading = "h2",
+}: {
+  title: string;
+  children?: ReactNode;
+  /** Use "h1" when the empty state is the whole page. */
+  as?: "h1" | "h2";
+}) {
   return (
     <div className="empty-state">
       <span className="empty-icon">
         <Icon name="leaf" size={28} />
       </span>
-      <h2>{title}</h2>
+      <Heading className="empty-title">{title}</Heading>
       {children}
     </div>
   );
