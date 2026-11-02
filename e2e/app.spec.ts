@@ -157,6 +157,8 @@ test("overdue backlog stays visible after ending a short review batch", async ({
   await expect(page.getByText("43 từ cần ôn", { exact: true })).toBeVisible();
   await page.getByRole("button", { name: "Bắt đầu học", exact: true }).click();
   await expect(page.locator(".study-counter")).toHaveText("1 / 20");
+  // Legacy words with no skill history review recall first.
+  await expect(page.locator(".skill-tag")).toHaveText("Tự nhớ");
   await page.getByRole("button", { name: "Chưa nhớ, xem đáp án" }).click();
   await page.getByRole("button", { name: "Kết thúc tại đây" }).click();
   await waitForResult(page);

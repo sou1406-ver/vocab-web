@@ -21,6 +21,7 @@ import StatusMark from "../components/react-bits/StatusMark";
 import { GuestStudyNotice } from "../components/GuestStudyNotice";
 import { CHOICE_KINDS, studyShortcut } from "../domain/study-shortcuts";
 import { speak } from "../lib/speech";
+import { skillLabels, skillOf } from "../domain/skills";
 
 export default function Study() {
   return (
@@ -237,6 +238,8 @@ export function StudySession() {
   const synonymMatch =
     question.kind === "synonym-context" ? singleWordMatch(question.prompt, question.target ?? word.text) : null;
   const listening = question.kind === "listen-choice" || question.kind === "listen-type";
+  // Reviews schedule recognition and recall separately, so say which one this question trains.
+  const reviewSkill = session.mode === "review" && session.phase !== "learn" ? skillOf(question.kind) : null;
   const cannotHear = listening && !voices.length;
   const typed =
     question.kind === "cloze" ||
@@ -279,6 +282,19 @@ export function StudySession() {
             : session.mode === "review"
               ? "GẶP LẠI ĐỂ NHỚ LÂU"
               : "THÊM MỘT LẦN LUYỆN"}
+          {reviewSkill && (
+            <span
+              className="skill-tag"
+              data-skill={reviewSkill}
+              title={
+                reviewSkill === "recognition"
+                  ? "Câu này ôn kỹ năng nhận ra từ (chọn đáp án)."
+                  : "Câu này ôn kỹ năng tự nhớ ra từ (gõ đáp án)."
+              }
+            >
+              {skillLabels[reviewSkill]}
+            </span>
+          )}
         </p>
         <h1 tabIndex={-1}>
           {session.phase === "learn"
