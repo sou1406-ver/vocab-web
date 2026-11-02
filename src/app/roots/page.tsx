@@ -61,7 +61,9 @@ export default function Page() {
           <p className="page-subtitle">{roots.length} gốc từ — nhìn những từ quen thuộc từ một góc khác.</p>
         </div>
       </div>
-      <p className="roots-intro muted">Kho mở rộng để tham khảo, chưa tính vào tiến độ và chưa có bài tập riêng.</p>
+      <p className="roots-intro muted">
+        Kho mở rộng để tham khảo, không tính vào tiến độ. Mỗi gốc có phần “Thử nhanh” để tự kiểm tra.
+      </p>
       <Link className="text-link roots-affix-link" href="/affixes">
         Xem tiền tố & hậu tố →
       </Link>

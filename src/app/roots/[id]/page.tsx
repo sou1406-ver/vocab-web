@@ -4,6 +4,8 @@ import type { Metadata } from "next";
 import { Lightbulb } from "lucide-react";
 import { roots, rootById } from "../../../data/roots";
 import { RootWordCard } from "../../../components/RootWordCard";
+import { RootQuiz } from "../../../components/RootQuiz";
+import { makeRootQuiz } from "../../../domain/root-quiz";
 
 export function generateStaticParams() {
   return roots.map((root) => ({ id: root.id }));
@@ -46,6 +48,7 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
           <RootWordCard word={word} root={root} key={`${word.text}:${index}`} />
         ))}
       </div>
+      <RootQuiz rounds={[0, 1, 2].map((round) => makeRootQuiz(root, roots, round ? `${root.id}:${round}` : root.id))} />
     </div>
   );
 }

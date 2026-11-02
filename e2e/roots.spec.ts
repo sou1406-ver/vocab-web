@@ -78,6 +78,15 @@ test("root discovery is off by default while basic decomposition stays available
     "/books/toeic-600/lessons/40",
   );
   await expect(page.getByText("Mở rộng", { exact: true }).first()).toBeVisible();
+  const quiz = page.getByRole("region", { name: "Thử nhanh" });
+  for (let question = 0; question < 2; question++) {
+    await quiz.locator(".answer-option").first().click();
+    await expect(quiz.getByText(/Chính xác|Chưa đúng/)).toBeVisible();
+    await quiz.getByRole("button", { name: /Câu tiếp|Xem kết quả/ }).click();
+  }
+  await expect(quiz.getByText(/Bạn đúng \d\/2 câu/)).toBeVisible();
+  await quiz.getByRole("button", { name: "Làm lượt khác" }).click();
+  await expect(quiz.getByText("Câu 1/2")).toBeVisible();
   await page.goto("/library?q=charge");
   await page
     .locator(".vocabulary-card")

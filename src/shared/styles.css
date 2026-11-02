@@ -1130,6 +1130,36 @@ html.theme-switching *::after {
   .roots-empty {
     color: var(--muted);
   }
+  .root-quiz {
+    margin-top: 28px;
+  }
+  .root-quiz-heading {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .root-quiz-heading h2 {
+    font-size: 22px;
+  }
+  .root-quiz-note {
+    margin: 6px 0 20px;
+    font-size: 14px;
+  }
+  .root-quiz-prompt {
+    margin: 0 0 16px;
+    font-size: 19px;
+  }
+  .root-quiz-prompt b {
+    font-size: 24px;
+  }
+  .root-quiz-feedback {
+    margin-top: 18px;
+  }
+  .root-quiz-result p {
+    margin: 0 0 16px;
+    font-size: 19px;
+  }
   .roots-extra > h2 {
     font-size: 22px;
     margin-bottom: 16px;
