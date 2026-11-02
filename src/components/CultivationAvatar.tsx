@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { cultivationOf } from "../domain/cultivation";
 import { UserAvatar } from "./UserAvatar";
+import { RealmOrnament } from "./RealmOrnament";
 
 const badges = [Circle, Wind, Shield, CircleDot, Sparkles, Sun, Orbit, Hexagon, Gem, Zap, CloudSun, Crown];
 export function CultivationAvatar({
@@ -34,6 +35,7 @@ export function CultivationAvatar({
       aria-hidden={decorative || undefined}
       aria-label={decorative ? undefined : `Avatar cảnh giới ${realm.name}`}
     >
+      <RealmOrnament realm={realm.index} />
       <UserAvatar seed={seed} />
       <span className="cultivation-avatar-badge" aria-hidden="true">
         <Badge />

@@ -4228,3 +4228,34 @@ html.theme-switching *::after {
     }
   }
 }
+/* Realm ornaments: tier motifs drawn just outside the ring (see RealmOrnament). */
+@layer components {
+  .realm-ornament {
+    position: absolute;
+    z-index: 0;
+    inset: -16%;
+    width: 132%;
+    height: 132%;
+    overflow: visible;
+    pointer-events: none;
+  }
+  .realm-ornament .ornament-fill {
+    fill: var(--realm-color);
+  }
+  .realm-ornament .ornament-hi {
+    fill: var(--realm-hi);
+  }
+  .realm-ornament .ornament-stroke {
+    fill: none;
+    stroke: var(--realm-color);
+    stroke-width: 1.6;
+    stroke-linecap: round;
+  }
+  .realm-ornament .ornament-crown {
+    fill: var(--realm-gold);
+  }
+  /* Too small to read in the top bar avatar. */
+  .avatar > .cultivation-avatar .realm-ornament {
+    display: none;
+  }
+}
