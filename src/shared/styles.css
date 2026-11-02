@@ -3908,12 +3908,12 @@ html.theme-switching *::after {
 @layer components {
   /* Columns grow by the sidebar's outer margin so its content keeps the old width. */
   .app-shell {
-    grid-template-columns: 246px minmax(0, 1fr);
+    grid-template-columns: 242px minmax(0, 1fr);
   }
   .sidebar {
-    top: 12px;
-    height: calc(100dvh - 24px);
-    margin: 12px 0 12px 12px;
+    top: 8px;
+    height: calc(100dvh - 16px);
+    margin: 8px 0 8px 8px;
     border: 1px solid var(--line);
     border-radius: var(--radius);
     box-shadow: var(--shadow);
@@ -3922,12 +3922,12 @@ html.theme-switching *::after {
 @layer responsive {
   @media (min-width: 1600px) {
     .app-shell {
-      grid-template-columns: 272px minmax(0, 1fr);
+      grid-template-columns: 268px minmax(0, 1fr);
     }
   }
   @media (max-width: 1190px) {
     .app-shell {
-      grid-template-columns: 217px minmax(0, 1fr);
+      grid-template-columns: 213px minmax(0, 1fr);
     }
   }
   @media (max-width: 900px) {
@@ -3935,11 +3935,15 @@ html.theme-switching *::after {
       grid-template-columns: 84px minmax(0, 1fr);
     }
     .sidebar {
-      top: 8px;
-      height: calc(100dvh - 16px);
-      margin: 8px 0 8px 8px;
       padding-left: 8px;
       padding-right: 8px;
+    }
+  }
+  /* The floating margin costs height; short screens trim inner padding so every link still fits. */
+  @media (min-width: 681px) and (max-height: 700px) {
+    .app-shell .sidebar {
+      padding-top: 12px;
+      padding-bottom: 12px;
     }
   }
 }
