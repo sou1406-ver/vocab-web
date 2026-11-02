@@ -6560,7 +6560,7 @@
               "role": "suffix"
             }
           ],
-          "meaning": "mũi đất; áo choàng",
+          "meaning": "mũi đất",
           "logic": "phần 'đầu' của đất nhô ra biển → mũi đất",
           "family": []
         },
@@ -7332,11 +7332,11 @@
             },
             {
               "text": "sent",
-              "role": "root"
+              "role": "word"
             }
           ],
           "meaning": "trình bày; trao tặng",
-          "logic": "đặt ở phía trước → trình bày, trao",
+          "logic": "sent ở đây đến từ esse (có mặt), không phải gốc sent “cảm nhận”: đang có mặt ở phía trước → đưa ra trước mặt → trình bày, trao",
           "family": [],
           "book": {
             "wordId": "present-12",
