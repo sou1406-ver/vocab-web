@@ -1,6 +1,9 @@
 import { scanAccessibility, toggleTheme, waitForSaved } from "./app-ready";
 import { test, expect } from "@playwright/test";
 import { readSnapshot } from "./speech-mock";
+import roots from "../content/roots/roots.json" with { type: "json" };
+
+const cardCount = roots.roots.length + roots.prefixFamilies.length + roots.particles.length + roots.coreWords.length;
 
 test("root discovery is off by default while basic decomposition stays available", async ({ page }, testInfo) => {
   await page.goto("/library?q=tempt");
@@ -17,7 +20,7 @@ test("root discovery is off by default while basic decomposition stays available
   await page.getByRole("button", { name: "Đóng chi tiết từ", exact: true }).click();
   await expect(dialog).toHaveCount(0);
   await page.goto("/roots");
-  await expect(page.locator(".root-card")).toHaveCount(54);
+  await expect(page.locator(".root-card")).toHaveCount(cardCount);
   await page.getByRole("link", { name: /^pre-/ }).click();
   await expect(page.getByRole("heading", { level: 1, name: "pre-" })).toBeVisible();
   await expect(page.getByRole("heading", { name: "predict", exact: true })).toBeVisible();
@@ -26,14 +29,14 @@ test("root discovery is off by default while basic decomposition stays available
   ).toHaveAttribute("href", "/roots/dict");
   expect((await scanAccessibility(page)).violations).toEqual([]);
   await page.goto("/particles");
-  await expect(page.locator(".particle")).toHaveCount(4);
+  await expect(page.locator(".particle")).toHaveCount(roots.particles.length);
   await page.getByRole("navigation", { name: "Chọn giới từ" }).getByRole("link", { name: "off", exact: true }).click();
   await expect(page).toHaveURL(/#off$/);
   expect((await scanAccessibility(page)).violations).toEqual([]);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await page.screenshot({ path: testInfo.outputPath("particles.png"), fullPage: true });
   await page.goto("/core-words");
-  await expect(page.locator(".particle")).toHaveCount(4);
+  await expect(page.locator(".particle")).toHaveCount(roots.coreWords.length);
   await expect(page.getByRole("heading", { name: "interest", exact: true })).toBeVisible();
   expect((await scanAccessibility(page)).violations).toEqual([]);
   await page.goto("/settings");
