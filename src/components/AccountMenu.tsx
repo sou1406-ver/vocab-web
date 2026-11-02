@@ -95,9 +95,14 @@ export function AccountMenu() {
               <Settings size={18} aria-hidden="true" /> Tài khoản & cài đặt
             </Link>
             {reviewer.allowed && (
-              <Link href="/review" onClick={() => setOpen(false)}>
-                Kiểm tra nội dung
-              </Link>
+              <>
+                <Link href="/review" onClick={() => setOpen(false)}>
+                  Kiểm tra nội dung
+                </Link>
+                <Link href="/admin" onClick={() => setOpen(false)}>
+                  Admin · Kiểm thử
+                </Link>
+              </>
             )}
             {cloud.user ? (
               <button

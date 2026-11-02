@@ -8,6 +8,16 @@ test("guests cannot open reviewer tools or see an admin menu entry", async ({ pa
   await expect(page.getByRole("region", { name: "Bộ lọc nội dung" })).toHaveCount(0);
   await page.getByRole("button", { name: "Mở hồ sơ", exact: true }).click();
   await expect(page.getByRole("link", { name: "Kiểm tra nội dung", exact: true })).toHaveCount(0);
+  await expect(page.getByRole("link", { name: "Admin · Kiểm thử", exact: true })).toHaveCount(0);
+});
+
+test("guests cannot open admin test tools", async ({ page }) => {
+  await page.goto("/admin");
+  await expect(page.getByRole("heading", { name: "Admin · Kiểm thử", exact: true })).toBeVisible();
+  await expect(
+    page.getByText("Khu vực này dành cho tài khoản được cấp quyền kiểm tra nội dung.", { exact: true }),
+  ).toBeVisible();
+  await expect(page.getByRole("tablist", { name: "Công cụ admin" })).toHaveCount(0);
 });
 
 test("only the reviewer claim opens all exercise previews without recording learning", async ({

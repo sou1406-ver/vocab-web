@@ -3431,3 +3431,213 @@ html.theme-switching *::after {
     }
   }
 }
+@layer components {
+  .admin-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 22px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--line);
+  }
+  .admin-tabs [role="tab"] {
+    min-height: 44px;
+    padding: 8px 16px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--surface);
+    color: var(--ink);
+    font-weight: 600;
+  }
+  .admin-tabs [role="tab"][aria-selected="true"] {
+    border-color: var(--green);
+    background: var(--soft-green);
+    color: var(--green);
+  }
+  .admin-stack {
+    display: grid;
+    gap: 22px;
+  }
+  .admin-stack > .panel > h2 {
+    margin-bottom: 12px;
+  }
+  .admin-stack > .panel > .muted {
+    margin-bottom: 16px;
+  }
+  .admin-columns {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 22px;
+  }
+  .admin-facts {
+    display: grid;
+    gap: 0;
+  }
+  .admin-facts > div {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 9px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .admin-facts > div:last-child {
+    border-bottom: 0;
+  }
+  .admin-facts dt {
+    color: var(--muted);
+  }
+  .admin-facts dd {
+    margin: 0;
+    font-weight: 600;
+    text-align: right;
+    overflow-wrap: anywhere;
+  }
+  .admin-table-wrap {
+    overflow-x: auto;
+  }
+  .admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+  .admin-table th,
+  .admin-table td {
+    padding: 9px 10px;
+    border-bottom: 1px solid var(--line);
+    text-align: left;
+    white-space: nowrap;
+  }
+  .admin-table th {
+    color: var(--muted);
+    font-weight: 600;
+  }
+  .admin-avatar-live {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+  }
+  .admin-avatar-live > .cultivation-avatar {
+    width: 136px;
+    height: 136px;
+  }
+  .admin-avatar-controls {
+    display: grid;
+    flex: 1;
+    gap: 10px;
+    min-width: 0;
+  }
+  .admin-field {
+    display: grid;
+    gap: 8px;
+    font-weight: 600;
+  }
+  .admin-field input[type="number"] {
+    width: 100%;
+    min-height: 44px;
+    padding: 8px 12px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: var(--surface-soft);
+    color: var(--ink);
+  }
+  .admin-field input[type="range"] {
+    width: 100%;
+    min-height: 32px;
+    accent-color: var(--green);
+  }
+  .admin-field--inline {
+    max-width: 200px;
+  }
+  .admin-section-title {
+    margin-bottom: 14px;
+  }
+  .admin-realm-grid,
+  .admin-avatar-grid {
+    display: grid;
+    gap: 12px;
+    padding: 0;
+    list-style: none;
+  }
+  .admin-realm-grid {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  }
+  .admin-realm-grid button {
+    display: grid;
+    justify-items: center;
+    gap: 6px;
+    width: 100%;
+    padding: 16px 10px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--surface);
+    color: var(--ink);
+  }
+  .admin-realm-grid button[aria-pressed="true"] {
+    border-color: var(--green);
+    box-shadow: 0 0 0 2px var(--soft-green);
+  }
+  .admin-realm-grid span,
+  .admin-avatar-grid span {
+    color: var(--muted);
+    font-size: 13px;
+  }
+  .admin-avatar-grid {
+    grid-template-columns: repeat(auto-fill, minmax(84px, 1fr));
+  }
+  .admin-avatar-grid li {
+    display: grid;
+    justify-items: center;
+    gap: 6px;
+  }
+  .admin-presets {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  .admin-form {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr)) auto;
+    align-items: end;
+    gap: 14px;
+  }
+  .admin-sandbox {
+    border: 2px dashed var(--line);
+    border-radius: var(--radius);
+    background: var(--bg);
+  }
+  .admin-sandbox > .page,
+  .admin-sandbox--live .page {
+    padding: 24px;
+  }
+}
+@layer responsive {
+  @media (max-width: 860px) {
+    .admin-columns {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .admin-form {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .admin-form > .button {
+      grid-column: 1 / -1;
+    }
+  }
+  @media (max-width: 560px) {
+    .admin-avatar-live {
+      flex-direction: column;
+      align-items: stretch;
+      text-align: center;
+    }
+    .admin-avatar-live > .cultivation-avatar {
+      align-self: center;
+    }
+    .admin-field--inline {
+      max-width: none;
+    }
+    .admin-sandbox > .page,
+    .admin-sandbox--live .page {
+      padding: 16px 12px;
+    }
+  }
+}
