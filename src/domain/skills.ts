@@ -1,5 +1,5 @@
 import { INTERVALS, TIMEZONE, dayKey, nextDue } from "./learning";
-import type { AnswerEvent, Question } from "./types";
+import type { AnswerEvent, Question, Snapshot } from "./types";
 
 /*
  * Read-only view of the two planned skills (LEARNING-CONTRACTS §3), rebuilt from the answer log.
@@ -88,4 +88,65 @@ export function summariseSkills(progress: SkillProgress, wordIds: readonly strin
       if (state.dueAt <= at) summary[skill].due++;
     }
   return summary;
+}
+
+// Words first studied before two-skill scheduling shipped; their missing skill is mixed into reviews a few at a time.
+export const TWO_SKILL_SINCE = Date.parse("2026-11-03T00:00:00+07:00");
+export interface ReviewItem {
+  wordId: string;
+  skill: Skill;
+  dueAt: number;
+}
+type ProgressMap = Snapshot["progress"];
+
+/*
+ * Today's two-skill review plan.
+ * - A word reviews at most one skill per day: once any skill counted today, it waits until tomorrow.
+ * - A skill with its own schedule is due at its dueAt; the earliest due skill of the word is chosen.
+ * - Words with no skill history at all (older data, imports) keep the single legacy schedule and review recall,
+ *   exactly as before.
+ * - A missing skill of a word started after the switch is due one day after the word was started.
+ * - A missing skill of an older word is not "due"; it is offered as an extra to slip quietly into reviews.
+ */
+export function planReviews(
+  progress: ProgressMap,
+  skills: SkillProgress,
+  wordIds: Iterable<string>,
+  at = Date.now(),
+  timezone = TIMEZONE,
+) {
+  const today = dayKey(at, timezone);
+  const due: ReviewItem[] = [];
+  const extra: ReviewItem[] = [];
+  for (const id of wordIds) {
+    const word = progress[id];
+    if (!word?.tested) continue;
+    const states = skills[id] ?? {};
+    const known = (["recognition", "recall"] as const).filter((skill) => states[skill]);
+    if (known.some((skill) => states[skill]!.reviewedDay === today) || word.reviewedDay === today) continue;
+    if (!known.length) {
+      if (word.dueAt <= at) due.push({ wordId: id, skill: "recall", dueAt: word.dueAt });
+      continue;
+    }
+    const candidates: ReviewItem[] = known
+      .filter((skill) => states[skill]!.dueAt <= at)
+      .map((skill) => ({ wordId: id, skill, dueAt: states[skill]!.dueAt }));
+    const missing = (["recognition", "recall"] as const).find((skill) => !states[skill]);
+    if (missing && word.startedAt >= TWO_SKILL_SINCE) {
+      const pendingDue = nextDue(word.startedAt, INTERVALS[0], timezone);
+      // Listed first so that, on a tie, the never-tested skill goes first (the sort below is stable).
+      if (pendingDue <= at) candidates.unshift({ wordId: id, skill: missing, dueAt: pendingDue });
+    }
+    if (candidates.length) due.push(candidates.sort((a, b) => a.dueAt - b.dueAt)[0]);
+    else if (missing) extra.push({ wordId: id, skill: missing, dueAt: word.startedAt });
+  }
+  due.sort((a, b) => a.dueAt - b.dueAt);
+  extra.sort((a, b) => a.dueAt - b.dueAt);
+  return { due, extra };
+}
+
+// "Nhớ ổn định" needs both skills at box 5+; words without skill history keep the legacy box.
+export function isStable(states: Partial<Record<Skill, SkillState>> | undefined, legacyBox = 0) {
+  if (!states?.recognition && !states?.recall) return legacyBox >= 5;
+  return (states.recognition?.box ?? 0) >= 5 && (states.recall?.box ?? 0) >= 5;
 }

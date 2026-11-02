@@ -51,7 +51,7 @@ Giữ ID event cũ và quy tắc chống tính trùng. Không đổi lịch ôn,
 
 ## 3. Đã chốt thiết kế: hai kỹ năng và Match practice
 
-**Chưa đổi tiến độ trong code.** Hiện một từ vẫn có một box; event mới vẫn ghi skill `vocabulary`. Thiết kế đích chỉ có hai kỹ năng, không tách skill theo từng dạng bài:
+Thiết kế chỉ có hai kỹ năng, không tách skill theo từng dạng bài (đã triển khai, xem cuối mục):
 
 - **Nhận biết:** chọn đáp án, gồm chọn nghĩa/chọn từ và điền chỗ trống chọn đáp án.
 - **Tự nhớ:** gõ đáp án bằng ô chữ.
@@ -64,7 +64,15 @@ Dạng bài và kênh nghe vẫn được ghi riêng để thống kê; không t
 
 Khi triển khai hai kỹ năng, cần migration có version và test backup/two-tab. Tiến độ cũ đang trộn nhiều dạng nên không thể suy ra hai box riêng: giữ dữ liệu gốc làm mốc tương thích, không sao chép box cũ sang cả hai kỹ năng và không đoán skill của event thiếu thông tin.
 
-Còn cần chốt khi viết migration: cách hiển thị “nhớ ổn định” khi hai kỹ năng khác nhau, cách kế thừa mốc tiến độ cũ và giới hạn ôn/ngày theo kỹ năng. Luật ôn một lần/ngày sẽ xét theo từ + kỹ năng, không theo kind. Chưa thay hành vi học trong bản hiện tại.
+**Đã làm (2026-11-03), không đổi schema:** lịch hai kỹ năng được tính lại từ nhật ký event có `questionKind` (`src/domain/skills.ts`); snapshot vẫn schemaVersion 2, event vẫn ghi `skill: "vocabulary"`, `WordProgress` một bậc vẫn được cập nhật như cũ để bản cũ/đồng bộ đọc đúng. Không cần migration, không ghi thêm field.
+
+- Phân loại: chọn (meaning, word-choice, cloze-choice, word-form-choice, synonym, listen-choice, build, match) là Nhận biết; gõ (recall, cloze, word-form, listen-type) là Tự nhớ. Event thiếu kind bị bỏ qua, không đoán.
+- Mỗi kỹ năng dùng đúng luật lịch cũ: câu learn đầu tiên → bậc 1; review đúng hạn tăng bậc, sai/có trợ giúp về bậc 1; mỗi từ + kỹ năng tính tối đa một review/ngày; practice không đổi lịch.
+- Mỗi ngày một từ chỉ ôn một kỹ năng (người dùng chốt): kỹ năng đến hạn sớm nhất được hỏi; kỹ năng kia chờ ngày sau. Hoà thì ưu tiên kỹ năng chưa từng kiểm tra.
+- Từ chưa có lịch sử theo kỹ năng (dữ liệu cũ/nhập) giữ lịch một bậc cũ và ôn bằng câu gõ như trước.
+- Từ bắt đầu từ ngày chuyển (`TWO_SKILL_SINCE` = 2026-11-03 giờ VN): kỹ năng còn thiếu đến hạn một ngày sau khi bắt đầu. Từ cũ hơn: kỹ năng còn thiếu không tính “đến hạn”, mà được lồng lặng lẽ tối đa 3 từ vào mỗi lượt ôn (người dùng chốt); không lồng vào lượt học từ mới vì lượt đó có thẻ giới thiệu từ.
+- Lượt ôn tạo một câu/từ theo kỹ năng đã chọn (`beginSkillReview`): Nhận biết luân phiên chọn nghĩa/chọn từ; Tự nhớ luân phiên điền câu (nếu ví dụ có từ)/gõ từ theo nghĩa.
+- “Nhớ ổn định” khi cả hai kỹ năng đạt bậc 5 (người dùng chốt); từ chưa có lịch sử kỹ năng dùng bậc cũ. Thư viện vẫn hiện nhãn theo bậc cũ.
 
 ### Các dạng bài đã chốt
 

@@ -231,6 +231,51 @@ export function makeRecognitionQuestions(
     ];
   });
 }
+// One question per word in its planned skill: recognition picks (meaning / word choice),
+// recall types (cloze when the word appears in an example, else from the meaning). Kinds alternate for variety.
+export function makeSkillQuestions(
+  items: readonly { word: Word; skill: "recognition" | "recall" }[],
+  all: Word[],
+  sessionId: string,
+  progress: TestedProgress = {},
+): Question[] {
+  return items.map(({ word, skill }, index) => {
+    const typed = makeQuestions([word], all, "review", sessionId, progress)[0];
+    const recall: Question =
+      index % 2 === 1 && typed.kind === "cloze"
+        ? { wordId: word.id, kind: "recall", prompt: word.meaning, answer: word.text, options: [] }
+        : typed;
+    if (skill === "recall") return recall;
+    try {
+      return makeRecognitionQuestions([word], all, sessionId, progress)[index % 2];
+    } catch {
+      return recall; // Too few distinct distractors: fall back to a typed question rather than a broken one.
+    }
+  });
+}
+export function beginSkillReview(
+  snapshot: Snapshot,
+  catalog: Catalog,
+  items: readonly { word: Word; skill: "recognition" | "recall" }[],
+  title: string,
+  id: string,
+  at = Date.now(),
+): Snapshot {
+  if (!items.length) throw new Error("Chưa có từ đến hạn ôn.");
+  const next = beginSession(
+    snapshot,
+    catalog,
+    items.map((item) => item.word),
+    "review",
+    title,
+    id,
+    at,
+  );
+  return {
+    ...next,
+    session: { ...next.session!, questions: makeSkillQuestions(items, catalog.words, id, snapshot.progress) },
+  };
+}
 export function beginExerciseSession(
   snapshot: Snapshot,
   catalog: Catalog,

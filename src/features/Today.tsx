@@ -4,19 +4,33 @@ import { useRouter } from "next/navigation";
 import { Flame } from "lucide-react";
 import { activeBook } from "../data/catalog";
 import { useApp } from "../state/provider";
-import { dayKey, dueIds, introducedToday } from "../domain/learning";
+import { useMemo } from "react";
+import { dayKey, introducedToday } from "../domain/learning";
+import { planReviews, replaySkills } from "../domain/skills";
+import { shuffleSeeded } from "../domain/random";
 import { learningStreak } from "../domain/streak";
 import { CultivationCard } from "../components/CultivationCard";
 import { Icon, ProgressBar, toneClass } from "../shared/ui";
 
 export function Today() {
-  const { data, start, busy } = useApp();
+  const { data, start, startReview, busy } = useApp();
   const router = useRouter();
   const at = Date.now();
   const book = activeBook(data.settings);
   const catalog = book.catalog;
   const all = [...catalog.words, ...data.customWords];
-  const due = dueIds(data, at).filter((id) => all.some((word) => word.id === id));
+  const skills = useMemo(
+    () => replaySkills(data.events, data.settings.timezone),
+    [data.events, data.settings.timezone],
+  );
+  const plan = planReviews(
+    data.progress,
+    skills,
+    all.map((word) => word.id),
+    at,
+    data.settings.timezone,
+  );
+  const due = plan.due;
   const introduced = introducedToday(data, at);
   const remaining = Math.max(0, data.settings.dailyNew - introduced);
   const active = data.session && data.session.phase !== "complete";
@@ -32,16 +46,17 @@ export function Today() {
   const studiedToday = data.events.some((event) => Number.isFinite(event.at) && dayKey(event.at) === dayKey(at));
   const doPrimary = async () => {
     if (active) return router.push("/study");
-    const words = due.length ? due.slice(0, 20).map((id) => all.find((word) => word.id === id)!) : nextWords;
-    if (!words.length) return router.push("/lessons");
-    if (
-      await start(
-        words,
-        due.length ? "review" : "learn",
-        due.length ? "Ôn từ đến hạn" : `Bài ${lesson.id} · ${lesson.title}`,
-      )
-    )
-      router.push("/study");
+    if (due.length) {
+      // Up to 20 due words, plus a few older words quietly checked in the skill they have not been tested in yet.
+      const items = shuffleSeeded([...due.slice(0, 20), ...plan.extra.slice(0, 3)], `review:${at}`).flatMap((item) => {
+        const word = all.find((candidate) => candidate.id === item.wordId);
+        return word ? [{ word, skill: item.skill }] : [];
+      });
+      if (await startReview(items, "Ôn từ đến hạn")) router.push("/study");
+      return;
+    }
+    if (!nextWords.length) return router.push("/lessons");
+    if (await start(nextWords, "learn", `Bài ${lesson.id} · ${lesson.title}`)) router.push("/study");
   };
   return (
     <div className="page today-page">

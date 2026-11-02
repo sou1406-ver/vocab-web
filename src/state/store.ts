@@ -8,8 +8,10 @@ import {
   beginExerciseSession,
   advanceSession,
   answerQuestion,
+  beginSkillReview,
   finishSession,
 } from "../domain/learning";
+import type { Skill } from "../domain/skills";
 import type { SessionMode, Snapshot, Word, Question } from "../domain/types";
 
 export interface AppState {
@@ -23,6 +25,8 @@ export interface AppState {
   switchProfile: (profile: string) => Promise<void>;
   change: (reduce: (data: Snapshot) => Snapshot) => Promise<boolean>;
   start: (words: Word[], mode: SessionMode, title: string, returnTo?: string) => Promise<boolean>;
+  /** Review session with one question per word in its planned skill (recognition or recall). */
+  startReview: (items: { word: Word; skill: Skill }[], title: string) => Promise<boolean>;
   startExercises: (
     questions: Question[] | ((sessionId: string, snapshot: Snapshot) => Question[]),
     title: string,
@@ -107,6 +111,19 @@ export function createAppStore(persistence: SnapshotPersistence = browserPersist
         const next = beginSession(data, catalog, words, mode, title, crypto.randomUUID());
         return returnTo && next.session ? { ...next, session: { ...next.session, returnTo } } : next;
       }),
+    startReview: (items, title) =>
+      get().change((data) =>
+        beginSkillReview(
+          data,
+          sessionCatalog(
+            data,
+            items.map((item) => item.word.id),
+          ),
+          items,
+          title,
+          crypto.randomUUID(),
+        ),
+      ),
     startExercises: (questions, title, returnTo) =>
       get().change((data) => {
         const id = crypto.randomUUID();

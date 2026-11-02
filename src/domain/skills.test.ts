@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { replaySkills, skillOf, summariseSkills } from "./skills";
+import { isStable, planReviews, replaySkills, skillOf, summariseSkills } from "./skills";
 import { INTERVALS, nextDue } from "./learning";
 import type { AnswerEvent } from "./types";
 
@@ -69,5 +69,108 @@ describe("two-skill replay", () => {
       recognition: { tested: 1, stable: 0, due: 1 },
       recall: { tested: 1, stable: 0, due: 1 },
     });
+  });
+});
+
+describe("two-skill review plan", () => {
+  const tested = (startedAt: number, dueAt: number, extra: object = {}) => ({
+    startedAt,
+    startedDay: "",
+    box: 2,
+    dueAt,
+    correct: 1,
+    incorrect: 0,
+    tested: true,
+    policyVersion: 1 as const,
+    ...extra,
+  });
+  const now = Date.parse("2026-11-20T03:00:00Z");
+  const old = Date.parse("2026-10-01T03:00:00Z");
+  const fresh = Date.parse("2026-11-10T03:00:00Z");
+  it("keeps the legacy single schedule (recall) for words without skill history", () => {
+    const plan = planReviews({ a: tested(old, now - 1), b: tested(old, now + DAY) }, {}, ["a", "b"], now);
+    expect(plan.due).toEqual([{ wordId: "a", skill: "recall", dueAt: now - 1 }]);
+    expect(plan.extra).toEqual([]);
+  });
+  it("picks the earliest due skill and reviews one skill per word per day", () => {
+    const skills = {
+      a: {
+        recognition: { box: 2, dueAt: now - 2 * DAY, correct: 1, incorrect: 0 },
+        recall: { box: 3, dueAt: now - DAY, correct: 1, incorrect: 0 },
+      },
+      b: {
+        recognition: { box: 2, dueAt: now - DAY, correct: 1, incorrect: 0, reviewedDay: "2026-11-20" },
+        recall: { box: 1, dueAt: now - DAY, correct: 0, incorrect: 1 },
+      },
+    };
+    const plan = planReviews({ a: tested(old, 0), b: tested(old, 0) }, skills, ["a", "b"], now);
+    expect(plan.due).toEqual([{ wordId: "a", skill: "recognition", dueAt: now - 2 * DAY }]);
+  });
+  it("schedules a new word's missing skill a day after it started, and slips older words' missing skill in as extras", () => {
+    const skills = {
+      fresh: { recognition: { box: 1, dueAt: now + 5 * DAY, correct: 1, incorrect: 0 } },
+      older: { recall: { box: 4, dueAt: now + 5 * DAY, correct: 3, incorrect: 0 } },
+    };
+    const plan = planReviews({ fresh: tested(fresh, 0), older: tested(old, 0) }, skills, ["fresh", "older"], now);
+    expect(plan.due).toEqual([{ wordId: "fresh", skill: "recall", dueAt: nextDue(fresh, INTERVALS[0]) }]);
+    expect(plan.extra).toEqual([{ wordId: "older", skill: "recognition", dueAt: old }]);
+  });
+  it("counts a word as stable only when both skills reach box 5", () => {
+    expect(isStable(undefined, 5)).toBe(true);
+    expect(isStable({ recall: { box: 6, dueAt: 0, correct: 0, incorrect: 0 } }, 6)).toBe(false);
+    expect(
+      isStable({
+        recall: { box: 5, dueAt: 0, correct: 0, incorrect: 0 },
+        recognition: { box: 5, dueAt: 0, correct: 0, incorrect: 0 },
+      }),
+    ).toBe(true);
+  });
+});
+
+describe("two-skill review sessions", () => {
+  it("asks recognition as a choice and recall as typing, and stays valid for storage", async () => {
+    const { beginSkillReview, emptySnapshot } = await import("./learning");
+    const { validateSnapshot } = await import("../data/validation");
+    const { defaultBook } = await import("../data/catalog");
+    const words = defaultBook.catalog.words.slice(0, 4);
+    const items = words.map((word, index) => ({
+      word,
+      skill: index % 2 ? ("recall" as const) : ("recognition" as const),
+    }));
+    const snapshot = beginSkillReview(
+      emptySnapshot(),
+      defaultBook.catalog,
+      items,
+      "Ôn từ đến hạn",
+      "review-1",
+      Date.now(),
+    );
+    const kinds = snapshot.session!.questions.map((question) => question.kind);
+    expect(kinds.map((kind) => skillOf(kind))).toEqual(["recognition", "recall", "recognition", "recall"]);
+    expect(snapshot.session!.mode).toBe("review");
+    expect(() => validateSnapshot(snapshot)).not.toThrow();
+  });
+});
+
+describe("two-skill tie-break", () => {
+  it("tests a new word's untested skill first when both fall due together", () => {
+    const startedAt = Date.parse("2026-11-10T03:00:00Z");
+    const firstDue = nextDue(startedAt, INTERVALS[0]);
+    const progress = {
+      w: {
+        startedAt,
+        startedDay: "",
+        box: 1,
+        dueAt: firstDue,
+        correct: 1,
+        incorrect: 0,
+        tested: true,
+        policyVersion: 1 as const,
+      },
+    };
+    const skills = { w: { recognition: { box: 1, dueAt: firstDue, correct: 1, incorrect: 0 } } };
+    expect(planReviews(progress, skills, ["w"], firstDue + DAY).due).toEqual([
+      { wordId: "w", skill: "recall", dueAt: firstDue },
+    ]);
   });
 });

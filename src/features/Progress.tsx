@@ -7,7 +7,7 @@ import { Icon, ProgressBar } from "../shared/ui";
 import { useWord } from "../app/context";
 import { exerciseProgress } from "../domain/exercise-progress";
 import { CultivationCard } from "../components/CultivationCard";
-import { replaySkills, skillLabels, summariseSkills } from "../domain/skills";
+import { isStable, replaySkills, skillLabels, summariseSkills } from "../domain/skills";
 
 export default function Progress() {
   const { data } = useApp();
@@ -16,10 +16,14 @@ export default function Progress() {
   const all = [...catalog.words, ...data.customWords];
   const exerciseGroups = exerciseProgress(data.events, new Set(all.map((word) => word.id)));
   const learned = catalog.words.filter((w) => data.progress[w.id]?.tested).length;
-  const stable = catalog.words.filter((w) => (data.progress[w.id]?.box ?? 0) >= 5).length;
+  const replayed = replaySkills(data.events, data.settings.timezone);
+  // Stable means both skills at box 5+ (words without skill history keep their single legacy box).
+  const stable = catalog.words.filter(
+    (w) => data.progress[w.id]?.tested && isStable(replayed[w.id], data.progress[w.id]?.box),
+  ).length;
   const correct = data.events.filter((e) => e.correct).length;
   const skills = summariseSkills(
-    replaySkills(data.events, data.settings.timezone),
+    replayed,
     catalog.words.map((word) => word.id),
   );
   const days = Array.from({ length: 7 }, (_, i) => {
@@ -173,7 +177,7 @@ export default function Progress() {
             <section className="panel skills-panel" aria-labelledby="skills-title">
               <div className="section-heading">
                 <h2 id="skills-title">Hai kỹ năng</h2>
-                <span className="muted">Bản xem trước</span>
+                <span className="muted">Lịch ôn riêng</span>
               </div>
               <div className="skills-grid">
                 {(["recognition", "recall"] as const).map((skill) => (
@@ -202,7 +206,8 @@ export default function Progress() {
                 ))}
               </div>
               <p className="quiet-note">
-                Tính từ các câu trả lời có ghi dạng bài. Lịch ôn hiện vẫn dùng một mốc chung cho mỗi từ.
+                Mỗi kỹ năng có lịch ôn riêng; mỗi ngày một từ chỉ ôn một kỹ năng. Từ “nhớ ổn định” khi cả hai kỹ năng
+                đạt bậc 5.
               </p>
             </section>
           )}
