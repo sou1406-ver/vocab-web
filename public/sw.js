@@ -4,7 +4,7 @@
  * - Page navigations: network first, cached copy when offline, a small offline page otherwise.
  * - RSC fetches are never cached: when they fail the router falls back to a full navigation, served above.
  * - Other same-origin files (avatars, icons, exercise packs): network first with a cached fallback.
- * - Roots pages: when the learner opens /roots, the index pages and every root/prefix page linked from /roots are stored.
+ * - Roots pages: when the learner opens /roots, the index pages and every root and affix page they link to are stored.
  * Cross-origin requests (Firebase, Google sign-in) are never touched.
  */
 const VERSION = new URL(self.location.href).searchParams.get("v") || "dev";
@@ -48,11 +48,14 @@ async function cachePages(routes, refresh) {
 
 async function cacheRoots() {
   await cachePages(ROOTS_INDEX, false);
-  const index = await (await caches.open(PAGES)).match("/roots");
-  if (!index) return;
+  const pages = await caches.open(PAGES);
   const links = new Set();
-  for (const match of (await index.text()).matchAll(ROOTS_LINK)) links.add(match[1]);
-  await cachePages([...links].slice(0, 300), false);
+  // /roots links every root and prefix family; /affixes links every affix page the part chips point to.
+  for (const index of ["/roots", "/affixes"]) {
+    const page = await pages.match(index);
+    if (page) for (const match of (await page.text()).matchAll(ROOTS_LINK)) links.add(match[1]);
+  }
+  await cachePages([...links].slice(0, 500), false);
 }
 
 self.addEventListener("message", (event) => {
