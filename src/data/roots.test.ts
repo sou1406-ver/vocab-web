@@ -33,10 +33,10 @@ describe("Optional root content", () => {
     expect(() => validateRootsContent(familyWord, ids)).toThrow(/Unknown affix/);
     const particle = structuredClone(source);
     particle.particles[0].senses = [];
-    expect(() => validateRootsContent(particle, ids)).toThrow(/Invalid particle/);
+    expect(() => validateRootsContent(particle, ids)).toThrow(/Invalid particles: /);
     const core = structuredClone(source);
     core.coreWords[1].word = core.coreWords[0].word;
-    expect(() => validateRootsContent(core, ids)).toThrow(/Duplicate particle/);
+    expect(() => validateRootsContent(core, ids)).toThrow(/Duplicate coreWords: /);
   });
   it("finds core words and particles by whole headword or family form", () => {
     const base = defaultBook.catalog.words[0];

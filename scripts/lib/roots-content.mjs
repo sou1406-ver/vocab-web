@@ -84,8 +84,8 @@ export function validateRootsContent(value, wordIds) {
         !particle.senses.length ||
         !particle.senses.every((sense) => object(sense) && [sense.example, sense.meaning, sense.logic].every(text))
       )
-        throw new Error(`Invalid particle: ${particle?.word}`);
-      if (words.has(particle.word)) throw new Error(`Duplicate particle: ${particle.word}`);
+        throw new Error(`Invalid ${key}: ${particle?.word}`);
+      if (words.has(particle.word)) throw new Error(`Duplicate ${key}: ${particle.word}`);
       words.add(particle.word);
     }
   }
