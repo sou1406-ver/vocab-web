@@ -56,18 +56,20 @@ export function RootsExplorer({ cards }: { cards: RootsCard[] }) {
       </div>
       <div className="filter-bar">
         <div className="filter-buttons" role="group" aria-label="Lọc kho gốc từ">
-          {[{ kind: "all" as const, title: "Tất cả" }, ...sections].map((option) => (
-            <button
-              key={option.kind}
-              type="button"
-              aria-pressed={kind === option.kind}
-              className={kind === option.kind ? "filter-chip selected" : "filter-chip"}
-              onClick={() => setKind(option.kind)}
-            >
-              {option.title}
-              {option.kind !== "all" && <span className="filter-chip-count">{counts[option.kind]}</span>}
-            </button>
-          ))}
+          {[{ kind: "all" as const, title: "Tất cả" }, ...sections.filter((section) => counts[section.kind])].map(
+            (option) => (
+              <button
+                key={option.kind}
+                type="button"
+                aria-pressed={kind === option.kind}
+                className={kind === option.kind ? "filter-chip selected" : "filter-chip"}
+                onClick={() => setKind(option.kind)}
+              >
+                {option.title}
+                {option.kind !== "all" && <span className="filter-chip-count">{counts[option.kind]}</span>}
+              </button>
+            ),
+          )}
         </div>
         <span className="muted" role="status">
           {found.length} mục
@@ -75,7 +77,8 @@ export function RootsExplorer({ cards }: { cards: RootsCard[] }) {
       </div>
       {found.length === 0 && (
         <p className="panel roots-empty">
-          Chưa có mục nào khớp với “{query}”. Thử gõ gốc (vd: <span lang="en">spect</span>) hoặc nghĩa tiếng Việt.
+          {query.trim() ? `Chưa có mục nào khớp với “${query.trim()}”. ` : "Nhóm này chưa có mục nào. "}
+          Thử gõ gốc (vd: <span lang="en">spect</span>) hoặc nghĩa tiếng Việt.
         </p>
       )}
       {sections.map((section) => {
