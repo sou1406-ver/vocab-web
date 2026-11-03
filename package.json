@@ -12,6 +12,7 @@
     "data:catalog": "node scripts/build-content.mjs",
     "data": "npm run data:source && npm run data:catalog",
     "validate:content": "node scripts/validate-content.mjs",
+    "roots:merge": "node scripts/merge-roots-batch.mjs",
     "build": "npm run data:catalog && npm run validate:content && next build",
     "start": "next start --hostname 127.0.0.1 --port 5174",
     "preview": "npm run start",

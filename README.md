@@ -97,7 +97,7 @@ Không sửa tay file sinh ra trong `src/content/` và `public/exercises/`.
 3. ID từ phải có tiền tố `<bookId>:` (riêng `toeic-600` giữ ID cũ). URL bài: `/books/<bookId>/lessons/<n>`.
 4. `npm run data:catalog`.
 
-**Gốc từ**: sửa `content/roots/roots.json`. Mọi phụ tố trong `parts` phải có trong bảng `affixes`; `book.wordId` phải tồn tại trong catalog — build sẽ báo lỗi nếu sai.
+**Gốc từ**: sửa `content/roots/roots.json`. Batch mới (file delta có `newRoots`, `addedWords`, `newParticles`…): `npm run roots:merge -- <batch.json>` để xem trước, thêm `--write` để ghi; mục đã có trong repo không bị ghi đè. Mọi phụ tố trong `parts` phải có trong bảng `affixes`; `book.wordId` phải tồn tại trong catalog — build sẽ báo lỗi nếu sai.
 
 ## Dữ liệu người học
 
