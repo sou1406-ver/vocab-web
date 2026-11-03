@@ -90,6 +90,29 @@ export function summariseSkills(progress: SkillProgress, wordIds: readonly strin
   return summary;
 }
 
+export interface SkillGap {
+  wordId: string;
+  weaker: Skill;
+  recognition: number;
+  recall: number;
+}
+/** Words whose two skills are at least `minGap` boxes apart (both tested), widest gap first. */
+export function skillGaps(progress: SkillProgress, wordIds: readonly string[], minGap = 2): SkillGap[] {
+  return wordIds
+    .flatMap((wordId) => {
+      const recognition = progress[wordId]?.recognition?.box;
+      const recall = progress[wordId]?.recall?.box;
+      if (recognition === undefined || recall === undefined || Math.abs(recognition - recall) < minGap) return [];
+      return [
+        { wordId, recognition, recall, weaker: recall < recognition ? ("recall" as const) : ("recognition" as const) },
+      ];
+    })
+    .sort(
+      (a, b) =>
+        Math.abs(b.recognition - b.recall) - Math.abs(a.recognition - a.recall) || a.wordId.localeCompare(b.wordId),
+    );
+}
+
 // Words first studied before two-skill scheduling shipped; their missing skill is mixed into reviews a few at a time.
 export const TWO_SKILL_SINCE = Date.parse("2026-11-03T00:00:00+07:00");
 export interface ReviewItem {

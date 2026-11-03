@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useApp } from "../state/provider";
 import { activeBook } from "../data/catalog";
 import { dayKey, statusOf } from "../domain/learning";
@@ -7,10 +8,11 @@ import { Icon, ProgressBar } from "../shared/ui";
 import { useWord } from "../app/context";
 import { exerciseProgress } from "../domain/exercise-progress";
 import { CultivationCard } from "../components/CultivationCard";
-import { isStable, replaySkills, skillLabels, summariseSkills } from "../domain/skills";
+import { isStable, replaySkills, skillGaps, skillLabels, summariseSkills } from "../domain/skills";
 
 export default function Progress() {
-  const { data } = useApp();
+  const { data, start, busy } = useApp();
+  const router = useRouter();
   const inspect = useWord();
   const catalog = activeBook(data.settings).catalog;
   const all = [...catalog.words, ...data.customWords];
@@ -26,6 +28,17 @@ export default function Progress() {
     replayed,
     catalog.words.map((word) => word.id),
   );
+  const wordById = new Map(catalog.words.map((word) => [word.id, word]));
+  const gaps = skillGaps(
+    replayed,
+    catalog.words.map((word) => word.id),
+  ).slice(0, 5);
+  // Practice only: it never changes a skill's box or due date, so extra drills cannot distort the schedule.
+  const practiseGaps = async () => {
+    if (data.session && data.session.phase !== "complete") return router.push("/study");
+    const words = gaps.flatMap((gap) => wordById.get(gap.wordId) ?? []);
+    if (words.length && (await start(words, "practice", "Luyện kỹ năng còn yếu"))) router.push("/study");
+  };
   const days = Array.from({ length: 7 }, (_, i) => {
     const at = Date.now() - (6 - i) * 86400000;
     const key = dayKey(at, data.settings.timezone);
@@ -206,6 +219,37 @@ export default function Progress() {
                   </div>
                 ))}
               </div>
+              {gaps.length > 0 && (
+                <div className="skill-gaps">
+                  <div className="section-heading">
+                    <h3>Lệch kỹ năng</h3>
+                    <button className="button secondary" disabled={busy} onClick={() => void practiseGaps()}>
+                      Luyện thêm {gaps.length} từ
+                    </button>
+                  </div>
+                  <div className="compact-word-list">
+                    {gaps.map((gap) => {
+                      const word = wordById.get(gap.wordId);
+                      if (!word) return null;
+                      return (
+                        <button key={gap.wordId} onClick={() => inspect(word)}>
+                          <span>
+                            <b lang="en">{word.text}</b>
+                            <small>{word.meaning}</small>
+                          </span>
+                          <span className="status-badge">
+                            Nhận biết bậc {gap.recognition} · Tự nhớ bậc {gap.recall}
+                          </span>
+                          <Icon name="chevron" size={16} />
+                        </button>
+                      );
+                    })}
+                  </div>
+                  <p className="quiet-note">
+                    Kỹ năng yếu hơn kém kỹ năng kia từ 2 bậc trở lên. Luyện thêm không đổi lịch ôn.
+                  </p>
+                </div>
+              )}
               <p className="quiet-note">
                 Mỗi kỹ năng có lịch ôn riêng; mỗi ngày một từ chỉ ôn một kỹ năng. Từ “nhớ ổn định” khi cả hai kỹ năng
                 đạt bậc 5.

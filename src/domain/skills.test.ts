@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { isStable, planReviews, replaySkills, skillOf, summariseSkills } from "./skills";
+import { isStable, planReviews, replaySkills, skillGaps, skillOf, summariseSkills } from "./skills";
 import { INTERVALS, nextDue, statusOf } from "./learning";
 import type { AnswerEvent } from "./types";
 
@@ -184,5 +184,18 @@ describe("two-skill tie-break", () => {
     expect(statusOf(progress, isStable({ ...states, recall: { ...states.recall, box: 5 } }, 5))).toBe("Nhớ ổn định");
     expect(statusOf(progress, isStable(undefined, 5))).toBe("Nhớ ổn định");
     expect(statusOf(undefined, true)).toBe("Chưa học");
+  });
+  it("lists words whose skills are far apart, widest gap first", () => {
+    const state = (box: number) => ({ box, dueAt: 0, correct: 0, incorrect: 0 });
+    const progress = {
+      a: { recognition: state(5), recall: state(1) },
+      b: { recognition: state(1), recall: state(3) },
+      c: { recognition: state(3), recall: state(2) },
+      d: { recognition: state(4) },
+    };
+    expect(skillGaps(progress, ["a", "b", "c", "d"])).toEqual([
+      { wordId: "a", recognition: 5, recall: 1, weaker: "recall" },
+      { wordId: "b", recognition: 1, recall: 3, weaker: "recognition" },
+    ]);
   });
 });

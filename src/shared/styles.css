@@ -1185,6 +1185,14 @@ html.theme-switching *::after {
   .roots-empty {
     color: var(--muted);
   }
+  .skill-gaps {
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid var(--line);
+  }
+  .skill-gaps .section-heading h3 {
+    font-size: 17px;
+  }
   .skill-tag {
     display: inline-block;
     margin-left: 10px;
