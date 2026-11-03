@@ -11,6 +11,16 @@ export interface RootQuizQuestion {
 }
 
 const MAX_QUESTIONS = 5;
+// Meanings like "làm gián đoạn, ngắt lời" and "làm gián đoạn, làm rối loạn" share a gloss, so both would be right.
+const glosses = (meaning: string) =>
+  meaning
+    .split(/[,;]/)
+    .map((part) => part.trim().toLowerCase())
+    .filter(Boolean);
+const overlaps = (a: string, b: string) => {
+  const left = new Set(glosses(a));
+  return glosses(b).some((gloss) => left.has(gloss));
+};
 
 /**
  * A short self-check for one root page. Practice only: it never touches progress, events or the review schedule.
@@ -28,7 +38,7 @@ export function makeRootQuiz(root: RootEntry, all: readonly RootEntry[], seed = 
       const distractors: string[] = [];
       for (const entry of pool) {
         const option = pick(entry);
-        if (option !== answer && !distractors.includes(option) && entry.meaning !== word.meaning)
+        if (option !== answer && !distractors.includes(option) && !overlaps(entry.meaning, word.meaning))
           distractors.push(option);
         if (distractors.length === 3) break;
       }
