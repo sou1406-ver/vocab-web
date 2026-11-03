@@ -9,14 +9,14 @@ import { findArticle } from "./knowledge/articles";
 import { library, findWords } from "../data/catalog";
 import { useApp } from "../state/provider";
 import { useWord } from "../app/context";
-import { useWordStatus } from "../shared/use-word-status";
+import { useStatusBadge } from "../shared/use-word-status";
 import { Empty, Icon } from "../shared/ui";
 
 export default function Library() {
   const { data, start, busy } = useApp();
   const router = useRouter();
   const inspect = useWord();
-  const wordStatus = useWordStatus();
+  const statusBadge = useStatusBadge();
   const params = useSearchParams();
   const setParams = (values: Record<string, string>, options?: { replace?: boolean }) => {
     const origin = params.get("from") ?? "";
@@ -141,7 +141,7 @@ export default function Library() {
                 </span>
                 <p>{word.meaning}</p>
                 <div className="vocabulary-card-bottom">
-                  <span className={wordStatus(word.id).tone}>{wordStatus(word.id).label}</span>
+                  {statusBadge(word.id)}
                   <Icon name="arrow" size={17} />
                 </div>
               </button>
