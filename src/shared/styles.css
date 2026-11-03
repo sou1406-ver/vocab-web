@@ -3944,13 +3944,13 @@ html.theme-switching *::after {
 /* Colour accents: topic tones, part of speech, learning stage and gentle depth. */
 @layer components {
   :root {
-    --plum: #6b4a8a;
-    --plum-bg: #f2ecf7;
+    --olive: #56652a;
+    --olive-bg: #eef2df;
     --lift-shadow: 0 12px 28px #263d281a;
   }
   :root[data-theme="dark"] {
-    --plum: #d6bff0;
-    --plum-bg: #2a2134;
+    --olive: #c6d58e;
+    --olive-bg: #232a17;
     --lift-shadow: 0 12px 28px #00000059;
   }
   .tone-0 {
@@ -3970,8 +3970,8 @@ html.theme-switching *::after {
     --tone-bg: var(--red-bg);
   }
   .tone-4 {
-    --tone: var(--plum);
-    --tone-bg: var(--plum-bg);
+    --tone: var(--olive);
+    --tone-bg: var(--olive-bg);
   }
   .lesson-card[class*="tone-"] .lesson-number,
   .lesson-number[class*="tone-"] {
@@ -4002,8 +4002,8 @@ html.theme-switching *::after {
     background: var(--amber-bg);
   }
   .pos[data-pos="adv"] {
-    color: var(--plum);
-    background: var(--plum-bg);
+    color: var(--olive);
+    background: var(--olive-bg);
   }
   .pos[data-pos="prep"] {
     color: var(--red);
@@ -4867,19 +4867,16 @@ html.theme-switching *::after {
     margin-top: 14px;
   }
   .skill-card {
-    --tone: var(--blue);
-    --tone-bg: var(--blue-bg);
+    --tone: var(--realm-silver);
     display: grid;
     gap: 10px;
     padding: 18px;
     border: 1px solid var(--line);
-    border-top: 3px solid var(--tone);
     border-radius: 14px;
     background: var(--surface);
   }
   .skill-card--recall {
-    --tone: var(--plum);
-    --tone-bg: var(--plum-bg);
+    --tone: var(--green);
   }
   .skill-card h3 {
     color: var(--tone);
