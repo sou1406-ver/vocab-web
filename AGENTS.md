@@ -39,6 +39,19 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 - Gợi ý ô chữ: `hintLimit = floor(số chữ cái × 0.3)`. Vượt hạn mức thì `assisted`.
 - Builder nội dung: dọn thư mục output trước khi ghi, không để lại file sinh thừa.
 
+### Thiết kế giao diện
+
+Rút từ taste-skill (Leonxlnx/taste-skill) và các lần quét impeccable, chỉnh cho app học (không phải trang marketing).
+
+- Màu: một nền, một màu chữ, một màu nhấn (xanh lá). Màu khung cảnh giới giữ tông đất, độ bão hoà thấp (ngọc, bạc, vàng, lửa). Không dùng cyan, tím/chàm hay cặp xanh-tím kiểu "AI palette".
+- Không gradient trang trí, không bóng đổ mờ khi đứng yên, không quầng sáng (glow), không kính mờ (backdrop blur). Cần nhấn thì dùng nền đặc, viền đặc hoặc vòng spread không mờ. Bóng chỉ dùng khi hover hoặc với lớp nổi (dialog, menu). Gradient chỉ khi thể hiện dữ liệu (vòng tiến độ).
+- Chữ: tiêu đề tối đa 2 dòng ở mọi cỡ màn hình. Đoạn văn dài giới hạn khoảng 70ch (45–75 ký tự/dòng). Không dùng chữ đơn cách ngoài code.
+- Tương phản: đạt WCAG AA (axe trong E2E). Không giảm `opacity` cho chữ để làm nhạt; dùng `var(--muted)`.
+- Chuyển động: chỉ `transform`/`opacity`, luôn có `prefers-reduced-motion`. Màn học giữ yên để tập trung; không thêm animation cho đủ số lượng.
+- Bố cục: chạy được ở 360px, không cuộn ngang. Vùng bấm tối thiểu 44px. Ô tìm kiếm tự vẽ nút xoá thì dùng `type="text"` + `role="searchbox"` để không trùng nút của trình duyệt.
+- Không áp nguyên bộ quy tắc taste-skill cho app: giữ eyebrow, lưới thẻ và nhãn số bài hiện có. Chỉ chạy taste-skill đầy đủ cho trang giới thiệu/marketing riêng nếu có.
+- Kiểm tra: chụp màn hình sáng và tối ở 1440 và 390 trước khi commit đổi giao diện.
+
 ### Git
 
 - Làm trực tiếp trên `main` (v2 đã thay v1; bản v1 cũ lưu ở tag `v1-final`).
