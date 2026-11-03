@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useId, useRef, useState } from "react";
-import { LogOut, Settings, LogIn } from "lucide-react";
+import { LogOut, Settings, LogIn, ShieldCheck } from "lucide-react";
 import { useApp } from "../state/provider";
 import { useCloud } from "../state/cloud-provider";
 import { bookOfWord } from "../data/catalog";
@@ -100,7 +100,7 @@ export function AccountMenu() {
             </Link>
             {reviewer.allowed && (
               <Link href="/admin" onClick={() => setOpen(false)}>
-                Admin
+                <ShieldCheck size={18} aria-hidden="true" /> Admin
               </Link>
             )}
             {cloud.user ? (
