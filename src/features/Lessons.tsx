@@ -353,6 +353,28 @@ export default function Lessons({ bookId, lessonId: id }: { bookId?: string; les
     );
   }
   const visible = catalog.lessons.filter((l) => topic === "all" || l.topicId === topic);
+  const lessonStats = visible.map((lesson) => {
+    const words = catalog.words.filter((w) => w.lesson === lesson.id);
+    return { lesson, total: words.length, learned: words.filter((w) => data.progress[w.id]?.tested).length };
+  });
+  // The lesson to continue: the first one already started but unfinished, else the first not yet started.
+  const nextLessonId = (
+    lessonStats.find((item) => item.learned > 0 && item.learned < item.total) ??
+    lessonStats.find((item) => item.learned < item.total)
+  )?.lesson.id;
+  // Lessons grouped under their topic, so the topic name is a heading instead of a label repeated on every card.
+  const lessonGroups = catalog.topics
+    .map((item, index) => {
+      const lessons = lessonStats.filter((stat) => stat.lesson.topicId === item.id);
+      return {
+        topic: item,
+        tone: toneClass(index),
+        lessons,
+        learned: lessons.reduce((sum, stat) => sum + stat.learned, 0),
+        total: lessons.reduce((sum, stat) => sum + stat.total, 0),
+      };
+    })
+    .filter((group) => group.lessons.length > 0);
   const practiceMatch = async (topicId: string) => {
     if (active) return router.push("/study");
     setMatchError("");
@@ -417,35 +439,49 @@ export default function Lessons({ bookId, lessonId: id }: { bookId?: string; les
         </select>
         <span className="muted">{visible.length} bài học</span>
       </div>
-      <div className="lesson-grid">
-        {visible.map((l) => {
-          const words = catalog.words.filter((w) => w.lesson === l.id);
-          const learned = words.filter((w) => data.progress[w.id]?.tested).length;
-          return (
-            <Link
-              className={`lesson-card ${toneClass(catalog.topics.findIndex((t) => t.id === l.topicId))}`}
-              href={`/books/${book.id}/lessons/${l.id}`}
-              key={l.id}
-            >
-              <div className="lesson-card-top">
-                <span className="lesson-number">{String(l.id).padStart(2, "0")}</span>
-                <span className="small-label">{catalog.topics.find((t) => t.id === l.topicId)?.title}</span>
-                <Icon name="arrow" size={18} />
-              </div>
-              <h2 lang="en">{l.title}</h2>
-              <p>{l.translation}</p>
-              <div className="lesson-card-footer">
-                <span>{learned ? `${learned}/${words.length} từ đã học` : `${words.length} từ · Chưa bắt đầu`}</span>
-                <span>{Math.round((learned / words.length) * 100)}%</span>
-              </div>
-              <ProgressBar
-                value={(learned / words.length) * 100}
-                label={`Bài ${l.id}: ${learned} trên ${words.length} từ`}
-              />
-            </Link>
-          );
-        })}
-      </div>
+      {lessonGroups.map((group) => (
+        <section className="lesson-topic" aria-labelledby={`topic-${group.topic.id}`} key={group.topic.id}>
+          <div className={`lesson-topic-heading ${group.tone}`}>
+            <h2 id={`topic-${group.topic.id}`}>{group.topic.title}</h2>
+            <span className="muted">
+              {group.lessons.length} bài · {group.learned}/{group.total} từ đã học
+            </span>
+          </div>
+          <div className="lesson-grid">
+            {group.lessons.map(({ lesson: l, learned, total }) => {
+              const done = learned === total;
+              const next = l.id === nextLessonId;
+              return (
+                <Link
+                  className={`lesson-card ${group.tone}${done ? " is-done" : ""}${next ? " is-next" : ""}`}
+                  href={`/books/${book.id}/lessons/${l.id}`}
+                  key={l.id}
+                >
+                  <div className="lesson-card-top">
+                    <span className="lesson-number">{String(l.id).padStart(2, "0")}</span>
+                    {done ? (
+                      <span className="lesson-badge done">
+                        <Icon name="check" size={14} /> Đã xong
+                      </span>
+                    ) : next ? (
+                      <span className="lesson-badge next">{learned ? "Học tiếp" : "Bài tiếp theo"}</span>
+                    ) : null}
+                  </div>
+                  <h3 lang="en">{l.title}</h3>
+                  <p>{l.translation}</p>
+                  <div className="lesson-card-footer">
+                    <span>{learned ? `${learned}/${total} từ` : `${total} từ`}</span>
+                    {learned > 0 && <span>{Math.round((learned / total) * 100)}%</span>}
+                  </div>
+                  {learned > 0 && (
+                    <ProgressBar value={(learned / total) * 100} label={`Bài ${l.id}: ${learned} trên ${total} từ`} />
+                  )}
+                </Link>
+              );
+            })}
+          </div>
+        </section>
+      ))}
       <section className="topic-match-section" aria-label="Nối từ theo chủ đề">
         <div className="section-heading">
           <h2>Luyện theo chủ đề</h2>

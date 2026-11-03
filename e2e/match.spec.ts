@@ -145,7 +145,7 @@ test("topic filtering, keyboard controls and dark Match remain accessible", asyn
   const topics = page.getByRole("region", { name: "Nối từ theo chủ đề", exact: true });
   await expect(page.locator(".lesson-card").first()).toBeInViewport();
   await expect(topics.getByRole("heading", { name: "Luyện theo chủ đề", exact: true })).toHaveCount(1);
-  const lessonBounds = await page.locator(".lesson-grid").boundingBox();
+  const lessonBounds = await page.locator(".lesson-grid").last().boundingBox();
   const practiceBounds = await topics.boundingBox();
   expect(practiceBounds!.y).toBeGreaterThanOrEqual(lessonBounds!.y + lessonBounds!.height);
   await page.screenshot({ path: testInfo.outputPath("lessons-first.png") });
