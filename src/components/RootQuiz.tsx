@@ -53,7 +53,7 @@ export function RootQuiz({ rounds }: { rounds: RootQuizQuestion[][] }) {
       </div>
       <p className="root-quiz-note muted">Chỉ để luyện, không tính vào tiến độ hay lịch ôn.</p>
       {done ? (
-        <div className="root-quiz-result" role="status">
+        <div className="root-quiz-result">
           <p ref={promptRef} tabIndex={-1}>
             Bạn đúng <b>{score}</b>/{questions.length} câu.
           </p>
@@ -94,11 +94,13 @@ export function RootQuiz({ rounds }: { rounds: RootQuizQuestion[][] }) {
             })}
           </div>
           {picked !== null && (
-            <div className="root-quiz-feedback" role="status">
-              <p>
-                <b>{picked === question.answer ? "Chính xác." : `Chưa đúng — đáp án: ${question.answer}.`}</b>
-              </p>
-              <p className="root-logic">{question.logic}</p>
+            <div className="root-quiz-feedback">
+              <div role="status">
+                <p>
+                  <b>{picked === question.answer ? "Chính xác." : `Chưa đúng — đáp án: ${question.answer}.`}</b>
+                </p>
+                <p className="root-logic">{question.logic}</p>
+              </div>
               <Button ref={nextRef} className="min-h-11" onClick={next}>
                 {index + 1 < questions.length ? "Câu tiếp" : "Xem kết quả"}
               </Button>
