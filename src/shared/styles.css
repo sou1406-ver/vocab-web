@@ -281,6 +281,7 @@ html.theme-switching *::after {
     color: var(--green);
   }
   .quiet-note {
+    max-width: 70ch;
     font-size: 14px;
     color: var(--muted);
     margin-top: 22px;
@@ -961,7 +962,6 @@ html.theme-switching *::after {
   }
   .word-dialog::backdrop {
     background: #12241b70;
-    backdrop-filter: blur(3px);
   }
   .dialog-close {
     position: absolute;
@@ -1093,6 +1093,7 @@ html.theme-switching *::after {
     margin-top: 5px;
   }
   .roots-intro {
+    max-width: 70ch;
     margin-bottom: 24px;
   }
   .roots-grid {
@@ -3206,7 +3207,6 @@ html.theme-switching *::after {
   }
   .dialog-overlay {
     background: #12241b70;
-    backdrop-filter: blur(4px);
   }
   :root[data-theme="dark"] .dialog-overlay {
     background: #0009;
@@ -3262,7 +3262,6 @@ html.theme-switching *::after {
   @media (prefers-reduced-transparency: reduce) {
     .dialog-overlay {
       background: var(--bg);
-      backdrop-filter: none;
     }
   }
   @media (prefers-contrast: more) {
@@ -3887,13 +3886,11 @@ html.theme-switching *::after {
     --plum: #6b4a8a;
     --plum-bg: #f2ecf7;
     --lift-shadow: 0 12px 28px #263d281a;
-    --hero-glow: #3d8a6566;
   }
   :root[data-theme="dark"] {
     --plum: #d6bff0;
     --plum-bg: #2a2134;
     --lift-shadow: 0 12px 28px #00000059;
-    --hero-glow: #3d8a652e;
   }
   .tone-0 {
     --tone: var(--green);
@@ -3925,7 +3922,6 @@ html.theme-switching *::after {
     font-size: 16px;
     font-weight: 700;
     letter-spacing: 0.3px;
-    box-shadow: 0 3px 10px color-mix(in srgb, var(--tone) 30%, transparent);
   }
   .lesson-card[class*="tone-"] .lesson-card-top .small-label {
     color: var(--tone);
@@ -3990,8 +3986,7 @@ html.theme-switching *::after {
   }
   .today-page .today-hero {
     isolation: isolate;
-    background: radial-gradient(120% 140% at 100% 0%, var(--hero-glow) 0%, transparent 55%),
-      radial-gradient(70% 110% at 0% 100%, #e6edb71c 0%, transparent 60%), var(--hero);
+    background: var(--hero);
   }
   .today-page .today-hero::after {
     content: "";
@@ -4012,7 +4007,6 @@ html.theme-switching *::after {
     box-shadow: 0 0 0 8px #ffffff0d;
   }
   .today-hero .hero-button {
-    box-shadow: 0 6px 18px #0000002e;
     transition:
       transform var(--motion-fast) var(--ease-responsive),
       box-shadow var(--motion-fast) var(--ease-responsive);
