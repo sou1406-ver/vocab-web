@@ -14,6 +14,13 @@ describe("Optional root content", () => {
     expect(content.roots.map((root) => root.id)).toEqual(expect.arrayContaining(["tempor", "rupt", "spect"]));
     expect(content.prefixFamilies?.map((family) => family.affix)).toEqual(expect.arrayContaining(["pre-", "sub-"]));
     expect(content.particles?.map((particle) => particle.word)).toEqual(expect.arrayContaining(["on", "in", "by"]));
+    const pairOf = (word: string) => content.particles?.find((particle) => particle.word === word)?.pair;
+    expect([pairOf("in"), pairOf("on"), pairOf("across"), pairOf("through")]).toEqual([
+      "on",
+      "in",
+      "through",
+      "across",
+    ]);
     expect(content.coreWords?.map((word) => word.word)).toEqual(expect.arrayContaining(["rule", "interest"]));
     expect(JSON.stringify(defaultBook.catalog)).toBe(before);
   });
@@ -37,6 +44,12 @@ describe("Optional root content", () => {
     const core = structuredClone(source);
     core.coreWords[1].word = core.coreWords[0].word;
     expect(() => validateRootsContent(core, ids)).toThrow(/Duplicate coreWords: /);
+    const pair = structuredClone(source);
+    Object.assign(pair.particles.find((item) => item.word === "in")!, { pair: "nowhere" });
+    expect(() => validateRootsContent(pair, ids)).toThrow(/Unknown particles pair: in → nowhere/);
+    const self = structuredClone(source);
+    Object.assign(self.particles.find((item) => item.word === "in")!, { pair: "in" });
+    expect(() => validateRootsContent(self, ids)).toThrow(/Invalid particles: in/);
   });
   it("finds core words and particles by whole headword or family form", () => {
     const base = defaultBook.catalog.words[0];

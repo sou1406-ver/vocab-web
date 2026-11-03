@@ -43,6 +43,9 @@ test("root discovery is off by default while basic decomposition stays available
   await expect(page.locator(".particle")).toHaveCount(roots.particles.length);
   await page.getByRole("navigation", { name: "Chọn giới từ" }).getByRole("link", { name: "off", exact: true }).click();
   await expect(page).toHaveURL(/#off$/);
+  await page.locator("#in").getByRole("link", { name: "So sánh: on" }).click();
+  await expect(page).toHaveURL(/#on$/);
+  await expect(page.locator("#on").getByRole("link", { name: "So sánh: in" })).toHaveAttribute("href", "#in");
   expect((await scanAccessibility(page)).violations).toEqual([]);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await page.screenshot({ path: testInfo.outputPath("particles.png"), fullPage: true });

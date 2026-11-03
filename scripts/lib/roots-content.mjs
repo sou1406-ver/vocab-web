@@ -82,12 +82,17 @@ export function validateRootsContent(value, wordIds) {
         (particle.note !== undefined && !text(particle.note)) ||
         !Array.isArray(particle.senses) ||
         !particle.senses.length ||
-        !particle.senses.every((sense) => object(sense) && [sense.example, sense.meaning, sense.logic].every(text))
+        !particle.senses.every((sense) => object(sense) && [sense.example, sense.meaning, sense.logic].every(text)) ||
+        (particle.pair !== undefined && (!text(particle.pair) || particle.pair === particle.word))
       )
         throw new Error(`Invalid ${key}: ${particle?.word}`);
       if (words.has(particle.word)) throw new Error(`Duplicate ${key}: ${particle.word}`);
       words.add(particle.word);
     }
+    // A pair links two contrasting entries ("in" ↔ "on"), so it must name another entry of the same list.
+    for (const particle of value[key])
+      if (particle.pair !== undefined && !words.has(particle.pair))
+        throw new Error(`Unknown ${key} pair: ${particle.word} → ${particle.pair}`);
   }
   return /** @type {import("../../src/domain/roots").RootsContent} */ (value);
 }

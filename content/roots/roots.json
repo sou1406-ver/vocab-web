@@ -12492,6 +12492,7 @@
       "core": "tiếp xúc, tựa lên một bề mặt",
       "image": "một quyển sách đặt trên mặt bàn",
       "note": "Đối lập với 'in': 'on' nhìn vào bề mặt tiếp xúc, 'in' nhìn vào không gian bao quanh. Cùng một cảnh có thể dùng cả hai, tuỳ người nói muốn nhấn vào đâu.",
+      "pair": "in",
       "senses": [
         {
           "example": "sit on a chair",
@@ -12545,6 +12546,7 @@
       "core": "nằm trong một không gian hay khối bao quanh",
       "image": "một quả táo nằm trong lòng cái bát",
       "note": "Đối lập với 'on'. Nửa trong nửa ngoài thì dùng gì tuỳ người nói nhìn vào phần nào.",
+      "pair": "on",
       "senses": [
         {
           "example": "plant a tree in the ground",
@@ -12754,6 +12756,7 @@
       "core": "băng ngang trên một bề mặt, từ bên này sang bên kia",
       "image": "một vật trượt ngang qua mặt phẳng giữa hai vạch",
       "note": "across đi trên bề mặt; through đi xuyên vào bên trong một không gian rồi ra phía bên kia.",
+      "pair": "through",
       "senses": [
         {
           "example": "walk across the street",
@@ -12777,6 +12780,7 @@
       "core": "xuyên qua không gian bên trong, từ đầu này ra đầu kia",
       "image": "một quả bóng lăn xuyên qua ống",
       "note": "Đối lập với across (đi trên bề mặt).",
+      "pair": "across",
       "senses": [
         {
           "example": "walk through the forest",

@@ -14,6 +14,11 @@ export function SenseMap({ item }: { item: Particle }) {
         <p>{item.image}</p>
       </div>
       {item.note && <p className="quiet-note">{item.note}</p>}
+      {item.pair && (
+        <a className="text-link sense-pair" href={`#${item.pair}`}>
+          So sánh: <span lang="en">{item.pair}</span> →
+        </a>
+      )}
       <ul className="particle-senses">
         {item.senses.map((sense, index) => (
           <li key={`${sense.example}:${index}`}>

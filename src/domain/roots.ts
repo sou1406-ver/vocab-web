@@ -46,6 +46,8 @@ export interface Particle {
   core: string;
   image: string;
   note?: string;
+  /** The contrasting entry in the same list (e.g. "on" for "in"), linked as "So sánh". */
+  pair?: string;
   senses: ParticleSense[];
 }
 export interface RootsContent {

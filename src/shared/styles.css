@@ -1237,6 +1237,10 @@ html.theme-switching *::after {
   .particle .root-core-image p {
     margin: 0;
   }
+  .sense-pair {
+    min-height: 44px;
+    margin-top: 6px;
+  }
   .particle-senses {
     list-style: none;
     display: grid;
