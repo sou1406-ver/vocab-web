@@ -5,6 +5,7 @@ import { Lightbulb } from "lucide-react";
 import { roots, rootById } from "../../../data/roots";
 import { RootWordCard } from "../../../components/RootWordCard";
 import { RootQuiz } from "../../../components/RootQuiz";
+import { RootStudyButton } from "../../../components/RootStudyButton";
 import { makeRootQuiz } from "../../../domain/root-quiz";
 
 export function generateStaticParams() {
@@ -43,6 +44,14 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
         <strong>Nguồn gốc:</strong> <span lang="en">{root.origin}</span>
       </p>
       {root.note && <p className="quiet-note">{root.note}</p>}
+      <RootStudyButton
+        label={`Gốc ${root.forms[0]}`}
+        wordIds={[
+          ...new Set(
+            root.words.flatMap((word) => [word.book?.wordId, ...word.family.map((form) => form.book?.wordId)]),
+          ),
+        ].filter((id): id is string => Boolean(id))}
+      />
       <div className="root-word-list">
         {root.words.map((word, index) => (
           <RootWordCard word={word} root={root} key={`${word.text}:${index}`} />

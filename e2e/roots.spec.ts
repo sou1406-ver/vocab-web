@@ -124,3 +124,16 @@ test("root discovery is off by default while basic decomposition stays available
   await expect(dialog.getByRole("region", { name: "Bản chất từ", exact: true })).toHaveCount(0);
   await expect(page.getByRole("navigation").getByRole("link", { name: "Gốc từ", exact: true })).toHaveCount(0);
 });
+
+test("a root page starts a normal session with its book words", async ({ page }) => {
+  await page.goto("/roots/tract");
+  const button = page.getByRole("button", { name: /^Học \d+ từ trong sách thuộc gốc này$/ });
+  await expect(button).toBeVisible();
+  const count = Number((await button.textContent())!.match(/\d+/)![0]);
+  await button.click();
+  await expect(page).toHaveURL(/\/study$/);
+  await expect(page.locator(".study-counter")).toContainText(`/ ${count}`);
+  const snapshot = await readSnapshot(page);
+  expect(snapshot.session?.mode).toBe("learn");
+  expect(snapshot.session?.title).toBe("Gốc tract");
+});
