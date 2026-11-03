@@ -47,7 +47,8 @@
 
 @layer components {
   .reading-article {
-    max-width: 760px;
+    /* About 75 characters a line at the 17px reading size. */
+    max-width: 680px;
     margin-inline: auto;
   }
   .reading-body {

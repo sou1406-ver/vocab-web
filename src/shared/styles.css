@@ -71,7 +71,6 @@ html.theme-switching *::after {
     --red-bg: #fff1eb;
     --hero: #1b4e3b;
     --radius: 18px;
-    --shadow: 0 5px 24px #263d2810;
     --motion-fast: 120ms;
     --motion-enter: 160ms;
     --motion-exit: 120ms;
@@ -112,7 +111,6 @@ html.theme-switching *::after {
     --red: #ffb4a4;
     --red-bg: #3a2321;
     --hero: #143a2c;
-    --shadow: none;
     color: var(--ink);
     background: var(--bg);
   }
@@ -281,7 +279,7 @@ html.theme-switching *::after {
     color: var(--green);
   }
   .quiet-note {
-    max-width: 70ch;
+    max-width: 38em;
     font-size: 14px;
     color: var(--muted);
     margin-top: 22px;
@@ -621,6 +619,11 @@ html.theme-switching *::after {
     gap: 15px;
     font-size: 14px;
     color: var(--muted);
+  }
+  .app-footer a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
   }
   .mobile-nav {
     display: none;
@@ -1061,6 +1064,7 @@ html.theme-switching *::after {
     border-bottom: 2px solid var(--green);
   }
   .root-logic {
+    max-width: 38em;
     margin: 14px 0;
     padding-left: 14px;
     border-left: 3px solid var(--green);
@@ -1093,7 +1097,7 @@ html.theme-switching *::after {
     margin-top: 5px;
   }
   .roots-intro {
-    max-width: 70ch;
+    max-width: 38em;
     margin-bottom: 24px;
   }
   .roots-grid {
@@ -1717,7 +1721,6 @@ html.theme-switching *::after {
     border-top-color: var(--card-top-line);
     border-radius: var(--radius);
     background: var(--surface);
-    box-shadow: var(--shadow);
   }
   .exercise-result-heading {
     display: flex;
@@ -1809,7 +1812,6 @@ html.theme-switching *::after {
     border-top-color: var(--card-top-line);
     border-radius: 28px;
     background: var(--surface);
-    box-shadow: var(--shadow);
     text-align: center;
   }
   .guest-notice-icon {
@@ -3471,6 +3473,9 @@ html.theme-switching *::after {
     gap: 10px;
   }
   .today-daily-goal > a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
     font-size: 14px;
     color: #f4f6ef;
     text-decoration: underline;
@@ -4050,7 +4055,6 @@ html.theme-switching *::after {
     margin: 8px 0 8px 8px;
     border: 1px solid var(--line);
     border-radius: var(--radius);
-    box-shadow: var(--shadow);
   }
 }
 @layer responsive {

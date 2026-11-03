@@ -82,7 +82,8 @@ test("short desktop and compact sidebars scroll the menu while keeping settings 
       await expect(settings).toBeFocused();
       await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
       const after = await footer.boundingBox();
-      expect(after!.y).toBeCloseTo(initial!.y, 0);
+      // Sticky: the footer stays put (sub-pixel rounding allowed when the page height is fractional).
+      expect(Math.abs(after!.y - initial!.y)).toBeLessThanOrEqual(1);
       const link = await settings.boundingBox();
       expect(link!.y).toBeGreaterThanOrEqual(0);
       expect(link!.y + link!.height).toBeLessThanOrEqual(400);
