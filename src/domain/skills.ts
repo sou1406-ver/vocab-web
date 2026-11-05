@@ -1,5 +1,6 @@
 import { INTERVALS, TIMEZONE, dayKey, nextDue } from "./learning";
-import type { AnswerEvent, Question, Snapshot } from "./types";
+import type { AnswerEvent, Question, Snapshot, Word } from "./types";
+import { schedulesAnswer } from "./sense-check";
 
 /*
  * Read-only view of the two planned skills (LEARNING-CONTRACTS §3), rebuilt from the answer log.
@@ -45,7 +46,7 @@ export function replaySkills(events: readonly AnswerEvent[], timezone = TIMEZONE
   const ordered = [...events].filter((event) => Number.isFinite(event.at)).sort((a, b) => a.at - b.at);
   for (const event of ordered) {
     const skill = skillOf(event.questionKind);
-    if (!skill || event.mode === "practice") continue;
+    if (!skill || event.mode === "practice" || !schedulesAnswer(event)) continue;
     const word = (progress[event.wordId] ??= {});
     const day = dayKey(event.at, timezone);
     const state = word[skill];
@@ -141,9 +142,17 @@ export function planReviews(
   const today = dayKey(at, timezone);
   const due: ReviewItem[] = [];
   const extra: ReviewItem[] = [];
+  const reviewedGroups = new Set(
+    Object.entries(progress)
+      .filter(
+        ([id, p]) => p.reviewedDay === today || Object.values(skills[id] ?? {}).some((s) => s.reviewedDay === today),
+      )
+      .map(([id, p]) => p.groupWordId ?? id),
+  );
   for (const id of wordIds) {
     const word = progress[id];
     if (!word?.tested) continue;
+    if (reviewedGroups.has(word.groupWordId ?? id)) continue;
     const states = skills[id] ?? {};
     const known = (["recognition", "recall"] as const).filter((skill) => states[skill]);
     if (known.some((skill) => states[skill]!.reviewedDay === today) || word.reviewedDay === today) continue;
@@ -172,4 +181,9 @@ export function planReviews(
 export function isStable(states: Partial<Record<Skill, SkillState>> | undefined, legacyBox = 0) {
   if (!states?.recognition && !states?.recall) return legacyBox >= 5;
   return (states.recognition?.box ?? 0) >= 5 && (states.recall?.box ?? 0) >= 5;
+}
+export function isWordStable(word: Pick<Word, "id" | "learningItems">, progress: ProgressMap, skills: SkillProgress) {
+  return (word.learningItems?.map((item) => item.id) ?? [word.id]).every(
+    (id) => progress[id]?.tested && isStable(skills[id], progress[id].box),
+  );
 }

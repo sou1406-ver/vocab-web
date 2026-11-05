@@ -8,7 +8,8 @@ import { Icon, ProgressBar } from "../shared/ui";
 import { useWord } from "../app/context";
 import { exerciseProgress } from "../domain/exercise-progress";
 import { CultivationCard } from "../components/CultivationCard";
-import { isStable, replaySkills, skillGaps, skillLabels, summariseSkills } from "../domain/skills";
+import { isWordStable, replaySkills, skillGaps, skillLabels, summariseSkills } from "../domain/skills";
+import { needsLearning } from "../domain/lexicon";
 
 export default function Progress() {
   const { data, start, busy } = useApp();
@@ -17,11 +18,11 @@ export default function Progress() {
   const catalog = activeBook(data.settings).catalog;
   const all = [...catalog.words, ...data.customWords];
   const exerciseGroups = exerciseProgress(data.events, new Set(all.map((word) => word.id)));
-  const learned = catalog.words.filter((w) => data.progress[w.id]?.tested).length;
+  const learned = catalog.words.filter((w) => !needsLearning(w, data)).length;
   const replayed = replaySkills(data.events, data.settings.timezone);
   // Stable means both skills at box 5+ (words without skill history keep their single legacy box).
   const stable = catalog.words.filter(
-    (w) => data.progress[w.id]?.tested && isStable(replayed[w.id], data.progress[w.id]?.box),
+    (w) => !needsLearning(w, data) && isWordStable(w, data.progress, replayed),
   ).length;
   const correct = data.events.filter((e) => e.correct).length;
   const skills = summariseSkills(
@@ -176,7 +177,7 @@ export default function Progress() {
                       <small>{word.meaning}</small>
                     </span>
                     <span className="status-badge">
-                      {statusOf(data.progress[word.id], isStable(replayed[word.id], data.progress[word.id].box))} · Sai{" "}
+                      {statusOf(data.progress[word.id], isWordStable(word, data.progress, replayed))} · Sai{" "}
                       {data.progress[word.id].incorrect} lần
                     </span>
                     <Icon name="chevron" size={16} />

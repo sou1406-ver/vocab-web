@@ -1,0 +1,95 @@
+{
+  "version": 1,
+  "items": [
+    {
+      "wordId": "charge-19",
+      "lexemeId": "en:charge",
+      "required": ["ask-payment", "fee", "battery"]
+    },
+    {
+      "wordId": "compile-19",
+      "lexemeId": "en:compile",
+      "required": ["gather"]
+    },
+    {
+      "wordId": "customer-19",
+      "lexemeId": "en:customer",
+      "required": ["buyer"]
+    },
+    {
+      "wordId": "discount-19",
+      "lexemeId": "en:discount",
+      "required": ["price-reduction", "reduce-price"]
+    },
+    {
+      "wordId": "efficient-19",
+      "lexemeId": "en:efficient",
+      "required": ["little-waste"]
+    },
+    {
+      "wordId": "estimate-19",
+      "lexemeId": "en:estimate",
+      "required": ["approximate", "approximation"]
+    },
+    {
+      "wordId": "impose-19",
+      "lexemeId": "en:impose",
+      "required": ["require", "inconvenience"]
+    },
+    {
+      "wordId": "mistake-19",
+      "lexemeId": "en:mistake",
+      "required": ["error", "confuse"]
+    },
+    {
+      "wordId": "order-19",
+      "lexemeId": "en:order",
+      "required": ["purchase-request", "buy", "command", "arrangement"]
+    },
+    {
+      "wordId": "promptly-19",
+      "lexemeId": "en:promptly",
+      "required": ["without-delay"]
+    },
+    {
+      "wordId": "rectify-19",
+      "lexemeId": "en:rectify",
+      "required": ["correct"]
+    },
+    {
+      "wordId": "terms-19",
+      "lexemeId": "en:terms",
+      "required": ["conditions"]
+    },
+    {
+      "wordId": "address-4",
+      "lexemeId": "en:address",
+      "required": ["speech", "deal-with", "location"]
+    },
+    {
+      "wordId": "balance-21",
+      "lexemeId": "en:balance",
+      "required": ["account-amount", "reconcile", "stability"]
+    },
+    {
+      "wordId": "file-24",
+      "lexemeId": "en:file",
+      "required": ["submit", "document", "organize"]
+    },
+    {
+      "wordId": "return-23",
+      "lexemeId": "en:return",
+      "required": ["profit", "go-back", "give-back"]
+    },
+    {
+      "wordId": "establish-1",
+      "lexemeId": "en:establish",
+      "required": ["found", "confirm", "build"]
+    },
+    {
+      "wordId": "apply-12",
+      "lexemeId": "en:apply",
+      "required": ["request", "use"]
+    }
+  ]
+}

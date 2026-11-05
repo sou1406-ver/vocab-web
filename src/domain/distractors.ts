@@ -1,5 +1,6 @@
 import type { Snapshot, Word } from "./types";
 import { shuffleSeeded } from "./random";
+import { sameLexeme } from "./lexicon";
 
 export type TestedProgress = Readonly<Snapshot["progress"]>;
 const pos = (value: string) => value.trim().toLowerCase().replace(/\./g, "");
@@ -31,5 +32,7 @@ export function distractorPool(word: Word, all: readonly Word[], progress: Teste
     otherPos,
     family.filter((form) => pos(form.pos) === pos(word.pos)),
     family.filter((form) => pos(form.pos) !== pos(word.pos)),
-  ].flatMap((tier, index) => shuffleSeeded(tier, `${seed}:${word.id}:pool:${index}`));
+  ]
+    .flatMap((tier, index) => shuffleSeeded(tier, `${seed}:${word.id}:pool:${index}`))
+    .filter((candidate) => !sameLexeme(word, candidate));
 }

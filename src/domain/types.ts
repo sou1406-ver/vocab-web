@@ -1,3 +1,5 @@
+import type { Lexeme, SenseCheck } from "./lexicon";
+
 export interface Word {
   id: string;
   lesson: number;
@@ -11,6 +13,10 @@ export interface Word {
   synonyms: string[];
   antonyms: string[];
   parts: string[];
+  lexeme?: Lexeme;
+  learningItems?: { id: string; senseId: string }[];
+  senseId?: string;
+  groupWordId?: string;
 }
 export interface Lesson {
   id: number;
@@ -30,6 +36,7 @@ export interface Catalog {
   topics: Topic[];
 }
 export interface WordProgress {
+  groupWordId?: string;
   startedAt: number;
   startedDay: string;
   box: number;
@@ -42,6 +49,7 @@ export interface WordProgress {
 }
 export type SessionMode = "learn" | "review" | "practice";
 interface QuestionBase {
+  senseCheck?: SenseCheck;
   wordId: string;
   prompt: string;
   answer: string;
@@ -122,6 +130,7 @@ export interface StudySession {
   matchMistakes?: number[];
 }
 export interface AnswerEvent {
+  senseCheck?: SenseCheck;
   id: string;
   sessionId: string;
   wordId: string;
@@ -135,7 +144,7 @@ export interface AnswerEvent {
   questionKind?: Question["kind"];
   contentVersion?: string;
   skill?: "vocabulary";
-  scoringVersion?: 1 | 2 | 3 | 4;
+  scoringVersion?: 1 | 2 | 3 | 4 | 5;
   sourceQuestionId?: string;
   sourceVersion?: string;
   hintCount?: number;

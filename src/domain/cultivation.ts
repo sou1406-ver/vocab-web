@@ -32,7 +32,11 @@ export function cultivationOf(words: number) {
 }
 
 export function countLearnedWords(progress: Readonly<Snapshot["progress"]>, isCatalogWord: (id: string) => boolean) {
-  return Object.entries(progress).filter(([id, word]) => word.tested && isCatalogWord(id)).length;
+  return new Set(
+    Object.entries(progress)
+      .filter(([id, word]) => word.tested && isCatalogWord(id))
+      .map(([id, word]) => word.groupWordId ?? id),
+  ).size;
 }
 
 export interface Cultivator {

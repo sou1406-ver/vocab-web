@@ -2,6 +2,7 @@ import type { Snapshot, Word } from "../domain/types";
 import { singleWordMatch } from "../domain/word-match";
 import { matchGlosses, matchMeaningsOverlap } from "./match";
 import { LISTEN_PROMPTS } from "./listening";
+import { validateLexicon } from "../../scripts/lib/lexicon-content.mjs";
 
 export function record(value: unknown): Record<string, unknown> {
   if (!value || typeof value !== "object" || Array.isArray(value)) throw new Error("Dữ liệu không đúng định dạng.");
@@ -28,10 +29,53 @@ const questionKinds = [
 const count = (value: unknown) => Number.isSafeInteger(value) && number(value);
 const day = (v: unknown) => string(v) && /^\d{4}-\d{2}-\d{2}$/.test(v as string);
 const safeId = (v: string) => v !== "__proto__" && v !== "constructor" && v !== "prototype";
+function senseCheckValid(value: unknown, wordId: unknown) {
+  if (value === undefined) return true;
+  const c = record(value);
+  const ids = (v: unknown): v is string[] =>
+    Array.isArray(v) &&
+    v.length > 0 &&
+    v.length <= 16 &&
+    v.every((id) => nonempty(id) && safeId(id)) &&
+    new Set(v).size === v.length;
+  return (
+    [c.wordId, c.lexemeId, c.senseId].every((v) => nonempty(v) && safeId(v as string)) &&
+    ids(c.itemIds) &&
+    ids(c.requiredItemIds) &&
+    c.requiredItemIds[0] === c.wordId &&
+    c.itemIds.includes(wordId as string) &&
+    c.itemIds.every((id) => (c.requiredItemIds as string[]).includes(id)) &&
+    ["scheduled", "diagnostic", "repair"].includes(c.role as string)
+  );
+}
+function lexiconWordValid(w: Record<string, unknown>) {
+  if (w.lexeme === undefined) return [w.learningItems, w.senseId, w.groupWordId].every((v) => v === undefined);
+  validateLexicon({ version: 1, entries: [w.lexeme] });
+  const lexeme = w.lexeme as Word["lexeme"] & {};
+  if (
+    lexeme.text !== w.text ||
+    lexeme.senses.some((s) => s.status !== "reviewed") ||
+    !Array.isArray(w.learningItems) ||
+    !w.learningItems.length ||
+    w.learningItems.length > 16
+  )
+    return false;
+  const items = w.learningItems.map(record);
+  const selected = lexeme.senses.find((s) => s.id === w.senseId);
+  return (
+    Boolean(selected && selected.pos === w.pos && selected.meaning === w.meaning) &&
+    items.every((i) => nonempty(i.id) && safeId(i.id as string) && lexeme.senses.some((s) => s.id === i.senseId)) &&
+    new Set(items.map((i) => i.id)).size === items.length &&
+    new Set(items.map((i) => i.senseId)).size === items.length &&
+    items[0].id === w.groupWordId &&
+    items.some((i) => i.id === w.id && i.senseId === w.senseId)
+  );
+}
 export function isWord(value: unknown): value is Word {
   try {
     const w = record(value);
     return (
+      lexiconWordValid(w) &&
       [w.id, w.text, w.pos, w.ipa, w.meaning, w.definition].every(string) &&
       Boolean(w.id) &&
       safeId(w.id as string) &&
@@ -99,6 +143,7 @@ export function validateSnapshot(value: unknown): Snapshot {
     const p = record(raw);
     if (
       !safeId(id) ||
+      (p.groupWordId !== undefined && (!nonempty(p.groupWordId) || !safeId(p.groupWordId as string))) ||
       ![p.startedAt, p.dueAt, p.correct, p.incorrect].every(number) ||
       !Number.isInteger(p.box) ||
       (p.box as number) < 0 ||
@@ -128,6 +173,9 @@ export function validateSnapshot(value: unknown): Snapshot {
       fail();
     eventIds.add(e.id);
     if (
+      !senseCheckValid(e.senseCheck, e.wordId) ||
+      (e.senseCheck !== undefined && (e.scoringVersion !== 5 || e.mode === "practice")) ||
+      (e.scoringVersion === 5 && e.senseCheck === undefined) ||
       (e.questionId !== undefined && !nonempty(e.questionId)) ||
       ((e.questionKind === "listen-choice" || e.questionKind === "listen-type") && e.mode !== "practice") ||
       (e.questionKind !== undefined && !questionKinds.includes(e.questionKind as string)) ||
@@ -137,7 +185,7 @@ export function validateSnapshot(value: unknown): Snapshot {
           (e.questionKind === "synonym-context" && e.direction !== "synonym"))) ||
       (e.contentVersion !== undefined && !nonempty(e.contentVersion)) ||
       (e.skill !== undefined && e.skill !== "vocabulary") ||
-      (e.scoringVersion !== undefined && ![1, 2, 3, 4].includes(e.scoringVersion as number)) ||
+      (e.scoringVersion !== undefined && ![1, 2, 3, 4, 5].includes(e.scoringVersion as number)) ||
       (e.scoringVersion === 3 &&
         (e.questionKind !== "build" || e.mode !== "practice" || e.hintCount !== 0 || e.hintLimit !== 0)) ||
       (e.scoringVersion === 4 &&
@@ -148,7 +196,7 @@ export function validateSnapshot(value: unknown): Snapshot {
       (e.sourceVersion !== undefined && !nonempty(e.sourceVersion)) ||
       (e.hintCount !== undefined && !count(e.hintCount)) ||
       (e.hintLimit !== undefined && !count(e.hintLimit)) ||
-      ((e.scoringVersion === 2 || e.scoringVersion === 3 || e.scoringVersion === 4) &&
+      ((e.scoringVersion === 2 || e.scoringVersion === 3 || e.scoringVersion === 4 || e.scoringVersion === 5) &&
         (!count(e.hintCount) ||
           !count(e.hintLimit) ||
           ((e.hintCount as number) > (e.hintLimit as number) && !e.assisted) ||
@@ -191,6 +239,12 @@ export function validateSnapshot(value: unknown): Snapshot {
       fail();
     for (const raw of session.questions as unknown[]) {
       const q = record(raw);
+      if (
+        !senseCheckValid(q.senseCheck, q.wordId) ||
+        (q.senseCheck !== undefined &&
+          (session.mode === "practice" || !["meaning", "word-choice", "cloze", "recall"].includes(q.kind as string)))
+      )
+        fail();
       if (![q.wordId, q.prompt].every(string) || !questionKinds.includes(q.kind as string)) fail();
       if (q.kind === "build") {
         if (

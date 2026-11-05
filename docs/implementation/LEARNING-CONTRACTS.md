@@ -266,3 +266,57 @@ Chưa làm: builder chung cho quyển mới (mỗi quyển tự viết builder),
 - Có bản sửa word/lesson/topic thì `catalog.version = <fingerprint gốc>+e<hash bản sửa>`; không sửa thì giữ nguyên fingerprint. Lượt học tạo trước bản sửa nhận nhánh “Nội dung bài học đã cập nhật” sẵn có. Fingerprint gốc của bundle và quy tắc build không đổi.
 - Câu bài tập biên soạn: gói gốc vẫn được kiểm tra với catalog/version gốc rồi mới ghép bản sửa (sửa theo `sourceId`, ẩn, thêm `sourceId` mới dạng `admin:...`). Bài có bản sửa đổi `version` của gói thành `<version gốc>+e<hash>`, câu ghi `sourceVersion` mới; câu của từ đã ẩn bị bỏ. Không đổi catalog.version.
 - Client lưu bản sửa vào localStorage `vocab:content-edits:v1`, áp dụng trước khi mở store; mỗi trình duyệt hỏi Firestore tối đa 15 phút/lần (admin lưu xong thì làm mới ngay). Bản mới chỉ áp dụng ngay khi không có lượt học dở; nếu đang học thì áp dụng ở lần mở sau. Trang tĩnh dựng sẵn (gốc từ, phụ tố, kiến thức) vẫn theo nội dung gốc.
+
+## 7. Pilot kho từ vựng theo nghĩa (2026-11-05)
+
+Triển khai theo yêu cầu người dùng trên main từ f56b37a, cùng đợt làm lại thẻ học. Kết quả kiểm chứng cuối được ghi bên dưới. Hợp đồng này thay đề xuất mỗi từ chỉ học một nghĩa: sách chọn nhóm nghĩa phổ biến cần học; mỗi nghĩa là một LearningItem, còn kết quả qua/chưa thuộc được tổng hợp theo nhóm từ.
+
+### Nguồn nội dung và định danh
+
+- Nguồn dùng chung: content/lexicon/pilot.json, version 1. Lexeme có ID độc lập sách, text, core tùy chọn và senses; không đặt pos trên Lexeme. Sense có ID theo nghĩa, pos, nghĩa/giải thích Việt, định nghĩa Anh, ví dụ Anh–Việt, patterns, synonyms/antonyms, nguồn và status draft/reviewed.
+- Binding sách: content/books/toeic-600/senses.json, version 1, ánh xạ wordId cũ tới lexemeId và danh sách required có thứ tự. Không suy đoán mức phổ biến từ thứ tự từ điển. Nghĩa reviewed ngoài required chỉ để tra cứu, không được đưa vào LearningItem, lịch ôn hoặc pool nhiễu.
+- Pilot có 18 Lexeme / 45 nghĩa reviewed: đủ 12 từ bài 19 và charge, address, balance, file, return, establish, apply, order (charge/order đã nằm trong bài 19). Có 38 nghĩa cần học và 7 nghĩa đọc thêm. Giữ nguyên bài gốc của các từ ngoài bài 19.
+- Nội dung do agent biên soạn với nguồn sách ghi rõ từng nghĩa và đường dẫn dictionary; một agent độc lập rà soát 45 nghĩa, phát hiện 6 chỗ cần chỉnh. Đã tách file/tệp máy tính, balance/thăng bằng thể chất, sửa balance/cân đối sổ sách, ví dụ order/đơn đặt hàng, định nghĩa estimate và nguồn term. Ghi provenance rà soát độc lập; đây không phải tuyên bố người dùng đã duyệt từng câu.
+- Chỉ reviewed được công bố; draft giữ ở nguồn biên soạn. Binding tới draft/thiếu nghĩa/trùng ID/thiếu nguồn làm compiler báo lỗi. core là field tùy chọn dạng meaning/image/note; chưa gộp coreWords trong roots.json hay đổi trang core-words.
+- Mục học nghĩa chính giữ nguyên wordId cũ; nghĩa bổ sung có ID <bookId>:<legacyWordId>:<senseId>. Word phẳng là projection tương thích của từng nghĩa; pos/meaning/definition/examples/synonyms/antonyms lấy đúng sense. Catalog vẫn 600 nhóm từ; bookOfWord/wordsById nhận cả ID mục học bổ sung.
+
+### Luồng kiểm tra đã chốt
+
+1. Hỏi mỗi nghĩa cần học đúng một lần. Câu chọn nghĩa có ví dụ ngữ cảnh để phân biệt nghĩa; không chỉ hỏi từ rời rồi bắt đoán nghĩa nào.
+2. Nếu tất cả đều đúng, từ qua lượt kiểm tra. Nếu A sai, tiếp tục kiểm tra mỗi nghĩa còn lại một lần.
+3. Nếu một nghĩa khác cũng sai, từ chưa thuộc; hoàn tất các câu lần đầu còn lại để có đủ kết quả, không tạo câu hỏi lại.
+4. Nếu chỉ A sai và mọi nghĩa khác đúng, học lại A rồi hỏi lại A đúng một lần. Đúng thì qua, sai thì chưa thuộc. Với N nghĩa có tối đa N + 1 câu; giới hạn ba câu chỉ là trường hợp hai nghĩa. Từ một nghĩa cũng có tối đa một lần học lại/hỏi lại.
+
+Câu hỏi lại được nối ở cuối danh sách session, không chèn trước câu đã lưu và không đổi index/event ID. Mỗi câu sai vẫn giữ event sai dù câu sửa lỗi sau đó đúng. Reload giữ nguyên câu/đáp án/options/trạng thái; stale index hoặc event trùng không được ghi thêm. Kết thúc khi đang chờ câu sửa lỗi vẫn là chưa kiểm tra đủ, không tính qua.
+
+### Tiến độ, migration và đồng bộ
+
+- Giữ IndexedDB vocab-learn-v2, snapshot schemaVersion 2, ID từ, ID event sessionId:index và toeic-600 mặc định. senseMigration tạo manifest alias version 1; migrateLearningSnapshot xác minh alias và trả nguyên snapshot. Đây là identity migration, không ghi lại tiến độ hay gắn senseId giả vào lịch sử.
+- Mọi field progress/event cũ, gồm box/dueAt/reviewedDay/contentVersion/sourceVersion/scoringVersion, giữ nguyên. Primary ID tiếp tục là mốc tương thích; lịch sử cũ từng trộn nhiều nghĩa không được coi là bằng chứng đã thuộc các nghĩa bổ sung. Các nghĩa mới bắt đầu chưa học, không sao chép box sang chúng.
+- WordProgress có groupWordId optional cho mục học bổ sung. Đếm mục tiêu ngày/tu luyện/BXH theo nhóm từ một lần; không cộng thêm từ vì có nhiều sense.
+- Question và event nhóm có senseCheck optional: wordId nhóm, lexemeId, senseId, itemIds của lượt, requiredItemIds đầy đủ và role scheduled/diagnostic/repair. Validator đọc dữ liệu thiếu metadata cũ và kiểm tra chặt khi field có mặt. Event nhóm dùng scoringVersion 5; các dạng cũ giữ version hiện có.
+- Lượt học giới thiệu đủ nhóm nghĩa cần học. Lượt ôn chỉ hỏi nghĩa đã được giới thiệu, chọn kỹ năng đến hạn sớm nhất cho nhóm và dùng cùng kỹ năng cho các câu của nhóm. Mỗi nghĩa đến hạn ghi nhận scheduled một lần; nghĩa chưa đến hạn là diagnostic, câu hỏi lại là repair. Local, replay kỹ năng và cloud materialize đều bỏ diagnostic/repair khi tính lịch. Practice và Match giữ nguyên quy tắc không đổi box/dueAt/reviewedDay.
+- Gom due/extra theo nhóm trước khi xáo câu, ưu tiên due để nghĩa bổ sung không chọn nhầm kỹ năng. Một nhóm từ chỉ ôn một kỹ năng/ngày. Từ còn nghĩa chưa giới thiệu không được tính đã qua; thẻ danh sách và trang Tiến độ chỉ hiện nhớ ổn định khi mọi mục học cần thiết đều ổn định.
+- Kết quả mới nhất theo thời gian event và tie-break ID ổn định, không theo thứ tự nhận từ cloud: một lượt offline cũ gửi lên muộn không ghi đè kết quả mới hơn. Library dùng needsLearning để các từ đã lưu còn thiếu nghĩa bắt đầu lượt học, không bị chuyển sang practice chỉ vì primary đã tested.
+- Nội dung học đổi làm fingerprint bundle đổi có chủ đích; phần đọc thêm/core/nguồn/review metadata không làm đổi fingerprint học. Không viết fingerprint mới vào event/session cũ. Session cũ khác fingerprint giữ kết quả và nhánh hiện có: thông báo cập nhật nội dung, cho kết thúc lượt cũ rồi bắt đầu lượt mới.
+
+### Nhiễu, tra cứu và bản sửa Admin
+
+- Pool nhiễu loại mọi mục học cùng Lexeme hoặc cùng chính tả chuẩn hóa dù khác sense/POS/wordId/sách, giữ bộ lọc cùng bài/đã học và nghĩa chồng/family hiện có. Thiếu nhiễu thì fallback/bỏ câu theo luật cũ. Bài tập practice không cấp kết quả qua của lượt học chính thức.
+- WordContent hiển thị nghĩa đang học cùng ví dụ/cách dùng; chi tiết từ mở các nghĩa reviewed còn lại và phân biệt cần học/đọc thêm. Mở tra cứu không tạo tiến độ. Lượt từ đã lưu có thể trộn sách: tra các sách được từng question tham chiếu qua bookOfWord, không dùng catalog toàn cục.
+- Bản sửa phẳng cũ của từ pilot không ghi đè dữ liệu từng nghĩa đã duyệt hoặc làm đổi hash khi chưa áp dụng. Giữ bản sửa trong danh sách Admin kèm nhãn chưa áp dụng và nút Hoàn tác; không âm thầm làm mất bản sửa. Trình sửa phẳng thông báo chưa hỗ trợ từ đã biên soạn theo nghĩa. Các bản sửa/từ ngoài pilot, ẩn/hiện và quyền reviewer hiện có tiếp tục hoạt động; không thay/deploy Firestore rules.
+
+### Thẻ học
+
+Giữ hệ màu và serif tiêu đề hiện có. Khi vùng nội dung thẻ đủ 680px, chia hai cột: trái là nghĩa/giải thích/ví dụ, phải là cách dùng/phân tích/họ từ. Tên từ và phát âm ở đầu thẻ; phần hành động ở cuối. Thẻ hẹp tự xếp một cột; thẻ không có nội dung bổ sung dùng một cột. Dialog chi tiết rộng tối đa 900px và dùng cùng component, không thêm chuyển động hay hiệu ứng trang trí.
+
+### Kế hoạch và kiểm chứng
+
+- [x] Nguồn/model/compiler có test reviewed filtering, nguồn/ID, projection và fingerprint học.
+- [x] State machine, metadata optional, migration, local/replay/cloud và nhóm lịch ôn.
+- [x] Tích hợp học/ôn/từ đã lưu, trạng thái nhóm và thẻ desktop/mobile.
+- [x] Build/catalog, unit/E2E liên quan, lint/format; commit được tạo sau khi xác minh staging.
+
+Review code độc lập đã hoàn tất. Sáu điểm tích hợp được kiểm tra và sửa: phiên học nhiều sách, due/extra chọn kỹ năng, báo bản sửa Admin không áp dụng, thứ tự event offline, stable theo tất cả nghĩa, Library học nghĩa còn thiếu. Các regression tests mới đã được chạy RED rồi GREEN cho năm helper/đường dữ liệu; Library có E2E riêng trong vocabulary-senses.spec.ts. Không triển khai cloud/deploy trong đợt này.
+
+Kiểm chứng cuối: npm run build -- --webpack PASS, catalog b1aa331534d0 (600 nhóm từ / 50 bài, 0 cảnh báo; 798 câu bài tập). Lệnh npx vitest run với 22 file liên quan PASS 154 tests. npm run typecheck PASS; npm run lint PASS; Prettier check trên các file thay đổi PASS. Playwright với Edge trên bản production: 12 legacy cases PASS + 2 desktop-only cases SKIP trên mobile; vocabulary-senses.spec.ts PASS 8/8 sau khi sửa locator test cho nhãn phím tắt. Tổng các trường hợp liên quan: 20 PASS, 2 SKIP. Đã xem ảnh sáng/tối ở 1440 và 390; kiểm tra không tràn ngang và axe PASS. Không chạy/deploy Firebase hoặc push remote. Hai file untracked có sẵn README (1).md và build_roots.py không thuộc commit.

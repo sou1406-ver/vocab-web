@@ -3,6 +3,7 @@ import { createHash } from "node:crypto";
 import { buildClozeContent } from "./build-cloze-content.mjs";
 import { buildToeic600 } from "./books/toeic-600.mjs";
 import { validateRootsContent } from "./lib/roots-content.mjs";
+import { learningFingerprintPayload } from "./lib/lexicon-content.mjs";
 
 // Each book is declared in content/books/<id>/book.json and converted by the builder it names.
 // Output: src/content/books/<id>/*.json, public/exercises/<id>/ and src/content/books/registry.ts.
@@ -55,7 +56,10 @@ for (const { book, payload, warnings, part5 } of books) {
   const directory = new URL(`${book.id}/`, output);
   await mkdir(directory, { recursive: true });
   // Fingerprint covers learning content only, so book metadata edits never invalidate sessions.
-  const version = createHash("sha256").update(JSON.stringify(payload)).digest("hex").slice(0, 12);
+  const version = createHash("sha256")
+    .update(JSON.stringify(learningFingerprintPayload(payload)))
+    .digest("hex")
+    .slice(0, 12);
   const write = (file, value, pretty) =>
     writeFile(new URL(file, directory), JSON.stringify(value, null, pretty ? 2 : undefined) + "\n");
   const exercises = await buildClozeContent(book.id, payload.words, payload.lessons, part5);

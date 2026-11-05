@@ -11,6 +11,7 @@ import { shuffleSeeded } from "../domain/random";
 import { learningStreak } from "../domain/streak";
 import { CultivationCard } from "../components/CultivationCard";
 import { Icon, ProgressBar, toneClass } from "../shared/ui";
+import { mergeReviewGroups, needsLearning, studyWords } from "../domain/lexicon";
 
 export function Today() {
   const { data, start, startReview, busy } = useApp();
@@ -18,7 +19,7 @@ export function Today() {
   const at = Date.now();
   const book = activeBook(data.settings);
   const catalog = book.catalog;
-  const all = [...catalog.words, ...data.customWords];
+  const all = studyWords([...catalog.words, ...data.customWords]);
   const skills = useMemo(
     () => replaySkills(data.events, data.settings.timezone),
     [data.events, data.settings.timezone],
@@ -30,17 +31,16 @@ export function Today() {
     at,
     data.settings.timezone,
   );
-  const due = plan.due;
+  const grouped = mergeReviewGroups(plan.due, plan.extra, all);
+  const due = grouped.due;
   const introduced = introducedToday(data, at);
   const remaining = Math.max(0, data.settings.dailyNew - introduced);
   const active = data.session && data.session.phase !== "complete";
   const lesson =
     catalog.lessons.find((item) =>
-      catalog.words.some((word) => word.lesson === item.id && !data.progress[word.id]?.tested),
+      catalog.words.some((word) => word.lesson === item.id && needsLearning(word, data)),
     ) ?? catalog.lessons[0];
-  const nextWords = catalog.words
-    .filter((word) => word.lesson === lesson.id && !data.progress[word.id]?.tested)
-    .slice(0, 5);
+  const nextWords = catalog.words.filter((word) => word.lesson === lesson.id && needsLearning(word, data)).slice(0, 5);
   const dailyGoal = Math.min(100, (introduced / data.settings.dailyNew) * 100);
   const streak = learningStreak(data.events, at);
   const studiedToday = data.events.some((event) => Number.isFinite(event.at) && dayKey(event.at) === dayKey(at));
@@ -48,10 +48,12 @@ export function Today() {
     if (active) return router.push("/study");
     if (due.length) {
       // Up to 20 due words, plus a few older words quietly checked in the skill they have not been tested in yet.
-      const items = shuffleSeeded([...due.slice(0, 20), ...plan.extra.slice(0, 3)], `review:${at}`).flatMap((item) => {
-        const word = all.find((candidate) => candidate.id === item.wordId);
-        return word ? [{ word, skill: item.skill }] : [];
-      });
+      const items = shuffleSeeded([...due.slice(0, 20), ...grouped.extra.slice(0, 3)], `review:${at}`).flatMap(
+        (item) => {
+          const word = all.find((candidate) => candidate.id === item.wordId);
+          return word ? [{ word, skill: item.skill }] : [];
+        },
+      );
       if (await startReview(items, "Ôn từ đến hạn")) router.push("/study");
       return;
     }

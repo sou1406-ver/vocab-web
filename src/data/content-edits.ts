@@ -126,13 +126,24 @@ export const originalOf = (book: Book) => original(book);
 let exerciseEdits = new Map<string, ContentEdit[]>();
 let applied: ContentEdit[] = [];
 export const appliedEdits = () => applied;
+let rejected: ContentEdit[] = [];
+export const rejectedEdits = () => rejected;
 
 // Rebuilds every book from its original bundle plus the given edits, mutating the shared catalog objects.
 export function applyContentEdits(edits: readonly ContentEdit[]) {
   const nextExercises = new Map<string, ContentEdit[]>();
+  rejected = [];
   for (const book of library.books) {
     const base = original(book);
-    const mine = edits.filter((edit) => edit.bookId === book.id);
+    const mine = edits.filter((edit) => {
+      if (edit.bookId !== book.id) return false;
+      const word = edit.kind === "word" ? base.words.find((item) => item.id === edit.target) : undefined;
+      if (!edit.hidden && word?.lexeme && (!isWord(edit.data) || edit.data.lexeme?.id !== word.lexeme.id)) {
+        rejected.push(edit);
+        return false;
+      }
+      return true;
+    });
     const wordEdits = new Map(mine.filter((edit) => edit.kind === "word").map((edit) => [edit.target, edit]));
     const words: Word[] = [];
     for (const word of base.words) {

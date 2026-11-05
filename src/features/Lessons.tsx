@@ -14,6 +14,7 @@ import { makeSynonymQuestions } from "../data/synonyms";
 import { makeMatchQuestions } from "../data/match";
 import { makeListeningQuestions } from "../data/listening";
 import { useEnglishVoices } from "../lib/use-english-voices";
+import { needsLearning } from "../domain/lexicon";
 
 export default function Lessons({ bookId, lessonId: id }: { bookId?: string; lessonId?: string }) {
   const { data, start, startExercises, busy, change } = useApp();
@@ -141,7 +142,7 @@ export default function Lessons({ bookId, lessonId: id }: { bookId?: string; les
         setBuildError(error instanceof Error ? error.message : "Chưa mở được bài ghép từ.");
       }
     };
-    const untested = words.filter((w) => !data.progress[w.id]?.tested);
+    const untested = words.filter((w) => needsLearning(w, data));
     const learned = words.length - untested.length;
     const practiceRecognition = async () => {
       if (active) return router.push("/study");

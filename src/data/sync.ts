@@ -171,11 +171,12 @@ export function createChange(
   return Object.keys(patch).length ? { version: 1, id, deviceId, generation, kind: "patch", patch } : null;
 }
 function applyEvent(snapshot: Snapshot, event: AnswerEvent, at: number) {
-  if (event.questionKind === "match") return;
+  if (event.questionKind === "match" || (event.senseCheck && event.senseCheck.role !== "scheduled")) return;
   const previous = snapshot.progress[event.wordId];
   if (!previous && event.mode === "practice") return;
   const day = dayKey(at, snapshot.settings.timezone);
   const p: WordProgress = previous ?? {
+    ...(event.senseCheck && event.senseCheck.wordId !== event.wordId ? { groupWordId: event.senseCheck.wordId } : {}),
     startedAt: at,
     startedDay: day,
     box: 0,

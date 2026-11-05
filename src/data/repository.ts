@@ -1,6 +1,8 @@
 import { emptySnapshot } from "../domain/learning";
 import type { Snapshot } from "../domain/types";
 import { validateSnapshot } from "./validation";
+import { activeBook } from "./catalog";
+import { migrateLearningSnapshot } from "./sense-migration";
 import { createChange, generationOf, newAccount, type AccountRecord } from "./sync";
 
 let database: Promise<IDBDatabase> | undefined;
@@ -47,7 +49,8 @@ export async function readSnapshot(profile = "guest"): Promise<Snapshot> {
     request.onsuccess = () => {
       try {
         const raw = profile === "guest" ? request.result : request.result?.snapshot;
-        resolve(raw ? validateSnapshot(raw) : emptySnapshot());
+        const snapshot = raw ? validateSnapshot(raw) : emptySnapshot();
+        resolve(migrateLearningSnapshot(snapshot, activeBook(snapshot.settings).catalog.words));
       } catch (error) {
         reject(error);
       }

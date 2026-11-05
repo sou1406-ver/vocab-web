@@ -2,7 +2,8 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { bookByVersion, bookOfWord, library } from "../data/catalog";
+import { bookByVersion, bookOfWord, wordsForSession } from "../data/catalog";
+import { senseOutcome } from "../domain/sense-check";
 import { useApp, useSandbox } from "../state/provider";
 import { Empty, Icon, ProgressBar, WordContent, Speak } from "../shared/ui";
 import { useWord } from "../app/context";
@@ -96,12 +97,26 @@ export function StudySession() {
         </Empty>
       </div>
     );
-  const all = [...library.words, ...data.customWords];
+  const all = wordsForSession(session, data.settings, data.customWords);
   const events = data.events.filter((e) => e.sessionId === session.id);
   const correct = events.filter((e) => e.correct).length;
   if (session.phase === "complete") {
+    const groups = [...new Set(session.questions.flatMap((q) => q.senseCheck?.wordId ?? []))].map((id) => ({
+      id,
+      result: senseOutcome(session, data.events, id),
+      word: all.find((w) => w.id === id),
+    }));
     const isMatch = session.questions[0].kind === "match";
-    const wrongWords = [...new Set(events.filter((e) => !e.correct).map((e) => e.wordId))]
+    const wrongWords = [
+      ...new Set(
+        events
+          .filter(
+            (e) =>
+              !e.correct && (!e.senseCheck || senseOutcome(session, data.events, e.senseCheck.wordId) !== "passed"),
+          )
+          .map((e) => e.senseCheck?.wordId ?? e.wordId),
+      ),
+    ]
       .map((id) => all.find((w) => w.id === id))
       .filter((w): w is Word => Boolean(w));
     const retry = async () => {
@@ -154,6 +169,24 @@ export function StudySession() {
         <h1 tabIndex={-1}>
           Một lượt học, thêm vững vàng<span className="heading-dot">.</span>
         </h1>
+        {groups.length > 0 && (
+          <ul className="sense-results" aria-label="Kết quả theo từ">
+            {groups.map((group) => (
+              <li key={group.id}>
+                <strong lang="en">{group.word?.text}</strong>
+                <span>
+                  {group.result === "passed"
+                    ? "Đã qua các nghĩa cần học"
+                    : group.result === "unintroduced"
+                      ? "Còn nghĩa chưa học"
+                      : group.result === "pending"
+                        ? "Chưa kiểm tra đủ"
+                        : "Chưa thuộc"}
+                </span>
+              </li>
+            ))}
+          </ul>
+        )}
         <p className="page-subtitle">{session.title}</p>
         <div className="result-score">
           <b>
@@ -298,7 +331,9 @@ export function StudySession() {
         </p>
         <h1 tabIndex={-1}>
           {session.phase === "learn"
-            ? "Làm quen với từ này"
+            ? question.senseCheck?.role === "repair"
+              ? "Học lại nghĩa này"
+              : "Làm quen với từ này"
             : question.kind === "listen-choice"
               ? "Nghe và chọn từ"
               : question.kind === "listen-type"
@@ -331,7 +366,7 @@ export function StudySession() {
       >
         {session.phase === "learn" ? (
           <>
-            <WordContent word={word} />
+            <WordContent word={word} study />
             <div className="study-card-actions">
               <span className="muted">Đọc ví dụ, nghe và thử ghi nhớ.</span>
               <button ref={nextRef} className="button primary" disabled={busy} onClick={() => void advance()}>

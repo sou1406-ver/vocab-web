@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { isStable, planReviews, replaySkills, skillGaps, skillOf, summariseSkills } from "./skills";
+import { isStable, isWordStable, planReviews, replaySkills, skillGaps, skillOf, summariseSkills } from "./skills";
 import { INTERVALS, nextDue, statusOf } from "./learning";
 import type { AnswerEvent } from "./types";
 
@@ -26,6 +26,28 @@ const answer = (
 });
 
 describe("two-skill replay", () => {
+  it("requires every required meaning to be introduced and stable before the word is stable", () => {
+    const word = {
+      id: "primary",
+      learningItems: [
+        { id: "primary", senseId: "one" },
+        { id: "secondary", senseId: "two" },
+      ],
+    };
+    const p = {
+      startedAt: start,
+      startedDay: "2026-10-01",
+      box: 5,
+      dueAt: start,
+      correct: 1,
+      incorrect: 0,
+      tested: true,
+      policyVersion: 1 as const,
+    };
+    expect(isWordStable(word, { primary: p }, {})).toBe(false);
+    expect(isWordStable(word, { primary: p, secondary: { ...p, box: 1 } }, {})).toBe(false);
+    expect(isWordStable(word, { primary: p, secondary: p }, {})).toBe(true);
+  });
   it("maps picking to recognition and typing to recall, and never guesses old events", () => {
     expect(skillOf("meaning")).toBe("recognition");
     expect(skillOf("cloze-choice")).toBe("recognition");

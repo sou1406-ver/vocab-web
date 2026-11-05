@@ -8,6 +8,7 @@ import {
   isCatalogExample,
   isExerciseQuestion,
   originalOf,
+  rejectedEdits,
   type ContentEdit,
 } from "../data/content-edits";
 import { loadBundledPack } from "../data/cloze";
@@ -104,8 +105,9 @@ export function WordEditor() {
     return [...original.words, ...added]
       .map((word) => {
         const edit = edits.get(word.id);
-        const current = edit && isWord(edit.data) ? edit.data : word;
-        return { word: current, edit, added: !original.words.some((item) => item.id === word.id) };
+        const ignored = rejectedEdits().some((item) => item.id === edit?.id);
+        const current = !ignored && edit && isWord(edit.data) ? edit.data : word;
+        return { word: current, edit, ignored, added: !original.words.some((item) => item.id === word.id) };
       })
       .filter(({ word }) => word.lesson === lessonId)
       .filter(
@@ -219,7 +221,7 @@ export function WordEditor() {
           <span className="muted">{rows.length} từ</span>
         </div>
         <ul className="admin-word-list">
-          {rows.map(({ word, edit, added }) => (
+          {rows.map(({ word, edit, ignored, added }) => (
             <li key={word.id} className={edit?.hidden ? "is-hidden" : undefined}>
               <div className="admin-word-main">
                 <b lang="en">{word.text}</b>
@@ -230,7 +232,14 @@ export function WordEditor() {
               </div>
               <div className="admin-word-tags">
                 {added && <span className="status-badge reviewing">Mới</span>}
-                {edit && !added && isWord(edit.data) && <span className="status-badge learning">Đã sửa</span>}
+                {edit && !added && isWord(edit.data) && (
+                  <span className="status-badge learning">{ignored ? "Bản sửa chưa áp dụng" : "Đã sửa"}</span>
+                )}
+                {ignored && (
+                  <span className="muted">
+                    Bản sửa cũ thiếu dữ liệu từng nghĩa đã duyệt. Có thể hoàn tác để bỏ bản sửa.
+                  </span>
+                )}
                 {edit?.hidden && <span className="status-badge">Đã ẩn</span>}
               </div>
               <div className="admin-word-actions">
@@ -329,6 +338,16 @@ function WordForm({
     setError("");
     void onSave(next);
   };
+  if (word?.lexeme)
+    return (
+      <section className="panel admin-form-panel" aria-labelledby="word-form-title">
+        <h2 id="word-form-title">Nội dung theo từng nghĩa: {word.text}</h2>
+        <p>Từ này đã được biên soạn và duyệt theo từng nghĩa. Trình sửa hiện tại chưa hỗ trợ nội dung này.</p>
+        <button type="button" className="button secondary" onClick={onCancel}>
+          Đóng
+        </button>
+      </section>
+    );
   return (
     <form className="panel admin-form-panel" aria-labelledby="word-form-title" onSubmit={submit}>
       <h2 id="word-form-title">{word ? `Sửa “${word.text}”` : "Thêm từ mới"}</h2>

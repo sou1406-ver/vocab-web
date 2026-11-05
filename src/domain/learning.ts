@@ -12,6 +12,9 @@ import type {
 } from "./types";
 import { shuffleSeeded } from "./random";
 import { distractorPool, type TestedProgress } from "./distractors";
+import { learningItems } from "./lexicon";
+import { queueSenseRepair, schedulesAnswer } from "./sense-check";
+import { replaySkills } from "./skills";
 
 export const INTERVALS = [1, 3, 7, 14, 30, 60];
 export const TIMEZONE = "Asia/Ho_Chi_Minh";
@@ -67,7 +70,11 @@ export function dueIds(snapshot: Snapshot, at = Date.now()) {
 }
 export function introducedToday(snapshot: Snapshot, at = Date.now()) {
   const day = dayKey(at, snapshot.settings.timezone);
-  return Object.values(snapshot.progress).filter((p) => p.startedDay === day).length;
+  return new Set(
+    Object.entries(snapshot.progress)
+      .filter(([, p]) => p.startedDay === day)
+      .map(([id, p]) => p.groupWordId ?? id),
+  ).size;
 }
 export const normalizeAnswer = (value: string) => value.trim().toLowerCase().replace(/\s+/g, " ");
 export const questionAnswerText = (question: Question) =>
@@ -155,7 +162,19 @@ export function beginSession(
     id,
     title,
     mode,
-    questions: makeQuestions(words, catalog.words, mode, id, snapshot.progress),
+    questions: makeQuestions(words, catalog.words, mode, id, snapshot.progress).flatMap((question, index) =>
+      words[index].learningItems && mode !== "practice"
+        ? makeSenseQuestions(
+            words[index],
+            mode === "learn" && index % 2 === 0 ? "recognition" : "recall",
+            mode,
+            snapshot,
+            catalog.words,
+            id,
+            at,
+          )
+        : [question],
+    ),
     contentVersion: catalog.version,
     index: 0,
     phase: mode === "learn" ? "learn" : "question",
@@ -274,8 +293,60 @@ export function beginSkillReview(
   );
   return {
     ...next,
-    session: { ...next.session!, questions: makeSkillQuestions(items, catalog.words, id, snapshot.progress) },
+    session: {
+      ...next.session!,
+      questions: items
+        .filter(
+          (item, index) =>
+            items.findIndex(
+              (candidate) =>
+                (candidate.word.groupWordId ?? candidate.word.id) === (item.word.groupWordId ?? item.word.id),
+            ) === index,
+        )
+        .flatMap((item, index) =>
+          item.word.learningItems
+            ? makeSenseQuestions(item.word, item.skill, "review", snapshot, catalog.words, id, at, item.word.id)
+            : [makeSkillQuestions([item], catalog.words, `${id}:${index}`, snapshot.progress)[0]],
+        ),
+    },
   };
+}
+
+function makeSenseQuestions(
+  word: Word,
+  skill: "recognition" | "recall",
+  mode: SessionMode,
+  snapshot: Snapshot,
+  all: Word[],
+  id: string,
+  at: number,
+  scheduledItemId?: string,
+): Question[] {
+  const required = learningItems(word);
+  const items = mode === "review" ? required.filter((item) => snapshot.progress[item.id]) : required;
+  const skills = mode === "review" ? replaySkills(snapshot.events, snapshot.settings.timezone) : {};
+  return items.map((item) => {
+    const question = makeSkillQuestions([{ word: item, skill }], all, id, snapshot.progress)[0];
+    return {
+      ...question,
+      ...(question.kind === "meaning" ? { prompt: `${item.text}\n${item.examples[0]?.text ?? item.definition}` } : {}),
+      senseCheck: {
+        wordId: word.groupWordId ?? word.id,
+        lexemeId: word.lexeme!.id,
+        senseId: item.senseId!,
+        itemIds: items.map((w) => w.id),
+        requiredItemIds: required.map((w) => w.id),
+        role:
+          mode === "review" &&
+          ((item.id !== scheduledItemId &&
+            (skills[item.id]?.[skill]?.dueAt ?? snapshot.progress[item.id].dueAt) > at) ||
+            snapshot.progress[item.id].reviewedDay === dayKey(at, snapshot.settings.timezone) ||
+            skills[item.id]?.[skill]?.reviewedDay === dayKey(at, snapshot.settings.timezone))
+            ? ("diagnostic" as const)
+            : ("scheduled" as const),
+      },
+    };
+  });
 }
 export function beginExerciseSession(
   snapshot: Snapshot,
@@ -290,9 +361,10 @@ export function beginExerciseSession(
   const next = beginSession(snapshot, catalog, words as Word[], "practice", title, id, at);
   return { ...next, session: { ...next.session!, questions } };
 }
-function introduce(snapshot: Snapshot, wordId: string, at: number): Snapshot {
+function introduce(snapshot: Snapshot, wordId: string, at: number, groupWordId?: string): Snapshot {
   if (snapshot.progress[wordId]) return snapshot;
   const progress: WordProgress = {
+    ...(groupWordId && groupWordId !== wordId ? { groupWordId } : {}),
     startedAt: at,
     startedDay: dayKey(at, snapshot.settings.timezone),
     box: 0,
@@ -341,6 +413,7 @@ export function answerQuestion(
       : typeof input === "string" && normalizeAnswer(input) === normalizeAnswer(q.answer));
   const day = dayKey(at, snapshot.settings.timezone);
   const event: AnswerEvent = {
+    ...(q.senseCheck ? { senseCheck: q.senseCheck } : {}),
     id,
     sessionId,
     wordId: q.wordId,
@@ -366,7 +439,7 @@ export function answerQuestion(
       : {}),
     skill: "vocabulary",
     ...(q.kind === "synonym-choice" || q.kind === "synonym-context" ? { direction: q.direction ?? "synonym" } : {}),
-    scoringVersion: q.kind === "build" ? 3 : 2,
+    scoringVersion: q.senseCheck ? 5 : q.kind === "build" ? 3 : 2,
     hintCount,
     hintLimit,
   };
@@ -379,6 +452,7 @@ export function answerQuestion(
   };
   const previous = snapshot.progress[q.wordId];
   const p: WordProgress = previous ?? {
+    ...(q.senseCheck && q.senseCheck.wordId !== q.wordId ? { groupWordId: q.senseCheck.wordId } : {}),
     startedAt: at,
     startedDay: day,
     box: 0,
@@ -399,12 +473,15 @@ export function answerQuestion(
     nextProgress.reviewedDay = day;
   }
   const progress =
-    session.mode === "practice" && !previous ? snapshot.progress : { ...snapshot.progress, [q.wordId]: nextProgress };
+    !schedulesAnswer(event) || (session.mode === "practice" && !previous)
+      ? snapshot.progress
+      : { ...snapshot.progress, [q.wordId]: nextProgress };
+  const events = [...snapshot.events, event];
   return {
     ...snapshot,
     progress,
-    events: [...snapshot.events, event],
-    session: { ...session, phase: "feedback", feedback },
+    events,
+    session: queueSenseRepair({ ...session, phase: "feedback", feedback }, events),
   };
 }
 export function advanceSession(
@@ -426,13 +503,14 @@ export function advanceSession(
     session: {
       ...session,
       index: nextIndex,
-      phase: session.mode === "learn" ? "learn" : "question",
+      phase:
+        session.mode === "learn" || session.questions[nextIndex].senseCheck?.role === "repair" ? "learn" : "question",
       feedback: null,
       peeked: false,
       revealed: [],
     },
   };
-  return session.mode === "learn" ? introduce(next, wordId, at) : next;
+  return session.mode === "learn" ? introduce(next, wordId, at, session.questions[nextIndex].senseCheck?.wordId) : next;
 }
 export function finishSession(snapshot: Snapshot, finished: boolean, at = Date.now()): Snapshot {
   const session = snapshot.session;

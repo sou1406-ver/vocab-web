@@ -135,46 +135,104 @@ export function Speak({ text }: { text: string }) {
     </button>
   );
 }
-export function WordContent({ word }: { word: Word }) {
+export function WordContent({ word, study = false }: { word: Word; study?: boolean }) {
+  const senses = word.lexeme?.senses.filter((sense) => sense.status === "reviewed") ?? [];
+  const current = senses.find((sense) => sense.id === word.senseId);
+  const required = new Set(word.learningItems?.map((item) => item.senseId));
+  const others = senses.filter((sense) => sense.id !== current?.id);
   return (
     <div className="word-content">
-      <div className="word-heading">
-        <h2 lang="en">{word.text}</h2>
-        <Speak text={word.text} />
-      </div>
-      <div className="word-meta">
-        <span className="pos" data-pos={word.pos}>
-          {word.pos}
-        </span>
-        <span lang="en">{word.ipa}</span>
-      </div>
-      <p className="word-meaning">{word.meaning}</p>
-      <p className="muted" lang="en">
-        {word.definition}
-      </p>
-      <WordAnalysis word={word} />
-      {word.examples.slice(0, 2).map((example, i) => (
-        <blockquote key={i}>
-          <p lang="en">{example.text}</p>
-          {example.translation && <footer>{example.translation}</footer>}
-        </blockquote>
-      ))}
-      {!!word.family.length && (
-        <details className="word-family">
-          <summary>Họ từ · {word.family.length} dạng</summary>
-          <div>
-            {word.family.map((f, i) => (
-              <div className="family-row" key={i}>
-                <b lang="en">{f.text}</b>
-                <span className="pos" data-pos={f.pos}>
-                  {f.pos}
-                </span>
-                <span>{f.meaning}</span>
-              </div>
+      <header className="word-introduction">
+        <div className="word-heading">
+          <h2 lang="en">{word.text}</h2>
+          <Speak text={word.text} />
+        </div>
+        <div className="word-meta">
+          <span className="pos" data-pos={word.pos}>
+            {word.pos}
+          </span>
+          <span lang="en">{word.ipa}</span>
+        </div>
+      </header>
+      <div className="word-reading" aria-label="Nghĩa và ví dụ">
+        {current && (
+          <p className="sense-label">
+            Nghĩa cần học {Math.max(0, word.learningItems?.findIndex((item) => item.senseId === current.id) ?? 0) + 1} /{" "}
+            {word.learningItems?.length}
+          </p>
+        )}
+        <p className="word-meaning">{word.meaning}</p>
+        {current && <p className="sense-explanation">{current.explanation}</p>}
+        <p className="muted" lang="en">
+          {word.definition}
+        </p>
+        {word.examples.slice(0, 2).map((example, i) => (
+          <blockquote key={i}>
+            <p lang="en">{example.text}</p>
+            {example.translation && <footer>{example.translation}</footer>}
+          </blockquote>
+        ))}
+        {!study && others.length > 0 && (
+          <details className="word-other-senses">
+            <summary>Các nghĩa khác · {others.length} nghĩa</summary>
+            {others.map((sense) => (
+              <section className="lookup-sense" key={sense.id}>
+                <div className="sense-label">
+                  <span className="pos" data-pos={sense.pos}>
+                    {sense.pos}
+                  </span>
+                  <span>{required.has(sense.id) ? "Cần học trong bài" : "Đọc thêm"}</span>
+                </div>
+                <h3>{sense.meaning}</h3>
+                <p>{sense.explanation}</p>
+                <p className="muted" lang="en">
+                  {sense.definition}
+                </p>
+                {sense.examples.slice(0, 2).map((example, index) => (
+                  <blockquote key={index}>
+                    <p lang="en">{example.text}</p>
+                    <footer>{example.translation}</footer>
+                  </blockquote>
+                ))}
+                <p className="sense-patterns" lang="en">
+                  {sense.patterns.join(" · ")}
+                </p>
+              </section>
             ))}
-          </div>
-        </details>
-      )}
+          </details>
+        )}
+      </div>
+      <aside className="word-reference" aria-label="Cách dùng và cấu tạo từ">
+        {!!current?.patterns.length && (
+          <section className="word-patterns">
+            <h3>Cách dùng thường gặp</h3>
+            <ul>
+              {current.patterns.map((pattern) => (
+                <li lang="en" key={pattern}>
+                  {pattern}
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
+        <WordAnalysis word={word} />
+        {!!word.family.length && (
+          <details className="word-family">
+            <summary>Họ từ · {word.family.length} dạng</summary>
+            <div>
+              {word.family.map((f, i) => (
+                <div className="family-row" key={i}>
+                  <b lang="en">{f.text}</b>
+                  <span className="pos" data-pos={f.pos}>
+                    {f.pos}
+                  </span>
+                  <span>{f.meaning}</span>
+                </div>
+              ))}
+            </div>
+          </details>
+        )}
+      </aside>
     </div>
   );
 }
@@ -197,7 +255,7 @@ export function WordDialog({
       }}
     >
       <DialogContent
-        className="word-dialog max-h-[85dvh] w-[calc(100%-30px)] max-w-[620px] overflow-y-auto rounded-[20px] bg-card p-7 pt-10 sm:p-9"
+        className="word-dialog max-h-[85dvh] w-[calc(100%-30px)] max-w-[900px] overflow-y-auto rounded-[20px] bg-card p-7 pt-10 sm:p-9"
         onCloseAutoFocus={(event) => {
           event.preventDefault();
           opener.current?.focus({ preventScroll: true });

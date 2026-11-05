@@ -1026,6 +1026,128 @@ html.theme-switching *::after {
     align-items: center;
     gap: 20px;
   }
+  .study-card,
+  .word-dialog {
+    container: word-card / inline-size;
+  }
+  .word-content {
+    display: grid;
+    gap: 24px;
+    min-width: 0;
+  }
+  .word-introduction {
+    padding-bottom: 22px;
+    border-bottom: 1px solid var(--line);
+  }
+  .word-introduction .word-meta {
+    margin-bottom: 0;
+  }
+  .word-reading,
+  .word-reference {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+  .word-reading > p,
+  .lookup-sense > p {
+    max-width: 38em;
+  }
+  .word-reference {
+    padding-top: 22px;
+    border-top: 1px solid var(--line);
+  }
+  .word-reference:empty {
+    display: none;
+  }
+  .word-reference > :first-child {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: 0;
+  }
+  .sense-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--muted);
+    font-size: 13px;
+    margin-bottom: 12px;
+  }
+  .sense-explanation {
+    margin: 12px 0;
+    line-height: 1.7;
+  }
+  .word-patterns h3 {
+    font-size: 16px;
+    margin-bottom: 12px;
+  }
+  .word-patterns ul {
+    padding-left: 20px;
+    margin: 0;
+  }
+  .word-patterns li {
+    margin: 8px 0;
+    line-height: 1.6;
+  }
+  .word-other-senses {
+    margin-top: 24px;
+    border-top: 1px solid var(--line);
+    padding-top: 12px;
+  }
+  .word-other-senses summary,
+  .word-reference .word-family summary {
+    min-height: 44px;
+    align-content: center;
+    cursor: pointer;
+    color: var(--green);
+    font-weight: 600;
+  }
+  .lookup-sense {
+    padding: 20px 0;
+    border-top: 1px solid var(--line);
+  }
+  .lookup-sense h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+  .sense-patterns {
+    margin-top: 14px;
+    color: var(--muted);
+  }
+  .sense-results {
+    list-style: none;
+    padding: 0;
+    margin: 24px auto;
+    max-width: 560px;
+    text-align: left;
+  }
+  .sense-results li {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px 20px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .sense-results li span {
+    color: var(--muted);
+  }
+  @container word-card (min-width: 680px) {
+    .word-content {
+      grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+      column-gap: 32px;
+    }
+    .word-introduction {
+      grid-column: 1 / -1;
+    }
+    .word-reference {
+      padding-top: 0;
+      padding-left: 28px;
+      border-top: 0;
+      border-left: 1px solid var(--line);
+    }
+    .word-content:has(.word-reference:empty) {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
   .word-heading h2 {
     font-size: clamp(29px, 4vw, 42px);
     font-weight: 500;

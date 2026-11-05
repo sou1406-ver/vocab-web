@@ -1,6 +1,7 @@
 import { readFile, readdir } from "node:fs/promises";
 import assert from "node:assert/strict";
 import { validateRootsContent } from "./lib/roots-content.mjs";
+import { validateLexicon } from "./lib/lexicon-content.mjs";
 const root = new URL("../", import.meta.url);
 const json = async (path) => JSON.parse(await readFile(new URL(path, root), "utf8"));
 const bookIds = (await readdir(new URL("src/content/books/", root), { withFileTypes: true }))
@@ -20,6 +21,14 @@ for (const id of bookIds) {
   assert.equal(catalog.words.length, book.expectedEntries, `${id}: entry count mismatch`);
   assert.equal(catalog.lessons.length, book.expectedLessons, `${id}: lesson count mismatch`);
   for (const word of catalog.words) {
+    if (word.lexeme) {
+      validateLexicon({ version: 1, entries: [word.lexeme] });
+      assert(
+        word.lexeme.senses.every((sense) => sense.status === "reviewed"),
+        `${id}: unpublished sense in bundle`,
+      );
+      assert(word.learningItems?.length && word.learningItems[0].id === word.id, `${id}: broken legacy alias`);
+    }
     assert(book.legacyWordIds || word.id.startsWith(`${id}:`), `${id}: word ID must start with "${id}:": ${word.id}`);
     assert(!ids.has(word.id), `Duplicate word ID across books: ${word.id}`);
     ids.add(word.id);

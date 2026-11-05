@@ -1,5 +1,7 @@
 import { registry } from "../content/books/registry";
 import type { Catalog, Snapshot, Word } from "../domain/types";
+import { senseMigration } from "./sense-migration";
+import { studyWords } from "../domain/lexicon";
 
 export interface ExerciseEntry {
   lessonId: number;
@@ -28,12 +30,15 @@ export function createLibrary(books: readonly Book[]) {
     owner.clear();
     wordsById.clear();
     words.length = 0;
-    for (const book of books)
+    for (const book of books) {
+      for (const [id, item] of senseMigration(book.catalog.words).items) {
+        owner.set(id, book);
+        wordsById.set(id, item);
+      }
       for (const word of book.catalog.words) {
-        owner.set(word.id, book);
-        wordsById.set(word.id, word);
         words.push(word);
       }
+    }
   };
   refresh();
   return {
@@ -58,6 +63,15 @@ export const bookByVersion = library.bookByVersion;
 
 // Unknown or removed book IDs fall back to the default book instead of breaking old snapshots.
 export const activeBook = (settings: Snapshot["settings"]) => bookById(settings.bookId) ?? defaultBook;
+export function wordsForSession(
+  session: { questions: readonly { wordId: string }[] },
+  settings: Snapshot["settings"],
+  customWords: readonly Word[],
+) {
+  const owned = new Set(session.questions.flatMap((question) => bookOfWord(question.wordId) ?? []));
+  if (!owned.size) owned.add(activeBook(settings));
+  return studyWords([...Array.from(owned).flatMap((book) => book.catalog.words), ...customWords]);
+}
 // Custom words and test fixtures belong to no book; they use the given fallback (default book).
 export const catalogFor = (wordId: string | undefined, fallback: Book = defaultBook) =>
   (bookOfWord(wordId) ?? fallback).catalog;
@@ -73,6 +87,13 @@ export const normalize = (value: string) =>
 export function findWords(query: string, words: Word[]) {
   const search = normalize(query);
   return words.filter((word) =>
-    normalize([word.text, word.meaning, ...word.family.map((f) => f.text)].join(" ")).includes(search),
+    normalize(
+      [
+        word.text,
+        word.meaning,
+        ...(word.lexeme?.senses.filter((s) => s.status === "reviewed").map((s) => s.meaning) ?? []),
+        ...word.family.map((f) => f.text),
+      ].join(" "),
+    ).includes(search),
   );
 }

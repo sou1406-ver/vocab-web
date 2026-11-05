@@ -38,19 +38,25 @@ vi.mock("../content/books/registry", () => ({
 }));
 vi.mock("./repository", () => ({ readSnapshot: vi.fn(), changeSnapshot: vi.fn() }));
 
-const { activeBook, bookById, bookByVersion, bookOfWord, books, catalogFor, defaultBook, library } = await import(
-  "./catalog"
-);
+const { activeBook, bookById, bookByVersion, bookOfWord, books, catalogFor, defaultBook, library, wordsForSession } =
+  await import("./catalog");
 const { changeSnapshot } = await import("./repository");
 const { createAppStore } = await import("../state/store");
 const { emptySnapshot } = await import("../domain/learning");
 const { validateSnapshot } = await import("./validation");
 
 describe("Book library", () => {
+  it("resolves words from every book represented in a saved-word session", () => {
+    const session = { questions: [{ wordId: toeicCatalog.words[0].id }, { wordId: second.words[0].id }] };
+    const resolved = wordsForSession(session, emptySnapshot().settings, []);
+    expect(resolved.some((word) => word.id === toeicCatalog.words[0].id)).toBe(true);
+    expect(resolved.some((word) => word.id === second.words[0].id)).toBe(true);
+  });
   it("keeps the original book first and exposes every word once", () => {
     expect(books.map((book) => book.id)).toEqual(["toeic-600", "ielts-starter"]);
     expect(defaultBook.id).toBe("toeic-600");
-    expect(defaultBook.catalog.version).toBe("cbd94fa970e5");
+    expect(defaultBook.catalog.version).not.toBe("cbd94fa970e5");
+    expect(defaultBook.catalog.words.find((word) => word.id === "charge-19")?.senseId).toBe("ask-payment");
     expect(library.words).toHaveLength(606);
     expect(library.wordsById.get("ielts-starter:contract-1")?.text).toBe("contract");
   });

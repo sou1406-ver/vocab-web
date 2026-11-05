@@ -1,5 +1,7 @@
 import { afterEach, describe, expect, it } from "vitest";
 import {
+  appliedEdits,
+  rejectedEdits,
   applyContentEdits,
   applyExerciseEdits,
   editId,
@@ -8,6 +10,9 @@ import {
   readRestDocument,
   type ContentEdit,
 } from "./content-edits";
+import source from "../../content/lexicon/pilot.json";
+import bindings from "../../content/books/toeic-600/senses.json";
+import { compileLexicon } from "../../scripts/lib/lexicon-content.mjs";
 import { bookOfWord, defaultBook, wordsById } from "./catalog";
 import { exerciseEntry } from "./cloze";
 import { countLearnedWords } from "../domain/cultivation";
@@ -22,6 +27,35 @@ const edit = (kind: ContentEdit["kind"], target: string, data: unknown, extra: P
 afterEach(() => applyContentEdits([]));
 
 describe("reading content edits", () => {
+  it("retains rejected legacy pilot overlays for Admin undo while preserving reviewed content and its hash", () => {
+    const previous = base.words;
+    const pilotWords = compileLexicon(previous, source, bindings, book.id);
+    const pilot = pilotWords.find((word: Word) => word.id === "charge-19")!;
+    const legacy = { ...pilot };
+    delete legacy.lexeme;
+    delete legacy.learningItems;
+    delete legacy.senseId;
+    delete legacy.groupWordId;
+    try {
+      base.words = pilotWords;
+      const oldEdit = readEdit({
+        kind: "word",
+        bookId: book.id,
+        target: pilot.id,
+        data: { ...legacy, meaning: "legacy override" },
+        hidden: false,
+        updatedAt: 1,
+      })!;
+      applyContentEdits([oldEdit]);
+      expect(book.catalog.words.find((word) => word.id === pilot.id)?.lexeme).toEqual(pilot.lexeme);
+      expect(book.catalog.version).toBe(base.version);
+      expect(rejectedEdits().map((edit) => edit.id)).toEqual([oldEdit.id]);
+      expect(appliedEdits().map((edit) => edit.id)).toContain(oldEdit.id);
+    } finally {
+      base.words = previous;
+      applyContentEdits([]);
+    }
+  });
   it("accepts well-formed edits and rejects malformed or foreign ones", () => {
     expect(edit("word", first.id, { ...first, meaning: "nghĩa mới" })).toMatchObject({
       id: editId("word", book.id, first.id),

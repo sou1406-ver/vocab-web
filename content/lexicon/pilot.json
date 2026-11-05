@@ -1,0 +1,1612 @@
+{
+  "version": 1,
+  "entries": [
+    {
+      "id": "en:charge",
+      "text": "charge",
+      "senses": [
+        {
+          "id": "ask-payment",
+          "pos": "v",
+          "meaning": "thu phí",
+          "explanation": "Yêu cầu ai trả một khoản tiền cho hàng hóa hoặc dịch vụ.",
+          "definition": "To ask someone to pay for goods or a service.",
+          "examples": [
+            {
+              "text": "We charge a small fee for delivery.",
+              "translation": "Chúng tôi thu một khoản phí nhỏ cho việc giao hàng."
+            }
+          ],
+          "patterns": ["charge someone for something"],
+          "synonyms": [],
+          "antonyms": [],
+          "status": "reviewed",
+          "sources": [
+            {
+              "kind": "book",
+              "reference": "600 Essential Words for the TOEIC, lesson 19; data/source/book.json: charge"
+            },
+            {
+              "kind": "editorial",
+              "reference": "Original Vietnamese explanations and bilingual examples, pilot 2026-11-05"
+            },
+            {
+              "kind": "dictionary",
+              "reference": "https://dictionary.cambridge.org/dictionary/english/charge"
+            }
+          ],
+          "review": {
+            "reviewer": "independent-agent",
+            "date": "2026-11-05"
+          }
+        },
+        {
+          "id": "fee",
+          "pos": "n",
+          "meaning": "khoản phí",
+          "explanation": "Số tiền phải trả cho một dịch vụ hoặc một lần sử dụng.",
+          "definition": "An amount payable for a service or use.",
+          "examples": [
+            {
+              "text": "The delivery charge is shown on the invoice.",
+              "translation": "Phí giao hàng được ghi trên hóa đơn."
+            }
+          ],
+          "patterns": ["an extra charge", "a charge for something"],
+          "synonyms": [],
+          "antonyms": [],
+          "status": "reviewed",
+          "sources": [
+            {
+              "kind": "book",
+              "reference": "600 Essential Words for the TOEIC, lesson 19; data/source/book.json: charge"
+            },
+            {
+              "kind": "editorial",
+              "reference": "Original Vietnamese explanations and bilingual examples, pilot 2026-11-05"
+            },
+            {
+              "kind": "dictionary",
+              "reference": "https://dictionary.cambridge.org/dictionary/english/charge"
+            }
+          ],
+          "review": {
+            "reviewer": "independent-agent",
+            "date": "2026-11-05"
+          }
+        },
+        {
+          "id": "battery",
+          "pos": "v",
+          "meaning": "sạc điện",
+          "explanation": "Nạp điện vào pin hoặc thiết bị để có thể sử dụng.",
+          "definition": "To supply a battery or device with electrical energy.",
+          "examples": [
+            {
+              "text": "Please charge your phone before the trip.",
+              "translation": "Hãy sạc điện thoại trước chuyến đi."
+            }
+          ],
+          "patterns": ["charge a phone", "charge a battery"],
+          "synonyms": [],
+          "antonyms": [],
+          "status": "reviewed",
+          "sources": [
+            {
+              "kind": "editorial",
+              "reference": "Original Vietnamese explanations and bilingual examples, pilot 2026-11-05"
+            },
+            {
+              "kind": "dictionary",
+              "reference": "https://dictionary.cambridge.org/dictionary/english/charge"
+            }
+          ],
+          "review": {
+            "reviewer": "independent-agent",
+            "date": "2026-11-05"
+          }
+        },
+        {
+          "id": "rush",
+          "pos": "v",
+          "meaning": "lao tới",
+          "explanation": "Di chuyển nhanh và mạnh về phía trước, thường để tấn công.",
+          "definition": "To rush forward forcefully, often to attack.",
+          "examples": [
+            {
+              "text": "The bull began to charge towards the gate.",
+              "translation": "Con bò bắt đầu lao về phía cổng."
+            }
+          ],
+          "patterns": ["charge towards someone"],
+          "synonyms": [],
+          "antonyms": [],
+          "status": "reviewed",
+          "sources": [
+            {
+              "kind": "editorial",
+              "reference": "Original Vietnamese explanations and bilingual examples, pilot 2026-11-05"
+            },
+            {
+              "kind": "dictionary",
+              "reference": "https://dictionary.cambridge.org/dictionary/english/charge"
+            }
+          ],
+          "review": {
+            "reviewer": "independent-agent",
+            "date": "2026-11-05"
+          }
+        }
+      ]
+    },
+    {
+      "id": "en:compile",
+      "text": "compile",
+      "senses": [
+        {
+          "id": "gather",
+          "pos": "v",
+          "meaning": "tổng hợp",
+          "explanation": "Thu thập và sắp xếp thông tin từ nhiều nguồn thành một bản chung.",
+          "definition": "To gather information from several places into one collection.",
+          "examples": [
+            {
+              "text": "We compile sales figures at the end of each month.",
+              "translation": "Chúng tôi tổng hợp số liệu bán hàng vào cuối mỗi tháng."
+            }
+          ],
+          "patterns": ["compile a list", "compile a report"],
+          "synonyms": [],
+          "antonyms": [],
+          "status": "reviewed",
+          "sources": [
+            {
+              "kind": "book",
+              "reference": "600 Essential Words for the TOEIC, lesson 19; data/source/book.json: compile"
+            },
+            {
+              "kind": "editorial",
+              "reference": "Original Vietnamese explanations and bilingual examples, pilot 2026-11-05"
+            },
+            {
+              "kind": "dictionary",
+              "reference": "https://dictionary.cambridge.org/dictionary/english/compile"
+            }
+          ],
+          "review": {
+            "reviewer": "independent-agent",
+            "date": "2026-11-05"
+          }
+        }
+      ]
+    },
+    {
+      "id": "en:customer",
+      "text": "customer",
+      "senses": [
+        {
+          "id": "buyer",
+          "pos": "n",
+          "meaning": "khách hàng",
+          "explanation": "Người hoặc tổ chức mua hàng hóa hay sử dụng dịch vụ của một đơn vị.",
+          "definition": "A person or organization buying goods or services.",
+          "examples": [
+            {
+              "text": "Each customer receives a detailed invoice.",
+              "translation": "Mỗi khách hàng nhận được một hóa đơn chi tiết."
+            }
+          ],
+          "patterns": ["a regular customer", "customer service"],
+          "synonyms": [],
+          "antonyms": [],
+          "status": "reviewed",
+          "sources": [
+            {
+              "kind": "book",
+              "reference": "600 Essential Words for the TOEIC, lesson 19; data/source/book.json: customer"
+            },
+            {
+              "kind": "editorial",
+              "reference": "Original Vietnamese explanations and bilingual examples, pilot 2026-11-05"
+            },
+            {
+              "kind": "dictionary",
+              "reference": "https://dictionary.cambridge.org/dictionary/english/customer"
+            }
+          ],
+          "review": {
+            "reviewer": "independent-agent",
+            "date": "2026-11-05"
+          }
+        }
+      ]
+    },
+    {
+      "id": "en:discount",
+      "text": "discount",
+      "senses": [
+        {
+          "id": "price-reduction",
+          "pos": "n",
+          "meaning": "khoản giảm giá",
+          "explanation": "Phần tiền được bớt so với mức giá ban đầu.",
+          "definition": "A reduction from the usual selling price.",
+          "examples": [
+            {
+              "text": "Regular customers receive a discount on large orders.",
+              "translation": "Khách quen được giảm giá khi đặt số lượng lớn."
+            }
+          ],
+          "patterns": ["a discount on something"],
+          "synonyms": [],
+          "antonyms": [],
+          "status": "reviewed",
+          "sources": [
+            {
+              "kind": "book",
+              "reference": "600 Essential Words for the TOEIC, lesson 19; data/source/book.json: discount"
+            },
+            {
+              "kind": "editorial",
+              "reference": "Original Vietnamese explanations and bilingual examples, pilot 2026-11-05"
+            },
+            {
+              "kind": "dictionary",
+              "reference": "https://dictionary.cambridge.org/dictionary/english/discount"
+            }
+          ],
+          "review": {
+            "reviewer": "independent-agent",
+            "date": "2026-11-05"
+          }
+        },
+        {
+          "id": "reduce-price",
+          "pos": "v",
+          "meaning": "giảm giá",
+          "explanation": "Bán một mặt hàng với giá thấp hơn giá thông thường.",
+          "definition": "To lower the usual selling price of something.",
+          "examples": [
+            {
+              "text": "We discount older models at the end of the season.",
+              "translation": "Chúng tôi giảm giá các mẫu cũ vào cuối mùa."
+            }
+          ],
+          "patterns": ["discount a product", "discount a price"],
+          "synonyms": [],
+          "antonyms": [],
+          "status": "reviewed",
+          "sources": [
+            {
+              "kind": "book",
+              "reference": "600 Essential Words for the TOEIC, lesson 19; data/source/book.json: discount"
+            },
+            {
+              "kind": "editorial",
+              "reference": "Original Vietnamese explanations and bilingual examples, pilot 2026-11-05"
+            },
+            {
+              "kind": "dictionary",
+              "reference": "https://dictionary.cambridge.org/dictionary/english/discount"
+            }
+          ],
+          "review": {
+            "reviewer": "independent-agent",
+            "date": "2026-11-05"
+          }
+        },
+        {
+          "id": "dismiss",
+          "pos": "v",
+          "meaning": "không coi trọng",
+          "explanation": "Cho rằng một ý kiến hoặc khả năng không đáng được xem xét.",
+          "definition": "To treat an idea or possibility as unlikely or unimportant.",
+          "examples": [
+            {
+              "text": "Do not discount the possibility of further delays.",
+              "translation": "Đừng bỏ qua khả năng việc chậm trễ sẽ còn tiếp diễn."
+            }
+          ],
+          "patterns": ["discount a possibility"],
+          "synonyms": [],
+          "antonyms": [],
+          "status": "reviewed",
+          "sources": [
+            {
+              "kind": "editorial",
+              "reference": "Original Vietnamese explanations and bilingual examples, pilot 2026-11-05"
+            },
+            {
+              "kind": "dictionary",
+              "reference": "https://dictionary.cambridge.org/dictionary/english/discount"
+            }
+          ],
+          "review": {
+            "reviewer": "independent-agent",
+            "date": "2026-11-05"
+          }
+        }
+      ]
+    },
+    {
+      "id": "en:efficient",
+      "text": "efficient",
+      "senses": [
+        {
+          "id": "little-waste",
+          "pos": "adj",
+          "meaning": "hiệu quả; ít lãng phí",
+          "explanation": "Làm việc tốt mà tốn ít thời gian, công sức hoặc tài nguyên.",
+          "definition": "Working well while wasting little time, effort or resources.",
+          "examples": [
+            {
+              "text": "The new system makes invoice processing more efficient.",
+              "translation": "Hệ thống mới giúp xử lý hóa đơn hiệu quả hơn."
+            }
+          ],
+          "patterns": ["an efficient system", "efficient use of resources"],
+          "synonyms": [],
+          "antonyms": [],
+          "status": "reviewed",
+          "sources": [
+            {
+              "kind": "book",
+              "reference": "600 Essential Words for the TOEIC, lesson 19; data/source/book.json: efficient"
+            },
+            {
+              "kind": "editorial",
+              "reference": "Original Vietnamese explanations and bilingual examples, pilot 2026-11-05"
+            },
+            {
+              "kind": "dictionary",
+              "reference": "https://dictionary.cambridge.org/dictionary/english/efficient"
+            }
+          ],
+          "review": {
+            "reviewer": "independent-agent",
+            "date": "2026-11-05"
+          }
+        }
+      ]
+    },
+    {
+      "id": "en:estimate",
+      "text": "estimate",
+      "senses": [
+        {
+          "id": "approximate",
+          "pos": "v",
+          "meaning": "ước tính",
+          "explanation": "Tính gần đúng một số lượng, chi phí hoặc khoảng thời gian.",
+          "definition": "To calculate an approximate quantity, cost or duration.",
+          "examples": [
+            {
+              "text": "We estimate the repair cost at two hundred dollars.",
+              "translation": "Chúng tôi ước tính chi phí sửa chữa khoảng hai trăm đô la."
+            }
+          ],
+          "patterns": ["estimate something at an amount"],
+          "synonyms": [],
+          "antonyms": [],
+          "status": "reviewed",
+          "sources": [
+            {
+              "kind": "book",
+              "reference": "600 Essential Words for the TOEIC, lesson 19; data/source/book.json: estimate"
+            },
+            {
+              "kind": "editorial",
+              "reference": "Original Vietnamese explanations and bilingual examples, pilot 2026-11-05"
+            },
+            {
+              "kind": "dictionary",
+              "reference": "https://dictionary.cambridge.org/dictionary/english/estimate"
+            }
+          ],
+          "review": {
+            "reviewer": "independent-agent",
+            "date": "2026-11-05"
+          }
+        },
+        {
+          "id": "approximation",
+          "pos": "n",
+          "meaning": "bản ước tính",
+          "explanation": "Con số hoặc bản tính gần đúng, chưa phải số liệu cuối cùng.",
+          "definition": "An approximate figure or calculation.",
+          "examples": [
+            {
+              "text": "Please send an estimate before starting the repairs.",
+              "translation": "Vui lòng gửi bản ước tính chi phí trước khi bắt đầu sửa chữa."
+            }
+          ],
+          "patterns": ["an estimate for repairs", "a cost estimate"],
+          "synonyms": [],
+          "antonyms": [],
+          "status": "reviewed",
+          "sources": [
+            {
+              "kind": "book",
+              "reference": "600 Essential Words for the TOEIC, lesson 19; data/source/book.json: estimate"
+            },
+            {
+              "kind": "editorial",
+              "reference": "Original Vietnamese explanations and bilingual examples, pilot 2026-11-05"
+            },
+            {
+              "kind": "dictionary",
+              "reference": "https://dictionary.cambridge.org/dictionary/english/estimate"
+            }
+          ],
+          "review": {
+            "reviewer": "independent-agent",
+            "date": "2026-11-05"
+          }
+        }
+      ]
+    },
+    {
+      "id": "en:impose",
+      "text": "impose",
+      "senses": [
+        {
+          "id": "require",
+          "pos": "v",
+          "meaning": "áp đặt; áp dụng bắt buộc",
+          "explanation": "Buộc người khác tuân theo một quy định hoặc chịu một khoản phí.",
+          "definition": "To make a rule, payment or restriction compulsory.",
+          "examples": [
+            {
+              "text": "The company may impose a fee for late payment.",
+              "translation": "Công ty có thể áp dụng phí khi thanh toán chậm."
+            }
+          ],
+          "patterns": ["impose a fee on someone"],
+          "synonyms": [],
+          "antonyms": [],
+          "status": "reviewed",
+          "sources": [
+            {
+              "kind": "book",
+              "reference": "600 Essential Words for the TOEIC, lesson 19; data/source/book.json: impose"
+            },
+            {
+              "kind": "editorial",
+              "reference": "Original Vietnamese explanations and bilingual examples, pilot 2026-11-05"
+            },
+            {
+              "kind": "dictionary",
+              "reference": "https://dictionary.cambridge.org/dictionary/english/impose"
+            }
+          ],
+          "review": {
+            "reviewer": "independent-agent",
+            "date": "2026-11-05"
+          }
+        },
+        {
+          "id": "inconvenience",
+          "pos": "v",
+          "meaning": "làm phiền; gây thêm gánh nặng",
+          "explanation": "Nhờ vả hoặc đòi hỏi quá mức khiến người khác bất tiện.",
+          "definition": "To ask for help or attention in an inconvenient way.",
+          "examples": [
+            {
+              "text": "I do not want to impose on your staff.",
+              "translation": "Tôi không muốn làm phiền nhân viên của bạn."
+            }
+          ],
+          "patterns": ["impose on someone"],
+          "synonyms": [],
+          "antonyms": [],
+          "status": "reviewed",
+          "sources": [
+            {
+              "kind": "book",
+              "reference": "600 Essential Words for the TOEIC, lesson 19; data/source/book.json: impose"
+            },
+            {
+              "kind": "editorial",
+              "reference": "Original Vietnamese explanations and bilingual examples, pilot 2026-11-05"
+            },
+            {
+              "kind": "dictionary",
+              "reference": "https://dictionary.cambridge.org/dictionary/english/impose"
+            }
+          ],
+          "review": {
+            "reviewer": "independent-agent",
+            "date": "2026-11-05"
+          }
+        }
+      ]
+    },
+    {
+      "id": "en:mistake",
+      "text": "mistake",
+      "senses": [
+        {
+          "id": "error",
+          "pos": "n",
+          "meaning": "lỗi; sự nhầm lẫn",
+          "explanation": "Điều làm hoặc nhận định không đúng do nhầm hay thiếu chú ý.",
+          "definition": "An incorrect action or judgement made unintentionally.",
+          "examples": [
+            {
+              "text": "There is a mistake in the total on this invoice.",
+              "translation": "Tổng tiền trên hóa đơn này có lỗi."
+            }
+          ],
+          "patterns": ["make a mistake", "a mistake in something"],
+          "synonyms": [],
+          "antonyms": [],
+          "status": "reviewed",
+          "sources": [
+            {
+              "kind": "book",
+              "reference": "600 Essential Words for the TOEIC, lesson 19; data/source/book.json: mistake"
+            },
+            {
+              "kind": "editorial",
+              "reference": "Original Vietnamese explanations and bilingual examples, pilot 2026-11-05"
+            },
+            {
+              "kind": "dictionary",
+              "reference": "https://dictionary.cambridge.org/dictionary/english/mistake"
+            }
+          ],
+          "review": {
+            "reviewer": "independent-agent",
+            "date": "2026-11-05"
+          }
+        },
+        {
+          "id": "confuse",
+          "pos": "v",
+          "meaning": "nhầm thứ này với thứ khác",
+          "explanation": "Nhận nhầm một người hoặc vật là người hoặc vật khác.",
+          "definition": "To incorrectly identify one thing as another.",
+          "examples": [
+            {
+              "text": "People sometimes mistake this number for a seven.",
+              "translation": "Đôi khi người ta nhìn nhầm chữ số này thành số bảy."
+            }
+          ],
+          "patterns": ["mistake something for something"],
+          "synonyms": [],
+          "antonyms": [],
+          "status": "reviewed",
+          "sources": [
+            {
+              "kind": "book",
+              "reference": "600 Essential Words for the TOEIC, lesson 19; data/source/book.json: mistake"
+            },
+            {
+              "kind": "editorial",
+              "reference": "Original Vietnamese explanations and bilingual examples, pilot 2026-11-05"
+            },
+            {
+              "kind": "dictionary",
+              "reference": "https://dictionary.cambridge.org/dictionary/english/mistake"
+            }
+          ],
+          "review": {
+            "reviewer": "independent-agent",
+            "date": "2026-11-05"
+          }
+        }
+      ]
+    },
+    {
+      "id": "en:order",
+      "text": "order",
+      "senses": [
+        {
+          "id": "purchase-request",
+          "pos": "n",
+          "meaning": "đơn đặt hàng",
+          "explanation": "Yêu cầu mua một lượng hàng hóa hoặc dịch vụ cụ thể.",
+          "definition": "A request to buy particular goods or services.",
+          "examples": [
+            {
+              "text": "Please place your order before Friday.",
+              "translation": "Vui lòng đặt hàng trước thứ Sáu."
+            }
+          ],
+          "patterns": ["place an order", "an order for something"],
+          "synonyms": [],
+          "antonyms": [],
+          "status": "reviewed",
+          "sources": [
+            {
+              "kind": "book",
+              "reference": "600 Essential Words for the TOEIC, lesson 19; data/source/book.json: order"
+            },
+            {
+              "kind": "editorial",
+              "reference": "Original Vietnamese explanations and bilingual examples, pilot 2026-11-05"
+            },
+            {
+              "kind": "dictionary",
+              "reference": "https://dictionary.cambridge.org/dictionary/english/order"
+            }
+          ],
+          "review": {
+            "reviewer": "independent-agent",
+            "date": "2026-11-05"
+          }
+        },
+        {
+          "id": "buy",
+          "pos": "v",
+          "meaning": "đặt mua",
+          "explanation": "Yêu cầu người bán cung cấp hàng hóa hoặc dịch vụ cho mình.",
+          "definition": "To request goods or services from a supplier.",
+          "examples": [
+            {
+              "text": "We order office supplies once a month.",
+              "translation": "Chúng tôi đặt mua đồ dùng văn phòng mỗi tháng một lần."
+            }
+          ],
+          "patterns": ["order something from someone"],
+          "synonyms": [],
+          "antonyms": [],
+          "status": "reviewed",
+          "sources": [
+            {
+              "kind": "editorial",
+              "reference": "Original Vietnamese explanations and bilingual examples, pilot 2026-11-05"
+            },
+            {
+              "kind": "dictionary",
+              "reference": "https://dictionary.cambridge.org/dictionary/english/order"
+            }
+          ],
+          "review": {
+            "reviewer": "independent-agent",
+            "date": "2026-11-05"
+          }
+        },
+        {
+          "id": "command",
+          "pos": "v",
+          "meaning": "ra lệnh",
+          "explanation": "Yêu cầu ai làm điều gì với tư cách người có quyền quyết định.",
+          "definition": "To instruct someone to do something using authority.",
+          "examples": [
+            {
+              "text": "The manager may order staff to stop the work.",
+              "translation": "Người quản lý có thể ra lệnh cho nhân viên dừng công việc."
+            }
+          ],
+          "patterns": ["order someone to do something"],
+          "synonyms": [],
+          "antonyms": [],
+          "status": "reviewed",
+          "sources": [
+            {
+              "kind": "book",
+              "reference": "600 Essential Words for the TOEIC, lesson 19; data/source/book.json: order"
+            },
+            {
+              "kind": "editorial",
+              "reference": "Original Vietnamese explanations and bilingual examples, pilot 2026-11-05"
+            },
+            {
+              "kind": "dictionary",
+              "reference": "https://dictionary.cambridge.org/dictionary/english/order"
+            }
+          ],
+          "review": {
+            "reviewer": "independent-agent",
+            "date": "2026-11-05"
+          }
+        },
+        {
+          "id": "arrangement",
+          "pos": "n",
+          "meaning": "thứ tự; trật tự",
+          "explanation": "Cách các vật hoặc thông tin được sắp xếp theo một quy tắc.",
+          "definition": "The sequence or arrangement of things.",
+          "examples": [
+            {
+              "text": "Keep the invoices in alphabetical order.",
+              "translation": "Hãy xếp các hóa đơn theo thứ tự bảng chữ cái."
+            }
+          ],
+          "patterns": ["in alphabetical order", "in order"],
+          "synonyms": [],
+          "antonyms": [],
+          "status": "reviewed",
+          "sources": [
+            {
+              "kind": "editorial",
+              "reference": "Original Vietnamese explanations and bilingual examples, pilot 2026-11-05"
+            },
+            {
+              "kind": "dictionary",
+              "reference": "https://dictionary.cambridge.org/dictionary/english/order"
+            }
+          ],
+          "review": {
+            "reviewer": "independent-agent",
+            "date": "2026-11-05"
+          }
+        }
+      ]
+    },
+    {
+      "id": "en:promptly",
+      "text": "promptly",
+      "senses": [
+        {
+          "id": "without-delay",
+          "pos": "adv",
+          "meaning": "nhanh chóng; không chậm trễ",
+          "explanation": "Làm điều gì ngay hoặc vào đúng lúc cần làm.",
+          "definition": "Without unnecessary delay or at the expected time.",
+          "examples": [
+            {
+              "text": "Please pay the invoice promptly.",
+              "translation": "Vui lòng thanh toán hóa đơn kịp thời."
+            }
+          ],
+          "patterns": ["reply promptly", "pay promptly"],
+          "synonyms": [],
+          "antonyms": [],
+          "status": "reviewed",
+          "sources": [
+            {
+              "kind": "book",
+              "reference": "600 Essential Words for the TOEIC, lesson 19; data/source/book.json: promptly"
+            },
+            {
+              "kind": "editorial",
+              "reference": "Original Vietnamese explanations and bilingual examples, pilot 2026-11-05"
+            },
+            {
+              "kind": "dictionary",
+              "reference": "https://dictionary.cambridge.org/dictionary/english/promptly"
+            }
+          ],
+          "review": {
+            "reviewer": "independent-agent",
+            "date": "2026-11-05"
+          }
+        }
+      ]
+    },
+    {
+      "id": "en:rectify",
+      "text": "rectify",
+      "senses": [
+        {
+          "id": "correct",
+          "pos": "v",
+          "meaning": "sửa chữa; khắc phục",
+          "explanation": "Làm cho một lỗi hoặc tình trạng không đúng trở nên đúng.",
+          "definition": "To correct an error or put a problem right.",
+          "examples": [
+            {
+              "text": "We will rectify the billing error today.",
+              "translation": "Chúng tôi sẽ sửa lỗi tính tiền ngay hôm nay."
+            }
+          ],
+          "patterns": ["rectify an error", "rectify a problem"],
+          "synonyms": [],
+          "antonyms": [],
+          "status": "reviewed",
+          "sources": [
+            {
+              "kind": "book",
+              "reference": "600 Essential Words for the TOEIC, lesson 19; data/source/book.json: rectify"
+            },
+            {
+              "kind": "editorial",
+              "reference": "Original Vietnamese explanations and bilingual examples, pilot 2026-11-05"
+            },
+            {
+              "kind": "dictionary",
+              "reference": "https://dictionary.cambridge.org/dictionary/english/rectify"
+            }
+          ],
+          "review": {
+            "reviewer": "independent-agent",
+            "date": "2026-11-05"
+          }
+        }
+      ]
+    },
+    {
+      "id": "en:terms",
+      "text": "terms",
+      "senses": [
+        {
+          "id": "conditions",
+          "pos": "n",
+          "meaning": "điều khoản; điều kiện",
+          "explanation": "Các điều kiện mà các bên chấp nhận trong thỏa thuận.",
+          "definition": "The conditions agreed for an arrangement or contract.",
+          "examples": [
+            {
+              "text": "The payment terms are printed on the invoice.",
+              "translation": "Các điều khoản thanh toán được in trên hóa đơn."
+            }
+          ],
+          "patterns": ["payment terms", "terms of an agreement"],
+          "synonyms": [],
+          "antonyms": [],
+          "status": "reviewed",
+          "sources": [
+            {
+              "kind": "editorial",
+              "reference": "Original Vietnamese explanations and bilingual examples, pilot 2026-11-05"
+            },
+            {
+              "kind": "dictionary",
+              "reference": "https://dictionary.cambridge.org/dictionary/english/terms"
+            }
+          ],
+          "review": {
+            "reviewer": "independent-agent",
+            "date": "2026-11-05"
+          }
+        },
+        {
+          "id": "expressions",
+          "pos": "n",
+          "meaning": "thuật ngữ",
+          "explanation": "Những từ hoặc cách diễn đạt có ý nghĩa riêng trong một lĩnh vực.",
+          "definition": "Words or expressions with particular meanings in a subject.",
+          "examples": [
+            {
+              "text": "The guide explains common accounting terms.",
+              "translation": "Tài liệu hướng dẫn giải thích các thuật ngữ kế toán thường gặp."
+            }
+          ],
+          "patterns": ["technical terms", "accounting terms"],
+          "synonyms": [],
+          "antonyms": [],
+          "status": "reviewed",
+          "sources": [
+            {
+              "kind": "editorial",
+              "reference": "Original Vietnamese explanations and bilingual examples, pilot 2026-11-05"
+            },
+            {
+              "kind": "dictionary",
+              "reference": "https://dictionary.cambridge.org/dictionary/english/term"
+            }
+          ],
+          "review": {
+            "reviewer": "independent-agent",
+            "date": "2026-11-05"
+          }
+        }
+      ]
+    },
+    {
+      "id": "en:address",
+      "text": "address",
+      "senses": [
+        {
+          "id": "speech",
+          "pos": "n",
+          "meaning": "bài phát biểu",
+          "explanation": "Một bài nói chính thức trước một nhóm người.",
+          "definition": "A formal speech delivered to an audience.",
+          "examples": [
+            {
+              "text": "Her opening address welcomed the new employees.",
+              "translation": "Bài phát biểu khai mạc của cô chào đón các nhân viên mới."
+            }
+          ],
+          "patterns": ["give an address", "an opening address"],
+          "synonyms": [],
+          "antonyms": [],
+          "status": "reviewed",
+          "sources": [
+            {
+              "kind": "book",
+              "reference": "600 Essential Words for the TOEIC, lesson 4; data/source/book.json: address"
+            },
+            {
+              "kind": "editorial",
+              "reference": "Original Vietnamese explanations and bilingual examples, pilot 2026-11-05"
+            },
+            {
+              "kind": "dictionary",
+              "reference": "https://dictionary.cambridge.org/dictionary/english/address"
+            }
+          ],
+          "review": {
+            "reviewer": "independent-agent",
+            "date": "2026-11-05"
+          }
+        },
+        {
+          "id": "deal-with",
+          "pos": "v",
+          "meaning": "xử lý; giải quyết",
+          "explanation": "Chú ý đến và tìm cách giải quyết một vấn đề hoặc nhu cầu.",
+          "definition": "To give attention to a problem and work on it.",
+          "examples": [
+            {
+              "text": "The new policy will address customer complaints.",
+              "translation": "Chính sách mới sẽ giải quyết các khiếu nại của khách hàng."
+            }
+          ],
+          "patterns": ["address a problem", "address a need"],
+          "synonyms": [],
+          "antonyms": [],
+          "status": "reviewed",
+          "sources": [
+            {
+              "kind": "book",
+              "reference": "600 Essential Words for the TOEIC, lesson 4; data/source/book.json: address"
+            },
+            {
+              "kind": "editorial",
+              "reference": "Original Vietnamese explanations and bilingual examples, pilot 2026-11-05"
+            },
+            {
+              "kind": "dictionary",
+              "reference": "https://dictionary.cambridge.org/dictionary/english/address"
+            }
+          ],
+          "review": {
+            "reviewer": "independent-agent",
+            "date": "2026-11-05"
+          }
+        },
+        {
+          "id": "location",
+          "pos": "n",
+          "meaning": "địa chỉ",
+          "explanation": "Thông tin cho biết nơi có thể tìm hoặc gửi thư đến một người hay tổ chức.",
+          "definition": "Details identifying where someone or an organization can be reached.",
+          "examples": [
+            {
+              "text": "Please write your address on the form.",
+              "translation": "Vui lòng ghi địa chỉ của bạn vào biểu mẫu."
+            }
+          ],
+          "patterns": ["a home address", "an email address"],
+          "synonyms": [],
+          "antonyms": [],
+          "status": "reviewed",
+          "sources": [
+            {
+              "kind": "editorial",
+              "reference": "Original Vietnamese explanations and bilingual examples, pilot 2026-11-05"
+            },
+            {
+              "kind": "dictionary",
+              "reference": "https://dictionary.cambridge.org/dictionary/english/address"
+            }
+          ],
+          "review": {
+            "reviewer": "independent-agent",
+            "date": "2026-11-05"
+          }
+        },
+        {
+          "id": "speak-to",
+          "pos": "v",
+          "meaning": "phát biểu trước; nói với",
+          "explanation": "Nói trực tiếp với một người hoặc một nhóm người.",
+          "definition": "To speak directly to a person or group.",
+          "examples": [
+            {
+              "text": "The director will address the team after lunch.",
+              "translation": "Giám đốc sẽ phát biểu trước cả nhóm sau bữa trưa."
+            }
+          ],
+          "patterns": ["address an audience", "address a meeting"],
+          "synonyms": [],
+          "antonyms": [],
+          "status": "reviewed",
+          "sources": [
+            {
+              "kind": "editorial",
+              "reference": "Original Vietnamese explanations and bilingual examples, pilot 2026-11-05"
+            },
+            {
+              "kind": "dictionary",
+              "reference": "https://dictionary.cambridge.org/dictionary/english/address"
+            }
+          ],
+          "review": {
+            "reviewer": "independent-agent",
+            "date": "2026-11-05"
+          }
+        }
+      ]
+    },
+    {
+      "id": "en:balance",
+      "text": "balance",
+      "senses": [
+        {
+          "id": "account-amount",
+          "pos": "n",
+          "meaning": "số dư",
+          "explanation": "Số tiền còn lại trong tài khoản tại một thời điểm.",
+          "definition": "The money remaining in an account at a particular time.",
+          "examples": [
+            {
+              "text": "Check your account balance before making the payment.",
+              "translation": "Hãy kiểm tra số dư tài khoản trước khi thanh toán."
+            }
+          ],
+          "patterns": ["an account balance", "a bank balance"],
+          "synonyms": [],
+          "antonyms": [],
+          "status": "reviewed",
+          "sources": [
+            {
+              "kind": "book",
+              "reference": "600 Essential Words for the TOEIC, lesson 21; data/source/book.json: balance"
+            },
+            {
+              "kind": "editorial",
+              "reference": "Original Vietnamese explanations and bilingual examples, pilot 2026-11-05"
+            },
+            {
+              "kind": "dictionary",
+              "reference": "https://dictionary.cambridge.org/dictionary/english/balance"
+            }
+          ],
+          "review": {
+            "reviewer": "independent-agent",
+            "date": "2026-11-05"
+          }
+        },
+        {
+          "id": "reconcile",
+          "pos": "v",
+          "meaning": "cân đối sổ sách",
+          "explanation": "Tính toán và điều chỉnh để tổng các khoản ghi nợ và ghi có trong sổ cân bằng.",
+          "definition": "To calculate and adjust debit and credit totals in accounts.",
+          "examples": [
+            {
+              "text": "We balance the accounts at the end of the month.",
+              "translation": "Chúng tôi cân đối sổ sách vào cuối tháng."
+            }
+          ],
+          "patterns": ["balance the accounts"],
+          "synonyms": [],
+          "antonyms": [],
+          "status": "reviewed",
+          "sources": [
+            {
+              "kind": "book",
+              "reference": "600 Essential Words for the TOEIC, lesson 21; data/source/book.json: balance"
+            },
+            {
+              "kind": "editorial",
+              "reference": "Original Vietnamese explanations and bilingual examples, pilot 2026-11-05"
+            },
+            {
+              "kind": "dictionary",
+              "reference": "https://dictionary.cambridge.org/dictionary/english/balance"
+            }
+          ],
+          "review": {
+            "reviewer": "independent-agent",
+            "date": "2026-11-05"
+          }
+        },
+        {
+          "id": "stability",
+          "pos": "n",
+          "meaning": "sự thăng bằng",
+          "explanation": "Trạng thái cơ thể hoặc một vật được giữ vững, không bị ngã hay đổ.",
+          "definition": "A steady physical position without falling.",
+          "examples": [
+            {
+              "text": "She lost her balance on the wet floor.",
+              "translation": "Cô mất thăng bằng trên sàn ướt."
+            }
+          ],
+          "patterns": ["keep your balance", "lose your balance"],
+          "synonyms": [],
+          "antonyms": [],
+          "status": "reviewed",
+          "sources": [
+            {
+              "kind": "editorial",
+              "reference": "Original Vietnamese explanations and bilingual examples, pilot 2026-11-05"
+            },
+            {
+              "kind": "dictionary",
+              "reference": "https://dictionary.cambridge.org/dictionary/english/balance"
+            }
+          ],
+          "review": {
+            "reviewer": "independent-agent",
+            "date": "2026-11-05"
+          }
+        },
+        {
+          "id": "keep-steady",
+          "pos": "v",
+          "meaning": "giữ thăng bằng",
+          "explanation": "Giữ một vật hoặc cơ thể ở vị trí vững, không bị đổ.",
+          "definition": "To keep something steady so it does not fall.",
+          "examples": [
+            {
+              "text": "Try to balance the tray with both hands.",
+              "translation": "Hãy thử giữ khay thăng bằng bằng cả hai tay."
+            }
+          ],
+          "patterns": ["balance something on something"],
+          "synonyms": [],
+          "antonyms": [],
+          "status": "reviewed",
+          "sources": [
+            {
+              "kind": "editorial",
+              "reference": "Original Vietnamese explanations and bilingual examples, pilot 2026-11-05"
+            },
+            {
+              "kind": "dictionary",
+              "reference": "https://dictionary.cambridge.org/dictionary/english/balance"
+            }
+          ],
+          "review": {
+            "reviewer": "independent-agent",
+            "date": "2026-11-05"
+          }
+        }
+      ]
+    },
+    {
+      "id": "en:file",
+      "text": "file",
+      "senses": [
+        {
+          "id": "submit",
+          "pos": "v",
+          "meaning": "nộp chính thức",
+          "explanation": "Gửi hồ sơ, tờ khai hoặc đơn đến cơ quan có trách nhiệm tiếp nhận.",
+          "definition": "To formally submit a document to the responsible organization.",
+          "examples": [
+            {
+              "text": "You can file your tax return online.",
+              "translation": "Bạn có thể nộp tờ khai thuế trực tuyến."
+            }
+          ],
+          "patterns": ["file a complaint", "file a tax return"],
+          "synonyms": [],
+          "antonyms": [],
+          "status": "reviewed",
+          "sources": [
+            {
+              "kind": "book",
+              "reference": "600 Essential Words for the TOEIC, lesson 24; data/source/book.json: file"
+            },
+            {
+              "kind": "editorial",
+              "reference": "Original Vietnamese explanations and bilingual examples, pilot 2026-11-05"
+            },
+            {
+              "kind": "dictionary",
+              "reference": "https://dictionary.cambridge.org/dictionary/english/file"
+            }
+          ],
+          "review": {
+            "reviewer": "independent-agent",
+            "date": "2026-11-05"
+          }
+        },
+        {
+          "id": "document",
+          "pos": "n",
+          "meaning": "tệp dữ liệu",
+          "explanation": "Một đơn vị dữ liệu có tên được lưu trên máy tính.",
+          "definition": "A named collection of data stored on a computer.",
+          "examples": [
+            {
+              "text": "Save the file before you close the program.",
+              "translation": "Hãy lưu tệp trước khi đóng chương trình."
+            }
+          ],
+          "patterns": ["save a file", "open a file"],
+          "synonyms": [],
+          "antonyms": [],
+          "status": "reviewed",
+          "sources": [
+            {
+              "kind": "editorial",
+              "reference": "Original Vietnamese explanations and bilingual examples, pilot 2026-11-05"
+            },
+            {
+              "kind": "dictionary",
+              "reference": "https://dictionary.cambridge.org/dictionary/english/file"
+            }
+          ],
+          "review": {
+            "reviewer": "independent-agent",
+            "date": "2026-11-05"
+          }
+        },
+        {
+          "id": "organize",
+          "pos": "v",
+          "meaning": "lưu hồ sơ; sắp xếp tài liệu",
+          "explanation": "Cất tài liệu theo một hệ thống để có thể tìm lại.",
+          "definition": "To store documents in an organized system.",
+          "examples": [
+            {
+              "text": "We file invoices by customer name.",
+              "translation": "Chúng tôi lưu hóa đơn theo tên khách hàng."
+            }
+          ],
+          "patterns": ["file documents", "file something under a name"],
+          "synonyms": [],
+          "antonyms": [],
+          "status": "reviewed",
+          "sources": [
+            {
+              "kind": "editorial",
+              "reference": "Original Vietnamese explanations and bilingual examples, pilot 2026-11-05"
+            },
+            {
+              "kind": "dictionary",
+              "reference": "https://dictionary.cambridge.org/dictionary/english/file"
+            }
+          ],
+          "review": {
+            "reviewer": "independent-agent",
+            "date": "2026-11-05"
+          }
+        }
+      ]
+    },
+    {
+      "id": "en:return",
+      "text": "return",
+      "senses": [
+        {
+          "id": "profit",
+          "pos": "n",
+          "meaning": "lợi tức; khoản sinh lời",
+          "explanation": "Khoản tiền thu được từ một khoản đầu tư.",
+          "definition": "Money earned from an investment.",
+          "examples": [
+            {
+              "text": "The investment provides a steady return.",
+              "translation": "Khoản đầu tư đem lại lợi tức ổn định."
+            }
+          ],
+          "patterns": ["a return on investment"],
+          "synonyms": [],
+          "antonyms": [],
+          "status": "reviewed",
+          "sources": [
+            {
+              "kind": "book",
+              "reference": "600 Essential Words for the TOEIC, lesson 23; data/source/book.json: return"
+            },
+            {
+              "kind": "editorial",
+              "reference": "Original Vietnamese explanations and bilingual examples, pilot 2026-11-05"
+            },
+            {
+              "kind": "dictionary",
+              "reference": "https://dictionary.cambridge.org/dictionary/english/return"
+            }
+          ],
+          "review": {
+            "reviewer": "independent-agent",
+            "date": "2026-11-05"
+          }
+        },
+        {
+          "id": "go-back",
+          "pos": "v",
+          "meaning": "trở lại; quay về",
+          "explanation": "Đi về nơi đã ở hoặc trạng thái trước đó.",
+          "definition": "To go back to an earlier place or state.",
+          "examples": [
+            {
+              "text": "We return to the office on Monday.",
+              "translation": "Chúng tôi trở lại văn phòng vào thứ Hai."
+            }
+          ],
+          "patterns": ["return to a place"],
+          "synonyms": [],
+          "antonyms": [],
+          "status": "reviewed",
+          "sources": [
+            {
+              "kind": "editorial",
+              "reference": "Original Vietnamese explanations and bilingual examples, pilot 2026-11-05"
+            },
+            {
+              "kind": "dictionary",
+              "reference": "https://dictionary.cambridge.org/dictionary/english/return"
+            }
+          ],
+          "review": {
+            "reviewer": "independent-agent",
+            "date": "2026-11-05"
+          }
+        },
+        {
+          "id": "give-back",
+          "pos": "v",
+          "meaning": "trả lại",
+          "explanation": "Đưa một vật về cho người sở hữu hoặc nơi đã nhận nó.",
+          "definition": "To give something back to its owner or supplier.",
+          "examples": [
+            {
+              "text": "Please return the signed form to reception.",
+              "translation": "Vui lòng gửi lại biểu mẫu đã ký cho lễ tân."
+            }
+          ],
+          "patterns": ["return something to someone"],
+          "synonyms": [],
+          "antonyms": [],
+          "status": "reviewed",
+          "sources": [
+            {
+              "kind": "editorial",
+              "reference": "Original Vietnamese explanations and bilingual examples, pilot 2026-11-05"
+            },
+            {
+              "kind": "dictionary",
+              "reference": "https://dictionary.cambridge.org/dictionary/english/return"
+            }
+          ],
+          "review": {
+            "reviewer": "independent-agent",
+            "date": "2026-11-05"
+          }
+        },
+        {
+          "id": "tax-form",
+          "pos": "n",
+          "meaning": "tờ khai",
+          "explanation": "Biểu mẫu chính thức báo cáo thông tin, thường về thu nhập và thuế.",
+          "definition": "An official form reporting information, especially about tax.",
+          "examples": [
+            {
+              "text": "The accountant prepared my tax return.",
+              "translation": "Kế toán đã lập tờ khai thuế cho tôi."
+            }
+          ],
+          "patterns": ["a tax return"],
+          "synonyms": [],
+          "antonyms": [],
+          "status": "reviewed",
+          "sources": [
+            {
+              "kind": "editorial",
+              "reference": "Original Vietnamese explanations and bilingual examples, pilot 2026-11-05"
+            },
+            {
+              "kind": "dictionary",
+              "reference": "https://dictionary.cambridge.org/dictionary/english/return"
+            }
+          ],
+          "review": {
+            "reviewer": "independent-agent",
+            "date": "2026-11-05"
+          }
+        }
+      ]
+    },
+    {
+      "id": "en:establish",
+      "text": "establish",
+      "senses": [
+        {
+          "id": "found",
+          "pos": "v",
+          "meaning": "thành lập",
+          "explanation": "Tạo ra một tổ chức hoặc cơ sở với mục đích hoạt động lâu dài.",
+          "definition": "To create an organization intended to continue operating.",
+          "examples": [
+            {
+              "text": "They plan to establish a small company.",
+              "translation": "Họ dự định thành lập một công ty nhỏ."
+            }
+          ],
+          "patterns": ["establish a company", "establish a business"],
+          "synonyms": [],
+          "antonyms": [],
+          "status": "reviewed",
+          "sources": [
+            {
+              "kind": "book",
+              "reference": "600 Essential Words for the TOEIC, lesson 1; data/source/book.json: establish"
+            },
+            {
+              "kind": "editorial",
+              "reference": "Original Vietnamese explanations and bilingual examples, pilot 2026-11-05"
+            },
+            {
+              "kind": "dictionary",
+              "reference": "https://dictionary.cambridge.org/dictionary/english/establish"
+            }
+          ],
+          "review": {
+            "reviewer": "independent-agent",
+            "date": "2026-11-05"
+          }
+        },
+        {
+          "id": "confirm",
+          "pos": "v",
+          "meaning": "xác minh; làm rõ",
+          "explanation": "Tìm bằng chứng để xác định một điều là đúng hoặc có thật.",
+          "definition": "To determine a fact through evidence or investigation.",
+          "examples": [
+            {
+              "text": "We need to establish the cause of the delay.",
+              "translation": "Chúng ta cần làm rõ nguyên nhân gây chậm trễ."
+            }
+          ],
+          "patterns": ["establish the cause", "establish whether"],
+          "synonyms": [],
+          "antonyms": [],
+          "status": "reviewed",
+          "sources": [
+            {
+              "kind": "editorial",
+              "reference": "Original Vietnamese explanations and bilingual examples, pilot 2026-11-05"
+            },
+            {
+              "kind": "dictionary",
+              "reference": "https://dictionary.cambridge.org/dictionary/english/establish"
+            }
+          ],
+          "review": {
+            "reviewer": "independent-agent",
+            "date": "2026-11-05"
+          }
+        },
+        {
+          "id": "build",
+          "pos": "v",
+          "meaning": "tạo dựng; thiết lập",
+          "explanation": "Làm cho một mối quan hệ, vị thế hoặc cách làm được hình thành vững chắc.",
+          "definition": "To build a lasting relationship, position or way of working.",
+          "examples": [
+            {
+              "text": "Regular updates help establish trust with customers.",
+              "translation": "Việc cập nhật thường xuyên giúp tạo dựng lòng tin với khách hàng."
+            }
+          ],
+          "patterns": ["establish trust", "establish yourself as"],
+          "synonyms": [],
+          "antonyms": [],
+          "status": "reviewed",
+          "sources": [
+            {
+              "kind": "book",
+              "reference": "600 Essential Words for the TOEIC, lesson 1; data/source/book.json: establish"
+            },
+            {
+              "kind": "editorial",
+              "reference": "Original Vietnamese explanations and bilingual examples, pilot 2026-11-05"
+            },
+            {
+              "kind": "dictionary",
+              "reference": "https://dictionary.cambridge.org/dictionary/english/establish"
+            }
+          ],
+          "review": {
+            "reviewer": "independent-agent",
+            "date": "2026-11-05"
+          }
+        }
+      ]
+    },
+    {
+      "id": "en:apply",
+      "text": "apply",
+      "senses": [
+        {
+          "id": "request",
+          "pos": "v",
+          "meaning": "nộp đơn; ứng tuyển",
+          "explanation": "Gửi yêu cầu chính thức để được nhận việc hoặc một quyền lợi.",
+          "definition": "To make a formal request for a job or opportunity.",
+          "examples": [
+            {
+              "text": "You can apply for this job online.",
+              "translation": "Bạn có thể nộp đơn ứng tuyển công việc này trực tuyến."
+            }
+          ],
+          "patterns": ["apply for a job", "apply to a company"],
+          "synonyms": [],
+          "antonyms": [],
+          "status": "reviewed",
+          "sources": [
+            {
+              "kind": "book",
+              "reference": "600 Essential Words for the TOEIC, lesson 12; data/source/book.json: apply"
+            },
+            {
+              "kind": "editorial",
+              "reference": "Original Vietnamese explanations and bilingual examples, pilot 2026-11-05"
+            },
+            {
+              "kind": "dictionary",
+              "reference": "https://dictionary.cambridge.org/dictionary/english/apply"
+            }
+          ],
+          "review": {
+            "reviewer": "independent-agent",
+            "date": "2026-11-05"
+          }
+        },
+        {
+          "id": "use",
+          "pos": "v",
+          "meaning": "áp dụng",
+          "explanation": "Dùng một quy tắc, phương pháp hoặc kiến thức vào tình huống cụ thể.",
+          "definition": "To use a rule, method or knowledge in a situation.",
+          "examples": [
+            {
+              "text": "We apply the same rules to every order.",
+              "translation": "Chúng tôi áp dụng cùng những quy định cho mọi đơn hàng."
+            }
+          ],
+          "patterns": ["apply something to something"],
+          "synonyms": [],
+          "antonyms": [],
+          "status": "reviewed",
+          "sources": [
+            {
+              "kind": "editorial",
+              "reference": "Original Vietnamese explanations and bilingual examples, pilot 2026-11-05"
+            },
+            {
+              "kind": "dictionary",
+              "reference": "https://dictionary.cambridge.org/dictionary/english/apply"
+            }
+          ],
+          "review": {
+            "reviewer": "independent-agent",
+            "date": "2026-11-05"
+          }
+        },
+        {
+          "id": "put-on",
+          "pos": "v",
+          "meaning": "bôi; phủ lên",
+          "explanation": "Đưa một chất lên bề mặt, thường thành một lớp.",
+          "definition": "To put a substance onto a surface.",
+          "examples": [
+            {
+              "text": "Apply the cream to clean skin.",
+              "translation": "Bôi kem lên vùng da sạch."
+            }
+          ],
+          "patterns": ["apply something to a surface"],
+          "synonyms": [],
+          "antonyms": [],
+          "status": "reviewed",
+          "sources": [
+            {
+              "kind": "editorial",
+              "reference": "Original Vietnamese explanations and bilingual examples, pilot 2026-11-05"
+            },
+            {
+              "kind": "dictionary",
+              "reference": "https://dictionary.cambridge.org/dictionary/english/apply"
+            }
+          ],
+          "review": {
+            "reviewer": "independent-agent",
+            "date": "2026-11-05"
+          }
+        }
+      ]
+    }
+  ]
+}

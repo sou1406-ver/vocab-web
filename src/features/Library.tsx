@@ -11,6 +11,7 @@ import { useApp } from "../state/provider";
 import { useWord } from "../app/context";
 import { useStatusBadge } from "../shared/use-word-status";
 import { Empty, Icon } from "../shared/ui";
+import { needsLearning } from "../domain/lexicon";
 
 export default function Library() {
   const { data, start, busy } = useApp();
@@ -43,7 +44,7 @@ export default function Library() {
   );
   const learnSaved = async () => {
     if (data.session && data.session.phase !== "complete") return router.push("/study");
-    const untested = found.filter((word) => !data.progress[word.id]?.tested);
+    const untested = found.filter((word) => needsLearning(word, data));
     if (
       await start(
         (untested.length ? untested : found).slice(0, 5),
