@@ -1,14 +1,30 @@
+import { inspectCanonical, compileCanonical } from "./canonical-lexicon.mjs";
 const object = (v) => v !== null && typeof v === "object" && !Array.isArray(v);
 const text = (v) => typeof v === "string" && v.trim().length > 0 && v.length <= 3000;
 const id = (v) => text(v) && /^[a-z0-9][a-z0-9:-]*$/.test(v) && !["constructor", "prototype", "__proto__"].includes(v);
 const strings = (v) => Array.isArray(v) && v.every(text);
 
 /** Validate authoring data before filtering it for publication. */
-export function validateLexicon(value) {
+export function validateLexicon(value, rootIds = new Set()) {
+  if (value?.version === 2) {
+    inspectCanonical(value, rootIds);
+    return value;
+  }
   if (!object(value) || value.version !== 1 || !Array.isArray(value.entries)) throw new Error("Invalid lexicon");
   const seen = new Set();
   for (const entry of value.entries) {
-    if (!object(entry) || !id(entry.id) || !text(entry.text) || seen.has(entry.id) || "pos" in entry)
+    if (
+      !object(entry) ||
+      !(
+        id(entry.id) ||
+        (text(entry.text) &&
+          typeof entry.id === "string" &&
+          entry.id.replace(/~(?:[2-9]|[1-9]\d+)$/, "") === "en:" + entry.text.toLowerCase())
+      ) ||
+      !text(entry.text) ||
+      seen.has(entry.id) ||
+      "pos" in entry
+    )
       throw new Error(`Invalid lexeme: ${entry?.id}`);
     seen.add(entry.id);
     if (
@@ -47,7 +63,13 @@ export function validateLexicon(value) {
 }
 
 /** Compile authored, book-selected senses into backward-compatible word groups. */
-export function compileLexicon(words, source, bindings, bookId) {
+export function compileLexicon(words, source, bindings, bookId, rootIds = new Set()) {
+  if (source?.version === 2) return compileCanonical(words, source, bindings, bookId, rootIds).words;
+  if (bindings?.version === 2)
+    bindings = {
+      version: 1,
+      items: bindings.items.map((b) => ({ wordId: b.wordId, lexemeId: b.entryId, required: b.taught })),
+    };
   validateLexicon(source);
   if (!object(bindings) || bindings.version !== 1 || !Array.isArray(bindings.items))
     throw new Error("Invalid sense bindings");

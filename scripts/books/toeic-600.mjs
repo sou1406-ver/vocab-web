@@ -1,5 +1,5 @@
 import { readFile, readdir } from "node:fs/promises";
-import { compileLexicon } from "../lib/lexicon-content.mjs";
+import { readBookLexicon } from "../lib/book-lexicon.mjs";
 
 // Reads the V1 pipeline output (tools/build_data.py → data/generated) into catalog entries.
 export async function buildToeic600(root) {
@@ -47,16 +47,14 @@ export async function buildToeic600(root) {
   for (const lesson of lessons) {
     if (!topics.some((t) => t.id === lesson.unit)) throw new Error(`Unknown topic: ${lesson.unit}`);
   }
+  const compiled = await readBookLexicon(read, words, "toeic-600");
   return {
+    lexiconSource: compiled.lexiconSource,
+    lexiconReport: compiled.lexiconReport,
     payload: {
       lessons: lessons.map((l) => ({ id: l.n, title: l.title, translation: l.vi, topicId: l.unit })),
       topics: topics.map((t) => ({ id: t.id, title: t.name, english: t.en })),
-      words: compileLexicon(
-        words,
-        await read("content/lexicon/pilot.json"),
-        await read("content/books/toeic-600/senses.json"),
-        "toeic-600",
-      ),
+      words: compiled.words,
     },
     warnings,
     part5: (await read("data/generated/exercises.json")).lessons,

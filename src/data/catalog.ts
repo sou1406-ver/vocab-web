@@ -1,6 +1,7 @@
 import { registry } from "../content/books/registry";
 import type { Catalog, Snapshot, Word } from "../domain/types";
 import { senseMigration } from "./sense-migration";
+import type { BookLexiconSource } from "../domain/lexicon";
 import { studyWords } from "../domain/lexicon";
 
 export interface ExerciseEntry {
@@ -15,6 +16,7 @@ export interface Book {
   title: string;
   shortTitle: string;
   legacyWordIds?: boolean;
+  lexiconSource?: BookLexiconSource;
   catalog: Catalog;
   exercises: { lessons: ExerciseEntry[] };
 }
@@ -53,9 +55,7 @@ export function createLibrary(books: readonly Book[]) {
   };
 }
 
-export const library = createLibrary(
-  registry.map(({ meta, catalog, exercises }) => ({ ...meta, catalog, exercises }) as Book),
-);
+export const library = createLibrary(registry.map((entry) => ({ ...entry.meta, ...entry }) as Book));
 export const { books, defaultBook, wordsById } = library;
 export const bookById = library.bookById;
 export const bookOfWord = library.bookOfWord;

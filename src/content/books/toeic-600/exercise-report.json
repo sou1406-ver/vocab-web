@@ -1,10 +1,10 @@
 {
   "sourceQuestions": 300,
-  "catalogQuestions": 499,
-  "count": 798,
+  "catalogQuestions": 519,
+  "count": 818,
   "byKind": {
     "word-form-choice": 299,
-    "cloze-choice": 499
+    "cloze-choice": 519
   },
   "recovered": [
     {

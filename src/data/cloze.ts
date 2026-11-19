@@ -1,3 +1,4 @@
+import { studyWords } from "../domain/lexicon";
 import { applyExerciseEdits, originalOf } from "./content-edits";
 import { wordsById, type Book, type ExerciseEntry } from "./catalog";
 import { record, validateSnapshot } from "./validation";
@@ -31,7 +32,8 @@ export function makeCatalogClozeQuestions(
   progress: TestedProgress = {},
 ): ClozeChoiceQuestion[] {
   const used = new Set<string>();
-  const byId = new Map(catalog.words.map((word) => [word.id, word]));
+  const items = studyWords(catalog.words);
+  const byId = new Map(items.map((word) => [word.id, word]));
   return questions.flatMap((q): ClozeChoiceQuestion[] => {
     if (!q.sourceId.startsWith("catalog:example:"))
       return [{ ...q, options: shuffleSeeded(q.options, `${sessionId}:${q.sourceId}`) }];
@@ -41,7 +43,7 @@ export function makeCatalogClozeQuestions(
     const synonyms = new Set(word.synonyms.map(normalizeAnswer));
     const seen = new Set([normalizeAnswer(q.answer)]);
     const pool: { text: string; tier: number }[] = [];
-    for (const candidate of distractorPool(word, catalog.words, progress, sessionId)) {
+    for (const candidate of distractorPool(word, items, progress, sessionId)) {
       const key = normalizeAnswer(candidate.text);
       const candidateForms = classificationForms(candidate);
       if (
@@ -123,6 +125,9 @@ export function validateClozePack(
   ) {
     throw new Error("Gói bài tập không đúng phiên bản. Hãy tải lại trang.");
   }
+  const lessonWords = new Map(
+    studyWords(catalog.words.filter((w) => w.lesson === expected.lessonId)).map((w) => [w.id, w]),
+  );
   const ids = new Set<string>();
   for (const raw of pack.questions) {
     const q = record(raw);
@@ -138,7 +143,7 @@ export function validateClozePack(
           /^(0|[1-9]\d*)$/.test(q.sourceId.slice(examplePrefix.length)))
       ) ||
       ids.has(q.sourceId) ||
-      !catalog.words.some((w) => w.id === q.wordId && w.lesson === expected.lessonId)
+      !lessonWords.has(q.wordId as string)
     )
       throw new Error("Liên kết bài tập không hợp lệ.");
     ids.add(q.sourceId);
@@ -152,7 +157,7 @@ export function validateClozePack(
       Array.isArray(q.options) &&
       q.options.length === 0
     ) {
-      const word = catalog.words.find((item) => item.id === q.wordId);
+      const word = lessonWords.get(q.wordId as string);
       if (
         q.answer !== word?.text.trim() ||
         typeof q.prompt !== "string" ||

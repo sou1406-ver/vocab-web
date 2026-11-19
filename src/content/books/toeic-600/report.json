@@ -1,6 +1,17 @@
 {
-  "version": "b1aa331534d0",
+  "version": "6beb23bf2d67",
   "words": 600,
   "lessons": 50,
+  "lexicon": {
+    "entries": 0,
+    "reviewed": 0,
+    "draft": 0,
+    "missingByStatus": {
+      "draft": {},
+      "reviewed": {}
+    },
+    "missing": [],
+    "pendingBindings": []
+  },
   "warnings": []
 }

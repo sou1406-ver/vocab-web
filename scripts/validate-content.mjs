@@ -1,3 +1,4 @@
+import { readBookLexicon } from "./lib/book-lexicon.mjs";
 import { readFile, readdir } from "node:fs/promises";
 import assert from "node:assert/strict";
 import { validateRootsContent } from "./lib/roots-content.mjs";
@@ -16,6 +17,10 @@ for (const id of bookIds) {
     json(`src/content/books/${id}/book.json`),
     json(`src/content/books/${id}/catalog.json`),
   ]);
+  if (id === "toeic-600") {
+    const { lexiconReport } = await readBookLexicon(json, catalog.words, id);
+    console.log("Canonical lexicon", JSON.stringify(lexiconReport));
+  }
   assert.equal(book.id, id, `Book folder ${id} has id ${book.id}`);
   assert(registry.includes(`"./${id}/catalog.json"`), `Book ${id} missing from registry`);
   assert.equal(catalog.words.length, book.expectedEntries, `${id}: entry count mismatch`);

@@ -1,3 +1,4 @@
+import { studyWords } from "../domain/lexicon";
 import { distractorPool, type TestedProgress } from "../domain/distractors";
 import { catalogFor } from "./catalog";
 import { normalizeAnswer } from "../domain/learning";
@@ -33,9 +34,10 @@ export function makeSynonymQuestions(
   sessionId: string,
   progress: TestedProgress = {},
 ): SynonymQuestion[] {
-  const entries = all.map(profile);
+  const candidates = studyWords(all);
+  const entries = candidates.map(profile);
   const questions: SynonymQuestion[] = [];
-  for (const word of words) {
+  for (const word of studyWords(words)) {
     const target = profile(word);
     const antonyms = terms(word.antonyms);
     const opposite = new Set(antonyms.map(normalizeAnswer));
@@ -74,7 +76,7 @@ export function makeSynonymQuestions(
       }
     const names = new Set<string>();
     const pool: string[] = [];
-    for (const candidate of distractorPool(word, all, progress, sessionId)) {
+    for (const candidate of distractorPool(word, candidates, progress, sessionId)) {
       const entry = profile(candidate);
       const key = entry.text;
       if (

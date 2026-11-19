@@ -133,3 +133,47 @@ describe("sense identity migration and compatibility", () => {
     }
   });
 });
+
+it("keeps legacy progress and event identities when the canonical entry activates", () => {
+  const word = defaultBook.catalog.words.find((w) => w.id === "charge-19")!;
+  const sense = {
+    pos: "v",
+    rank: "primary",
+    status: "reviewed",
+    meaningVi: "thu phí",
+    explanationVi: "yêu cầu thanh toán",
+    definitionEn: "ask for payment",
+    examples: [{ en: "We charge a fee.", vi: "Chúng tôi thu phí." }],
+    patterns: [],
+    synonyms: ["bill"],
+    antonyms: [],
+    sources: [{ kind: "editorial", reference: "fixture" }],
+  };
+  const source = {
+    version: 2,
+    entries: [
+      {
+        id: "en:charge",
+        text: "charge",
+        ipa: { us: "US", uk: "UK" },
+        forms: [],
+        family: [],
+        senses: [
+          { ...sense, id: "ask-payment" },
+          { ...sense, id: "fee" },
+        ],
+      },
+    ],
+  };
+  const words = compileLexicon(
+    [word],
+    source,
+    { version: 2, items: [{ wordId: word.id, entryId: "en:charge", taught: ["ask-payment"] }] },
+    "toeic-600",
+  );
+  const before = legacy();
+  const migrated = migrateLearningSnapshot(validateSnapshot(structuredClone(before)), words);
+  expect(migrated).toEqual(before);
+  expect(senseMigration(words).items.get("toeic-600:charge-19:fee")?.senseId).toBe("fee");
+  expect(migrated.progress["toeic-600:charge-19:fee"]).toBeUndefined();
+});

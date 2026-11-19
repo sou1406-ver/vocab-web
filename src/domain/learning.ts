@@ -12,7 +12,7 @@ import type {
 } from "./types";
 import { shuffleSeeded } from "./random";
 import { distractorPool, type TestedProgress } from "./distractors";
-import { learningItems } from "./lexicon";
+import { learningItems, studyWords } from "./lexicon";
 import { queueSenseRepair, schedulesAnswer } from "./sense-check";
 import { replaySkills } from "./skills";
 
@@ -356,7 +356,8 @@ export function beginExerciseSession(
   id: string,
   at = Date.now(),
 ): Snapshot {
-  const words = questions.map((q) => catalog.words.find((w) => w.id === q.wordId));
+  const items = new Map(studyWords(catalog.words).map((w) => [w.id, w]));
+  const words = questions.map((q) => items.get(q.wordId));
   if (words.some((word) => !word)) throw new Error("Bài tập có liên kết từ không hợp lệ.");
   const next = beginSession(snapshot, catalog, words as Word[], "practice", title, id, at);
   return { ...next, session: { ...next.session!, questions } };

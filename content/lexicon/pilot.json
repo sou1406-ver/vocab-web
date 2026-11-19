@@ -18,8 +18,8 @@
             }
           ],
           "patterns": ["charge someone for something"],
-          "synonyms": [],
-          "antonyms": [],
+          "synonyms": ["bill", "request payment"],
+          "antonyms": ["waive"],
           "status": "reviewed",
           "sources": [
             {
@@ -53,7 +53,7 @@
             }
           ],
           "patterns": ["an extra charge", "a charge for something"],
-          "synonyms": [],
+          "synonyms": ["cost", "price", "fee"],
           "antonyms": [],
           "status": "reviewed",
           "sources": [
@@ -88,8 +88,8 @@
             }
           ],
           "patterns": ["charge a phone", "charge a battery"],
-          "synonyms": [],
-          "antonyms": [],
+          "synonyms": ["recharge"],
+          "antonyms": ["discharge"],
           "status": "reviewed",
           "sources": [
             {
@@ -119,8 +119,8 @@
             }
           ],
           "patterns": ["charge towards someone"],
-          "synonyms": [],
-          "antonyms": [],
+          "synonyms": ["rush", "storm"],
+          "antonyms": ["retreat"],
           "status": "reviewed",
           "sources": [
             {
@@ -156,7 +156,7 @@
             }
           ],
           "patterns": ["compile a list", "compile a report"],
-          "synonyms": [],
+          "synonyms": ["assemble", "gather", "collect"],
           "antonyms": [],
           "status": "reviewed",
           "sources": [
@@ -197,8 +197,8 @@
             }
           ],
           "patterns": ["a regular customer", "customer service"],
-          "synonyms": [],
-          "antonyms": [],
+          "synonyms": ["client", "buyer", "consumer", "patron"],
+          "antonyms": ["seller"],
           "status": "reviewed",
           "sources": [
             {
@@ -238,8 +238,8 @@
             }
           ],
           "patterns": ["a discount on something"],
-          "synonyms": [],
-          "antonyms": [],
+          "synonyms": ["reduction", "markdown", "rebate", "deduction"],
+          "antonyms": ["markup"],
           "status": "reviewed",
           "sources": [
             {
@@ -273,8 +273,8 @@
             }
           ],
           "patterns": ["discount a product", "discount a price"],
-          "synonyms": [],
-          "antonyms": [],
+          "synonyms": ["mark down", "reduce", "lower"],
+          "antonyms": ["mark up", "increase"],
           "status": "reviewed",
           "sources": [
             {
@@ -308,8 +308,8 @@
             }
           ],
           "patterns": ["discount a possibility"],
-          "synonyms": [],
-          "antonyms": [],
+          "synonyms": ["dismiss", "disregard", "ignore"],
+          "antonyms": ["consider", "take seriously"],
           "status": "reviewed",
           "sources": [
             {
@@ -345,8 +345,8 @@
             }
           ],
           "patterns": ["an efficient system", "efficient use of resources"],
-          "synonyms": [],
-          "antonyms": [],
+          "synonyms": ["productive", "effective", "competent", "economical"],
+          "antonyms": ["inefficient"],
           "status": "reviewed",
           "sources": [
             {
@@ -386,7 +386,7 @@
             }
           ],
           "patterns": ["estimate something at an amount"],
-          "synonyms": [],
+          "synonyms": ["approximate", "assess", "calculate", "evaluate"],
           "antonyms": [],
           "status": "reviewed",
           "sources": [
@@ -421,7 +421,7 @@
             }
           ],
           "patterns": ["an estimate for repairs", "a cost estimate"],
-          "synonyms": [],
+          "synonyms": ["approximation", "estimation", "rough calculation"],
           "antonyms": [],
           "status": "reviewed",
           "sources": [
@@ -462,8 +462,8 @@
             }
           ],
           "patterns": ["impose a fee on someone"],
-          "synonyms": [],
-          "antonyms": [],
+          "synonyms": ["levy", "force on"],
+          "antonyms": ["remove", "lift"],
           "status": "reviewed",
           "sources": [
             {
@@ -497,8 +497,8 @@
             }
           ],
           "patterns": ["impose on someone"],
-          "synonyms": [],
-          "antonyms": [],
+          "synonyms": ["burden", "inconvenience", "put upon"],
+          "antonyms": ["spare"],
           "status": "reviewed",
           "sources": [
             {
@@ -538,7 +538,7 @@
             }
           ],
           "patterns": ["make a mistake", "a mistake in something"],
-          "synonyms": [],
+          "synonyms": ["error", "fault", "slip", "oversight"],
           "antonyms": [],
           "status": "reviewed",
           "sources": [
@@ -573,7 +573,7 @@
             }
           ],
           "patterns": ["mistake something for something"],
-          "synonyms": [],
+          "synonyms": ["confuse", "misidentify", "take for"],
           "antonyms": [],
           "status": "reviewed",
           "sources": [
@@ -614,7 +614,7 @@
             }
           ],
           "patterns": ["place an order", "an order for something"],
-          "synonyms": [],
+          "synonyms": ["request", "requisition"],
           "antonyms": [],
           "status": "reviewed",
           "sources": [
@@ -649,7 +649,7 @@
             }
           ],
           "patterns": ["order something from someone"],
-          "synonyms": [],
+          "synonyms": ["purchase", "buy", "request"],
           "antonyms": [],
           "status": "reviewed",
           "sources": [
@@ -680,7 +680,7 @@
             }
           ],
           "patterns": ["order someone to do something"],
-          "synonyms": [],
+          "synonyms": ["command", "instruct", "direct"],
           "antonyms": [],
           "status": "reviewed",
           "sources": [
@@ -715,8 +715,8 @@
             }
           ],
           "patterns": ["in alphabetical order", "in order"],
-          "synonyms": [],
-          "antonyms": [],
+          "synonyms": ["sequence", "arrangement", "organization"],
+          "antonyms": ["disorder", "chaos"],
           "status": "reviewed",
           "sources": [
             {
@@ -752,8 +752,8 @@
             }
           ],
           "patterns": ["reply promptly", "pay promptly"],
-          "synonyms": [],
-          "antonyms": [],
+          "synonyms": ["immediately", "quickly", "punctually", "on time"],
+          "antonyms": ["late", "slowly"],
           "status": "reviewed",
           "sources": [
             {
@@ -793,7 +793,7 @@
             }
           ],
           "patterns": ["rectify an error", "rectify a problem"],
-          "synonyms": [],
+          "synonyms": ["correct", "fix", "remedy", "amend"],
           "antonyms": [],
           "status": "reviewed",
           "sources": [
@@ -834,7 +834,7 @@
             }
           ],
           "patterns": ["payment terms", "terms of an agreement"],
-          "synonyms": [],
+          "synonyms": ["conditions", "provisions", "stipulations"],
           "antonyms": [],
           "status": "reviewed",
           "sources": [
@@ -865,7 +865,7 @@
             }
           ],
           "patterns": ["technical terms", "accounting terms"],
-          "synonyms": [],
+          "synonyms": ["expressions", "technical vocabulary", "terminology"],
           "antonyms": [],
           "status": "reviewed",
           "sources": [
@@ -902,7 +902,7 @@
             }
           ],
           "patterns": ["give an address", "an opening address"],
-          "synonyms": [],
+          "synonyms": ["speech", "talk", "oration"],
           "antonyms": [],
           "status": "reviewed",
           "sources": [
@@ -937,8 +937,8 @@
             }
           ],
           "patterns": ["address a problem", "address a need"],
-          "synonyms": [],
-          "antonyms": [],
+          "synonyms": ["deal with", "tackle", "handle"],
+          "antonyms": ["ignore", "neglect"],
           "status": "reviewed",
           "sources": [
             {
@@ -972,7 +972,7 @@
             }
           ],
           "patterns": ["a home address", "an email address"],
-          "synonyms": [],
+          "synonyms": ["mailing address", "postal address", "location"],
           "antonyms": [],
           "status": "reviewed",
           "sources": [
@@ -1003,7 +1003,7 @@
             }
           ],
           "patterns": ["address an audience", "address a meeting"],
-          "synonyms": [],
+          "synonyms": ["speak to", "talk to", "give a speech to"],
           "antonyms": [],
           "status": "reviewed",
           "sources": [
@@ -1040,7 +1040,7 @@
             }
           ],
           "patterns": ["an account balance", "a bank balance"],
-          "synonyms": [],
+          "synonyms": ["remainder", "remaining amount"],
           "antonyms": [],
           "status": "reviewed",
           "sources": [
@@ -1075,7 +1075,7 @@
             }
           ],
           "patterns": ["balance the accounts"],
-          "synonyms": [],
+          "synonyms": ["reconcile"],
           "antonyms": [],
           "status": "reviewed",
           "sources": [
@@ -1110,8 +1110,8 @@
             }
           ],
           "patterns": ["keep your balance", "lose your balance"],
-          "synonyms": [],
-          "antonyms": [],
+          "synonyms": ["equilibrium", "steadiness"],
+          "antonyms": ["imbalance", "instability"],
           "status": "reviewed",
           "sources": [
             {
@@ -1141,8 +1141,8 @@
             }
           ],
           "patterns": ["balance something on something"],
-          "synonyms": [],
-          "antonyms": [],
+          "synonyms": ["steady", "stabilize", "keep steady"],
+          "antonyms": ["unbalance", "destabilize"],
           "status": "reviewed",
           "sources": [
             {
@@ -1178,8 +1178,8 @@
             }
           ],
           "patterns": ["file a complaint", "file a tax return"],
-          "synonyms": [],
-          "antonyms": [],
+          "synonyms": ["submit", "lodge"],
+          "antonyms": ["withdraw"],
           "status": "reviewed",
           "sources": [
             {
@@ -1213,7 +1213,7 @@
             }
           ],
           "patterns": ["save a file", "open a file"],
-          "synonyms": [],
+          "synonyms": ["document", "data file", "computer file"],
           "antonyms": [],
           "status": "reviewed",
           "sources": [
@@ -1244,7 +1244,7 @@
             }
           ],
           "patterns": ["file documents", "file something under a name"],
-          "synonyms": [],
+          "synonyms": ["archive", "file away", "record"],
           "antonyms": [],
           "status": "reviewed",
           "sources": [
@@ -1281,8 +1281,8 @@
             }
           ],
           "patterns": ["a return on investment"],
-          "synonyms": [],
-          "antonyms": [],
+          "synonyms": ["profit", "yield", "gain"],
+          "antonyms": ["loss"],
           "status": "reviewed",
           "sources": [
             {
@@ -1316,8 +1316,8 @@
             }
           ],
           "patterns": ["return to a place"],
-          "synonyms": [],
-          "antonyms": [],
+          "synonyms": ["come back", "go back", "get back"],
+          "antonyms": ["leave", "depart"],
           "status": "reviewed",
           "sources": [
             {
@@ -1347,8 +1347,8 @@
             }
           ],
           "patterns": ["return something to someone"],
-          "synonyms": [],
-          "antonyms": [],
+          "synonyms": ["give back", "hand back", "restore"],
+          "antonyms": ["keep", "retain"],
           "status": "reviewed",
           "sources": [
             {
@@ -1378,7 +1378,7 @@
             }
           ],
           "patterns": ["a tax return"],
-          "synonyms": [],
+          "synonyms": ["tax declaration", "tax filing"],
           "antonyms": [],
           "status": "reviewed",
           "sources": [
@@ -1415,8 +1415,8 @@
             }
           ],
           "patterns": ["establish a company", "establish a business"],
-          "synonyms": [],
-          "antonyms": [],
+          "synonyms": ["found", "set up", "institute"],
+          "antonyms": ["abolish", "dissolve"],
           "status": "reviewed",
           "sources": [
             {
@@ -1450,8 +1450,8 @@
             }
           ],
           "patterns": ["establish the cause", "establish whether"],
-          "synonyms": [],
-          "antonyms": [],
+          "synonyms": ["confirm", "verify", "ascertain"],
+          "antonyms": ["disprove", "refute"],
           "status": "reviewed",
           "sources": [
             {
@@ -1481,8 +1481,8 @@
             }
           ],
           "patterns": ["establish trust", "establish yourself as"],
-          "synonyms": [],
-          "antonyms": [],
+          "synonyms": ["create", "build", "develop"],
+          "antonyms": ["destroy", "undermine"],
           "status": "reviewed",
           "sources": [
             {
@@ -1522,7 +1522,7 @@
             }
           ],
           "patterns": ["apply for a job", "apply to a company"],
-          "synonyms": [],
+          "synonyms": ["put in for", "request", "seek"],
           "antonyms": [],
           "status": "reviewed",
           "sources": [
@@ -1557,7 +1557,7 @@
             }
           ],
           "patterns": ["apply something to something"],
-          "synonyms": [],
+          "synonyms": ["use", "employ", "put into practice"],
           "antonyms": [],
           "status": "reviewed",
           "sources": [
@@ -1588,8 +1588,8 @@
             }
           ],
           "patterns": ["apply something to a surface"],
-          "synonyms": [],
-          "antonyms": [],
+          "synonyms": ["put on", "spread", "coat"],
+          "antonyms": ["remove", "wipe off"],
           "status": "reviewed",
           "sources": [
             {

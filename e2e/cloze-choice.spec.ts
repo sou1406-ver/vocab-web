@@ -1,6 +1,7 @@
 import { scanAccessibility, waitForResult, waitForSaved } from "./app-ready";
 import { test, expect } from "@playwright/test";
 import { readFileSync } from "node:fs";
+import { studyWords } from "../src/domain/lexicon";
 import type { Catalog, ClozeChoiceQuestion, StudySession } from "../src/domain/types";
 const manifest = JSON.parse(
   readFileSync(new URL("../src/content/books/toeic-600/exercise-manifest.json", import.meta.url), "utf8"),
@@ -127,13 +128,15 @@ test("catalog cloze answers vary in position and keep their saved order after re
   const examples = questions.filter((q) => q.sourceId.startsWith("catalog:example:"));
   expect(examples.length).toBeGreaterThan(1);
   expect(examples.some((q) => q.options.indexOf(q.answer) > 0)).toBe(true);
+  const items = studyWords(catalog.words);
   for (const q of questions) {
     const original = sourceQuestions.find((item) => item.sourceId === q.sourceId)!;
     if (q.sourceId.startsWith("catalog:example:")) {
       expect(original.options).toEqual([]);
-      const target = catalog.words.find((word) => word.id === q.wordId)!;
+      const target = items.find((word) => word.id === q.wordId)!;
+      expect(target, q.wordId).toBeDefined();
       const allowed = new Set(
-        catalog.words
+        items
           .filter((word) => word.lesson === target.lesson)
           .flatMap((word) => [word.text, ...word.family.map((form) => form.text)])
           .map((text) => text.trim().toLowerCase()),

@@ -1,3 +1,4 @@
+import { studyWords } from "../domain/lexicon";
 import { describe, expect, it } from "vitest";
 import { makeSynonymQuestions } from "./synonyms";
 import { defaultBook } from "./catalog";
@@ -152,6 +153,7 @@ describe("Synonym question generation", () => {
   });
   it("filters the complete catalog without changing its content or allowing known reverse/overlapping relations", () => {
     const before = JSON.stringify(catalog);
+    const items = studyWords(catalog.words);
     const terms = (values: string[]) =>
       values
         .flatMap((value) => value.split(/[;,]/))
@@ -161,7 +163,7 @@ describe("Synonym question generation", () => {
       const questions = makeSynonymQuestions(catalog.words, catalog.words, kind, "whole-catalog");
       expect(questions.length).toBeGreaterThan(0);
       for (const q of questions) {
-        const root = catalog.words.find((item) => item.id === q.wordId)!;
+        const root = items.find((item) => item.id === q.wordId)!;
         const synonyms = terms(root.synonyms);
         const forbidden = [
           root.text.toLowerCase(),
@@ -173,7 +175,7 @@ describe("Synonym question generation", () => {
         expect(q.options.filter((option) => valid.includes(option.toLowerCase()))).toEqual([q.answer]);
         for (const option of q.options.filter((option) => option !== q.answer)) {
           expect(forbidden).not.toContain(option.toLowerCase());
-          for (const owner of catalog.words.filter(
+          for (const owner of items.filter(
             (item) =>
               item.text.toLowerCase() === option.toLowerCase() || terms(item.synonyms).includes(option.toLowerCase()),
           )) {

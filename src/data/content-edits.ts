@@ -1,3 +1,4 @@
+import { studyWords } from "../domain/lexicon";
 import { library, type Book, type ExerciseEntry } from "./catalog";
 import { isWord, record } from "./validation";
 import type { ClozeChoiceQuestion, Lesson, Topic, Word } from "../domain/types";
@@ -213,7 +214,9 @@ export function applyExerciseEdits(book: Book, lessonId: number, pack: readonly 
   const version = book.exercises.lessons.find((entry) => entry.lessonId === lessonId)?.version;
   if (!edits.length || !version) return [...pack];
   const byId = new Map(edits.map((edit) => [edit.target, edit]));
-  const lessonWords = new Set(book.catalog.words.filter((word) => word.lesson === lessonId).map((word) => word.id));
+  const lessonWords = new Set(
+    studyWords(book.catalog.words.filter((word) => word.lesson === lessonId)).map((word) => word.id),
+  );
   const usable = (q: ClozeChoiceQuestion) => lessonWords.has(q.wordId);
   const questions: ClozeChoiceQuestion[] = [];
   for (const question of pack) {

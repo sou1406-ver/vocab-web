@@ -320,3 +320,11 @@ Giữ hệ màu và serif tiêu đề hiện có. Khi vùng nội dung thẻ đ�
 Review code độc lập đã hoàn tất. Sáu điểm tích hợp được kiểm tra và sửa: phiên học nhiều sách, due/extra chọn kỹ năng, báo bản sửa Admin không áp dụng, thứ tự event offline, stable theo tất cả nghĩa, Library học nghĩa còn thiếu. Các regression tests mới đã được chạy RED rồi GREEN cho năm helper/đường dữ liệu; Library có E2E riêng trong vocabulary-senses.spec.ts. Không triển khai cloud/deploy trong đợt này.
 
 Kiểm chứng cuối: npm run build -- --webpack PASS, catalog b1aa331534d0 (600 nhóm từ / 50 bài, 0 cảnh báo; 798 câu bài tập). Lệnh npx vitest run với 22 file liên quan PASS 154 tests. npm run typecheck PASS; npm run lint PASS; Prettier check trên các file thay đổi PASS. Playwright với Edge trên bản production: 12 legacy cases PASS + 2 desktop-only cases SKIP trên mobile; vocabulary-senses.spec.ts PASS 8/8 sau khi sửa locator test cho nhãn phím tắt. Tổng các trường hợp liên quan: 20 PASS, 2 SKIP. Đã xem ảnh sáng/tối ở 1440 và 390; kiểm tra không tràn ngang và axe PASS. Không chạy/deploy Firebase hoặc push remote. Hai file untracked có sẵn README (1).md và build_roots.py không thuộc commit.
+
+### Lexicon v2 và chuyển đổi theo từng từ
+
+Nguồn chuẩn nằm trong 26 tệp `content/lexicon/a.json` đến `z.json`. Mỗi mục từ có ID `en:<text viết thường>` (từ đồng hình dùng hậu tố `~2`, `~3`), IPA US/UK, forms, family và các nghĩa có ID riêng. Mỗi nghĩa có rank primary/secondary, trạng thái draft/reviewed, nguồn và có thể có IPA riêng. Builder đối chiếu rootIds với kho gốc từ và kiểm tra ID trên toàn bộ bảng chữ cái.
+
+Binding v2 lưu wordId, entryId và taught theo thứ tự. Khi mọi nghĩa taught đã reviewed và có ít nhất một primary reviewed, từ dùng dữ liệu chuẩn. Trước đó toàn bộ từ lấy từ bản phẳng. Report liệt kê binding chờ duyệt và các trường còn thiếu của draft. Thiếu ID taught là lỗi. Dữ liệu học chỉ xuất bản nghĩa reviewed.
+
+Nghĩa học gồm taught rồi đến các primary reviewed còn lại, bỏ trùng. ID đầu giữ wordId, các ID bổ sung là `<bookId>:<wordId>:<senseId>`. Secondary reviewed ngoài taught dành cho tra cứu. Snapshot, progress và event cũ giữ nguyên. Pilot v1 vẫn dùng danh sách taught hiện tại qua adapter trong giai đoạn chuyển đổi. Nguồn biên soạn và dữ liệu phẳng cho Admin được lưu riêng theo sách, ngoài fingerprint catalog.

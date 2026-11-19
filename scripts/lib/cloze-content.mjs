@@ -1,3 +1,4 @@
+import { learningItems } from "./learning-items.mjs";
 const norm = (value) => value.trim().toLowerCase().replace(/\s+/g, " ");
 import { familyForms, classificationForms } from "./word-forms.mjs";
 
@@ -8,7 +9,7 @@ import { familyForms, classificationForms } from "./word-forms.mjs";
 export function createCatalogCloze(lessonId, words) {
   /** @type {Omit<import("../../src/domain/types").ClozeChoiceQuestion, "sourceVersion">[]} */
   const questions = [];
-  for (const word of words.filter((item) => item.lesson === lessonId)) {
+  for (const word of words.filter((item) => item.lesson === lessonId).flatMap(learningItems)) {
     const escaped = word.text.trim().replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
     const pattern = new RegExp(`(?<![\\p{L}\\p{N}])${escaped}(?![\\p{L}\\p{N}])`, "giu");
     for (const [index, example] of word.examples.entries()) {

@@ -1,9 +1,14 @@
+import { learningItems } from "../../scripts/lib/learning-items.mjs";
+export { learningItems };
 import type { Snapshot, Word } from "./types";
 import { latestSenseOutcome } from "./sense-check";
 
 export interface Sense {
   id: string;
   pos: string;
+  ipa?: string;
+  pronunciation?: Pronunciation;
+  rank?: "primary" | "secondary";
   meaning: string;
   explanation: string;
   definition: string;
@@ -17,6 +22,9 @@ export interface Sense {
 export interface Lexeme {
   id: string;
   text: string;
+  forms?: string[];
+  rootIds?: string[];
+  pronunciation?: Pronunciation;
   core?: { meaning: string; image?: string; note?: string };
   senses: Sense[];
 }
@@ -27,24 +35,6 @@ export interface SenseCheck {
   itemIds: string[];
   requiredItemIds: string[];
   role: "scheduled" | "diagnostic" | "repair";
-}
-export function learningItems(word: Word): Word[] {
-  if (!word.lexeme || !word.learningItems) return [word];
-  return word.learningItems.flatMap((item) => {
-    const sense = word.lexeme!.senses.find((s) => s.id === item.senseId && s.status === "reviewed");
-    return sense
-      ? [
-          {
-            ...word,
-            ...sense,
-            id: item.id,
-            text: word.text,
-            senseId: sense.id,
-            groupWordId: word.groupWordId ?? word.id,
-          },
-        ]
-      : [];
-  });
 }
 export const studyWords = (words: readonly Word[]) => words.flatMap(learningItems);
 export function mergeReviewGroups<T extends { wordId: string }>(
@@ -71,4 +61,41 @@ export function needsLearning(word: Word, snapshot: Snapshot) {
   return (
     learningItems(word).some((item) => !snapshot.progress[item.id]?.tested) || (result !== null && result !== "passed")
   );
+}
+
+export interface Pronunciation {
+  us: string;
+  uk: string;
+}
+export interface CanonicalSense {
+  id: string;
+  rank: "primary" | "secondary";
+  status: "draft" | "reviewed";
+  pos?: string;
+  ipa?: Pronunciation;
+  meaningVi?: string;
+  explanationVi?: string;
+  definitionEn?: string;
+  examples?: { en: string; vi: string }[];
+  patterns?: string[];
+  synonyms?: string[];
+  antonyms?: string[];
+  noSynonyms?: true;
+  sources?: Sense["sources"];
+}
+export interface CanonicalEntry {
+  id: string;
+  text: string;
+  ipa: Pronunciation;
+  forms: string[];
+  family: Word["family"];
+  rootIds?: string[];
+  core?: Lexeme["core"];
+  senses: CanonicalSense[];
+}
+export interface BookLexiconSource {
+  flatWords: Word[];
+  entries: CanonicalEntry[];
+  bindings: { version: 2; items: { wordId: string; entryId: string; taught: string[] }[] };
+  rootIds: string[];
 }
