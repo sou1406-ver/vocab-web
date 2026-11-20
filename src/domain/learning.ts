@@ -85,6 +85,25 @@ export const questionAnswerText = (question: Question) =>
 const escapeRegex = (value: string) => value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 export const hintAllowance = (answer: string) =>
   Math.floor(Array.from(answer).filter((char) => /\p{L}/u.test(char)).length * 0.3);
+export function nextHintPosition(session: StudySession, index = session.index): number {
+  const question = session.questions[index];
+  if (
+    session.phase !== "question" ||
+    index !== session.index ||
+    !question ||
+    (question.kind !== "recall" &&
+      question.kind !== "cloze" &&
+      question.kind !== "word-form" &&
+      question.kind !== "listen-type")
+  )
+    return -1;
+  const letters = Array.from(question.answer).flatMap((char, position) => (/\p{L}/u.test(char) ? [position] : []));
+  const revealed = new Set(session.revealed ?? []);
+  if (letters.filter((position) => !revealed.has(position)).length <= 1) return -1;
+  const order = shuffleSeeded(letters, `${session.id}:${index}:hint`);
+  if (letters.length >= 4 && order[0] === letters[0]) [order[0], order[1]] = [order[1], order[0]];
+  return order.find((position) => !revealed.has(position)) ?? -1;
+}
 export function revealQuestionLetter(snapshot: Snapshot, sessionId: string, index: number): Snapshot {
   const session = snapshot.session;
   if (!session || session.id !== sessionId || session.index !== index || session.phase !== "question")
@@ -93,7 +112,7 @@ export function revealQuestionLetter(snapshot: Snapshot, sessionId: string, inde
   if (q.kind !== "recall" && q.kind !== "cloze" && q.kind !== "word-form" && q.kind !== "listen-type")
     throw new Error("Câu này không dùng gợi ý chữ.");
   const revealed = session.revealed ?? [];
-  const next = Array.from(q.answer).findIndex((char, position) => /\p{L}/u.test(char) && !revealed.includes(position));
+  const next = nextHintPosition(session, index);
   if (next < 0) return snapshot;
   const indices = [...revealed, next];
   return {

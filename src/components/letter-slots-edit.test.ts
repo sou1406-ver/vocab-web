@@ -1,5 +1,59 @@
 import { describe, it, expect } from "vitest";
-import { projectRevealed, editRevealed, slotSelection } from "./letter-slots-edit";
+import { projectRevealed, editRevealed, slotSelection, remainingSlots } from "./letter-slots-edit";
+
+describe("Answer-sized input", () => {
+  it("ignores overflow while preserving wrong spellings and editable caret", () => {
+    expect(editRevealed("agreement", "agreements", "agreement", [])).toEqual({ value: "agreement", caret: 9 });
+    expect(editRevealed("", "agreements and more", "agreement", []).value).toBe("agreement");
+    expect(editRevealed("", "xxxxxxxxx", "agreement", []).value).toBe("xxxxxxxxx");
+    expect(editRevealed("agreement", "axgreement", "agreement", []).value).toBe("agreement");
+    expect(projectRevealed("agreements", "agreement", [])).toBe("agreement");
+  });
+  it("fills around a hint at the last position without blocking native insertion", () => {
+    expect(editRevealed("        t", "a        t", "agreement", [8])).toEqual({ value: "a       t", caret: 1 });
+    expect(editRevealed("a       t", "ag       t", "agreement", [8])).toEqual({ value: "ag      t", caret: 2 });
+    expect(editRevealed("        t", "agreement extra", "agreement", [8]).value).toBe("agreement");
+    expect(remainingSlots("        t", "agreement", [8])).toBe(8);
+    expect(editRevealed("      b", "abideby", "abide by", [6]).value).toBe("abide by");
+    expect(editRevealed("       u", "followup", "follow-up", [7]).value).toBe("follow-up");
+  });
+  it("uses available sparse cells when typing after a revealed final letter", () => {
+    expect(editRevealed("        t", "        ta", "agreement", [8])).toEqual({ value: "a       t", caret: 1 });
+    expect(editRevealed("       nt", "       nta", "agreement", [8])).toEqual({ value: "a      nt", caret: 1 });
+  });
+  it("honors the native deletion range between repeated letters", () => {
+    expect(
+      editRevealed("agreement", "agrement", "agreement", [], { start: 4, end: 4, inputType: "deleteContentBackward" }),
+    ).toEqual({ value: "agrement", caret: 3 });
+    expect(
+      editRevealed("agrement", "agreement", "agreement", [], { start: 3, end: 3, inputType: "insertText" }),
+    ).toEqual({ value: "agreement", caret: 4 });
+  });
+  it("trims pasted edge whitespace before applying the capacity limit without removing sparse padding", () => {
+    expect(editRevealed("", "  AGREEMENT  ", "agreement", []).value).toBe("AGREEMENT");
+    expect(
+      editRevealed("        t", "  agreement  ", "agreement", [8], { start: 0, end: 9, inputType: "insertFromPaste" })
+        .value,
+    ).toBe("agreement");
+    expect(editRevealed("", "  set up  ", "set up", []).value).toBe("set up");
+  });
+  it("supplies phrase spaces and hyphens without consuming entered letters", () => {
+    expect(editRevealed("", "setup", "set up", [])).toEqual({ value: "set up", caret: 6 });
+    expect(editRevealed("", "set up extra", "set up", []).value).toBe("set up");
+    expect(editRevealed("", "followup", "follow-up", []).value).toBe("follow-up");
+    expect(editRevealed("follow-up", "follow-up-extra", "follow-up", []).value).toBe("follow-up");
+    expect(slotSelection("set up", 3, "set up")).toEqual({ start: 4, end: 5 });
+    expect(remainingSlots("set", "set up")).toBe(2);
+    expect(remainingSlots("follow-up", "follow-up")).toBe(0);
+    expect(remainingSlots("wrongxxxx", "agreement")).toBe(0);
+  });
+  it("preserves selection replacement, separator deletion and Unicode offsets", () => {
+    expect(editRevealed("set up", "setup", "set up", []).value).toBe("set up");
+    expect(editRevealed("follow-up", "followup", "follow-up", []).value).toBe("follow-up");
+    expect(editRevealed("agreement", "agxeement", "agreement", []).value).toBe("agxeement");
+    expect(editRevealed("", "😀abextra", "😀ab", [])).toEqual({ value: "😀ab", caret: 4 });
+  });
+});
 
 describe("Locked hint letters", () => {
   it("reveals only requested letters and preserves other input", () => {

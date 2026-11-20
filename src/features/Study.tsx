@@ -9,8 +9,8 @@ import { Empty, Icon, ProgressBar, WordContent, Speak } from "../shared/ui";
 import { useWord } from "../app/context";
 import type { Word } from "../domain/types";
 import { LetterSlotsInput } from "../components/LetterSlotsInput";
-import { projectRevealed } from "../components/letter-slots-edit";
-import { hintAllowance, revealQuestionLetter, questionAnswerText } from "../domain/learning";
+import { projectRevealed, remainingSlots, slotSelection } from "../components/letter-slots-edit";
+import { hintAllowance, nextHintPosition, revealQuestionLetter, questionAnswerText } from "../domain/learning";
 import { shuffleSeeded } from "../domain/random";
 import { BuildAnswer } from "../components/BuildAnswer";
 import { singleWordMatch } from "../domain/word-match";
@@ -49,6 +49,7 @@ export function StudySession() {
   };
   const inspect = useWord();
   const [input, setInput] = useState("");
+  const [inputError, setInputError] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
   const choiceRef = useRef<HTMLButtonElement>(null);
   const nextRef = useRef<HTMLButtonElement>(null);
@@ -63,6 +64,7 @@ export function StudySession() {
   }, [listeningAvailable, busy, session?.id, session?.index, session?.phase]);
   useEffect(() => {
     setInput("");
+    setInputError("");
     if (session?.phase === "learn" || session?.phase === "question") window.scrollTo(0, 0);
     if (session?.phase === "question") (inputRef.current ?? choiceRef.current)?.focus({ preventScroll: true });
     else nextRef.current?.focus({ preventScroll: true });
@@ -318,12 +320,22 @@ export function StudySession() {
   const answerText = questionAnswerText(question);
   const typedValue = projectRevealed(input, answerText, revealed);
   const hintLimit = hintAllowance(answerText);
-  const hintIndex = Array.from(answerText).findIndex((char, index) => /\p{L}/u.test(char) && !revealed.includes(index));
+  const hintIndex = nextHintPosition(session);
   const revealLetter = async () => {
     if (!typed || hintIndex < 0 || session.phase !== "question") return;
+    const caret = inputRef.current?.selectionStart ?? 0;
+    const index = Array.from(typedValue.slice(0, caret)).length;
     const saved = await change((state) => revealQuestionLetter(state, session.id, session.index));
     if (saved) {
-      requestAnimationFrame(() => inputRef.current?.focus({ preventScroll: true }));
+      requestAnimationFrame(() => {
+        const node = inputRef.current;
+        if (!node) return;
+        const indices = [...revealed, hintIndex];
+        const value = projectRevealed(input, answerText, indices);
+        const range = slotSelection(value, index, answerText, indices);
+        node.focus({ preventScroll: true });
+        node.setSelectionRange(range.start, range.end);
+      });
     }
   };
   return (
@@ -534,7 +546,14 @@ export function StudySession() {
                 className="typing-answer"
                 onSubmit={(e) => {
                   e.preventDefault();
-                  if (typedValue.trim() && session.phase === "question") void answer(typedValue);
+                  if (busy || cannotHear || session.phase !== "question") return;
+                  const remaining = remainingSlots(typedValue, answerText, revealed);
+                  if (remaining) {
+                    setInputError(`Còn ${remaining} ô trống`);
+                    return;
+                  }
+                  setInputError("");
+                  void answer(typedValue);
                 }}
               >
                 <label htmlFor="typed-answer">Đáp án của bạn</label>
@@ -547,18 +566,18 @@ export function StudySession() {
                     revealed={revealed}
                     value={session.phase === "feedback" ? (feedback?.input ?? "") : typedValue}
                     disabled={busy || session.phase === "feedback" || cannotHear}
-                    onChange={setInput}
+                    onChange={(value) => {
+                      setInput(value);
+                      setInputError("");
+                    }}
                   />
                   {session.phase === "question" && (
-                    <button
-                      className="button primary"
-                      disabled={!typedValue.trim() || busy || cannotHear}
-                      type="submit"
-                    >
+                    <button className="button primary" disabled={busy || cannotHear} type="submit">
                       Kiểm tra <Icon name="arrow" size={17} />
                     </button>
                   )}
                 </div>
+                {inputError && <p role="alert">{inputError}</p>}
               </form>
             )}
             {typed && session.phase === "question" && (

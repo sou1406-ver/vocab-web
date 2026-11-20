@@ -1,7 +1,14 @@
 "use client";
 
-import { useRef, useState, type RefObject } from "react";
-import { editRevealed, projectRevealed, revealedIndices, slotSelection } from "./letter-slots-edit";
+import { useEffect, useRef, useState, type RefObject } from "react";
+import {
+  editRevealed,
+  isFixedSeparator,
+  projectRevealed,
+  revealedIndices,
+  slotSelection,
+  type NativeSlotEdit,
+} from "./letter-slots-edit";
 
 interface Props {
   id: string;
@@ -17,14 +24,23 @@ interface Props {
 // The cells only display the entered value; they never contain answer letters.
 export function LetterSlotsInput({ id, answer, value, onChange, disabled, inputRef, revealed = [] }: Props) {
   const native = useRef<HTMLInputElement | null>(null);
+  const nativeEdit = useRef<NativeSlotEdit | undefined>(undefined);
   const [selection, setSelection] = useState({ start: 0, end: 0 });
   const template = Array.from(answer);
   const displayed = projectRevealed(value, answer, revealed);
   const locked = revealedIndices(answer, revealed);
   const entered = Array.from(displayed);
-  const count = Math.max(template.length, entered.length);
   const updateSelection = (node: HTMLInputElement) =>
     setSelection({ start: node.selectionStart ?? value.length, end: node.selectionEnd ?? value.length });
+  useEffect(() => {
+    const node = native.current;
+    if (!node) return;
+    const beforeInput = (event: InputEvent) => {
+      nativeEdit.current = { start: node.selectionStart ?? 0, end: node.selectionEnd ?? 0, inputType: event.inputType };
+    };
+    node.addEventListener("beforeinput", beforeInput);
+    return () => node.removeEventListener("beforeinput", beforeInput);
+  }, []);
 
   return (
     <div className={`letter-slots${disabled ? " is-disabled" : ""}`}>
@@ -45,19 +61,15 @@ export function LetterSlotsInput({ id, answer, value, onChange, disabled, inputR
         value={displayed}
         disabled={disabled}
         onChange={(event) => {
-          if (!locked.size) {
-            onChange(event.target.value);
-            updateSelection(event.target);
-          } else {
-            const edited = editRevealed(displayed, event.target.value, answer, revealed);
-            onChange(edited.value);
-            requestAnimationFrame(() => {
-              if (native.current && document.activeElement === native.current) {
-                native.current.setSelectionRange(edited.caret, edited.caret);
-                setSelection({ start: edited.caret, end: edited.caret });
-              }
-            });
-          }
+          const edited = editRevealed(displayed, event.target.value, answer, revealed, nativeEdit.current);
+          nativeEdit.current = undefined;
+          onChange(edited.value);
+          requestAnimationFrame(() => {
+            if (native.current && document.activeElement === native.current) {
+              native.current.setSelectionRange(edited.caret, edited.caret);
+              setSelection({ start: edited.caret, end: edited.caret });
+            }
+          });
         }}
         onClick={(event) => {
           // Native pointer focus happens first: no preventDefault/programmatic focus on tap.
@@ -79,16 +91,22 @@ export function LetterSlotsInput({ id, answer, value, onChange, disabled, inputR
         onSelect={(event) => updateSelection(event.currentTarget)}
       />
       <div className="letter-slots-cells" aria-hidden="true">
-        {Array.from({ length: count }, (_, index) => {
-          const char = entered[index] ?? "";
-          const gap = /\s/.test(template[index] ?? "") && (!char || /\s/.test(char));
+        {template.map((expected, index) => {
+          const fixed = isFixedSeparator(expected);
+          const char = fixed ? expected : (entered[index] ?? "");
+          const gap = fixed && /\s/.test(expected);
           const offset = entered.slice(0, index).join("").length;
           const selected =
             !!char &&
             selection.end > selection.start &&
             selection.start < offset + char.length &&
             selection.end > offset;
-          const active = selection.start === selection.end && index <= entered.length && offset === selection.start;
+          const active =
+            !fixed &&
+            !locked.has(index) &&
+            selection.start === selection.end &&
+            index <= entered.length &&
+            offset === selection.start;
           return (
             <span
               key={index}

@@ -2,7 +2,14 @@ import { describe, expect, it } from "vitest";
 import { defaultBook } from "../data/catalog";
 const catalog = defaultBook.catalog;
 import { validateSnapshot } from "../data/validation";
-import { emptySnapshot, beginSession, answerQuestion, revealQuestionLetter, hintAllowance } from "./learning";
+import {
+  emptySnapshot,
+  beginSession,
+  answerQuestion,
+  revealQuestionLetter,
+  hintAllowance,
+  nextHintPosition,
+} from "./learning";
 
 function review(answer: string) {
   const word = { ...catalog.words[0], text: answer };
@@ -23,6 +30,58 @@ function review(answer: string) {
 }
 
 describe("Scoring version 2 hints", () => {
+  it("keeps seeded hint order through reload, varies with session and leaves one letter hidden", () => {
+    const sequence = (id: string, reload: boolean) => {
+      let state = review("agreement");
+      state.session!.id = id;
+      for (let count = 0; count < 20; count++) {
+        const next = nextHintPosition(state.session!, 0);
+        const updated = revealQuestionLetter(state, id, 0);
+        if (count < 8) expect(updated.session!.revealed!.at(-1)).toBe(next);
+        state = reload ? validateSnapshot(JSON.parse(JSON.stringify(updated))) : updated;
+      }
+      expect(nextHintPosition(state.session!, 0)).toBe(-1);
+      expect(state.session!.revealed).toHaveLength(8);
+      expect(state.session!.revealed![0]).not.toBe(0);
+      return state.session!.revealed;
+    };
+    expect(sequence("hint-one", true)).toEqual(sequence("hint-one", false));
+    expect(sequence("hint-two", true)).not.toEqual(sequence("hint-one", true));
+  });
+  it("keeps old revealed arrays, respects letter positions and refuses the final reveal", () => {
+    for (const answer of ["a", "ab", "cat", "é---猫", "agreement"]) {
+      let state = review(answer);
+      const letters = Array.from(answer).flatMap((char, index) => (/\p{L}/u.test(char) ? [index] : []));
+      state.session!.revealed = letters.slice(0, -1);
+      expect(nextHintPosition(state.session!, 0)).toBe(-1);
+      expect(revealQuestionLetter(state, "s", 0)).toBe(state);
+      state.session!.revealed = letters;
+      state = validateSnapshot(JSON.parse(JSON.stringify(state)));
+      expect(revealQuestionLetter(state, "s", 0)).toBe(state);
+      expect(state.session!.revealed).toEqual(letters);
+    }
+  });
+  it.each(["recall", "cloze", "word-form", "listen-type"] as const)("uses the same hint policy for %s", (kind) => {
+    const state = review("agreement");
+    state.session!.questions[0] = {
+      kind,
+      wordId: catalog.words[0].id,
+      prompt: "________",
+      answer: "agreement",
+      options: [],
+    };
+    const next = nextHintPosition(state.session!);
+    expect(next).toBeGreaterThan(0);
+    expect(revealQuestionLetter(state, "s", 0).session!.revealed).toEqual([next]);
+    state.session!.questions[0] = {
+      kind: "meaning",
+      wordId: catalog.words[0].id,
+      prompt: "agreement",
+      answer: "meaning",
+      options: ["meaning"],
+    };
+    expect(nextHintPosition(state.session!)).toBe(-1);
+  });
   it.each([
     ["cat", 0],
     ["apple", 1],

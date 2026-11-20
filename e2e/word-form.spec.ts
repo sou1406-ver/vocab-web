@@ -100,7 +100,7 @@ test("typed word form loads on demand, keeps cues and hints across tabs, and ret
   await page.getByRole("button", { name: "Từ tiếp theo" }).click();
   await expect(page.locator(".letter-slot.is-revealed")).toHaveCount(0);
   const next = (await readSnapshot(page)).session!.questions[1];
-  await input.fill("wrong answer");
+  await input.fill("x".repeat(Array.from(next.answer as string).length));
   await input.press("Enter");
   await expect(page.getByText("Chưa đúng, cùng xem lại nhé.")).toBeVisible();
   await page.getByRole("button", { name: "Kết thúc tại đây" }).click();
