@@ -13,6 +13,7 @@ import type {
 import { shuffleSeeded } from "./random";
 import { distractorPool, type TestedProgress } from "./distractors";
 import { learningItems, studyWords } from "./lexicon";
+import { captureStudyBaseline } from "./study-progress";
 import { queueSenseRepair, schedulesAnswer } from "./sense-check";
 import { replaySkills } from "./skills";
 
@@ -159,6 +160,7 @@ export function beginSession(
     throw new Error("Bạn còn một lượt đang học. Hãy tiếp tục hoặc kết thúc lượt đó trước.");
   if (!words.length) throw new Error("Chưa có từ phù hợp cho lượt này.");
   const session: StudySession = {
+    progressBaseline: captureStudyBaseline(snapshot, [...catalog.words, ...snapshot.customWords, ...words]),
     id,
     title,
     mode,

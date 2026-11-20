@@ -114,6 +114,7 @@ export interface Feedback {
   selectedParts?: string[];
 }
 export interface StudySession {
+  progressBaseline?: import("./study-progress").StudyBaseline;
   id: string;
   contentVersion: string;
   title: string;
@@ -161,6 +162,7 @@ export interface SessionSummary {
   finished: boolean;
 }
 export interface Snapshot {
+  cultivationSeen?: number[];
   schemaVersion: 2;
   revision: number;
   settings: {

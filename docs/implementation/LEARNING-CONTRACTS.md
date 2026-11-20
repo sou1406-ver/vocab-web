@@ -328,3 +328,11 @@ Nguồn chuẩn nằm trong 26 tệp `content/lexicon/a.json` đến `z.json`. M
 Binding v2 lưu wordId, entryId và taught theo thứ tự. Khi mọi nghĩa taught đã reviewed và có ít nhất một primary reviewed, từ dùng dữ liệu chuẩn. Trước đó toàn bộ từ lấy từ bản phẳng. Report liệt kê binding chờ duyệt và các trường còn thiếu của draft. Thiếu ID taught là lỗi. Dữ liệu học chỉ xuất bản nghĩa reviewed.
 
 Nghĩa học gồm taught rồi đến các primary reviewed còn lại, bỏ trùng. ID đầu giữ wordId, các ID bổ sung là `<bookId>:<wordId>:<senseId>`. Secondary reviewed ngoài taught dành cho tra cứu. Snapshot, progress và event cũ giữ nguyên. Pilot v1 vẫn dùng danh sách taught hiện tại qua adapter trong giai đoạn chuyển đổi. Nguồn biên soạn và dữ liệu phẳng cho Admin được lưu riêng theo sách, ngoài fingerprint catalog.
+
+### Tiến độ và cảnh giới trong lượt học (2026-11-19)
+
+- `Snapshot.cultivationSeen?: number[]` lưu các mốc từ thực trong `cultivationRealms` đã được ghi nhận. Đây là metadata hiển thị, được ghi cùng giao dịch trả lời khi số nhóm từ `tested` vượt mốc; không sửa event, box, dueAt hay reviewedDay. Không hiện lại các mốc đã đạt trước khi bắt đầu lượt.
+- Sync patch/import nhận `cultivationSeen` optional và hợp nhất bằng tập hợp; lặp change, nhập guest hoặc đổi thứ tự hai thiết bị không nhân đôi mốc. Restore giữ semantics thế hệ hiện có. Snapshot schema 2 cũ không có field vẫn hợp lệ.
+- Màn đột phá là trạng thái tạm của store trên thiết bị vừa lưu câu trả lời. Marker đã lưu trước khi màn xuất hiện; reload hoặc nhận sync không phát lại. Chỉ nút Tiếp tục đóng màn; shortcut không chuyển câu trong lúc màn này mở. Không thêm câu hoặc đổi `sessionId:index`.
+- `StudySession.progressBaseline?: {learnedIds, stableIds}` lưu ID nhóm từ lấy từ progress/events thực lúc bắt đầu lượt. Tổng kết đếm chênh lệch trên những nhóm có trả lời trong lượt, dùng `isWordStable`/`replaySkills` hiện có cho hai kỹ năng; không đếm lại từ ổn định sẵn. Lượt cũ thiếu baseline hiện thông báo thiếu dữ liệu đầu lượt thay vì tự tạo số liệu.
+- Thanh tu vi dùng đúng `countLearnedWords` và `cultivationOf`; không gắn thưởng với lịch ôn. Practice/Match không tạo tiến độ học mới hoặc nâng lịch ôn. Không đổi scoringVersion hay fingerprint catalog.

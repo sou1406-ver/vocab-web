@@ -23,6 +23,11 @@ import { GuestStudyNotice } from "../components/GuestStudyNotice";
 import { CHOICE_KINDS, studyShortcut } from "../domain/study-shortcuts";
 import { speak } from "../lib/speech";
 import { skillLabels, skillOf } from "../domain/skills";
+import { countLearnedWords } from "../domain/cultivation";
+import { studySummary } from "../domain/study-progress";
+import { StudyBreakthrough, StudyCultivation } from "../components/StudyCultivation";
+
+const isCatalogWord = (id: string) => Boolean(bookOfWord(id));
 
 export default function Study() {
   return (
@@ -33,7 +38,8 @@ export default function Study() {
 }
 
 export function StudySession() {
-  const { data, busy, advance, answer, finish, start, startExercises, change } = useApp();
+  const { data, busy, advance, answer, finish, start, startExercises, change, breakthrough, dismissBreakthrough } =
+    useApp();
   const voices = useEnglishVoices();
   const router = useRouter();
   const sandbox = useSandbox();
@@ -65,6 +71,7 @@ export function StudySession() {
   // Keyboard shortcuts: 1–4 / A–D choose, Enter moves on, R replays listening audio. Typing and open dialogs are left alone.
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
+      if (breakthrough !== null) return;
       if (event.defaultPrevented || event.repeat || event.altKey || event.ctrlKey || event.metaKey) return;
       const target = event.target instanceof Element ? event.target : null;
       if (target?.closest("input, textarea, select, [contenteditable='true']")) return;
@@ -85,7 +92,7 @@ export function StudySession() {
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [session, busy, voices.length, advance, answer]);
+  }, [session, busy, voices.length, advance, answer, breakthrough]);
   if (!session)
     return (
       <div className="page">
@@ -97,10 +104,20 @@ export function StudySession() {
         </Empty>
       </div>
     );
+  if (breakthrough !== null)
+    return (
+      <StudyBreakthrough
+        threshold={breakthrough}
+        seed={data.settings.avatarSeed ?? (data.settings.name.trim() || "Vocab guest")}
+        onContinue={dismissBreakthrough}
+      />
+    );
   const all = wordsForSession(session, data.settings, data.customWords);
+  const learnedCount = countLearnedWords(data.progress, isCatalogWord);
   const events = data.events.filter((e) => e.sessionId === session.id);
   const correct = events.filter((e) => e.correct).length;
   if (session.phase === "complete") {
+    const summary = studySummary(data, all, isCatalogWord, session.finishedAt ?? Date.now());
     const groups = [...new Set(session.questions.flatMap((q) => q.senseCheck?.wordId ?? []))].map((id) => ({
       id,
       result: senseOutcome(session, data.events, id),
@@ -163,6 +180,7 @@ export function StudySession() {
     };
     return (
       <div className="page result-page">
+        <StudyCultivation count={learnedCount} />
         <div className="result-symbol">
           <Icon name="leaf" size={35} />
         </div>
@@ -206,6 +224,24 @@ export function StudySession() {
               : "Lịch ôn đã được cập nhật cho từ đủ điều kiện"}
           </span>
         </div>
+        <dl className="study-summary-stats" aria-label="Tiến bộ trong lượt">
+          <div>
+            <dt>Từ mới đã học</dt>
+            <dd>{summary.newLearned ?? "Chưa có dữ liệu đầu lượt"}</dd>
+          </div>
+          <div>
+            <dt>Mới nhớ ổn định</dt>
+            <dd>{summary.newStable ?? "Chưa có dữ liệu đầu lượt"}</dd>
+          </div>
+          <div>
+            <dt>Tới cảnh giới kế tiếp</dt>
+            <dd>{summary.remaining} từ</dd>
+          </div>
+          <div>
+            <dt>Chuỗi ngày học</dt>
+            <dd>{summary.streak} ngày</dd>
+          </div>
+        </dl>
         {wrongWords.length > 0 && (
           <section className="panel missed-panel">
             <h2>{wrongWords.length} từ cần thêm một lần gặp</h2>
@@ -292,6 +328,7 @@ export function StudySession() {
   };
   return (
     <div className="page study-page">
+      <StudyCultivation count={learnedCount} />
       <div className="study-top">
         <Link className="back-link" href="/">
           ← Tạm dừng

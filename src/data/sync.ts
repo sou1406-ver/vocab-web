@@ -5,6 +5,7 @@ import { validateSnapshot } from "./validation";
 export const INITIAL_GENERATION = "initial";
 type Seed = { progress: WordProgress; covered: string[] };
 interface Patch {
+  cultivationSeen?: number[];
   settings?: Partial<Snapshot["settings"]>;
   seeds?: Record<string, Seed>;
   events?: AnswerEvent[];
@@ -70,6 +71,7 @@ export function importChange(snapshot: Snapshot, id: string, deviceId: string, g
     generation,
     kind: "import",
     patch: {
+      ...(snapshot.cultivationSeen ? { cultivationSeen: snapshot.cultivationSeen } : {}),
       settings: snapshot.settings,
       seeds,
       events: snapshot.events,
@@ -108,6 +110,8 @@ export function createChange(
     };
   }
   const patch: Patch = {};
+  const newRealms = (after.cultivationSeen ?? []).filter((words) => !(before.cultivationSeen ?? []).includes(words));
+  if (newRealms.length) patch.cultivationSeen = newRealms;
   const settings = Object.fromEntries(
     Object.entries(after.settings).filter(
       ([key, value]) => !equal(value, before.settings[key as keyof Snapshot["settings"]]),
@@ -220,6 +224,12 @@ export function materialize(confirmed: CommittedChange[], pending: Change[] = []
     }
     if (change.kind !== "patch" && change.kind !== "import") throw new Error("Không đọc được phiên bản đồng bộ.");
     const patch = change.patch;
+    if (patch.cultivationSeen !== undefined) {
+      if (!Array.isArray(patch.cultivationSeen)) throw new Error("Cảnh giới đồng bộ không hợp lệ.");
+      state.cultivationSeen = [...new Set([...(state.cultivationSeen ?? []), ...patch.cultivationSeen])].sort(
+        (a, b) => a - b,
+      );
+    }
     if (patch.settings) {
       const fields = ["name", "dailyNew", "timezone", "theme", "avatarSeed", "bookId", "deepRoots"];
       if (Object.keys(patch.settings).some((key) => !fields.includes(key)))

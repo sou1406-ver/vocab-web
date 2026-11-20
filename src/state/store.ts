@@ -12,9 +12,12 @@ import {
   finishSession,
 } from "../domain/learning";
 import type { Skill } from "../domain/skills";
+import { acknowledgeCultivation, crossedCultivation } from "../domain/study-progress";
 import type { SessionMode, Snapshot, Word, Question } from "../domain/types";
 
 export interface AppState {
+  breakthrough: number | null;
+  dismissBreakthrough: () => void;
   profileKey: string;
   clock: number;
   data: Snapshot;
@@ -62,6 +65,8 @@ export function memoryPersistence(initial: Snapshot): SnapshotPersistence {
 export function createAppStore(persistence: SnapshotPersistence = browserPersistence) {
   let profileRequest = 0;
   return createStore<AppState>((set, get) => ({
+    breakthrough: null,
+    dismissBreakthrough: () => set({ breakthrough: null }),
     profileKey: "guest",
     clock: Date.now(),
     data: emptySnapshot(),
@@ -71,7 +76,7 @@ export function createAppStore(persistence: SnapshotPersistence = browserPersist
     init: async () => get().switchProfile(get().profileKey),
     switchProfile: async (profileKey) => {
       const request = ++profileRequest;
-      set({ profileKey, ready: false, busy: false, data: emptySnapshot(), error: "" });
+      set({ profileKey, ready: false, busy: false, data: emptySnapshot(), error: "", breakthrough: null });
       try {
         const data = await persistence.read(profileKey);
         if (request === profileRequest) set({ data, ready: true, error: "" });
@@ -135,13 +140,21 @@ export function createAppStore(persistence: SnapshotPersistence = browserPersist
         const next = beginExerciseSession(data, catalog, list, title, id);
         return returnTo && next.session ? { ...next, session: { ...next.session, returnTo } } : next;
       }),
-    answer: (input, assisted = false) => {
+    answer: async (input, assisted = false) => {
       const session = get().data.session;
-      return session
-        ? get().change((data) => answerQuestion(data, session.id, session.index, input, assisted))
-        : Promise.resolve(false);
+      if (!session) return false;
+      const isCatalogWord = (id: string) => Boolean(bookOfWord(id));
+      let crossed: number[] = [];
+      const saved = await get().change((data) => {
+        const answered = answerQuestion(data, session.id, session.index, input, assisted);
+        crossed = crossedCultivation(data, answered, isCatalogWord);
+        return acknowledgeCultivation(data, answered, isCatalogWord);
+      });
+      if (saved && crossed.length) set({ breakthrough: crossed.at(-1)! });
+      return saved;
     },
     advance: () => {
+      if (get().breakthrough !== null) return Promise.resolve(false);
       const session = get().data.session;
       return session ? get().change((data) => advanceSession(data, session.id, session.index)) : Promise.resolve(false);
     },

@@ -5048,3 +5048,68 @@ html.theme-switching *::after {
     }
   }
 }
+
+/* Real progress inside a study session. */
+.study-cultivation {
+  width: 100%;
+  margin-bottom: 1.25rem;
+}
+.study-cultivation > div:first-child {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  color: var(--muted);
+  font-size: 0.875rem;
+  margin-bottom: 0.5rem;
+}
+.study-cultivation strong {
+  color: var(--ink);
+}
+.study-breakthrough {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+  text-align: center;
+  padding-block: 3rem;
+}
+.study-breakthrough .cultivation-avatar {
+  width: 8rem;
+  height: 8rem;
+}
+.study-breakthrough p {
+  max-width: 38em;
+}
+.study-summary-stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  width: 100%;
+  margin: 1.5rem 0;
+  text-align: left;
+}
+.study-summary-stats > div {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 1rem;
+}
+.study-summary-stats dt {
+  color: var(--muted);
+}
+.study-summary-stats dd {
+  margin: 0.4rem 0 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+@media (max-width: 420px) {
+  .study-cultivation > div:first-child {
+    gap: 0.5rem;
+    font-size: 0.8rem;
+  }
+  .study-summary-stats {
+    gap: 0.65rem;
+  }
+  .study-summary-stats > div {
+    padding: 0.75rem;
+  }
+}

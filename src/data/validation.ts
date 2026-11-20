@@ -3,6 +3,7 @@ import { singleWordMatch } from "../domain/word-match";
 import { matchGlosses, matchMeaningsOverlap } from "./match";
 import { LISTEN_PROMPTS } from "./listening";
 import { validateLexicon } from "../../scripts/lib/lexicon-content.mjs";
+import { cultivationRealms } from "../domain/cultivation";
 
 export function record(value: unknown): Record<string, unknown> {
   if (!value || typeof value !== "object" || Array.isArray(value)) throw new Error("Dữ liệu không đúng định dạng.");
@@ -107,6 +108,15 @@ export function validateSnapshot(value: unknown): Snapshot {
     throw new Error("Bản sao lưu V2 thiếu dữ liệu hoặc có giá trị không hợp lệ. Dữ liệu hiện tại được giữ nguyên.");
   };
   if (s.schemaVersion !== 2 || !Number.isSafeInteger(s.revision) || !number(s.revision)) fail();
+  if (
+    s.cultivationSeen !== undefined &&
+    (!Array.isArray(s.cultivationSeen) ||
+      !s.cultivationSeen.every((value) =>
+        cultivationRealms.some((realm) => realm.words > 0 && realm.words === value),
+      ) ||
+      new Set(s.cultivationSeen).size !== s.cultivationSeen.length)
+  )
+    fail();
   if (
     s.savedWords !== undefined &&
     (!Array.isArray(s.savedWords) ||
@@ -224,6 +234,20 @@ export function validateSnapshot(value: unknown): Snapshot {
   }
   if (s.session !== null) {
     const session = record(s.session);
+    if (session.progressBaseline !== undefined) {
+      const baseline = record(session.progressBaseline);
+      const validIds = (value: unknown) =>
+        Array.isArray(value) &&
+        value.length <= 100_000 &&
+        value.every((id) => nonempty(id) && safeId(id)) &&
+        new Set(value).size === value.length;
+      if (
+        Object.keys(baseline).some((key) => !["learnedIds", "stableIds"].includes(key)) ||
+        !validIds(baseline.learnedIds) ||
+        !validIds(baseline.stableIds)
+      )
+        fail();
+    }
     if (
       ![session.id, session.title, session.contentVersion].every(string) ||
       !number(session.startedAt) ||
