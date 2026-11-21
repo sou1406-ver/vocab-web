@@ -12,6 +12,7 @@ const sheets = [
 ];
 
 // Each sheet is read left to right, then top to bottom. Append new sheets to preserve plant order.
+// The browser fetches each background only when a rendered plant uses it.
 export const plantSprites = sheets.flatMap(({ image, rows }) =>
   Array.from({ length: rows * columns }, (_, index) => ({
     backgroundImage: `url(${image.src})`,
