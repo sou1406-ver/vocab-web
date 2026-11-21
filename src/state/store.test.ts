@@ -1,7 +1,14 @@
 import { describe, expect, it, vi } from "vitest";
-import { createAppStore } from "./store";
+import { createAppStore, memoryPersistence } from "./store";
 import { changeSnapshot, readSnapshot } from "../data/repository";
-import { beginSession, emptySnapshot, finishSession, makeRecognitionQuestions } from "../domain/learning";
+import {
+  advanceSession,
+  answerQuestion,
+  beginSession,
+  emptySnapshot,
+  finishSession,
+  makeRecognitionQuestions,
+} from "../domain/learning";
 import { defaultBook } from "../data/catalog";
 const catalog = defaultBook.catalog;
 
@@ -68,5 +75,78 @@ describe("App store isolation", () => {
     expect(persisted.session).toMatchObject({ id: "b", phase: "learn" });
     expect(persisted.history.map((item) => item.id)).toEqual(["a"]);
     expect(staleTab.getState().error).toContain("Lượt học đã thay đổi");
+  });
+});
+
+describe("Saving study hints", () => {
+  function displayed() {
+    const word = catalog.words[0];
+    const state = advanceSession(beginSession(emptySnapshot(), catalog, [word], "learn", "A", "hint", 1), "hint", 0, 2);
+    state.session!.questions[0] = { kind: "recall", wordId: word.id, prompt: word.meaning, answer: word.text };
+    return state;
+  }
+
+  const pronunciation = { hint: { kind: "pronunciation" }, price: "assisted" } as const;
+
+  it("returns a committed pronunciation exactly once", async () => {
+    const initial = displayed();
+    const store = createAppStore(memoryPersistence(initial));
+    await store.getState().init();
+    const saved = await store.getState().saveHint("hint", 0, pronunciation);
+    expect(saved?.hints).toEqual([{ kind: "pronunciation" }]);
+    expect(await store.getState().saveHint("hint", 0, pronunciation)).toBeNull();
+    expect(store.getState().data.session?.hints).toHaveLength(1);
+  });
+
+  it("returns no pronunciation when the saved question advanced in another tab", async () => {
+    const initial = displayed();
+    const advanced = answerQuestion(initial, "hint", 0, "", false, 3);
+    const store = createAppStore(memoryPersistence(advanced));
+    store.setState({ ready: true, data: initial });
+    expect(await store.getState().saveHint("hint", 0, pronunciation)).toBeNull();
+    expect(store.getState().data.session).toMatchObject({ phase: "feedback" });
+    expect(store.getState().data.session?.hints).toBeUndefined();
+  });
+
+  it("returns no pronunciation when persistence fails after applying the reducer", async () => {
+    const initial = displayed();
+    const store = createAppStore({
+      read: async () => initial,
+      change: async (reduce) => {
+        reduce(initial);
+        throw new Error("Write failed");
+      },
+    });
+    await store.getState().init();
+    expect(await store.getState().saveHint("hint", 0, pronunciation)).toBeNull();
+    expect(store.getState().data.session?.hints).toBeUndefined();
+  });
+
+  it("leaves the existing practice schedule intact when a second semantic cue is used", async () => {
+    const initial = displayed();
+    initial.session!.mode = "practice";
+    const { wordId, answer } = initial.session!.questions[0];
+    const schedule = { box: 3, dueAt: 700, reviewedDay: "2026-10-24" };
+    initial.progress[wordId] = {
+      ...initial.progress[wordId],
+      ...schedule,
+      tested: true,
+    };
+    const store = createAppStore(memoryPersistence(initial));
+    await store.getState().init();
+    const one = { hint: { kind: "example", value: "They used the ___ there." }, price: "free" } as const;
+    const two = { hint: { kind: "definition", value: "An agreed course of action." }, price: "assisted" } as const;
+    expect(await store.getState().saveHint("hint", 0, one)).not.toBeNull();
+    expect(await store.getState().saveHint("hint", 0, { ...two, price: "free" })).toBeNull();
+    expect(await store.getState().saveHint("hint", 0, two)).not.toBeNull();
+    expect(await store.getState().answer(answer)).toBe(true);
+    expect(store.getState().data.events[0]).toMatchObject({
+      correct: false,
+      assisted: true,
+      mode: "practice",
+      scoringVersion: 6,
+      hintKinds: ["example", "definition"],
+    });
+    expect(store.getState().data.progress[wordId]).toMatchObject(schedule);
   });
 });

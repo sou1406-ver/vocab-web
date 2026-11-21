@@ -31,7 +31,7 @@ describe("Listening practice", () => {
         questionKind: kind,
         correct: true,
         assisted: false,
-        scoringVersion: 2,
+        scoringVersion: 6,
       });
       expect(result.progress).toEqual({});
       expect(validateSnapshot(result)).toBe(result);

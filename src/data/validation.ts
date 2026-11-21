@@ -1,4 +1,10 @@
-import type { Snapshot, Word } from "../domain/types";
+import type { Question, Snapshot, StudyHint, StudyHintKind, StudySession, Word } from "../domain/types";
+import {
+  hintKindFitsQuestion,
+  savedLetterHintsValid,
+  hintsRequireAssistance,
+  studyHintFitsQuestion,
+} from "../domain/study-hints";
 import { singleWordMatch } from "../domain/word-match";
 import { matchGlosses, matchMeaningsOverlap } from "./match";
 import { LISTEN_PROMPTS } from "./listening";
@@ -30,6 +36,22 @@ const questionKinds = [
 const count = (value: unknown) => Number.isSafeInteger(value) && number(value);
 const day = (v: unknown) => string(v) && /^\d{4}-\d{2}-\d{2}$/.test(v as string);
 const safeId = (v: string) => v !== "__proto__" && v !== "constructor" && v !== "prototype";
+function uniqueHintKinds(kinds: readonly StudyHintKind[]) {
+  const singleUse = kinds.filter((kind) => kind !== "letter");
+  return new Set(singleUse).size === singleUse.length;
+}
+
+function validEventHints(value: unknown, questionKind: unknown, hintCount: unknown, assisted: unknown) {
+  if (!Array.isArray(value) || !value.every((kind) => hintKindFitsQuestion(kind, questionKind))) return false;
+  const kinds = value as StudyHintKind[];
+  return (
+    uniqueHintKinds(kinds) &&
+    kinds.filter((kind) => kind === "letter" || kind === "prefix" || kind === "suffix").length <=
+      (hintCount as number) &&
+    (!hintsRequireAssistance(kinds) || assisted === true)
+  );
+}
+
 function senseCheckValid(value: unknown, wordId: unknown) {
   if (value === undefined) return true;
   const c = record(value);
@@ -184,7 +206,7 @@ export function validateSnapshot(value: unknown): Snapshot {
     eventIds.add(e.id);
     if (
       !senseCheckValid(e.senseCheck, e.wordId) ||
-      (e.senseCheck !== undefined && (e.scoringVersion !== 5 || e.mode === "practice")) ||
+      (e.senseCheck !== undefined && ((e.scoringVersion !== 5 && e.scoringVersion !== 6) || e.mode === "practice")) ||
       (e.scoringVersion === 5 && e.senseCheck === undefined) ||
       (e.questionId !== undefined && !nonempty(e.questionId)) ||
       ((e.questionKind === "listen-choice" || e.questionKind === "listen-type") && e.mode !== "practice") ||
@@ -195,18 +217,30 @@ export function validateSnapshot(value: unknown): Snapshot {
           (e.questionKind === "synonym-context" && e.direction !== "synonym"))) ||
       (e.contentVersion !== undefined && !nonempty(e.contentVersion)) ||
       (e.skill !== undefined && e.skill !== "vocabulary") ||
-      (e.scoringVersion !== undefined && ![1, 2, 3, 4, 5].includes(e.scoringVersion as number)) ||
+      (e.scoringVersion !== undefined && ![1, 2, 3, 4, 5, 6].includes(e.scoringVersion as number)) ||
       (e.scoringVersion === 3 &&
         (e.questionKind !== "build" || e.mode !== "practice" || e.hintCount !== 0 || e.hintLimit !== 0)) ||
       (e.scoringVersion === 4 &&
         (e.questionKind !== "match" || e.mode !== "practice" || e.hintCount !== 0 || e.hintLimit !== 0)) ||
+      (e.scoringVersion === 6 &&
+        (e.questionKind === "build" || e.questionKind === "match") &&
+        (e.mode !== "practice" || e.hintCount !== 0 || e.hintLimit !== 0)) ||
       (e.questionKind === "match" &&
-        (e.mode !== "practice" || (e.scoringVersion !== undefined && e.scoringVersion !== 4))) ||
+        (e.mode !== "practice" ||
+          (e.scoringVersion !== undefined && e.scoringVersion !== 4 && e.scoringVersion !== 6))) ||
       (e.sourceQuestionId !== undefined && !nonempty(e.sourceQuestionId)) ||
       (e.sourceVersion !== undefined && !nonempty(e.sourceVersion)) ||
       (e.hintCount !== undefined && !count(e.hintCount)) ||
       (e.hintLimit !== undefined && !count(e.hintLimit)) ||
-      ((e.scoringVersion === 2 || e.scoringVersion === 3 || e.scoringVersion === 4 || e.scoringVersion === 5) &&
+      (e.scoringVersion === 6 &&
+        (!questionKinds.includes(e.questionKind as string) ||
+          !validEventHints(e.hintKinds, e.questionKind, e.hintCount, e.assisted))) ||
+      (e.scoringVersion !== 6 && e.hintKinds !== undefined) ||
+      ((e.scoringVersion === 2 ||
+        e.scoringVersion === 3 ||
+        e.scoringVersion === 4 ||
+        e.scoringVersion === 5 ||
+        e.scoringVersion === 6) &&
         (!count(e.hintCount) ||
           !count(e.hintLimit) ||
           ((e.hintCount as number) > (e.hintLimit as number) && !e.assisted) ||
@@ -393,6 +427,22 @@ export function validateSnapshot(value: unknown): Snapshot {
         fail();
     }
     const questions = session.questions as unknown[];
+    const eventPrefix = `${session.id}:`;
+    for (const event of s.events as Record<string, unknown>[]) {
+      if (event.scoringVersion !== 6 || event.sessionId !== session.id) continue;
+      const index =
+        typeof event.id === "string" && event.id.startsWith(eventPrefix)
+          ? Number(event.id.slice(eventPrefix.length))
+          : -1;
+      if (
+        !Number.isInteger(index) ||
+        index < 0 ||
+        index >= questions.length ||
+        event.id !== `${eventPrefix}${index}` ||
+        event.questionKind !== record(questions[index]).kind
+      )
+        fail();
+    }
     const matches = questions.map(record).filter((q) => q.kind === "match");
     if (matches.length) {
       if (
@@ -487,6 +537,22 @@ export function validateSnapshot(value: unknown): Snapshot {
           q.kind !== "cloze" &&
           q.kind !== "word-form" &&
           q.kind !== "listen-type")
+      )
+        fail();
+    }
+    if (session.hints !== undefined) {
+      const question = (session.questions as Question[])[session.index as number];
+      if (
+        !Array.isArray(session.hints) ||
+        (session.phase === "learn" && session.hints.length > 0) ||
+        !session.hints.every((hint) => studyHintFitsQuestion(hint, question))
+      )
+        fail();
+      const kinds = (session.hints as StudyHint[]).map(({ kind }) => kind);
+      if (
+        !uniqueHintKinds(kinds) ||
+        (hintsRequireAssistance(kinds) && session.peeked !== true) ||
+        !savedLetterHintsValid(session as unknown as StudySession)
       )
         fail();
     }

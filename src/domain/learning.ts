@@ -6,6 +6,7 @@ import type {
   SessionMode,
   Snapshot,
   StudySession,
+  StudyHint,
   Word,
   WordProgress,
   RecognitionQuestion,
@@ -16,6 +17,20 @@ import { learningItems, studyWords } from "./lexicon";
 import { captureStudyBaseline } from "./study-progress";
 import { queueSenseRepair, schedulesAnswer } from "./sense-check";
 import { replaySkills } from "./skills";
+
+import {
+  eliminatedOptions,
+  hintAllowance,
+  hintKindFitsQuestion,
+  hintLetterPositions,
+  hintsRequireAssistance,
+  nextHintPosition,
+  studyHintPrice,
+  type StudyHintPrice,
+} from "./study-hints";
+
+export { hintAllowance, nextHintPosition } from "./study-hints";
+export const SCORING_VERSION = 6;
 
 export const INTERVALS = [1, 3, 7, 14, 30, 60];
 export const TIMEZONE = "Asia/Ho_Chi_Minh";
@@ -83,47 +98,39 @@ export const questionAnswerText = (question: Question) =>
     ? (question.form ?? question.answer.map((part) => part.replace(/^-|-$/g, "")).join(""))
     : question.answer;
 const escapeRegex = (value: string) => value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-export const hintAllowance = (answer: string) =>
-  Math.floor(Array.from(answer).filter((char) => /\p{L}/u.test(char)).length * 0.3);
-export function nextHintPosition(session: StudySession, index = session.index): number {
-  const question = session.questions[index];
-  if (
-    session.phase !== "question" ||
-    index !== session.index ||
-    !question ||
-    (question.kind !== "recall" &&
-      question.kind !== "cloze" &&
-      question.kind !== "word-form" &&
-      question.kind !== "listen-type")
-  )
-    return -1;
-  const letters = Array.from(question.answer).flatMap((char, position) => (/\p{L}/u.test(char) ? [position] : []));
-  const revealed = new Set(session.revealed ?? []);
-  if (letters.filter((position) => !revealed.has(position)).length <= 1) return -1;
-  const order = shuffleSeeded(letters, `${session.id}:${index}:hint`);
-  if (letters.length >= 4 && order[0] === letters[0]) [order[0], order[1]] = [order[1], order[0]];
-  return order.find((position) => !revealed.has(position)) ?? -1;
-}
-export function revealQuestionLetter(snapshot: Snapshot, sessionId: string, index: number): Snapshot {
+export function applyStudyHint(
+  snapshot: Snapshot,
+  sessionId: string,
+  index: number,
+  hint: StudyHint,
+  expectedPrice?: StudyHintPrice,
+): Snapshot {
   const session = snapshot.session;
-  if (!session || session.id !== sessionId || session.index !== index || session.phase !== "question")
-    throw new Error("Lượt học đã thay đổi. Hãy mở lại câu hiện tại.");
-  const q = session.questions[index];
-  if (q.kind !== "recall" && q.kind !== "cloze" && q.kind !== "word-form" && q.kind !== "listen-type")
-    throw new Error("Câu này không dùng gợi ý chữ.");
-  const revealed = session.revealed ?? [];
-  const next = nextHintPosition(session, index);
-  if (next < 0) return snapshot;
-  const indices = [...revealed, next];
+  if (!session || session.id !== sessionId || session.index !== index) return snapshot;
+  const price = studyHintPrice(session, hint);
+  if (!price || (expectedPrice && price !== expectedPrice)) return snapshot;
+  const positions = hintLetterPositions(hint);
+  const revealed = positions.length ? [...new Set([...(session.revealed ?? []), ...positions])] : session.revealed;
   return {
     ...snapshot,
     session: {
       ...session,
-      revealed: indices,
-      peeked: Boolean(session.peeked) || indices.length > hintAllowance(q.answer),
+      ...(revealed ? { revealed } : {}),
+      peeked: Boolean(session.peeked) || price === "assisted",
+      hints: [...(session.hints ?? []), hint],
     },
   };
 }
+
+export function revealQuestionLetter(snapshot: Snapshot, sessionId: string, index: number): Snapshot {
+  const session = snapshot.session;
+  if (!session || session.id !== sessionId || session.index !== index || session.phase !== "question")
+    throw new Error("Lượt học đã thay đổi. Hãy mở lại câu hiện tại.");
+  if (!hintKindFitsQuestion("letter", session.questions[index].kind)) throw new Error("Câu này không dùng gợi ý chữ.");
+  const next = nextHintPosition(session, index);
+  return next < 0 ? snapshot : applyStudyHint(snapshot, sessionId, index, { kind: "letter", value: next });
+}
+
 export function makeQuestions(
   words: Word[],
   all: Word[],
@@ -414,7 +421,9 @@ export function answerQuestion(
   const id = `${sessionId}:${index}`;
   if (snapshot.events.some((event) => event.id === id)) return snapshot;
   const q = session.questions[index];
+  if (typeof input === "string" && eliminatedOptions(session).includes(input)) return snapshot;
   const hintCount = session.revealed?.length ?? 0;
+  const hintKinds = session.hints?.map(({ kind }) => kind) ?? [];
   if (q.kind === "match") throw new Error("Hãy trả lời trên bảng nối từ.");
   if ((q.kind === "listen-choice" || q.kind === "listen-type") && session.mode !== "practice")
     throw new Error("Nghe chỉ dùng trong lượt luyện thêm.");
@@ -425,7 +434,7 @@ export function answerQuestion(
     q.kind === "recall" || q.kind === "cloze" || q.kind === "word-form" || q.kind === "listen-type"
       ? hintAllowance(q.answer)
       : 0;
-  assisted = assisted || Boolean(session.peeked) || hintCount > hintLimit;
+  assisted = assisted || Boolean(session.peeked) || hintCount > hintLimit || hintsRequireAssistance(hintKinds);
   const correct =
     !assisted &&
     (q.kind === "build"
@@ -461,7 +470,8 @@ export function answerQuestion(
       : {}),
     skill: "vocabulary",
     ...(q.kind === "synonym-choice" || q.kind === "synonym-context" ? { direction: q.direction ?? "synonym" } : {}),
-    scoringVersion: q.senseCheck ? 5 : q.kind === "build" ? 3 : 2,
+    scoringVersion: SCORING_VERSION,
+    hintKinds,
     hintCount,
     hintLimit,
   };
@@ -530,6 +540,7 @@ export function advanceSession(
       feedback: null,
       peeked: false,
       revealed: [],
+      hints: [],
     },
   };
   return session.mode === "learn" ? introduce(next, wordId, at, session.questions[nextIndex].senseCheck?.wordId) : next;

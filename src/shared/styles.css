@@ -2234,6 +2234,125 @@ html.theme-switching *::after {
   .question-help .text-link {
     font-size: 14px;
   }
+  .study-hint-control {
+    position: relative;
+  }
+  .study-hint-control .study-hint-trigger,
+  .study-hint-cues button {
+    min-height: 44px;
+  }
+  .study-hint-menu {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    box-shadow: 0 8px 22px rgb(0 0 0 / 14%);
+    display: grid;
+    padding: 5px;
+    position: absolute;
+    z-index: 2;
+    inset-block-end: 100%;
+    inset-inline-start: 0;
+    width: min(22rem, calc(100vw - 64px));
+    max-height: min(25rem, 60dvh);
+    overflow: auto;
+  }
+  .study-hint-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    min-height: 44px;
+    padding: 6px 9px;
+    border-radius: 7px;
+    text-align: start;
+    font-size: 14px;
+  }
+  .study-hint-item:hover:not(:disabled),
+  .study-hint-item:focus-visible {
+    background: var(--surface-soft);
+  }
+  .study-hint-item:disabled,
+  .study-hint-item small {
+    color: var(--muted);
+  }
+  .study-hint-item small {
+    display: block;
+    line-height: 1.3;
+  }
+  .study-hint-price {
+    flex: 0 0 auto;
+    max-width: 48%;
+    padding: 2px 7px;
+    border-radius: 5px;
+    color: var(--muted);
+    background: var(--surface-soft);
+    font-size: 12px;
+    line-height: 1.4;
+    text-align: center;
+  }
+  .study-hint-price[data-price="free"] {
+    background: var(--soft-green);
+    color: var(--green);
+  }
+  .study-hint-price[data-price="assisted"] {
+    background: var(--amber-bg);
+    color: var(--amber);
+  }
+  .study-hint-menu p {
+    padding: 6px 9px;
+    color: var(--muted);
+    font-size: 14px;
+  }
+  .study-hint-confirm {
+    position: fixed;
+    inset: 0;
+    width: min(25rem, calc(100% - 32px));
+    margin: auto;
+    padding: 20px;
+    color: var(--ink);
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+  }
+  .study-hint-confirm::backdrop {
+    background: rgb(0 0 0 / 48%);
+  }
+  .study-hint-confirm p {
+    font-size: 17px;
+    font-weight: 650;
+    margin-bottom: 16px;
+  }
+  .study-hint-confirm > div {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: end;
+    gap: 8px;
+  }
+  .study-hint-confirm .button {
+    min-height: 44px;
+  }
+  .study-hint-cues dl {
+    display: grid;
+    gap: 7px;
+    max-width: 38em;
+    margin: 0 0 16px;
+    padding: 10px 14px;
+    border-inline-start: 2px solid var(--green);
+    background: var(--surface-soft);
+  }
+  .study-hint-cues dt {
+    color: var(--muted);
+    font-size: 13px;
+  }
+  .study-hint-cues dd {
+    margin: 0;
+    overflow-wrap: anywhere;
+  }
+  .answer-option.eliminated-option {
+    color: var(--muted);
+    background: var(--surface-soft);
+    opacity: 1;
+  }
   .answer-feedback {
     margin-top: 25px;
     padding: 23px;

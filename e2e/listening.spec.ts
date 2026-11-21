@@ -1,4 +1,4 @@
-import { scanAccessibility, waitForResult, waitForSaved } from "./app-ready";
+import { scanAccessibility, waitForResult, waitForSaved, clickRandomLetterHint } from "./app-ready";
 import { test, expect, type Page } from "@playwright/test";
 import { mockSpeech, readSnapshot, speechLog } from "./speech-mock";
 import type { ListeningQuestion } from "../src/domain/types";
@@ -39,7 +39,7 @@ test("choice autoplay and replay do not reveal the prompt or mark assistance; re
     hintCount: 0,
     hintLimit: 0,
     questionKind: "listen-choice",
-    scoringVersion: 2,
+    scoringVersion: 6,
   });
   await page.getByRole("button", { name: "Từ tiếp theo", exact: true }).click();
   const second = (await readSnapshot(page)).session!.questions[1] as ListeningQuestion;
@@ -77,7 +77,7 @@ test("typed listening keeps hints across reload and replay, and only excess hint
   await expect(page.getByRole("textbox", { name: "Đáp án của bạn" })).toHaveValue(partial);
   await page.getByRole("textbox", { name: "Đáp án của bạn" }).fill("");
   for (let n = 0; n < limit; n++) {
-    await page.getByRole("button", { name: "Gợi ý một chữ", exact: true }).click();
+    await clickRandomLetterHint(page);
     await expect(page.locator(".letter-slot.is-revealed")).toHaveCount(n + 1);
   }
   await page.getByRole("button", { name: "Nghe lại", exact: true }).click();
@@ -98,7 +98,7 @@ test("typed listening keeps hints across reload and replay, and only excess hint
   const next = (await readSnapshot(page)).session!.questions[1];
   const secondLimit = Math.floor(Array.from(next.answer as string).filter((char) => /\p{L}/u.test(char)).length * 0.3);
   for (let n = 0; n <= secondLimit; n++) {
-    await page.getByRole("button", { name: "Gợi ý một chữ", exact: true }).click();
+    await clickRandomLetterHint(page);
     await expect(page.locator(".letter-slot.is-revealed")).toHaveCount(n + 1);
   }
   await page.getByRole("textbox", { name: "Đáp án của bạn" }).fill(next.answer as string);

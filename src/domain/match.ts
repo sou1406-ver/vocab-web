@@ -1,4 +1,4 @@
-import { dayKey } from "./learning";
+import { dayKey, SCORING_VERSION } from "./learning";
 import type { AnswerEvent, MatchQuestion, Snapshot, StudySession } from "./types";
 
 export function matchGroup(session: StudySession): MatchQuestion[] {
@@ -55,7 +55,8 @@ export function answerMatchPair(
     questionKind: "match",
     contentVersion: session.contentVersion,
     skill: "vocabulary",
-    scoringVersion: 4,
+    scoringVersion: SCORING_VERSION,
+    hintKinds: [],
     hintCount: 0,
     hintLimit: 0,
     ...(q.sourceId && q.sourceVersion ? { sourceQuestionId: q.sourceId, sourceVersion: q.sourceVersion } : {}),

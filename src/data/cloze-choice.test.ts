@@ -73,7 +73,7 @@ describe("Authored cloze choices", () => {
         contentVersion: catalog.version,
         sourceVersion: "authored-package",
         sourceQuestionId: q.sourceId,
-        scoringVersion: 2,
+        scoringVersion: 6,
       });
     }
   });

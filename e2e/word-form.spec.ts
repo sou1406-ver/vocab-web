@@ -1,4 +1,4 @@
-import { scanAccessibility, waitForResult, waitForSaved } from "./app-ready";
+import { scanAccessibility, waitForResult, waitForSaved, clickRandomLetterHint } from "./app-ready";
 import { test, expect, type Page } from "@playwright/test";
 import { readFileSync } from "node:fs";
 import type { ClozeChoiceQuestion, Snapshot, WordFormQuestion } from "../src/domain/types";
@@ -65,7 +65,7 @@ test("typed word form loads on demand, keeps cues and hints across tabs, and ret
   await expect(page.locator(".question-prompt p")).toHaveText(question.prompt);
   await expect(page.locator(".answer-option")).toHaveCount(0);
   const input = page.getByRole("textbox", { name: "Đáp án của bạn" });
-  await page.getByRole("button", { name: "Gợi ý một chữ" }).click();
+  await clickRandomLetterHint(page);
   await expect(input).toBeFocused();
   await waitForSaved(page);
   await page.reload();
@@ -74,7 +74,7 @@ test("typed word form loads on demand, keeps cues and hints across tabs, and ret
   const other = await context.newPage();
   await waitForSaved(page);
   await other.goto("/study");
-  await other.getByRole("button", { name: "Gợi ý một chữ" }).click();
+  await clickRandomLetterHint(other);
   await expect(page.locator(".letter-slot.is-revealed")).toHaveCount(2);
   expect((await scanAccessibility(page)).violations).toEqual([]);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
@@ -90,7 +90,7 @@ test("typed word form loads on demand, keeps cues and hints across tabs, and ret
     mode: "practice",
     sourceQuestionId: original.sourceId,
     sourceVersion: original.sourceVersion,
-    scoringVersion: 2,
+    scoringVersion: 6,
     hintCount: 2,
     hintLimit: 2,
     correct: true,
@@ -133,8 +133,7 @@ for (const fixture of [
     await page.getByRole("button", { name: "Luyện dạng từ — gõ", exact: true }).click();
     await expect(page.getByRole("heading", { name: "Gõ dạng từ phù hợp" })).toBeVisible();
     await expect(page.locator(".question-prompt p")).toHaveText(`${authored.question.prompt} (${fixture.cue})`);
-    for (let index = 0; index < fixture.hints; index++)
-      await page.getByRole("button", { name: "Gợi ý một chữ" }).click();
+    for (let index = 0; index < fixture.hints; index++) await clickRandomLetterHint(page);
     const input = page.getByRole("textbox", { name: "Đáp án của bạn" });
     await input.fill(fixture.answer);
     await input.press("Enter");

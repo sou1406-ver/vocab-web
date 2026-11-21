@@ -4,13 +4,21 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { bookByVersion, bookOfWord, wordsForSession } from "../data/catalog";
 import { senseOutcome } from "../domain/sense-check";
-import { useApp, useSandbox } from "../state/provider";
+import { useApp, useAppStore, useSandbox } from "../state/provider";
 import { Empty, Icon, ProgressBar, WordContent, Speak } from "../shared/ui";
 import { useWord } from "../app/context";
 import type { Word } from "../domain/types";
 import { LetterSlotsInput } from "../components/LetterSlotsInput";
 import { projectRevealed, remainingSlots, slotSelection } from "../components/letter-slots-edit";
-import { hintAllowance, nextHintPosition, revealQuestionLetter, questionAnswerText } from "../domain/learning";
+import { questionAnswerText } from "../domain/learning";
+import {
+  eliminatedOptions,
+  hintAllowance,
+  hintLetterPositions,
+  studyHintOffers,
+  type StudyHintOffer,
+} from "../domain/study-hints";
+import { StudyHintCues, StudyHintMenu } from "../components/StudyHintMenu";
 import { shuffleSeeded } from "../domain/random";
 import { BuildAnswer } from "../components/BuildAnswer";
 import { singleWordMatch } from "../domain/word-match";
@@ -21,7 +29,7 @@ import { useEnglishVoices } from "../lib/use-english-voices";
 import StatusMark from "../components/react-bits/StatusMark";
 import { GuestStudyNotice } from "../components/GuestStudyNotice";
 import { CHOICE_KINDS, studyShortcut } from "../domain/study-shortcuts";
-import { speak } from "../lib/speech";
+import { getEnglishVoices, speak } from "../lib/speech";
 import { skillLabels, skillOf } from "../domain/skills";
 import { countLearnedWords } from "../domain/cultivation";
 import { studySummary } from "../domain/study-progress";
@@ -38,8 +46,9 @@ export default function Study() {
 }
 
 export function StudySession() {
-  const { data, busy, advance, answer, finish, start, startExercises, change, breakthrough, dismissBreakthrough } =
+  const { data, busy, advance, answer, finish, start, startExercises, saveHint, breakthrough, dismissBreakthrough } =
     useApp();
+  const store = useAppStore();
   const voices = useEnglishVoices();
   const router = useRouter();
   const sandbox = useSandbox();
@@ -56,12 +65,13 @@ export function StudySession() {
   const feedbackRef = useRef<HTMLDivElement>(null);
   const session = data.session;
   const revealed = session?.revealed ?? [];
+  const eliminated = eliminatedOptions(session);
   const currentKind = session?.questions[session.index]?.kind;
   const listeningAvailable = voices.length > 0 && (currentKind === "listen-choice" || currentKind === "listen-type");
   useEffect(() => {
-    if (listeningAvailable && !busy && session?.phase === "question")
+    if (listeningAvailable && session?.phase === "question" && !document.querySelector("[data-study-hint-open]"))
       (inputRef.current ?? choiceRef.current)?.focus({ preventScroll: true });
-  }, [listeningAvailable, busy, session?.id, session?.index, session?.phase]);
+  }, [listeningAvailable, session?.id, session?.index, session?.phase]);
   useEffect(() => {
     setInput("");
     setInputError("");
@@ -77,7 +87,7 @@ export function StudySession() {
       if (event.defaultPrevented || event.repeat || event.altKey || event.ctrlKey || event.metaKey) return;
       const target = event.target instanceof Element ? event.target : null;
       if (target?.closest("input, textarea, select, [contenteditable='true']")) return;
-      if (document.querySelector("[role='dialog']")) return;
+      if (document.querySelector("[role='dialog'], [data-study-hint-open]")) return;
       const current = session?.questions[session.index];
       if (!session || !current || busy) return;
       const listening = current.kind === "listen-choice" || current.kind === "listen-type";
@@ -90,7 +100,9 @@ export function StudySession() {
       if (action.type === "next") void advance();
       else if (action.type === "replay") {
         if (voices.length && typeof current.answer === "string") speak(current.answer);
-      } else if (!listening || voices.length) void answer(options[action.index]);
+      } else if ((!listening || voices.length) && !eliminatedOptions(session).includes(options[action.index])) {
+        void answer(options[action.index]);
+      }
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
@@ -320,17 +332,26 @@ export function StudySession() {
   const answerText = questionAnswerText(question);
   const typedValue = projectRevealed(input, answerText, revealed);
   const hintLimit = hintAllowance(answerText);
-  const hintIndex = nextHintPosition(session);
-  const revealLetter = async () => {
-    if (!typed || hintIndex < 0 || session.phase !== "question") return;
+  const hintOffers = cannotHear ? [] : studyHintOffers(session, word, all, voices.length > 0);
+  const firstAvailableOption = question.options?.find((option) => !eliminated.includes(option));
+  const chooseHint = async (offer: StudyHintOffer) => {
+    if (offer.hint.kind === "pronunciation" && !getEnglishVoices().length) return;
     const caret = inputRef.current?.selectionStart ?? 0;
     const index = Array.from(typedValue.slice(0, caret)).length;
-    const saved = await change((state) => revealQuestionLetter(state, session.id, session.index));
-    if (saved) {
+    const saved = await saveHint(session.id, session.index, offer);
+    if (!saved || store.getState().data.session !== saved) return;
+    if (offer.hint.kind === "pronunciation") speak(answerText);
+    const indices = saved.revealed ?? [];
+    if (offer.hint.kind === "eliminate" || hintLetterPositions(offer.hint).length) {
       requestAnimationFrame(() => {
+        const current = store.getState().data.session;
+        if (current?.id !== saved.id || current.index !== saved.index || current.phase !== "question") return;
+        if (offer.hint.kind === "eliminate") {
+          choiceRef.current?.focus({ preventScroll: true });
+          return;
+        }
         const node = inputRef.current;
         if (!node) return;
-        const indices = [...revealed, hintIndex];
         const value = projectRevealed(input, answerText, indices);
         const range = slotSelection(value, index, answerText, indices);
         node.focus({ preventScroll: true });
@@ -488,6 +509,10 @@ export function StudySession() {
                   </span>
                 )}
             </div>
+            <StudyHintCues
+              hints={session.hints ?? []}
+              replayPronunciation={session.phase === "question" && voices.length ? () => speak(answerText) : undefined}
+            />
             {listening && (
               <ListenPrompt
                 key={`${session.id}:${session.index}`}
@@ -515,16 +540,18 @@ export function StudySession() {
               <div className="answer-options">
                 {question.options.map((option, i) => (
                   <button
-                    ref={i === 0 ? choiceRef : undefined}
+                    ref={option === firstAvailableOption ? choiceRef : undefined}
                     key={option}
                     lang={question.kind === "meaning" ? "vi" : "en"}
-                    className={`answer-option${feedback && option === question.answer ? " correct-option" : ""}${feedback && !feedback.correct && option === feedback.input ? " wrong-option" : ""}`}
-                    aria-keyshortcuts={`${i + 1} ${String.fromCharCode(65 + i)}`}
-                    disabled={busy || session.phase === "feedback" || cannotHear}
+                    className={`answer-option${feedback && option === question.answer ? " correct-option" : ""}${feedback && !feedback.correct && option === feedback.input ? " wrong-option" : ""}${eliminated.includes(option) ? " eliminated-option" : ""}`}
+                    aria-keyshortcuts={
+                      eliminated.includes(option) ? undefined : `${i + 1} ${String.fromCharCode(65 + i)}`
+                    }
+                    disabled={busy || session.phase === "feedback" || cannotHear || eliminated.includes(option)}
                     onClick={() => void answer(option)}
                   >
                     <span>{String.fromCharCode(65 + i)}</span>
-                    {option}
+                    {eliminated.includes(option) ? "Đã loại" : option}
                     {feedback && option === question.answer && <Icon name="check" size={18} />}
                   </button>
                 ))}
@@ -644,11 +671,12 @@ export function StudySession() {
               </div>
             ) : (
               <div className="question-help">
-                {typed && (
-                  <button className="text-link" disabled={busy || hintIndex < 0} onClick={() => void revealLetter()}>
-                    Gợi ý một chữ
-                  </button>
-                )}
+                <StudyHintMenu
+                  key={`${session.id}:${session.index}`}
+                  offers={hintOffers}
+                  busy={busy}
+                  onSelect={(offer) => void chooseHint(offer)}
+                />
                 <button className="text-link" disabled={busy} onClick={() => void answer("", true)}>
                   Chưa nhớ, xem đáp án
                 </button>

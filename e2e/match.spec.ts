@@ -124,7 +124,7 @@ test("each pair saves its own score across wrong attempts, reload and two tabs w
   expect(events.find((event) => event.id === `${first.session!.id}:0`)).toMatchObject({
     correct: false,
     assisted: false,
-    scoringVersion: 4,
+    scoringVersion: 6,
   });
   expect(events.filter((event) => event.correct)).toHaveLength(5);
   expect(done.progress).toEqual(old.progress);
@@ -169,7 +169,7 @@ test("topic filtering, keyboard controls and dark Match remain accessible", asyn
   expect((await scanAccessibility(page)).violations).toEqual([]);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await expect(page.getByRole("textbox")).toHaveCount(0);
-  await expect(page.getByRole("button", { name: "Gợi ý một chữ" })).toHaveCount(0);
+  await expect(page.getByRole("button", { name: "Gợi ý", exact: true })).toHaveCount(0);
   await page.screenshot({ path: testInfo.outputPath("match-dark.png"), fullPage: true });
   await page.getByRole("button", { name: "Kết thúc tại đây", exact: true }).click();
   await waitForResult(page);

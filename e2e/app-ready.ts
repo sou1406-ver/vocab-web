@@ -54,3 +54,8 @@ export async function scanAccessibility(page: Page) {
   await waitForVisualReady(page);
   return new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa"]).analyze();
 }
+
+export async function clickRandomLetterHint(page: Page) {
+  await page.getByRole("button", { name: "Gợi ý", exact: true }).click();
+  await page.getByRole("button", { name: /^Chữ ngẫu nhiên/ }).click();
+}

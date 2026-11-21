@@ -56,7 +56,7 @@ test("authored word form loads per lesson, retries failures and resumes without 
   expect(event).toMatchObject({
     questionKind: "word-form-choice",
     contentVersion: catalog.version,
-    scoringVersion: 2,
+    scoringVersion: 6,
     hintCount: 0,
     hintLimit: 0,
   });

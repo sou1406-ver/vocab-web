@@ -160,7 +160,7 @@ describe("Typed word form", () => {
       sourceQuestionId: source.sourceId,
       sourceVersion: source.sourceVersion,
       contentVersion: catalog.version,
-      scoringVersion: 2,
+      scoringVersion: 6,
       hintCount: 2,
       hintLimit: 2,
       correct: true,

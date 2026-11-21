@@ -92,7 +92,7 @@ describe("bounded multi-sense check", () => {
     expect(state.progress).toEqual(progress);
     expect(state.events.map((e) => e.id)).toEqual(["check:0", "check:1", "check:2", "check:3"]);
     expect(state.events[0].correct).toBe(false);
-    expect(state.events[3].scoringVersion).toBe(5);
+    expect(state.events[3].scoringVersion).toBe(6);
   });
   it("marks the word unlearned if another sense fails, while checking each remaining sense only once", () => {
     let state = respond(setup(4), false);

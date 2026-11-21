@@ -45,7 +45,7 @@ test("Build toggles pieces, grades order, resumes and retries in practice", asyn
   expect(q.sourceId).toBe(`build:${q.wordId}:${q.form!.trim().toLowerCase()}`);
   expect(downloads).toBe(0);
   await expect(page.getByRole("textbox")).toHaveCount(0);
-  await expect(page.getByRole("button", { name: "Gợi ý một chữ" })).toHaveCount(0);
+  await expect(page.getByRole("button", { name: "Gợi ý", exact: true })).toHaveCount(0);
   const bank = page.getByRole("group", { name: "Các mảnh để ghép", exact: true });
   const selected = page.getByRole("group", { name: "Các mảnh đã ghép", exact: true });
   await expect(bank.getByRole("button")).toHaveText(q.tiles);
@@ -79,7 +79,7 @@ test("Build toggles pieces, grades order, resumes and retries in practice", asyn
   expect(wrong.events.at(-1)).toMatchObject({
     id: `${before.session!.id}:0`,
     questionKind: "build",
-    scoringVersion: 3,
+    scoringVersion: 6,
     correct: false,
     assisted: false,
     hintCount: 0,
@@ -112,6 +112,6 @@ test("Build toggles pieces, grades order, resumes and retries in practice", asyn
   await expect(page.getByText("Chính xác. Bạn nhớ rồi!")).toBeVisible();
   await expect(page.locator(".answer-feedback strong")).toHaveText(q.form!);
   const correct = await readSnapshot(page);
-  expect(correct.events.at(-1)).toMatchObject({ correct: true, scoringVersion: 3, mode: "practice", hintCount: 0 });
+  expect(correct.events.at(-1)).toMatchObject({ correct: true, scoringVersion: 6, mode: "practice", hintCount: 0 });
   expect(correct.progress).toEqual({});
 });

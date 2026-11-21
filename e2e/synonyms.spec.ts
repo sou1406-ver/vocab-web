@@ -99,7 +99,10 @@ test("context underlines the single original word and never replaces it with a s
   await expect(page.locator(".synonym-target")).toHaveText(new RegExp(`^${escape(q.target!)}$`, "i"));
   await expect(page.locator(".question-prompt p")).not.toContainText("___");
   await expect(page.getByRole("textbox")).toHaveCount(0);
-  await expect(page.getByRole("button", { name: "Gợi ý một chữ" })).toHaveCount(0);
+  await page.getByRole("button", { name: "Gợi ý", exact: true }).click();
+  await expect(page.getByRole("button", { name: "Loại hai đáp án sai", exact: false })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Chữ ngẫu nhiên", exact: false })).toHaveCount(0);
+  await page.keyboard.press("Escape");
   expect((await scanAccessibility(page)).violations).toEqual([]);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await page.screenshot({ path: `test-results/synonym-context-${testInfo.project.name}.png` });
@@ -116,7 +119,7 @@ test("context underlines the single original word and never replaces it with a s
     direction: "synonym",
     mode: "practice",
     correct: true,
-    scoringVersion: 2,
+    scoringVersion: 6,
     hintCount: 0,
     hintLimit: 0,
   });

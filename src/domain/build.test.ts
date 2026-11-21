@@ -63,7 +63,7 @@ describe("Build answers and compatibility", () => {
       mode: "practice",
       sourceQuestionId: question.sourceId,
       sourceVersion: catalog.version,
-      scoringVersion: 3,
+      scoringVersion: 6,
       hintCount: 0,
       hintLimit: 0,
       correct,

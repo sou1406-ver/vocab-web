@@ -34,7 +34,7 @@ describe("Synonym practice contracts", () => {
       direction: q.direction,
       mode: "practice",
       correct: true,
-      scoringVersion: 2,
+      scoringVersion: 6,
       hintCount: 0,
       hintLimit: 0,
       id: "s:0",

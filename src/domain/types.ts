@@ -113,6 +113,15 @@ export interface Feedback {
   input: string;
   selectedParts?: string[];
 }
+export type SemanticHint = { kind: "example" | "definition" | "synonym"; value: string };
+export type StudyHint =
+  | SemanticHint
+  | { kind: "letter"; value: number }
+  | { kind: "prefix" | "suffix"; value: number[] }
+  | { kind: "pronunciation"; value?: never }
+  | { kind: "eliminate"; value: string[] };
+export type StudyHintKind = StudyHint["kind"];
+
 export interface StudySession {
   progressBaseline?: import("./study-progress").StudyBaseline;
   id: string;
@@ -127,6 +136,7 @@ export interface StudySession {
   finishedAt?: number;
   peeked?: boolean;
   revealed?: number[];
+  hints?: StudyHint[];
   returnTo?: string;
   matchMistakes?: number[];
 }
@@ -145,7 +155,8 @@ export interface AnswerEvent {
   questionKind?: Question["kind"];
   contentVersion?: string;
   skill?: "vocabulary";
-  scoringVersion?: 1 | 2 | 3 | 4 | 5;
+  scoringVersion?: 1 | 2 | 3 | 4 | 5 | 6;
+  hintKinds?: StudyHintKind[];
   sourceQuestionId?: string;
   sourceVersion?: string;
   hintCount?: number;

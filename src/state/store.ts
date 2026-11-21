@@ -8,12 +8,14 @@ import {
   beginExerciseSession,
   advanceSession,
   answerQuestion,
+  applyStudyHint,
   beginSkillReview,
   finishSession,
 } from "../domain/learning";
 import type { Skill } from "../domain/skills";
 import { acknowledgeCultivation, crossedCultivation } from "../domain/study-progress";
-import type { SessionMode, Snapshot, Word, Question } from "../domain/types";
+import type { StudyHintOffer } from "../domain/study-hints";
+import type { SessionMode, Snapshot, StudySession, Word, Question } from "../domain/types";
 
 export interface AppState {
   breakthrough: number | null;
@@ -36,6 +38,7 @@ export interface AppState {
     returnTo?: string,
   ) => Promise<boolean>;
   answer: (input: string | string[], assisted?: boolean) => Promise<boolean>;
+  saveHint: (sessionId: string, index: number, offer: StudyHintOffer) => Promise<StudySession | null>;
   advance: () => Promise<boolean>;
   finish: () => Promise<boolean>;
   clearError: () => void;
@@ -140,6 +143,24 @@ export function createAppStore(persistence: SnapshotPersistence = browserPersist
         const next = beginExerciseSession(data, catalog, list, title, id);
         return returnTo && next.session ? { ...next, session: { ...next.session, returnTo } } : next;
       }),
+    saveHint: async (sessionId, index, { hint, price, blocked }) => {
+      if (blocked) return null;
+      let position = -1;
+      const saved = await get().change((data) => {
+        const next = applyStudyHint(data, sessionId, index, hint, price);
+        position = next === data ? -1 : (next.session!.hints?.length ?? 0) - 1;
+        return next;
+      });
+      const current = get().data.session;
+      return saved &&
+        position >= 0 &&
+        current?.id === sessionId &&
+        current.index === index &&
+        current.phase === "question" &&
+        current.hints?.[position] === hint
+        ? current
+        : null;
+    },
     answer: async (input, assisted = false) => {
       const session = get().data.session;
       if (!session) return false;

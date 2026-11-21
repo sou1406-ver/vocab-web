@@ -1,4 +1,4 @@
-import { scanAccessibility, setTheme, waitForResult, waitForSaved } from "./app-ready";
+import { scanAccessibility, setTheme, waitForResult, waitForSaved, clickRandomLetterHint } from "./app-ready";
 import { test, expect } from "@playwright/test";
 import { readSnapshot } from "./speech-mock";
 
@@ -103,7 +103,7 @@ test("hint letters stay locked, record assistance and native input styling is in
       .map((char, index) => (indices.includes(index) ? char : uppercase ? char.toUpperCase() : " "))
       .join("")
       .trimEnd();
-  await page.getByRole("button", { name: "Gợi ý một chữ" }).click();
+  await clickRandomLetterHint(page);
   await expect(page.locator(".letter-slot.is-revealed")).toHaveCount(1);
   const first = await positions();
   expect(first[0]).not.toBe(0);
@@ -118,7 +118,7 @@ test("hint letters stay locked, record assistance and native input styling is in
   const other = await context.newPage();
   await waitForSaved(page);
   await other.goto("/study");
-  await other.getByRole("button", { name: "Gợi ý một chữ" }).click();
+  await clickRandomLetterHint(other);
   await expect(page.locator(".letter-slot.is-revealed")).toHaveCount(2);
   const second = await positions();
   expect((await readSnapshot(page)).session!.revealed!.slice().sort((a, b) => a - b)).toEqual(second);
@@ -148,7 +148,7 @@ test("hint letters stay locked, record assistance and native input styling is in
     await page.setViewportSize(viewport);
     await setTheme(page, theme);
   }
-  await page.getByRole("button", { name: "Gợi ý một chữ" }).click();
+  await clickRandomLetterHint(page);
   await expect(page.locator(".letter-slot.is-revealed")).toHaveCount(3);
   const third = await positions();
   await expect(input).toHaveValue(projected(third));
@@ -214,7 +214,7 @@ test("typing at End with a final hint fills an empty cell and keeps the hinted l
   await page.goto("/books/toeic-600/lessons/1");
   await page.getByRole("button", { name: "Luyện dạng từ — gõ", exact: true }).click();
   await expect(page.getByRole("heading", { name: "Gõ dạng từ phù hợp" })).toBeVisible();
-  await page.getByRole("button", { name: "Gợi ý một chữ" }).click();
+  await clickRandomLetterHint(page);
   const input = page.getByRole("textbox", { name: "Đáp án của bạn" });
   await expect(page.locator(".is-revealed[data-slot-index='8']")).toHaveText("t");
   await expect(input).toHaveValue("        t");
@@ -241,7 +241,7 @@ test("correct answer with a hint within the allowance still receives credit", as
   await page.getByRole("button", { name: "Chưa nhớ, xem đáp án" }).click();
   await page.getByRole("button", { name: "Từ tiếp theo" }).click();
   await page.getByRole("button", { name: "Đã xem, thử nhớ lại" }).click();
-  await page.getByRole("button", { name: "Gợi ý một chữ" }).click();
+  await clickRandomLetterHint(page);
   const input = page.getByRole("textbox", { name: "Đáp án của bạn" });
   await input.fill("agreement");
   await input.press("Enter");

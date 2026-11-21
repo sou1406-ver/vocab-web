@@ -34,7 +34,7 @@ describe("Learning contract compatibility", () => {
         questionId: "s:0",
         contentVersion: catalog.version,
         skill: "vocabulary",
-        scoringVersion: 2,
+        scoringVersion: 6,
       });
       expect(validateSnapshot(answered)).toBe(answered);
       expect(answerQuestion(answered, "s", 0, "answer", false, at).events).toHaveLength(1);
@@ -66,6 +66,41 @@ describe("Learning contract compatibility", () => {
     expect(answered.events[0]).toEqual(state.events[0]);
     expect(answered.events[0]).not.toHaveProperty("questionKind");
     expect(answered.events[1]).toHaveProperty("questionKind", "recall");
+  });
+  it("keeps historical version 1–5 events unchanged without recorded hint kinds", () => {
+    const state = active();
+    const wordId = catalog.words[0].id;
+    const q = state.session!.questions[0];
+    const old = { at, day: "2026-10-25", wordId, sessionId: "old", correct: true, assisted: false };
+    const counts = { hintCount: 0, hintLimit: 0 };
+    state.events = [
+      { ...old, id: "old:0", mode: "learn", scoringVersion: 1 },
+      { ...old, ...counts, id: "old:1", mode: "review", questionKind: "recall", scoringVersion: 2 },
+      { ...old, ...counts, id: "old:2", mode: "practice", questionKind: "build", scoringVersion: 3 },
+      { ...old, ...counts, id: "old:3", mode: "practice", questionKind: "match", scoringVersion: 4 },
+      {
+        ...old,
+        ...counts,
+        id: "old:4",
+        mode: "review",
+        questionKind: "cloze",
+        scoringVersion: 5,
+        senseCheck: {
+          wordId,
+          lexemeId: "lexeme",
+          senseId: "sense",
+          itemIds: [wordId],
+          requiredItemIds: [wordId],
+          role: "scheduled",
+        },
+      },
+    ];
+    const restored = validateSnapshot(JSON.parse(JSON.stringify(state)));
+    expect(restored.events).toEqual(state.events);
+    const answered = answerQuestion(restored, "s", 0, q.answer, false, at);
+    expect(answered.events.slice(0, 5)).toEqual(state.events);
+    expect(answered.events[5]).toMatchObject({ scoringVersion: 6, hintKinds: [], correct: true });
+    expect(validateSnapshot(answered)).toBe(answered);
   });
   it("accepts typed questions without options and rejects inconsistent payloads", () => {
     const state = JSON.parse(JSON.stringify(active()));
