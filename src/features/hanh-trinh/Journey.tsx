@@ -218,7 +218,9 @@ export function JourneyGarden({ lessonId }: { lessonId: number }) {
   const words = catalog.words.filter((word) => word.lesson === lessonId);
   const active = Boolean(data.session && data.session.phase !== "complete");
   const [selected, setSelected] = useState<Word | null>(null);
-  const plantedCount = words.filter((word) => planted(word, data.progress)).length;
+  const plantedWords = words.filter((word) => planted(word, data.progress));
+  const plantedCount = plantedWords.length;
+  const dueHere = plantedWords.flatMap(({ id }) => byPlant.get(id) ?? []).sort((a, b) => a.dueAt - b.dueAt);
   return (
     <div className="page journey-v2">
       <Link className="journey-back" href={journeyPath}>
@@ -233,6 +235,24 @@ export function JourneyGarden({ lessonId }: { lessonId: number }) {
           <span key={word.id} data-planted={planted(word, data.progress)} />
         ))}
       </div>
+      {ready && plantedCount > 0 && (
+        <div className="journey-care">
+          <p role="status">
+            <Droplet size={17} aria-hidden="true" />
+            {dueHere.length ? `${dueHere.length} cây cần tưới` : "Hôm nay không còn cây cần tưới"}
+          </p>
+          <button
+            className="button primary"
+            disabled={busy || active || !dueHere.length}
+            onClick={() => {
+              setSelected(null);
+              void water(dueHere, "Tưới cả vườn");
+            }}
+          >
+            Tưới cả vườn
+          </button>
+        </div>
+      )}
       <div className="journey-field">
         {Array.from({ length: Math.ceil(words.length / 4) }, (_, bed) => {
           const row = words.slice(bed * 4, bed * 4 + 4);

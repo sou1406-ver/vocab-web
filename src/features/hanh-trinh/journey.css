@@ -219,6 +219,31 @@ html[data-theme="dark"] .journey-v2 {
   background: var(--green);
 }
 
+.journey-care {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px 16px;
+  margin-top: 12px;
+}
+
+.journey-care p {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--green);
+  font-weight: 650;
+}
+
+.journey-care svg {
+  flex-shrink: 0;
+}
+
+.journey-care button {
+  min-height: 44px;
+}
+
 .journey-plot {
   display: grid;
   justify-items: center;
@@ -229,6 +254,7 @@ html[data-theme="dark"] .journey-v2 {
   height: 100%;
   min-height: 113px;
   padding: 3px 0 6px;
+  border: 1px solid transparent;
   border-radius: 8px;
   color: var(--garden-plot-ink);
   background: var(--garden-plot);
@@ -265,6 +291,10 @@ html[data-theme="dark"] .journey-v2 {
   gap: 3px;
   min-height: 20px;
   font-size: 11px;
+}
+
+.journey-plot[data-state="thirsty"] {
+  border-color: var(--garden-plot-ink);
 }
 
 .journey-plot[data-state="thirsty"] .journey-plot-action {

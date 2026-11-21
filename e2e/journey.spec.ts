@@ -81,6 +81,25 @@ test("a missed watering keeps the plant slightly thirsty without allowing anothe
   await expect(page.getByRole("region", { name: "Chi tiết cây" })).toContainText("Mầm · Còn khát nhẹ");
 });
 
+test("waters the due plants in one garden round and updates the remaining count", async ({ page }) => {
+  await page.goto("/prototype/hanh-trinh/vuon/1");
+  const count = page.getByRole("status");
+  const water = page.getByRole("button", { name: "Tưới cả vườn", exact: true });
+  await expect(count).toHaveText("2 cây cần tưới");
+  await water.click();
+  const dialog = page.getByRole("dialog", { name: "Tưới cả vườn" });
+  for (const [index, value] of ["abide by", "agreement"].entries()) {
+    await expect(dialog).toContainText(`Câu ${index + 1}/2`);
+    await expect(dialog).not.toContainText(value);
+    await dialog.getByRole("textbox").fill(value);
+    await dialog.getByRole("button", { name: "Kiểm tra", exact: true }).click();
+    await expect(dialog.getByText("Chính xác!", { exact: true })).toBeVisible();
+    await dialog.getByRole("button", { name: index === 0 ? "Tiếp tục" : "Về vườn", exact: true }).click();
+  }
+  await expect(count).toHaveText("Hôm nay không còn cây cần tưới");
+  await expect(water).toBeDisabled();
+});
+
 test("finishes a whole bed and returns from the shared watering round", async ({ page }) => {
   await page.goto("/prototype/hanh-trinh");
   await page.getByRole("button", { name: "Vườn trống" }).click();
