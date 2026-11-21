@@ -249,18 +249,20 @@ export function JourneyGarden({ lessonId }: { lessonId: number }) {
                   const thirsty = grown ? byPlant.get(word.id) : undefined;
                   const health = grown ? healthOf(word.id) : undefined;
                   const watered = grown && wateredToday(word.id);
+                  const slot = bed * 4 + position + 1;
+                  const waterTitle = `Tưới cây ở ô ${slot}`;
                   return (
                     <li key={word.id}>
                       <button
                         className="journey-plot"
                         data-state={thirsty ? "thirsty" : grown ? "planted" : "empty"}
                         data-health={health}
-                        aria-label={`${thirsty ? "Tưới" : grown ? "Xem" : "Gieo"} ${word.text}`}
+                        aria-label={thirsty ? waterTitle : grown ? `Xem ${word.text}` : `Gieo ô ${slot}`}
                         disabled={!ready || busy || active}
                         onClick={() => {
                           if (thirsty) {
                             setSelected(null);
-                            void water([thirsty], `Tưới ${word.text}`);
+                            void water([thirsty], waterTitle);
                           } else if (grown) setSelected(word);
                           else sow();
                         }}
@@ -279,8 +281,8 @@ export function JourneyGarden({ lessonId }: { lessonId: number }) {
                             </span>
                           )}
                         </span>
-                        <span className="journey-word" lang="en">
-                          {word.text}
+                        <span className="journey-word" lang={grown && !thirsty ? "en" : undefined}>
+                          {grown && !thirsty ? word.text : `Ô ${slot}`}
                         </span>
                         <small className="journey-plot-action">
                           {thirsty ? (
@@ -316,7 +318,7 @@ export function JourneyGarden({ lessonId }: { lessonId: number }) {
           );
         })}
       </div>
-      {selected && (
+      {selected && !byPlant.has(selected.id) && (
         <section className="panel journey-details" aria-label="Chi tiết cây">
           <h2 lang="en">{selected.text}</h2>
           <p>

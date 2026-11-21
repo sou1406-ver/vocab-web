@@ -18,16 +18,21 @@ test("sows a bed and waters a plant in one sandbox garden", async ({ page }, inf
   const garden = /\/prototype\/hanh-trinh\/vuon\/1$/;
   await expect(page).toHaveURL(garden);
   await expect(page.locator(".journey-field")).toBeVisible();
-  const water = page.getByRole("button", { name: "Tưới abide by", exact: true });
+  const water = page.locator('.journey-plot[data-state="thirsty"]').first();
+  await expect.soft(water).toHaveAccessibleName("Tưới cây ở ô 1");
+  await expect.soft(page.locator(".journey-field")).not.toContainText(/abide by|agreement/i);
   await water.click();
   const dialog = page.getByRole("dialog", { name: /Tưới/ });
   await expect(dialog).toBeVisible();
+  await expect.soft(dialog).toHaveAccessibleName("Tưới cây ở ô 1");
+  await expect.soft(dialog).not.toContainText(/abide by/i);
   await dialog.getByRole("textbox").fill("abide by");
   await dialog.getByRole("button", { name: "Kiểm tra", exact: true }).click();
+  await expect(dialog.getByText("abide by", { exact: true })).toBeVisible();
   await dialog.getByRole("button", { name: "Về vườn", exact: true }).click();
   await expect(dialog).toHaveCount(0);
   await expect(page).toHaveURL(garden);
-  await expect(page.getByRole("button", { name: "Tưới abide by", exact: true })).toHaveCount(0);
+  await expect(page.getByRole("button", { name: "Tưới cây ở ô 1", exact: true })).toHaveCount(0);
   await expect(page.getByRole("button", { name: "Xem abide by", exact: true })).toContainText("Đã tưới hôm nay");
 
   await page.getByRole("button", { name: "Gieo luống 2", exact: true }).click();
@@ -63,10 +68,10 @@ test("sows a bed and waters a plant in one sandbox garden", async ({ page }, inf
 
 test("a missed watering keeps the plant slightly thirsty without allowing another review today", async ({ page }) => {
   await page.goto("/prototype/hanh-trinh/vuon/1");
-  const wilted = page.getByRole("button", { name: "Tưới abide by", exact: true });
+  const wilted = page.getByRole("button", { name: "Tưới cây ở ô 1", exact: true });
   await expect(wilted).toContainText("Héo nặng");
   await wilted.click();
-  const dialog = page.getByRole("dialog", { name: "Tưới abide by" });
+  const dialog = page.getByRole("dialog", { name: "Tưới cây ở ô 1" });
   await dialog.getByRole("button", { name: "Chưa nhớ, xem đáp án" }).click();
   await dialog.getByRole("button", { name: "Về vườn", exact: true }).click();
   const plant = page.getByRole("button", { name: "Xem abide by", exact: true });
