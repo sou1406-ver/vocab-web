@@ -2,6 +2,7 @@ import sheet10 from "./web/10.webp";
 import sheet20 from "./web/20.webp";
 import sheet30 from "./web/30.webp";
 import sheet35 from "./web/35.webp";
+import sheet45 from "./web/45.webp";
 
 const columns = 5;
 const sheets = [
@@ -9,6 +10,7 @@ const sheets = [
   { image: sheet20, rows: 2 },
   { image: sheet30, rows: 2 },
   { image: sheet35, rows: 1 },
+  { image: sheet45, rows: 2 },
 ];
 
 // Each sheet is read left to right, then top to bottom. Append new sheets to preserve plant order.

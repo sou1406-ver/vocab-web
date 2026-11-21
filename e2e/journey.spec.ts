@@ -2,7 +2,7 @@ import { test, expect } from "@playwright/test";
 import { scanAccessibility, setTheme } from "./app-ready";
 
 test("loads an atlas only when a visible plant needs it", async ({ page }) => {
-  const atlas = /\/_next\/static\/media\/(10|20|30|35)(?:\.[^/]+)?\.webp$/;
+  const atlas = /\/_next\/static\/(?:immutable\/)?media\/(\d+)(?:\.[^/]+)?\.webp$/;
   const requested = new Set<string>();
   page.on("request", (request) => {
     const sheet = request.url().match(atlas)?.[1];
@@ -16,22 +16,26 @@ test("loads an atlas only when a visible plant needs it", async ({ page }) => {
   await mapSheet;
   expect([...requested]).toEqual(["10"]);
 
-  await page.locator('a[href="/prototype/hanh-trinh/vuon/2"]').click();
-  await expect(page).toHaveURL(/\/vuon\/2$/);
+  await page.locator('a[href="/prototype/hanh-trinh/vuon/4"]').click();
+  await expect(page).toHaveURL(/\/vuon\/4$/);
   const progress = page.locator(".journey-v2 .page-subtitle");
   await expect(progress).toHaveText("0/12 đã trồng");
   expect([...requested]).toEqual(["10"]);
 
   await page.getByRole("button", { name: "Gieo luống 1", exact: true }).click();
   const sow = page.getByRole("dialog");
-  const gardenSheet = sheetLoaded("20");
-  await sow.getByRole("button", { name: "Thử nhớ lại" }).click();
-  await sow.getByRole("button", { name: "Chưa nhớ, xem đáp án" }).click();
-  await sow.getByRole("button", { name: "Tiếp tục", exact: true }).click();
+  const gardenSheet = sheetLoaded("45");
+  // The first plot is address, with three required senses.
+  for (let sense = 0; sense < 3; sense++) {
+    await expect(sow.getByRole("heading", { name: "address", exact: true })).toBeVisible();
+    await sow.getByRole("button", { name: "Thử nhớ lại" }).click();
+    await sow.getByRole("button", { name: "Chưa nhớ, xem đáp án" }).click();
+    await sow.getByRole("button", { name: "Tiếp tục", exact: true }).click();
+  }
   await page.keyboard.press("Escape");
   await expect(progress).toHaveText("1/12 đã trồng");
   await gardenSheet;
-  expect([...requested]).toEqual(["10", "20"]);
+  expect([...requested]).toEqual(["10", "45"]);
 });
 
 test("sows a bed and waters a plant in one sandbox garden", async ({ page }, info) => {
