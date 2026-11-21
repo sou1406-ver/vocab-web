@@ -1,0 +1,85 @@
+.journey-v2 {
+  max-width: 52rem;
+}
+
+.journey-v2 ol {
+  list-style: none;
+  padding: 0;
+}
+
+.journey-v2 .journey-regions {
+  display: grid;
+  gap: 10px;
+  margin-top: 24px;
+}
+
+.journey-v2 details,
+.journey-v2 .journey-field {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 12px;
+}
+
+.journey-v2 summary,
+.journey-v2 .journey-back,
+.journey-v2 .journey-gardens a {
+  min-height: 44px;
+  padding: 10px;
+}
+
+.journey-v2 summary {
+  cursor: pointer;
+  font-weight: 650;
+}
+
+.journey-v2 .journey-gardens a {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px 20px;
+  flex-wrap: wrap;
+  border-top: 1px solid var(--line);
+}
+
+.journey-v2 .journey-gardens small {
+  color: var(--muted);
+}
+
+.journey-v2 .journey-back {
+  display: inline-flex;
+  align-items: center;
+  color: var(--green);
+}
+
+.journey-v2 .journey-field {
+  display: grid;
+  gap: 12px;
+  margin-top: 24px;
+  background: var(--surface-soft);
+}
+
+.journey-v2 .journey-bed {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  padding: 12px 6px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  text-align: center;
+}
+
+.journey-v2 .journey-bed li {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  font-size: clamp(12px, 3vw, 14px);
+}
+
+.journey-v2 .journey-soil {
+  display: block;
+  background: var(--amber-bg);
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  width: min(100%, 52px);
+  height: 24px;
+  margin: 0 auto 8px;
+}
