@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
-import { emptySnapshot } from "../../../domain/learning";
-import { SandboxProvider } from "../../../state/provider";
+import { JourneySandbox } from "../../../features/hanh-trinh/Journey";
 import "../../../features/hanh-trinh/journey.css";
 
 export const metadata: Metadata = {
@@ -10,5 +9,5 @@ export const metadata: Metadata = {
 };
 
 export default function JourneyLayout({ children }: { children: ReactNode }) {
-  return <SandboxProvider initial={emptySnapshot()}>{children}</SandboxProvider>;
+  return <JourneySandbox>{children}</JourneySandbox>;
 }

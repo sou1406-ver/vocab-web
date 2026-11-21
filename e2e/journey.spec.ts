@@ -4,8 +4,17 @@ import { scanAccessibility, setTheme } from "./app-ready";
 test("sows a bed and waters a plant in one sandbox garden", async ({ page }, info) => {
   test.setTimeout(90000);
   await page.goto("/prototype/hanh-trinh");
-  await page.getByRole("button", { name: "Vườn có cây khát" }).click();
-  await page.getByRole("link", { name: /Contracts.*4\/12/ }).click();
+  const featured = page.getByRole("link", { name: /Contracts.*4\/12/ });
+  await expect(featured.locator(".journey-plant")).toHaveCount(4);
+  const width = info.project.name === "mobile" ? 390 : 1440;
+  await page.setViewportSize({ width, height: width === 390 ? 844 : 1000 });
+  for (const theme of ["light", "dark"] as const) {
+    await setTheme(page, theme);
+    expect((await scanAccessibility(page)).violations).toEqual([]);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+    await page.screenshot({ path: info.outputPath(`map-${width}-${theme}.png`) });
+  }
+  await featured.click();
   const garden = /\/prototype\/hanh-trinh\/vuon\/1$/;
   await expect(page).toHaveURL(garden);
   await expect(page.locator(".journey-field")).toBeVisible();
@@ -29,22 +38,31 @@ test("sows a bed and waters a plant in one sandbox garden", async ({ page }, inf
   await page.keyboard.press("Escape");
   await expect(sow).toHaveCount(0);
   await expect(page.getByText("5/12 đã trồng", { exact: true })).toBeVisible();
-  const width = info.project.name === "mobile" ? 390 : 1440;
-  await page.setViewportSize({ width, height: width === 390 ? 844 : 1000 });
   for (const theme of ["light", "dark"] as const) {
     await setTheme(page, theme);
     expect((await scanAccessibility(page)).violations).toEqual([]);
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
     await page.screenshot({ path: info.outputPath(`garden-${width}-${theme}.png`) });
   }
+  if (info.project.name === "mobile") {
+    await page.setViewportSize({ width: 360, height: 800 });
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+    const plot = page.getByRole("button", { name: "Xem abide by", exact: true });
+    const plant = await plot.locator(".journey-plant").boundingBox();
+    const word = await plot.locator(".journey-word").boundingBox();
+    expect(plant!.y + plant!.height).toBeLessThanOrEqual(word!.y);
+    await page.setViewportSize({ width, height: 844 });
+    await page.evaluate(() => window.scrollTo(0, 0));
+  }
   await page.getByRole("link", { name: "← Bản đồ hành trình" }).click();
   await expect(page.getByRole("link", { name: /Contracts.*5\/12/ })).toBeVisible();
   await page.reload();
-  await expect(page.getByRole("link", { name: /Contracts.*0\/12/ })).toBeVisible();
+  await expect(page.getByRole("link", { name: /Contracts.*4\/12/ })).toBeVisible();
 });
 
 test("finishes a whole bed and returns from the shared watering round", async ({ page }) => {
   await page.goto("/prototype/hanh-trinh");
+  await page.getByRole("button", { name: "Vườn trống" }).click();
   await page.getByRole("link", { name: /Contracts.*0\/12/ }).click();
   await page.getByRole("button", { name: "Gieo luống 1", exact: true }).click();
   const dialog = page.getByRole("dialog");

@@ -1,5 +1,20 @@
 .journey-v2 {
   max-width: 52rem;
+  --garden-air: #e2e9d6;
+  --garden-ground: #c8d4ac;
+  --garden-bed: #e1d0b5;
+  --garden-edge: #ac9476;
+  --garden-plot: #f4ecde;
+  --garden-plot-ink: #59432d;
+}
+
+html[data-theme="dark"] .journey-v2 {
+  --garden-air: #263429;
+  --garden-ground: #354736;
+  --garden-bed: #3c3025;
+  --garden-edge: #806848;
+  --garden-plot: #433628;
+  --garden-plot-ink: #e8d4b9;
 }
 
 .journey-v2 ol {
@@ -53,18 +68,15 @@
 
 .journey-v2 .journey-field {
   display: grid;
-  gap: 12px;
-  margin-top: 24px;
-  background: var(--surface-soft);
+  gap: 14px;
+  margin-top: 14px;
+  background: var(--garden-air);
 }
 
 .journey-v2 .journey-bed {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 8px;
-  padding: 12px 6px;
-  border: 1px solid var(--line);
-  border-radius: 10px;
+  gap: clamp(4px, 1.5vw, 12px);
   text-align: center;
 }
 
@@ -83,6 +95,90 @@
   color: var(--green);
 }
 
+.journey-featured {
+  display: block;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  margin-bottom: 18px;
+  background: var(--surface);
+}
+
+.journey-featured-art {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  align-items: end;
+  gap: 8px;
+  min-height: clamp(150px, 29vw, 248px);
+  padding: 12px clamp(8px, 4vw, 40px) 20px;
+  overflow: hidden;
+  background: var(--garden-air);
+}
+
+.journey-featured-art::before {
+  position: absolute;
+  z-index: -1;
+  content: "";
+  inset: 47% -8% -45%;
+  border-radius: 50%;
+  background: var(--garden-ground);
+}
+
+.journey-featured-slot {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  min-width: 0;
+  min-height: 95px;
+}
+
+.journey-featured-slot:nth-child(2n) {
+  margin-bottom: 16px;
+}
+
+.journey-featured-slot .journey-plant {
+  width: min(100%, 133px);
+  max-height: none;
+}
+
+.journey-preview-drop {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 17px;
+  height: 17px;
+  color: var(--amber);
+}
+
+.journey-featured-caption {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px 16px;
+  padding: 12px 16px;
+}
+
+.journey-featured-caption h2 {
+  font-size: clamp(21px, 3vw, 29px);
+}
+
+.journey-featured-caption p {
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.journey-enter {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--green);
+  font-weight: 650;
+}
+
 .journey-tools {
   display: flex;
   flex-wrap: wrap;
@@ -95,42 +191,92 @@
 
 .journey-v2 .journey-bed {
   margin: 0;
-  border: 0;
-  padding: 10px 0 2px;
+  padding: 8px 0 3px;
 }
 
 .journey-bed-row {
-  padding: 0 8px;
-  border: 1px solid var(--line);
+  padding: 0 clamp(4px, 1.5vw, 12px);
+  border: 1px solid var(--garden-edge);
   border-radius: 12px;
-  background: var(--surface);
+  background: var(--garden-bed);
 }
 
-.journey-bed button {
+.journey-planting-progress {
+  display: flex;
+  gap: 4px;
+  max-width: 312px;
+  margin-top: 6px;
+}
+
+.journey-planting-progress span {
+  flex: 1;
+  height: 5px;
+  border-radius: 4px;
+  background: var(--line);
+}
+
+.journey-planting-progress [data-planted="true"] {
+  background: var(--green);
+}
+
+.journey-plot {
   display: grid;
   justify-items: center;
-  align-content: end;
+  align-content: start;
   gap: 3px;
   width: 100%;
   min-width: 0;
-  min-height: 92px;
+  height: 100%;
+  min-height: 113px;
+  padding: 3px 0 6px;
   border-radius: 8px;
+  color: var(--garden-plot-ink);
+  background: var(--garden-plot);
   overflow-wrap: anywhere;
 }
 
-.journey-bed button:hover:not(:disabled) {
-  background: var(--surface-soft);
+.journey-plot:hover:not(:disabled) {
+  box-shadow: inset 0 0 0 2px var(--garden-edge);
 }
 
-.journey-bed button small {
-  color: var(--muted);
+.journey-plot-art {
+  --plot-art-height: clamp(70px, 17vw, 110px);
+  display: grid;
+  place-items: end center;
+  width: 100%;
+  height: var(--plot-art-height);
+}
+
+.journey-plot-art .journey-plant {
+  width: auto;
+  max-width: 100%;
+  height: var(--plot-art-height);
+}
+
+.journey-word {
+  font-weight: 650;
+  line-height: 1.3;
+}
+
+.journey-plot-action {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 3px;
+  min-height: 20px;
+  font-size: 11px;
+}
+
+.journey-plot[data-state="thirsty"] .journey-plot-action {
+  font-weight: 700;
 }
 
 .journey-plant {
   display: block;
-  width: min(100%, 72px);
-  height: 64px;
+  width: min(100%, 88px);
+  max-height: 122px;
   background-repeat: no-repeat;
+  clip-path: inset(0 2%);
   animation: journey-grow 220ms ease-out both;
 }
 
@@ -167,8 +313,14 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  color: var(--green);
+  color: var(--garden-plot-ink);
   font-size: 14px;
+}
+
+.journey-v2 .journey-sow {
+  color: var(--garden-plot-ink);
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 .journey-details {
@@ -234,11 +386,13 @@
 }
 
 .journey-v2 .journey-soil {
-  display: block;
+  display: grid;
+  place-items: center;
+  color: var(--garden-plot-ink);
   background: var(--amber-bg);
-  border: 1px solid var(--line);
+  border: 1px dashed var(--garden-edge);
   border-radius: 50%;
   width: min(100%, 52px);
-  height: 24px;
-  margin: 0 auto 8px;
+  height: 29px;
+  margin: 0 auto 12px;
 }

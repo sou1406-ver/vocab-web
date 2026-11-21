@@ -1,15 +1,15 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
-import { Leaf } from "lucide-react";
+import { useState, type ReactNode } from "react";
+import { ArrowRight, Droplet, Leaf, Plus } from "lucide-react";
 import { bookById } from "../../data/catalog";
 import { cultivationOf } from "../../domain/cultivation";
 import { emptySnapshot } from "../../domain/learning";
 import { learningItems, mergeReviewGroups, studyWords } from "../../domain/lexicon";
 import { simulateSnapshot } from "../../domain/simulate";
 import { planReviews, replaySkills, type ReviewItem } from "../../domain/skills";
-import { useApp } from "../../state/provider";
+import { SandboxProvider, useApp } from "../../state/provider";
 import type { Snapshot, Word } from "../../domain/types";
 import { JourneyRound } from "./JourneyRound";
 import sheet10 from "./art/source/10.png";
@@ -19,6 +19,16 @@ import sheet35 from "./art/source/35.png";
 
 const journeyPath = "/prototype/hanh-trinh";
 const catalog = bookById("toeic-600")!.catalog;
+const contracts = catalog.words.filter((word) => word.lesson === 1);
+
+function plantedPreset(settings: Snapshot["settings"]) {
+  return simulateSnapshot(settings, catalog, { learned: 4, due: 2, introducedToday: 0, streak: 0 });
+}
+
+export function JourneySandbox({ children }: { children: ReactNode }) {
+  const [initial] = useState(() => plantedPreset(emptySnapshot().settings));
+  return <SandboxProvider initial={initial}>{children}</SandboxProvider>;
+}
 
 function planted(word: Word, progress: Snapshot["progress"]) {
   return learningItems(word).every(({ id }) => progress[id]?.tested);
@@ -55,6 +65,7 @@ function Plant({ index, thirsty }: { index: number; thirsty: boolean }) {
       aria-hidden="true"
       style={{
         backgroundImage: `url(${sheets[sheet].src})`,
+        aspectRatio: sheet === 3 ? "3 / 5" : "4 / 5",
         backgroundSize: `500% ${sheet === 3 ? "100%" : "200%"}`,
         backgroundPosition: `${(position % 5) * 25}% ${row ? 100 : 0}%`,
       }}
@@ -69,11 +80,7 @@ export function JourneyMap() {
   const healthy = catalog.words.filter((word) => planted(word, data.progress) && !byPlant.has(word.id)).length;
   const scenario = (withThirstyPlants: boolean) => {
     dismissBreakthrough();
-    void change((snapshot) =>
-      withThirstyPlants
-        ? simulateSnapshot(snapshot.settings, catalog, { learned: 4, due: 2, introducedToday: 0, streak: 0 })
-        : emptySnapshot(),
-    );
+    void change((snapshot) => (withThirstyPlants ? plantedPreset(snapshot.settings) : emptySnapshot()));
   };
   return (
     <div className="page journey-v2">
@@ -83,8 +90,35 @@ export function JourneyMap() {
           {cultivationOf(count).name} · {healthy} cây khỏe
         </p>
       </header>
+      <Link className="journey-featured" href={`${journeyPath}/vuon/1`}>
+        <div className="journey-featured-art" aria-hidden="true">
+          {contracts.slice(0, 4).map((word, index) => (
+            <span className="journey-featured-slot" key={word.id}>
+              {planted(word, data.progress) ? (
+                <>
+                  <Plant index={index} thirsty={byPlant.has(word.id)} />
+                  {byPlant.has(word.id) && <Droplet className="journey-preview-drop" />}
+                </>
+              ) : (
+                <span className="journey-soil" />
+              )}
+            </span>
+          ))}
+        </div>
+        <div className="journey-featured-caption">
+          <div>
+            <h2>Vườn Contracts</h2>
+            <p>
+              {contracts.filter((word) => planted(word, data.progress)).length}/{contracts.length} đã trồng
+            </p>
+          </div>
+          <span className="journey-enter">
+            Vào vườn <ArrowRight size={19} aria-hidden="true" />
+          </span>
+        </div>
+      </Link>
       <section className="journey-tools" aria-label="Dữ liệu thử">
-        <p className="muted">Dữ liệu thử sẽ đặt lại khi tải lại trang.</p>
+        <p className="muted">Vườn thử sẽ trở về trạng thái ban đầu khi tải lại.</p>
         <button className="button secondary" disabled={!ready || busy || active} onClick={() => scenario(false)}>
           Vườn trống
         </button>
@@ -106,7 +140,7 @@ export function JourneyMap() {
               <summary>{topic.title}</summary>
               <ol className="journey-gardens">
                 {catalog.lessons
-                  .filter(({ topicId }) => topicId === topic.id)
+                  .filter(({ id, topicId }) => id !== 1 && topicId === topic.id)
                   .map((lesson) => {
                     const words = catalog.words.filter((word) => word.lesson === lesson.id);
                     return (
@@ -146,6 +180,11 @@ export function JourneyGarden({ lessonId }: { lessonId: number }) {
       <p className="page-subtitle">
         {plantedCount}/{words.length} đã trồng
       </p>
+      <div className="journey-planting-progress" aria-hidden="true">
+        {words.map((word) => (
+          <span key={word.id} data-planted={planted(word, data.progress)} />
+        ))}
+      </div>
       <div className="journey-field">
         {Array.from({ length: Math.ceil(words.length / 4) }, (_, bed) => {
           const row = words.slice(bed * 4, bed * 4 + 4);
@@ -163,6 +202,8 @@ export function JourneyGarden({ lessonId }: { lessonId: number }) {
                   return (
                     <li key={word.id}>
                       <button
+                        className="journey-plot"
+                        data-state={thirsty ? "thirsty" : grown ? "planted" : "empty"}
                         aria-label={`${thirsty ? "Tưới" : grown ? "Xem" : "Gieo"} ${word.text}`}
                         disabled={!ready || busy || active}
                         onClick={() => {
@@ -173,13 +214,29 @@ export function JourneyGarden({ lessonId }: { lessonId: number }) {
                           else sow();
                         }}
                       >
-                        {grown ? (
-                          <Plant index={(lessonId - 1) * 12 + bed * 4 + position} thirsty={Boolean(thirsty)} />
-                        ) : (
-                          <span className="journey-soil" aria-hidden="true" />
-                        )}
-                        <span lang="en">{word.text}</span>
-                        {thirsty && <small>Đang khát</small>}
+                        <span className="journey-plot-art" aria-hidden="true">
+                          {grown ? (
+                            <Plant index={(lessonId - 1) * 12 + bed * 4 + position} thirsty={Boolean(thirsty)} />
+                          ) : (
+                            <span className="journey-soil">
+                              <Plus size={16} strokeWidth={1.8} />
+                            </span>
+                          )}
+                        </span>
+                        <span className="journey-word" lang="en">
+                          {word.text}
+                        </span>
+                        <small className="journey-plot-action">
+                          {thirsty ? (
+                            <>
+                              <Droplet size={13} aria-hidden="true" /> Tưới
+                            </>
+                          ) : grown ? (
+                            "Xem cây"
+                          ) : (
+                            "Gieo"
+                          )}
+                        </small>
                       </button>
                     </li>
                   );
