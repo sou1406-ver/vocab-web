@@ -74,6 +74,165 @@
   font-size: clamp(12px, 3vw, 14px);
 }
 
+.journey-heading,
+.journey-tools {
+  margin-bottom: 16px;
+}
+
+.journey-heading p {
+  color: var(--green);
+}
+
+.journey-tools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.journey-tools p {
+  flex-basis: 100%;
+}
+
+.journey-v2 .journey-bed {
+  margin: 0;
+  border: 0;
+  padding: 10px 0 2px;
+}
+
+.journey-bed-row {
+  padding: 0 8px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface);
+}
+
+.journey-bed button {
+  display: grid;
+  justify-items: center;
+  align-content: end;
+  gap: 3px;
+  width: 100%;
+  min-width: 0;
+  min-height: 92px;
+  border-radius: 8px;
+  overflow-wrap: anywhere;
+}
+
+.journey-bed button:hover:not(:disabled) {
+  background: var(--surface-soft);
+}
+
+.journey-bed button small {
+  color: var(--muted);
+}
+
+.journey-plant {
+  display: block;
+  width: min(100%, 72px);
+  height: 64px;
+  background-repeat: no-repeat;
+  animation: journey-grow 220ms ease-out both;
+}
+
+.journey-plant.is-thirsty {
+  filter: saturate(0.58);
+  rotate: -7deg;
+}
+
+@keyframes journey-grow {
+  from {
+    transform: translateY(5px) scale(0.9);
+    opacity: 0.5;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .journey-plant {
+    animation: none;
+  }
+}
+
+.journey-sow,
+.journey-bed-done,
+.journey-details button,
+.journey-dialog .text-link {
+  min-height: 44px;
+}
+
+.journey-bed-done {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--green);
+  font-size: 14px;
+}
+
+.journey-details {
+  margin-top: 16px;
+}
+
+.journey-dialog {
+  position: fixed;
+  inset: auto 0 12px;
+  width: min(35rem, calc(100% - 24px));
+  max-height: calc(100dvh - 24px);
+  margin: auto;
+  overflow: auto;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  color: var(--ink);
+  background: var(--surface);
+}
+
+.journey-dialog::backdrop {
+  background: rgb(0 0 0 / 42%);
+}
+
+.journey-dialog header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.journey-dialog header h2 {
+  font-size: 21px;
+}
+
+.journey-question,
+.journey-choices,
+.journey-question form,
+.journey-question label {
+  display: grid;
+  gap: 8px;
+}
+
+.journey-question {
+  margin-top: 12px;
+  overflow-wrap: anywhere;
+}
+
+.journey-question input {
+  width: 100%;
+  min-height: 44px;
+  padding: 7px 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--ink);
+  background: var(--surface);
+}
+
+.journey-dialog .button {
+  min-height: 44px;
+  white-space: normal;
+}
+
 .journey-v2 .journey-soil {
   display: block;
   background: var(--amber-bg);

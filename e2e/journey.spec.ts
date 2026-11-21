@@ -1,0 +1,70 @@
+import { test, expect } from "@playwright/test";
+import { scanAccessibility, setTheme } from "./app-ready";
+
+test("sows a bed and waters a plant in one sandbox garden", async ({ page }, info) => {
+  test.setTimeout(90000);
+  await page.goto("/prototype/hanh-trinh");
+  await page.getByRole("button", { name: "Vườn có cây khát" }).click();
+  await page.getByRole("link", { name: /Contracts.*4\/12/ }).click();
+  const garden = /\/prototype\/hanh-trinh\/vuon\/1$/;
+  await expect(page).toHaveURL(garden);
+  await expect(page.locator(".journey-field")).toBeVisible();
+  const water = page.getByRole("button", { name: "Tưới abide by", exact: true });
+  await water.click();
+  const dialog = page.getByRole("dialog", { name: /Tưới/ });
+  await expect(dialog).toBeVisible();
+  await dialog.getByRole("textbox").fill("abide by");
+  await dialog.getByRole("button", { name: "Kiểm tra", exact: true }).click();
+  await dialog.getByRole("button", { name: "Về vườn", exact: true }).click();
+  await expect(dialog).toHaveCount(0);
+  await expect(page).toHaveURL(garden);
+  await expect(page.getByRole("button", { name: "Tưới abide by", exact: true })).toHaveCount(0);
+
+  await page.getByRole("button", { name: "Gieo luống 2", exact: true }).click();
+  const sow = page.getByRole("dialog", { name: /Gieo luống/ });
+  await expect(sow).toBeVisible();
+  await sow.getByRole("button", { name: "Thử nhớ lại" }).click();
+  await sow.getByRole("button", { name: "Chưa nhớ, xem đáp án" }).click();
+  await sow.getByRole("button", { name: "Tiếp tục", exact: true }).click();
+  await page.keyboard.press("Escape");
+  await expect(sow).toHaveCount(0);
+  await expect(page.getByText("5/12 đã trồng", { exact: true })).toBeVisible();
+  const width = info.project.name === "mobile" ? 390 : 1440;
+  await page.setViewportSize({ width, height: width === 390 ? 844 : 1000 });
+  for (const theme of ["light", "dark"] as const) {
+    await setTheme(page, theme);
+    expect((await scanAccessibility(page)).violations).toEqual([]);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+    await page.screenshot({ path: info.outputPath(`garden-${width}-${theme}.png`) });
+  }
+  await page.getByRole("link", { name: "← Bản đồ hành trình" }).click();
+  await expect(page.getByRole("link", { name: /Contracts.*5\/12/ })).toBeVisible();
+  await page.reload();
+  await expect(page.getByRole("link", { name: /Contracts.*0\/12/ })).toBeVisible();
+});
+
+test("finishes a whole bed and returns from the shared watering round", async ({ page }) => {
+  await page.goto("/prototype/hanh-trinh");
+  await page.getByRole("link", { name: /Contracts.*0\/12/ }).click();
+  await page.getByRole("button", { name: "Gieo luống 1", exact: true }).click();
+  const dialog = page.getByRole("dialog");
+  for (let index = 0; index < 4; index++) {
+    await dialog.getByRole("button", { name: "Thử nhớ lại" }).click();
+    await dialog.getByRole("button", { name: "Chưa nhớ, xem đáp án" }).click();
+    await dialog.getByRole("button", { name: index < 3 ? "Tiếp tục" : "Về vườn", exact: true }).click();
+  }
+  await expect(page.getByText("4/12 đã trồng", { exact: true })).toBeVisible();
+  await expect(page.getByText("Luống đã trồng đủ", { exact: true })).toBeVisible();
+  await page.getByRole("link", { name: "← Bản đồ hành trình" }).click();
+  await page.getByRole("button", { name: "Vườn có cây khát" }).click();
+  await page.getByRole("button", { name: "Bình tưới chung (2)", exact: true }).click();
+  await expect(dialog).toHaveAccessibleName("Bình tưới chung");
+  for (const [index, value] of ["abide by", "agreement"].entries()) {
+    await dialog.getByRole("textbox").fill(value);
+    await dialog.getByRole("button", { name: "Kiểm tra", exact: true }).click();
+    await expect(dialog.getByText("Chính xác!", { exact: true })).toBeVisible();
+    await dialog.getByRole("button", { name: index === 0 ? "Tiếp tục" : "Về bản đồ", exact: true }).click();
+  }
+  await expect(dialog).toHaveCount(0);
+  await expect(page.getByRole("button", { name: "Bình tưới chung (0)", exact: true })).toBeDisabled();
+});
