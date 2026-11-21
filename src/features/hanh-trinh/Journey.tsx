@@ -14,10 +14,7 @@ import { SandboxProvider, useApp } from "../../state/provider";
 import type { AnswerEvent, Snapshot, Word } from "../../domain/types";
 import { JourneyRound } from "./JourneyRound";
 import { healthLabels, plantHealth, plantStage, stageLabels, type PlantHealth, type PlantStage } from "./garden-state";
-import sheet10 from "./art/source/10.png";
-import sheet20 from "./art/source/20.png";
-import sheet30 from "./art/source/30.png";
-import sheet35 from "./art/source/35.png";
+import { plantSprites } from "./art/plant-sprites";
 
 const journeyPath = "/prototype/hanh-trinh";
 const catalog = bookById("toeic-600")!.catalog;
@@ -81,8 +78,6 @@ function useJourney() {
   return { ...app, all, skills, due, extra, byPlant, healthOf, wateredToday, stageOf, water };
 }
 
-const sheets = [sheet10, sheet20, sheet30, sheet35];
-
 function Plant({
   index,
   health,
@@ -94,9 +89,6 @@ function Plant({
   stage?: PlantStage;
   watered?: boolean;
 }) {
-  const position = index % 35;
-  const sheet = Math.floor(position / 10);
-  const row = position % 10 >= 5;
   return (
     <span
       className="journey-plant"
@@ -104,12 +96,7 @@ function Plant({
       data-stage={stage}
       data-watered={watered || undefined}
       aria-hidden="true"
-      style={{
-        backgroundImage: `url(${sheets[sheet].src})`,
-        aspectRatio: sheet === 3 ? "3 / 5" : "4 / 5",
-        backgroundSize: `500% ${sheet === 3 ? "100%" : "200%"}`,
-        backgroundPosition: `${(position % 5) * 25}% ${row ? 100 : 0}%`,
-      }}
+      style={plantSprites[index % plantSprites.length]}
     />
   );
 }
