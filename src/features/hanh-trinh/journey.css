@@ -280,9 +280,53 @@ html[data-theme="dark"] .journey-v2 {
   animation: journey-grow 220ms ease-out both;
 }
 
-.journey-plant.is-thirsty {
+.journey-plant[data-health="due"],
+.journey-plant[data-health="recovering"] {
+  filter: saturate(0.82);
+  rotate: -3deg;
+}
+
+.journey-plant[data-health="dry"] {
   filter: saturate(0.58);
   rotate: -7deg;
+}
+
+.journey-plant[data-health="wilted"] {
+  filter: saturate(0.34);
+  rotate: -10deg;
+}
+
+.journey-plant[data-stage="mam"] {
+  scale: 0.9;
+}
+.journey-plant[data-stage="no-hoa"] {
+  scale: 1.04;
+}
+
+.journey-plant[data-watered="true"] {
+  animation-name: journey-watered;
+}
+
+.journey-plot-health {
+  padding-inline: 2px;
+  color: var(--garden-plot-ink);
+  line-height: 1.25;
+  font-size: 11px;
+}
+
+.journey-featured[data-complete="true"] {
+  border-color: var(--green);
+}
+
+@keyframes journey-watered {
+  from {
+    transform: translateY(2px) rotate(-5deg);
+    opacity: 0.65;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
 }
 
 @keyframes journey-grow {
@@ -297,7 +341,8 @@ html[data-theme="dark"] .journey-v2 {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .journey-plant {
+  .journey-plant,
+  .journey-plant[data-watered="true"] {
     animation: none;
   }
 }

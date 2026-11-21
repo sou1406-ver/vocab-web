@@ -28,6 +28,7 @@ test("sows a bed and waters a plant in one sandbox garden", async ({ page }, inf
   await expect(dialog).toHaveCount(0);
   await expect(page).toHaveURL(garden);
   await expect(page.getByRole("button", { name: "Tưới abide by", exact: true })).toHaveCount(0);
+  await expect(page.getByRole("button", { name: "Xem abide by", exact: true })).toContainText("Đã tưới hôm nay");
 
   await page.getByRole("button", { name: "Gieo luống 2", exact: true }).click();
   const sow = page.getByRole("dialog", { name: /Gieo luống/ });
@@ -58,6 +59,21 @@ test("sows a bed and waters a plant in one sandbox garden", async ({ page }, inf
   await expect(page.getByRole("link", { name: /Contracts.*5\/12/ })).toBeVisible();
   await page.reload();
   await expect(page.getByRole("link", { name: /Contracts.*4\/12/ })).toBeVisible();
+});
+
+test("a missed watering keeps the plant slightly thirsty without allowing another review today", async ({ page }) => {
+  await page.goto("/prototype/hanh-trinh/vuon/1");
+  const wilted = page.getByRole("button", { name: "Tưới abide by", exact: true });
+  await expect(wilted).toContainText("Héo nặng");
+  await wilted.click();
+  const dialog = page.getByRole("dialog", { name: "Tưới abide by" });
+  await dialog.getByRole("button", { name: "Chưa nhớ, xem đáp án" }).click();
+  await dialog.getByRole("button", { name: "Về vườn", exact: true }).click();
+  const plant = page.getByRole("button", { name: "Xem abide by", exact: true });
+  await expect(plant).toContainText("Còn khát nhẹ");
+  await expect(wilted).toHaveCount(0);
+  await plant.click();
+  await expect(page.getByRole("region", { name: "Chi tiết cây" })).toContainText("Mầm · Còn khát nhẹ");
 });
 
 test("finishes a whole bed and returns from the shared watering round", async ({ page }) => {

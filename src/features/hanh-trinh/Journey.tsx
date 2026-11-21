@@ -5,13 +5,15 @@ import { useState, type ReactNode } from "react";
 import { ArrowRight, Droplet, Leaf, Plus } from "lucide-react";
 import { bookById } from "../../data/catalog";
 import { cultivationOf } from "../../domain/cultivation";
-import { emptySnapshot } from "../../domain/learning";
+import { dayKey, emptySnapshot } from "../../domain/learning";
 import { learningItems, mergeReviewGroups, studyWords } from "../../domain/lexicon";
 import { simulateSnapshot } from "../../domain/simulate";
 import { planReviews, replaySkills, type ReviewItem } from "../../domain/skills";
+import { schedulesAnswer } from "../../domain/sense-check";
 import { SandboxProvider, useApp } from "../../state/provider";
-import type { Snapshot, Word } from "../../domain/types";
+import type { AnswerEvent, Snapshot, Word } from "../../domain/types";
 import { JourneyRound } from "./JourneyRound";
+import { healthLabels, plantHealth, plantStage, stageLabels, type PlantHealth, type PlantStage } from "./garden-state";
 import sheet10 from "./art/source/10.png";
 import sheet20 from "./art/source/20.png";
 import sheet30 from "./art/source/30.png";
@@ -22,7 +24,10 @@ const catalog = bookById("toeic-600")!.catalog;
 const contracts = catalog.words.filter((word) => word.lesson === 1);
 
 function plantedPreset(settings: Snapshot["settings"]) {
-  return simulateSnapshot(settings, catalog, { learned: 4, due: 2, introducedToday: 0, streak: 0 });
+  const snapshot = simulateSnapshot(settings, catalog, { learned: 4, due: 2, introducedToday: 0, streak: 0 });
+  const first = snapshot.progress[contracts[0].id];
+  first.dueAt -= 3 * 86_400_000;
+  return snapshot;
 }
 
 export function JourneySandbox({ children }: { children: ReactNode }) {
@@ -42,6 +47,29 @@ function useJourney() {
   const plan = planReviews(app.data.progress, skills, byId.keys(), app.clock, app.data.settings.timezone);
   const { due, extra } = mergeReviewGroups(plan.due, plan.extra, all);
   const byPlant = new Map(due.map((item) => [byId.get(item.wordId)?.groupWordId ?? item.wordId, item]));
+  const lastCare = new Map<string, AnswerEvent>();
+  for (const event of app.data.events) {
+    if (event.mode !== "review" || !schedulesAnswer(event)) continue;
+    const id = byId.get(event.wordId)?.groupWordId ?? event.wordId;
+    if (event.at >= (lastCare.get(id)?.at ?? 0)) lastCare.set(id, event);
+  }
+  const healthOf = (id: string) =>
+    plantHealth(byPlant.get(id)?.dueAt, lastCare.get(id), app.clock, app.data.settings.timezone);
+  const wateredToday = (id: string) => {
+    const latest = lastCare.get(id);
+    return Boolean(
+      latest?.correct &&
+        healthOf(id) === "healthy" &&
+        dayKey(latest.at, app.data.settings.timezone) === dayKey(app.clock, app.data.settings.timezone),
+    );
+  };
+  const stageOf = (word: Word) =>
+    plantStage(
+      learningItems(word).map(({ id }) => ({
+        recognition: skills[id]?.recognition?.box ?? 0,
+        recall: skills[id]?.recall?.box ?? 0,
+      })),
+    );
   const water = (items: ReviewItem[], title: string) =>
     app.startReview(
       items.flatMap(({ wordId, skill }) => {
@@ -50,18 +78,31 @@ function useJourney() {
       }),
       title,
     );
-  return { ...app, all, skills, due, extra, byPlant, water };
+  return { ...app, all, skills, due, extra, byPlant, healthOf, wateredToday, stageOf, water };
 }
 
 const sheets = [sheet10, sheet20, sheet30, sheet35];
 
-function Plant({ index, thirsty }: { index: number; thirsty: boolean }) {
+function Plant({
+  index,
+  health,
+  stage,
+  watered,
+}: {
+  index: number;
+  health: PlantHealth;
+  stage?: PlantStage;
+  watered?: boolean;
+}) {
   const position = index % 35;
   const sheet = Math.floor(position / 10);
   const row = position % 10 >= 5;
   return (
     <span
-      className={`journey-plant${thirsty ? " is-thirsty" : ""}`}
+      className="journey-plant"
+      data-health={health}
+      data-stage={stage}
+      data-watered={watered || undefined}
       aria-hidden="true"
       style={{
         backgroundImage: `url(${sheets[sheet].src})`,
@@ -74,10 +115,16 @@ function Plant({ index, thirsty }: { index: number; thirsty: boolean }) {
 }
 
 export function JourneyMap() {
-  const { data, ready, busy, change, dismissBreakthrough, all, due, extra, byPlant, water } = useJourney();
+  const { data, ready, busy, change, dismissBreakthrough, all, due, extra, healthOf, wateredToday, water } =
+    useJourney();
   const active = Boolean(data.session && data.session.phase !== "complete");
   const count = catalog.words.filter((word) => planted(word, data.progress)).length;
-  const healthy = catalog.words.filter((word) => planted(word, data.progress) && !byPlant.has(word.id)).length;
+  const healthy = catalog.words.filter(
+    (word) => planted(word, data.progress) && healthOf(word.id) === "healthy",
+  ).length;
+  const plantedContracts = contracts.filter((word) => planted(word, data.progress));
+  const preview = [...plantedContracts, ...contracts.filter((word) => !planted(word, data.progress))].slice(0, 4);
+  const complete = plantedContracts.length === contracts.length;
   const scenario = (withThirstyPlants: boolean) => {
     dismissBreakthrough();
     void change((snapshot) => (withThirstyPlants ? plantedPreset(snapshot.settings) : emptySnapshot()));
@@ -90,14 +137,14 @@ export function JourneyMap() {
           {cultivationOf(count).name} · {healthy} cây khỏe
         </p>
       </header>
-      <Link className="journey-featured" href={`${journeyPath}/vuon/1`}>
+      <Link className="journey-featured" data-complete={complete} href={`${journeyPath}/vuon/1`}>
         <div className="journey-featured-art" aria-hidden="true">
-          {contracts.slice(0, 4).map((word, index) => (
+          {preview.map((word) => (
             <span className="journey-featured-slot" key={word.id}>
               {planted(word, data.progress) ? (
                 <>
-                  <Plant index={index} thirsty={byPlant.has(word.id)} />
-                  {byPlant.has(word.id) && <Droplet className="journey-preview-drop" />}
+                  <Plant index={contracts.indexOf(word)} health={healthOf(word.id)} watered={wateredToday(word.id)} />
+                  {healthOf(word.id) !== "healthy" && <Droplet className="journey-preview-drop" />}
                 </>
               ) : (
                 <span className="journey-soil" />
@@ -109,7 +156,7 @@ export function JourneyMap() {
           <div>
             <h2>Vườn Contracts</h2>
             <p>
-              {contracts.filter((word) => planted(word, data.progress)).length}/{contracts.length} đã trồng
+              {plantedContracts.length}/{contracts.length} đã trồng{complete && " · Vườn hoàn thành"}
             </p>
           </div>
           <span className="journey-enter">
@@ -143,12 +190,13 @@ export function JourneyMap() {
                   .filter(({ id, topicId }) => id !== 1 && topicId === topic.id)
                   .map((lesson) => {
                     const words = catalog.words.filter((word) => word.lesson === lesson.id);
+                    const plantedCount = words.filter((word) => planted(word, data.progress)).length;
                     return (
                       <li key={lesson.id}>
                         <Link href={`${journeyPath}/vuon/${lesson.id}`}>
                           <span>{lesson.title}</span>
                           <small>
-                            {words.filter((word) => planted(word, data.progress)).length}/{words.length} đã trồng
+                            {plantedCount}/{words.length} đã trồng{plantedCount === words.length && " · Hoàn thành"}
                           </small>
                         </Link>
                       </li>
@@ -165,7 +213,7 @@ export function JourneyMap() {
 }
 
 export function JourneyGarden({ lessonId }: { lessonId: number }) {
-  const { data, ready, busy, all, skills, start, byPlant, water } = useJourney();
+  const { data, ready, busy, all, skills, start, byPlant, healthOf, stageOf, wateredToday, water } = useJourney();
   const lesson = catalog.lessons.find(({ id }) => id === lessonId)!;
   const words = catalog.words.filter((word) => word.lesson === lessonId);
   const active = Boolean(data.session && data.session.phase !== "complete");
@@ -178,7 +226,7 @@ export function JourneyGarden({ lessonId }: { lessonId: number }) {
       </Link>
       <h1 tabIndex={-1}>Vườn {lesson.title}</h1>
       <p className="page-subtitle">
-        {plantedCount}/{words.length} đã trồng
+        {plantedCount}/{words.length} đã trồng{plantedCount === words.length && " · Vườn hoàn thành"}
       </p>
       <div className="journey-planting-progress" aria-hidden="true">
         {words.map((word) => (
@@ -199,11 +247,14 @@ export function JourneyGarden({ lessonId }: { lessonId: number }) {
                 {row.map((word, position) => {
                   const grown = planted(word, data.progress);
                   const thirsty = grown ? byPlant.get(word.id) : undefined;
+                  const health = grown ? healthOf(word.id) : undefined;
+                  const watered = grown && wateredToday(word.id);
                   return (
                     <li key={word.id}>
                       <button
                         className="journey-plot"
                         data-state={thirsty ? "thirsty" : grown ? "planted" : "empty"}
+                        data-health={health}
                         aria-label={`${thirsty ? "Tưới" : grown ? "Xem" : "Gieo"} ${word.text}`}
                         disabled={!ready || busy || active}
                         onClick={() => {
@@ -216,7 +267,12 @@ export function JourneyGarden({ lessonId }: { lessonId: number }) {
                       >
                         <span className="journey-plot-art" aria-hidden="true">
                           {grown ? (
-                            <Plant index={(lessonId - 1) * 12 + bed * 4 + position} thirsty={Boolean(thirsty)} />
+                            <Plant
+                              index={(lessonId - 1) * 12 + bed * 4 + position}
+                              health={health!}
+                              stage={stageOf(word)}
+                              watered={watered}
+                            />
                           ) : (
                             <span className="journey-soil">
                               <Plus size={16} strokeWidth={1.8} />
@@ -237,6 +293,11 @@ export function JourneyGarden({ lessonId }: { lessonId: number }) {
                             "Gieo"
                           )}
                         </small>
+                        {grown && (
+                          <small className="journey-plot-health">
+                            {watered ? "Đã tưới hôm nay" : healthLabels[health!]}
+                          </small>
+                        )}
                       </button>
                     </li>
                   );
@@ -258,6 +319,9 @@ export function JourneyGarden({ lessonId }: { lessonId: number }) {
       {selected && (
         <section className="panel journey-details" aria-label="Chi tiết cây">
           <h2 lang="en">{selected.text}</h2>
+          <p>
+            {stageLabels[stageOf(selected)]} · {healthLabels[healthOf(selected.id)]}
+          </p>
           <p>
             {selected.meaning} <span lang="en">{selected.ipa}</span>
           </p>
