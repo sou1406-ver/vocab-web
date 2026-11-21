@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { bookByVersion, bookOfWord, wordsForSession } from "../data/catalog";
+import { coreWords, roots } from "../data/roots";
 import { senseOutcome } from "../domain/sense-check";
 import { useApp, useAppStore, useSandbox } from "../state/provider";
 import { Empty, Icon, ProgressBar, WordContent, Speak } from "../shared/ui";
@@ -33,6 +34,7 @@ import { getEnglishVoices, speak } from "../lib/speech";
 import { skillLabels, skillOf } from "../domain/skills";
 import { countLearnedWords } from "../domain/cultivation";
 import { studySummary } from "../domain/study-progress";
+import { selectStudyRootFeedback } from "../domain/study-root-feedback";
 import { StudyBreakthrough, StudyCultivation } from "../components/StudyCultivation";
 
 const isCatalogWord = (id: string) => Boolean(bookOfWord(id));
@@ -333,6 +335,12 @@ export function StudySession() {
   const typedValue = projectRevealed(input, answerText, revealed);
   const hintLimit = hintAllowance(answerText);
   const hintOffers = cannotHear ? [] : studyHintOffers(session, word, all, voices.length > 0);
+  const rootFeedback = selectStudyRootFeedback(session, events, {
+    roots,
+    coreWords,
+    bookOfWord,
+    wordById: (id) => all.find((item) => item.id === id),
+  });
   const firstAvailableOption = question.options?.find((option) => !eliminated.includes(option));
   const chooseHint = async (offer: StudyHintOffer) => {
     if (offer.hint.kind === "pronunciation" && !getEnglishVoices().length) return;
@@ -655,6 +663,23 @@ export function StudySession() {
                   question.kind !== "build" &&
                   question.kind !== "synonym-context" &&
                   word.examples[0]?.translation && <p className="muted">{word.examples[0].translation}</p>}
+                {rootFeedback && (
+                  <p className="study-root-feedback">
+                    {rootFeedback.label && (
+                      <>
+                        <strong lang="en">{rootFeedback.label}</strong> ·{" "}
+                      </>
+                    )}
+                    {rootFeedback.parts?.length ? (
+                      <>
+                        <strong lang="en">{rootFeedback.parts.join(" + ")}</strong> ={" "}
+                      </>
+                    ) : (
+                      <strong>Nghĩa lõi · </strong>
+                    )}
+                    {rootFeedback.explanation}
+                  </p>
+                )}
                 <button
                   className="button primary"
                   ref={nextRef}
@@ -668,6 +693,11 @@ export function StudySession() {
                 <span className="shortcut-hint" aria-hidden="true">
                   hoặc nhấn <kbd>Enter</kbd>
                 </span>
+                {rootFeedback && data.settings.deepRoots && (
+                  <Link className="text-link study-root-link" href={rootFeedback.href}>
+                    Xem gốc
+                  </Link>
+                )}
               </div>
             ) : (
               <div className="question-help">

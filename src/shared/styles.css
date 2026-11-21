@@ -2383,6 +2383,21 @@ html.theme-switching *::after {
     color: var(--ink);
     margin-top: 20px;
   }
+  .answer-feedback .study-root-feedback {
+    max-width: 38em;
+    margin-top: 12px;
+    color: var(--ink);
+    font-size: 14px;
+    overflow-wrap: anywhere;
+  }
+  .study-root-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    margin-inline-start: 12px;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
   .answer-feedback .button {
     margin-top: 23px;
   }
