@@ -5,7 +5,15 @@ import { questionAnswerText } from "../../domain/learning";
 import type { Question, Word } from "../../domain/types";
 import { useApp } from "../../state/provider";
 
-export function JourneyRound({ words, backLabel }: { words: readonly Word[]; backLabel: string }) {
+export function JourneyRound({
+  words,
+  backLabel,
+  onCompleted,
+}: {
+  words: readonly Word[];
+  backLabel: string;
+  onCompleted?: () => void;
+}) {
   const { data, busy, error, answer, advance, finish, dismissBreakthrough } = useApp();
   const dialog = useRef<HTMLDialogElement>(null);
   const titleId = useId();
@@ -23,7 +31,9 @@ export function JourneyRound({ words, backLabel }: { words: readonly Word[]; bac
   const last = session.index + 1 === session.questions.length;
   const next = () => {
     dismissBreakthrough();
-    void advance();
+    void advance().then((advanced) => {
+      if (advanced && last && session.phase === "feedback") onCompleted?.();
+    });
   };
   const close = () => {
     dismissBreakthrough();

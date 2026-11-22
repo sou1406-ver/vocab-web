@@ -1,24 +1,48 @@
 "use client";
 
 import Link from "next/link";
-import { useState, type ReactNode } from "react";
-import { ArrowRight, Droplet, Leaf, Plus } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useEffect, useRef, useState, type ReactNode } from "react";
+import { ArrowUpRight, Droplet, Flame, Leaf, Plus, X } from "lucide-react";
+import { CultivationAvatar } from "../../components/CultivationAvatar";
 import { bookById } from "../../data/catalog";
-import { cultivationOf } from "../../domain/cultivation";
+import { cultivationOf, cultivationRealms } from "../../domain/cultivation";
 import { dayKey, emptySnapshot } from "../../domain/learning";
 import { learningItems, mergeReviewGroups, studyWords } from "../../domain/lexicon";
 import { simulateSnapshot } from "../../domain/simulate";
 import { planReviews, replaySkills, type ReviewItem } from "../../domain/skills";
 import { schedulesAnswer } from "../../domain/sense-check";
 import { SandboxProvider, useApp } from "../../state/provider";
-import type { AnswerEvent, Snapshot, Word } from "../../domain/types";
+import type { AnswerEvent, Snapshot, Topic, Word } from "../../domain/types";
 import { JourneyRound } from "./JourneyRound";
 import { healthLabels, plantHealth, plantStage, stageLabels, type PlantHealth, type PlantStage } from "./garden-state";
-import { plantSprites } from "./art/plant-sprites";
+import { plantSprite } from "./art/plant-sprites";
 
 const journeyPath = "/prototype/hanh-trinh";
 const catalog = bookById("toeic-600")!.catalog;
 const contracts = catalog.words.filter((word) => word.lesson === 1);
+const firstRegion = catalog.topics[0];
+const firstRegionLessons = catalog.lessons.filter((lesson) => lesson.topicId === firstRegion.id);
+const firstTrial = cultivationRealms[1];
+const sharedWatering = "Bình tưới chung";
+
+function demoPreset(settings: Snapshot["settings"], words: Word[], due: number) {
+  const items = studyWords(words);
+  const snapshot = simulateSnapshot(
+    settings,
+    { ...catalog, words: items },
+    {
+      learned: items.length,
+      due,
+      introducedToday: 0,
+      streak: 0,
+    },
+  );
+  for (const item of items) {
+    if (item.groupWordId && item.groupWordId !== item.id) snapshot.progress[item.id].groupWordId = item.groupWordId;
+  }
+  return snapshot;
+}
 
 function plantedPreset(settings: Snapshot["settings"]) {
   const snapshot = simulateSnapshot(settings, catalog, { learned: 4, due: 2, introducedToday: 0, streak: 0 });
@@ -75,7 +99,25 @@ function useJourney() {
       }),
       title,
     );
-  return { ...app, all, skills, due, extra, byPlant, healthOf, wateredToday, stageOf, water };
+  const waterShared = () => water([...due.slice(0, 20), ...extra.slice(0, 3)], sharedWatering);
+  const session = app.data.session;
+  const completedWatering = session?.phase === "complete" && session.title === sharedWatering ? session.id : undefined;
+  const recovered = (id: string) =>
+    Boolean(completedWatering && lastCare.get(id)?.sessionId === completedWatering && wateredToday(id));
+  return {
+    ...app,
+    all,
+    skills,
+    due,
+    byPlant,
+    healthOf,
+    wateredToday,
+    stageOf,
+    water,
+    waterShared,
+    recovered,
+    completedWatering,
+  };
 }
 
 function Plant({
@@ -83,11 +125,15 @@ function Plant({
   health,
   stage,
   watered,
+  sprouting,
+  recovered,
 }: {
   index: number;
   health: PlantHealth;
   stage?: PlantStage;
   watered?: boolean;
+  sprouting?: boolean;
+  recovered?: boolean;
 }) {
   return (
     <span
@@ -95,119 +141,358 @@ function Plant({
       data-health={health}
       data-stage={stage}
       data-watered={watered || undefined}
+      data-sprouting={sprouting || undefined}
+      data-recovered={recovered || undefined}
       aria-hidden="true"
-      style={plantSprites[index % plantSprites.length]}
+      style={plantSprite(index, stage)}
     />
   );
 }
 
 export function JourneyMap() {
-  const { data, ready, busy, change, dismissBreakthrough, all, due, extra, healthOf, wateredToday, water } =
-    useJourney();
+  const journey = useJourney();
+  const { data, ready, busy, change, dismissBreakthrough, all, due, waterShared } = journey;
+  const [region, setRegion] = useState<string | null>(null);
+  const [trial, setTrial] = useState(false);
+  const tools = useRef<HTMLDetailsElement>(null);
   const active = Boolean(data.session && data.session.phase !== "complete");
   const count = catalog.words.filter((word) => planted(word, data.progress)).length;
   const healthy = catalog.words.filter(
-    (word) => planted(word, data.progress) && healthOf(word.id) === "healthy",
+    (word) => planted(word, data.progress) && journey.healthOf(word.id) === "healthy",
   ).length;
-  const plantedContracts = contracts.filter((word) => planted(word, data.progress));
-  const preview = [...plantedContracts, ...contracts.filter((word) => !planted(word, data.progress))].slice(0, 4);
-  const complete = plantedContracts.length === contracts.length;
-  const scenario = (withThirstyPlants: boolean) => {
+  const currentGarden = catalog.lessons.find((lesson) =>
+    catalog.words.some((word) => word.lesson === lesson.id && !planted(word, data.progress)),
+  );
+  const openRegion = region ?? currentGarden?.topicId ?? firstRegion.id;
+  const scrollTarget = useRef<string | null>(null);
+  const scene = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (!ready) return;
+    const target = region ? `region-${openRegion}` : currentGarden ? `garden-${currentGarden.id}` : "journey-furnace";
+    if (scrollTarget.current === target) return;
+    scrollTarget.current = target;
+    scene.current?.querySelector(`#${CSS.escape(target)}`)?.scrollIntoView({ block: "center", behavior: "instant" });
+  }, [ready, region, openRegion, currentGarden]);
+
+  const scenario = (preset: "empty" | "thirsty" | "complete" | "trial") => {
     dismissBreakthrough();
-    void change((snapshot) => (withThirstyPlants ? plantedPreset(snapshot.settings) : emptySnapshot()));
+    if (tools.current) {
+      tools.current.open = false;
+      tools.current.querySelector("summary")?.focus({ preventScroll: true });
+    }
+    setRegion(null);
+    scrollTarget.current = null;
+    void change((snapshot) => {
+      const { settings } = snapshot;
+      if (preset === "empty") return { ...emptySnapshot(), settings };
+      if (preset === "thirsty") return plantedPreset(settings);
+      if (preset === "trial") return demoPreset(settings, contracts.slice(0, firstTrial.words), 3);
+      const lessons = new Set(firstRegionLessons.map(({ id }) => id));
+      return demoPreset(
+        settings,
+        catalog.words.filter((word) => lessons.has(word.lesson)),
+        18,
+      );
+    });
   };
+  const beginWatering = () => {
+    setTrial(false);
+    void waterShared();
+  };
+
   return (
-    <div className="page journey-v2">
+    <div className="page journey-v2 journey-map" ref={scene}>
       <header className="journey-heading">
         <h1 tabIndex={-1}>Hành trình Luyện đan sư</h1>
         <p>
           {cultivationOf(count).name} · {healthy} cây khỏe
         </p>
       </header>
-      <Link className="journey-featured" data-complete={complete} href={`${journeyPath}/vuon/1`}>
-        <div className="journey-featured-art" aria-hidden="true">
-          {preview.map((word) => (
-            <span className="journey-featured-slot" key={word.id}>
-              {planted(word, data.progress) ? (
-                <>
-                  <Plant index={contracts.indexOf(word)} health={healthOf(word.id)} watered={wateredToday(word.id)} />
-                  {healthOf(word.id) !== "healthy" && <Droplet className="journey-preview-drop" />}
-                </>
-              ) : (
-                <span className="journey-soil" />
-              )}
-            </span>
-          ))}
-        </div>
-        <div className="journey-featured-caption">
+      <div className="journey-map-scene">
+        <section className="journey-expeditions" aria-label="Vùng đất">
+          {catalog.topics
+            .slice(1)
+            .reverse()
+            .map((topic) => {
+              const open = openRegion === topic.id;
+              return (
+                <section key={topic.id} className="journey-expedition">
+                  <button
+                    type="button"
+                    id={`region-${topic.id}`}
+                    className="journey-region"
+                    aria-expanded={open}
+                    onClick={() => setRegion(open && region === topic.id ? firstRegion.id : topic.id)}
+                  >
+                    <span>{topic.title}</span>
+                    <small>{open ? "Đang khám phá" : "Chưa khám phá"}</small>
+                    <ArrowUpRight size={19} aria-hidden="true" />
+                  </button>
+                  {open && <JourneyTrail topic={topic} journey={journey} currentId={currentGarden?.id} count={count} />}
+                </section>
+              );
+            })}
+        </section>
+        <JourneyTrail
+          topic={firstRegion}
+          journey={journey}
+          currentId={currentGarden?.id}
+          count={count}
+          onFurnace={() => setTrial(true)}
+        />
+      </div>
+      <div className="journey-map-controls">
+        <details className="journey-tools" ref={tools}>
+          <summary>Dữ liệu thử</summary>
           <div>
-            <h2>Vườn Contracts</h2>
-            <p>
-              {plantedContracts.length}/{contracts.length} đã trồng{complete && " · Vườn hoàn thành"}
-            </p>
+            <p className="muted">Demo đặt lại khi tải trang.</p>
+            <button className="button secondary" disabled={!ready || busy || active} onClick={() => scenario("empty")}>
+              Vườn trống
+            </button>
+            <button
+              className="button secondary"
+              disabled={!ready || busy || active}
+              onClick={() => scenario("thirsty")}
+            >
+              Vườn có cây khát
+            </button>
+            <button
+              className="button secondary"
+              disabled={!ready || busy || active}
+              onClick={() => scenario("complete")}
+            >
+              Xong vùng 1 · nhiều cây khát
+            </button>
+            <button className="button secondary" disabled={!ready || busy || active} onClick={() => scenario("trial")}>
+              Đủ ngưỡng Kiếp nạn
+            </button>
           </div>
-          <span className="journey-enter">
-            Vào vườn <ArrowRight size={19} aria-hidden="true" />
-          </span>
-        </div>
-      </Link>
-      <section className="journey-tools" aria-label="Dữ liệu thử">
-        <p className="muted">Vườn thử sẽ trở về trạng thái ban đầu khi tải lại.</p>
-        <button className="button secondary" disabled={!ready || busy || active} onClick={() => scenario(false)}>
-          Vườn trống
-        </button>
-        <button className="button secondary" disabled={!ready || busy || active} onClick={() => scenario(true)}>
-          Vườn có cây khát
-        </button>
+        </details>
         <button
-          className="button primary"
+          className="button primary journey-canteen"
           disabled={!ready || busy || active || !due.length}
-          onClick={() => void water([...due.slice(0, 20), ...extra.slice(0, 3)], "Bình tưới chung")}
+          onClick={beginWatering}
         >
-          Bình tưới chung ({due.length})
+          <Droplet size={17} aria-hidden="true" /> Bình tưới chung ({due.length})
         </button>
-      </section>
-      <ol className="journey-regions" aria-label="Vùng đất">
-        {catalog.topics.map((topic, index) => (
-          <li key={topic.id}>
-            <details open={index === 0}>
-              <summary>{topic.title}</summary>
-              <ol className="journey-gardens">
-                {catalog.lessons
-                  .filter(({ id, topicId }) => id !== 1 && topicId === topic.id)
-                  .map((lesson) => {
-                    const words = catalog.words.filter((word) => word.lesson === lesson.id);
-                    const plantedCount = words.filter((word) => planted(word, data.progress)).length;
-                    return (
-                      <li key={lesson.id}>
-                        <Link href={`${journeyPath}/vuon/${lesson.id}`}>
-                          <span>{lesson.title}</span>
-                          <small>
-                            {plantedCount}/{words.length} đã trồng{plantedCount === words.length && " · Hoàn thành"}
-                          </small>
-                        </Link>
-                      </li>
-                    );
-                  })}
-              </ol>
-            </details>
-          </li>
-        ))}
-      </ol>
+      </div>
+      {trial && <TrialDialog count={count} due={due.length} onWater={beginWatering} onClose={() => setTrial(false)} />}
       <JourneyRound words={all} backLabel="Về bản đồ" />
     </div>
   );
 }
 
+function JourneyTrail({
+  topic,
+  journey,
+  currentId,
+  count,
+  onFurnace,
+}: {
+  topic: Topic;
+  journey: ReturnType<typeof useJourney>;
+  currentId?: number;
+  count: number;
+  onFurnace?: () => void;
+}) {
+  const { data, healthOf, recovered, completedWatering, stageOf, ready } = journey;
+  const gardens = catalog.lessons
+    .filter(({ topicId }) => topicId === topic.id)
+    .map((lesson) => ({
+      lesson,
+      words: catalog.words.filter((word) => word.lesson === lesson.id),
+    }));
+  const complete = gardens.filter(({ words }) => words.every((word) => planted(word, data.progress))).length;
+  const hasFurnace = Boolean(onFurnace);
+  const trailName = `Đường qua vùng ${topic.title}`;
+  return (
+    <section className="journey-trail" aria-label={trailName} id={hasFurnace ? `region-${topic.id}` : undefined}>
+      <svg className="journey-road" viewBox="0 0 1000 600" preserveAspectRatio="none" aria-hidden="true">
+        <path
+          d={
+            hasFurnace
+              ? "M 500 630 C 500 595 370 605 355 550 S 645 525 645 450 S 355 425 355 350 S 645 325 645 250 S 355 225 355 150 S 500 110 500 50 L 500 -30"
+              : "M 500 630 C 500 595 355 600 355 540 S 645 490 645 420 S 355 370 355 300 S 645 250 645 180 S 355 130 355 60 S 500 28 500 -30"
+          }
+          vectorEffect="non-scaling-stroke"
+        />
+      </svg>
+      {onFurnace && (
+        <button
+          type="button"
+          className="journey-furnace"
+          id="journey-furnace"
+          data-complete={complete === gardens.length}
+          disabled={!ready}
+          onClick={onFurnace}
+        >
+          <Flame size={26} aria-hidden="true" />
+          <strong>Lò đan</strong>
+          <span>
+            {complete}/{gardens.length} vườn hoàn thành
+          </span>
+          {count >= firstTrial.words && <small>Kiếp nạn sẵn sàng</small>}
+        </button>
+      )}
+      {gardens
+        .slice()
+        .reverse()
+        .map(({ lesson, words }) => {
+          const grown = words.filter((word) => planted(word, data.progress));
+          const recovering = grown.filter((word) => recovered(word.id));
+          const preview = [
+            ...recovering,
+            ...grown.filter((word) => !recovered(word.id)),
+            ...words.filter((word) => !planted(word, data.progress)),
+          ].slice(0, 4);
+          const current = currentId === lesson.id && ready;
+          return (
+            <div
+              className="journey-stop"
+              key={lesson.id}
+              id={`garden-${lesson.id}`}
+              data-current={current || undefined}
+            >
+              <Link
+                className="journey-garden-stop"
+                href={`${journeyPath}/vuon/${lesson.id}`}
+                data-complete={grown.length === words.length}
+                data-recovered={recovering.length > 0 || undefined}
+                aria-current={current ? "step" : undefined}
+              >
+                <div className="journey-garden-preview" aria-hidden="true">
+                  {preview.map((word) => {
+                    const revived = recovered(word.id);
+                    const health = healthOf(word.id);
+                    return (
+                      <span className="journey-preview-spot" key={word.id}>
+                        {planted(word, data.progress) ? (
+                          <>
+                            <Plant
+                              key={revived ? completedWatering : "rest"}
+                              index={(lesson.id - 1) * 12 + words.indexOf(word)}
+                              health={health}
+                              stage={stageOf(word)}
+                              recovered={revived}
+                            />
+                            {health !== "healthy" && <Droplet className="journey-preview-drop" />}
+                          </>
+                        ) : (
+                          <span className="journey-soil" />
+                        )}
+                      </span>
+                    );
+                  })}
+                </div>
+                <span className="journey-stop-caption">
+                  <strong>{lesson.title}</strong>
+                  <small>
+                    {grown.length}/{words.length}
+                    {grown.length === words.length && " · Hoàn thành"}
+                  </small>
+                </span>
+              </Link>
+              {current && (
+                <span className="journey-map-avatar">
+                  <CultivationAvatar words={count} />
+                </span>
+              )}
+            </div>
+          );
+        })}
+      {hasFurnace && <p className="journey-trail-start">{topic.title}</p>}
+    </section>
+  );
+}
+
+function TrialDialog({
+  count,
+  due,
+  onWater,
+  onClose,
+}: {
+  count: number;
+  due: number;
+  onWater: () => void;
+  onClose: () => void;
+}) {
+  const ref = useRef<HTMLDialogElement>(null);
+  const [enter, setEnter] = useState(false);
+  useEffect(() => {
+    const dialog = ref.current;
+    dialog?.showModal();
+    return () => dialog?.close();
+  }, []);
+  const ready = count >= firstTrial.words;
+  return (
+    <dialog
+      ref={ref}
+      className="journey-dialog"
+      aria-labelledby="journey-trial-title"
+      onCancel={(event) => {
+        event.preventDefault();
+        onClose();
+      }}
+    >
+      <header>
+        <h2 id="journey-trial-title">Kiếp nạn</h2>
+        <button type="button" className="text-link" onClick={onClose}>
+          Đóng
+        </button>
+      </header>
+      <div className="journey-question">
+        {!ready ? (
+          <p>
+            Đã trồng {count}/{firstTrial.words} từ để mở thử thách {firstTrial.name}.
+          </p>
+        ) : !enter && due > 0 ? (
+          <>
+            <p>{due} cây đang khát. Tưới trước để ổn định linh lực?</p>
+            <button className="button primary" onClick={onWater}>
+              Tưới trước
+            </button>
+            <button className="button secondary" onClick={() => setEnter(true)}>
+              Vào Kiếp nạn luôn
+            </button>
+          </>
+        ) : (
+          <p>Sẽ dựng ở đợt sau</p>
+        )}
+      </div>
+    </dialog>
+  );
+}
+
 export function JourneyGarden({ lessonId }: { lessonId: number }) {
-  const { data, ready, busy, all, skills, start, byPlant, healthOf, stageOf, wateredToday, water } = useJourney();
+  const { data, ready, busy, all, skills, start, byPlant, healthOf, stageOf, wateredToday, water, waterShared } =
+    useJourney();
+  const router = useRouter();
   const lesson = catalog.lessons.find(({ id }) => id === lessonId)!;
   const words = catalog.words.filter((word) => word.lesson === lessonId);
   const active = Boolean(data.session && data.session.phase !== "complete");
   const [selected, setSelected] = useState<Word | null>(null);
+  const [reminderClosed, setReminderClosed] = useState(false);
+  const [sowing, setSowing] = useState<{ bed: number; words: Word[] } | null>(null);
+  const bedRefs = useRef<Array<HTMLElement | null>>([]);
   const plantedWords = words.filter((word) => planted(word, data.progress));
   const plantedCount = plantedWords.length;
   const dueHere = plantedWords.flatMap(({ id }) => byPlant.get(id) ?? []).sort((a, b) => a.dueAt - b.dueAt);
+  const otherPlants = catalog.words.filter(
+    (word) => word.lesson !== lessonId && byPlant.has(word.id) && planted(word, data.progress),
+  );
+  const otherGarden = catalog.lessons.find(({ id }) => id === otherPlants[0]?.lesson);
+  const otherDue = otherPlants.filter((word) => word.lesson === otherGarden?.id).length;
+  const shared = data.session?.title === sharedWatering;
+  const newlyGrown =
+    sowing && data.session?.mode === "learn" && data.session.phase === "complete"
+      ? sowing.words.filter((word) => planted(word, data.progress))
+      : [];
+  const grownBed = newlyGrown.length ? sowing?.bed : undefined;
+  useEffect(() => {
+    if (grownBed === undefined) return;
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    bedRefs.current[grownBed]?.scrollIntoView({ block: "center", behavior: reduced ? "instant" : "smooth" });
+  }, [grownBed, data.session?.id]);
   return (
     <div className="page journey-v2">
       <Link className="journey-back" href={journeyPath}>
@@ -222,6 +507,33 @@ export function JourneyGarden({ lessonId }: { lessonId: number }) {
           <span key={word.id} data-planted={planted(word, data.progress)} />
         ))}
       </div>
+      {ready && !reminderClosed && otherGarden && (
+        <aside className="journey-reminder" aria-label="Nhắc tưới vườn khác">
+          <Droplet size={18} aria-hidden="true" />
+          <p>
+            {otherDue} cây ở vườn {otherGarden.title} đang khát — tưới trước?
+          </p>
+          <button
+            type="button"
+            className="text-link"
+            disabled={busy || active}
+            onClick={() => {
+              setSelected(null);
+              void waterShared();
+            }}
+          >
+            Tưới trước
+          </button>
+          <button
+            type="button"
+            className="journey-dismiss"
+            aria-label="Đóng nhắc tưới"
+            onClick={() => setReminderClosed(true)}
+          >
+            <X size={18} aria-hidden="true" />
+          </button>
+        </aside>
+      )}
       {ready && plantedCount > 0 && (
         <div className="journey-care">
           <p role="status">
@@ -246,10 +558,19 @@ export function JourneyGarden({ lessonId }: { lessonId: number }) {
           const unplanted = row.filter((word) => !planted(word, data.progress));
           const sow = () => {
             setSelected(null);
-            void start(unplanted, "learn", `Gieo luống ${bed + 1}`);
+            void start(unplanted, "learn", `Gieo luống ${bed + 1}`).then((started) => {
+              if (started) setSowing({ bed, words: unplanted });
+            });
           };
           return (
-            <section className="journey-bed-row" key={bed} aria-label={`Luống ${bed + 1}`}>
+            <section
+              className="journey-bed-row"
+              key={bed}
+              aria-label={`Luống ${bed + 1}`}
+              ref={(node) => {
+                bedRefs.current[bed] = node;
+              }}
+            >
               <ol className="journey-bed">
                 {row.map((word, position) => {
                   const grown = planted(word, data.progress);
@@ -281,6 +602,7 @@ export function JourneyGarden({ lessonId }: { lessonId: number }) {
                               health={health!}
                               stage={stageOf(word)}
                               watered={watered}
+                              sprouting={newlyGrown.includes(word)}
                             />
                           ) : (
                             <span className="journey-soil">
@@ -345,7 +667,11 @@ export function JourneyGarden({ lessonId }: { lessonId: number }) {
           </button>
         </section>
       )}
-      <JourneyRound words={all} backLabel="Về vườn" />
+      <JourneyRound
+        words={all}
+        backLabel={shared ? "Về bản đồ" : "Về vườn"}
+        onCompleted={shared ? () => router.push(journeyPath) : undefined}
+      />
     </div>
   );
 }

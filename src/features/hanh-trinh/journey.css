@@ -22,72 +22,14 @@ html[data-theme="dark"] .journey-v2 {
   padding: 0;
 }
 
-.journey-v2 .journey-regions {
-  display: grid;
-  gap: 10px;
-  margin-top: 24px;
-}
-
-.journey-v2 details,
-.journey-v2 .journey-field {
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: 14px;
-  padding: 12px;
-}
-
-.journey-v2 summary,
-.journey-v2 .journey-back,
-.journey-v2 .journey-gardens a {
-  min-height: 44px;
-  padding: 10px;
-}
-
-.journey-v2 summary {
-  cursor: pointer;
-  font-weight: 650;
-}
-
-.journey-v2 .journey-gardens a {
-  display: flex;
-  justify-content: space-between;
-  gap: 8px 20px;
-  flex-wrap: wrap;
-  border-top: 1px solid var(--line);
-}
-
-.journey-v2 .journey-gardens small {
-  color: var(--muted);
-}
-
 .journey-v2 .journey-back {
   display: inline-flex;
   align-items: center;
+  min-height: 44px;
   color: var(--green);
 }
 
-.journey-v2 .journey-field {
-  display: grid;
-  gap: 14px;
-  margin-top: 14px;
-  background: var(--garden-air);
-}
-
-.journey-v2 .journey-bed {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: clamp(4px, 1.5vw, 12px);
-  text-align: center;
-}
-
-.journey-v2 .journey-bed li {
-  min-width: 0;
-  overflow-wrap: anywhere;
-  font-size: clamp(12px, 3vw, 14px);
-}
-
-.journey-heading,
-.journey-tools {
+.journey-heading {
   margin-bottom: 16px;
 }
 
@@ -95,110 +37,368 @@ html[data-theme="dark"] .journey-v2 {
   color: var(--green);
 }
 
-.journey-featured {
-  display: block;
-  overflow: hidden;
-  border: 1px solid var(--line);
-  border-radius: 16px;
-  margin-bottom: 18px;
-  background: var(--surface);
+.journey-map {
+  padding-bottom: 84px;
 }
 
-.journey-featured-art {
+.journey-map-scene {
+  --trail-ink: var(--garden-edge);
+  overflow: clip;
+  background: var(--garden-air);
+  border: 1px solid var(--line);
+  border-radius: 24px;
+}
+
+.journey-expeditions {
   position: relative;
   isolation: isolate;
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  align-items: end;
   gap: 8px;
-  min-height: clamp(150px, 29vw, 248px);
-  padding: 12px clamp(8px, 4vw, 40px) 20px;
-  overflow: hidden;
-  background: var(--garden-air);
+  padding-top: 18px;
 }
 
-.journey-featured-art::before {
+.journey-expeditions::before {
   position: absolute;
   z-index: -1;
+  top: 35px;
+  bottom: 0;
+  left: 50%;
+  width: 9px;
+  background: var(--trail-ink);
   content: "";
-  inset: 47% -8% -45%;
-  border-radius: 50%;
-  background: var(--garden-ground);
 }
 
-.journey-featured-slot {
+.journey-region {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  width: min(72%, 310px);
+  min-height: 58px;
+  margin-inline: auto;
+  padding: 7px 14px;
+  border: 1px solid var(--garden-edge);
+  border-radius: 12px;
+  background: var(--garden-air);
+  color: var(--ink);
+  text-align: start;
+}
+
+.journey-region span {
+  font-weight: 650;
+}
+
+.journey-region small {
+  grid-row: 2;
+  color: var(--muted);
+}
+
+.journey-region svg {
+  grid-row: 1 / 3;
+  grid-column: 2;
+}
+
+.journey-trail {
   position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: flex-end;
+  isolation: isolate;
+  display: grid;
+  grid-auto-rows: clamp(138px, 26vw, 190px);
+  align-items: center;
+  padding-bottom: 28px;
+}
+
+.journey-road {
+  position: absolute;
+  z-index: -2;
+  inset: 0;
+  width: 100%;
+  height: calc(100% - 28px);
+  pointer-events: none;
+  overflow: visible;
+  fill: none;
+  stroke: var(--trail-ink);
+  stroke-width: 9px;
+  stroke-linecap: round;
+}
+
+.journey-stop {
+  position: relative;
+  left: 35.5%;
+  translate: -50% 0;
+  width: min(65%, 310px);
   min-width: 0;
-  min-height: 95px;
+  scroll-margin-block: 84px;
 }
 
-.journey-featured-slot:nth-child(2n) {
-  margin-bottom: 16px;
+.journey-stop:nth-of-type(even) {
+  left: 64.5%;
 }
 
-.journey-featured-slot .journey-plant {
-  width: min(100%, 133px);
-  max-height: none;
+.journey-garden-stop {
+  position: relative;
+  display: grid;
+  justify-items: stretch;
+  padding: 7px 8px 4px;
+  border: 1px solid var(--garden-edge);
+  border-radius: 44% 44% 18px 18px / 18px 18px 18px 18px;
+  background: var(--garden-ground);
+  color: var(--ink);
+}
+
+.journey-garden-stop:hover,
+.journey-region:hover,
+.journey-furnace:hover {
+  border-color: var(--green);
+}
+
+.journey-garden-stop[data-complete="true"] {
+  border-color: var(--green);
+}
+
+.journey-garden-stop[aria-current="step"] {
+  outline: 2px solid var(--green);
+  outline-offset: 3px;
+}
+
+.journey-garden-stop:focus-visible {
+  outline: 3px solid var(--green);
+  outline-offset: 5px;
+}
+
+.journey-garden-preview {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  align-items: end;
+  gap: 2px;
+}
+
+.journey-preview-spot {
+  position: relative;
+  display: grid;
+  align-items: end;
+  justify-items: center;
+  height: clamp(45px, 14vw, 89px);
+}
+
+.journey-preview-spot .journey-plant {
+  width: 100%;
+  max-height: 89px;
+}
+
+.journey-preview-spot .journey-soil {
+  width: 80%;
+  height: 14px;
+  margin-bottom: 8px;
 }
 
 .journey-preview-drop {
   position: absolute;
   top: 0;
   right: 0;
-  width: 17px;
-  height: 17px;
-  color: var(--amber);
+  width: 13px;
+  height: 13px;
+  color: var(--garden-plot-ink);
 }
 
-.journey-featured-caption {
+.journey-stop-caption {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
   justify-content: space-between;
-  gap: 6px 16px;
-  padding: 12px 16px;
-}
-
-.journey-featured-caption h2 {
-  font-size: clamp(21px, 3vw, 29px);
-}
-
-.journey-featured-caption p {
-  color: var(--muted);
+  gap: 2px 8px;
+  align-items: baseline;
+  min-height: 35px;
+  margin-top: 4px;
+  padding: 5px 7px;
+  border-radius: 11px;
+  background: var(--garden-air);
   font-size: 14px;
 }
 
-.journey-enter {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  color: var(--green);
-  font-weight: 650;
+.journey-stop-caption small {
+  white-space: nowrap;
 }
 
-.journey-tools {
+.journey-map-avatar {
+  position: absolute;
+  z-index: 1;
+  left: -15px;
+  top: -17px;
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: var(--surface);
+  pointer-events: none;
+}
+
+.journey-map-avatar .cultivation-avatar {
+  --avatar-size: 37px;
+  width: 37px;
+  height: 37px;
+}
+
+.journey-furnace {
+  display: grid;
+  justify-items: center;
+  gap: 2px;
+  justify-self: center;
+  min-width: 168px;
+  min-height: 44px;
+  padding: 8px 16px;
+  border: 1px solid var(--garden-edge);
+  border-radius: 16px;
+  background: var(--garden-bed);
+  color: var(--garden-plot-ink);
+}
+
+.journey-furnace[data-complete="true"] {
+  border: 2px solid var(--green);
+  background: var(--garden-ground);
+  color: var(--ink);
+}
+
+.journey-furnace small {
+  color: var(--green);
+  font-weight: 700;
+}
+
+.journey-trail-start {
+  position: absolute;
+  inset: auto 0 7px;
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 650;
+  text-align: center;
+}
+
+.journey-map-controls {
+  position: fixed;
+  z-index: 15;
+  bottom: 22px;
+  right: 22px;
   display: flex;
-  flex-wrap: wrap;
+  align-items: end;
   gap: 8px;
 }
 
-.journey-tools p {
-  flex-basis: 100%;
+.journey-tools summary {
+  display: grid;
+  place-items: center;
+  min-height: 48px;
+  padding: 6px 12px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface);
+  cursor: pointer;
+}
+
+.journey-tools > div {
+  position: absolute;
+  bottom: calc(100% + 7px);
+  right: 0;
+  display: grid;
+  gap: 5px;
+  width: min(245px, calc(100vw - 32px));
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface);
+}
+
+.journey-tools .button {
+  min-height: 44px;
+  white-space: normal;
+}
+
+.journey-canteen {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 48px;
+}
+
+@media (max-width: 767px) {
+  .journey-map {
+    padding-bottom: 168px;
+  }
+
+  .journey-map-controls {
+    right: 12px;
+    bottom: calc(78px + env(safe-area-inset-bottom));
+  }
+}
+
+.journey-v2 .journey-field {
+  display: grid;
+  gap: 24px;
+  margin-top: 16px;
+  padding: 12px clamp(4px, 1.8vw, 16px);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: var(--garden-air);
 }
 
 .journey-v2 .journey-bed {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(1px, 1.4vw, 12px);
   margin: 0;
-  padding: 8px 0 3px;
+  padding: 0;
+  text-align: center;
+}
+
+.journey-v2 .journey-bed li {
+  min-width: 0;
+  font-size: clamp(11px, 3vw, 14px);
 }
 
 .journey-bed-row {
-  padding: 0 clamp(4px, 1.5vw, 12px);
+  position: relative;
+  isolation: isolate;
+  padding: 0 clamp(3px, 1.4vw, 16px) 6px;
+  scroll-margin-block: 70px;
+}
+
+.journey-bed-row::before {
+  position: absolute;
+  z-index: -1;
+  inset: 48px 0 0;
   border: 1px solid var(--garden-edge);
-  border-radius: 12px;
+  border-radius: 15% 13% 16% 14% / 28px 27px 20px 21px;
   background: var(--garden-bed);
+  content: "";
+}
+
+.journey-reminder {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1px 10px;
+  margin-top: 14px;
+  padding: 3px 9px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--garden-air);
+  color: var(--ink);
+  font-size: 14px;
+}
+
+.journey-reminder p {
+  flex: 1 0 65%;
+}
+
+.journey-reminder button {
+  min-height: 44px;
+}
+
+.journey-reminder .journey-dismiss {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  margin-left: auto;
+  color: var(--ink);
 }
 
 .journey-planting-progress {
@@ -246,6 +446,7 @@ html[data-theme="dark"] .journey-v2 {
 
 .journey-plot {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   justify-items: center;
   align-content: start;
   gap: 3px;
@@ -257,8 +458,7 @@ html[data-theme="dark"] .journey-v2 {
   border: 1px solid transparent;
   border-radius: 8px;
   color: var(--garden-plot-ink);
-  background: var(--garden-plot);
-  overflow-wrap: anywhere;
+  background: transparent;
 }
 
 .journey-plot:hover:not(:disabled) {
@@ -266,7 +466,7 @@ html[data-theme="dark"] .journey-v2 {
 }
 
 .journey-plot-art {
-  --plot-art-height: clamp(70px, 17vw, 110px);
+  --plot-art-height: clamp(76px, 22vw, 112px);
   display: grid;
   place-items: end center;
   width: 100%;
@@ -277,11 +477,29 @@ html[data-theme="dark"] .journey-v2 {
   width: auto;
   max-width: 100%;
   height: var(--plot-art-height);
+  max-height: none;
+}
+
+@media (min-width: 700px) {
+  .journey-plot-art {
+    --plot-art-height: 140px;
+  }
+
+  .journey-bed-row::before {
+    inset-block-start: 102px;
+  }
 }
 
 .journey-word {
+  max-width: 100%;
+  overflow: hidden;
+  padding: 2px 5px;
+  border-radius: 5px;
+  background: var(--garden-plot);
   font-weight: 650;
   line-height: 1.3;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .journey-plot-action {
@@ -293,36 +511,33 @@ html[data-theme="dark"] .journey-v2 {
   font-size: 11px;
 }
 
-.journey-plot[data-state="thirsty"] {
-  border-color: var(--garden-plot-ink);
-}
-
 .journey-plot[data-state="thirsty"] .journey-plot-action {
   font-weight: 700;
 }
 
 .journey-plant {
+  position: relative;
   display: block;
   width: min(100%, 88px);
   max-height: 122px;
   background-repeat: no-repeat;
   clip-path: inset(0 2%);
-  animation: journey-grow 220ms ease-out both;
+  transform-origin: 50% 90%;
 }
 
 .journey-plant[data-health="due"],
 .journey-plant[data-health="recovering"] {
-  filter: saturate(0.82);
+  filter: sepia(0.25) brightness(0.94);
   rotate: -3deg;
 }
 
 .journey-plant[data-health="dry"] {
-  filter: saturate(0.58);
+  filter: sepia(0.54) brightness(0.86);
   rotate: -7deg;
 }
 
 .journey-plant[data-health="wilted"] {
-  filter: saturate(0.34);
+  filter: sepia(0.83) brightness(0.76);
   rotate: -10deg;
 }
 
@@ -334,7 +549,25 @@ html[data-theme="dark"] .journey-v2 {
 }
 
 .journey-plant[data-watered="true"] {
-  animation-name: journey-watered;
+  animation: journey-watered 220ms ease-out both;
+}
+
+.journey-plant[data-sprouting="true"] {
+  animation: journey-grow 600ms ease-out both;
+}
+
+.journey-plant[data-recovered="true"] {
+  animation: journey-watered 720ms ease-out both;
+}
+
+.journey-plant[data-recovered="true"]::after {
+  position: absolute;
+  inset: 0;
+  background: inherit;
+  filter: sepia(0.76) brightness(0.77);
+  rotate: -8deg;
+  animation: journey-wilt-away 720ms ease-out both;
+  content: "";
 }
 
 .journey-plot-health {
@@ -342,10 +575,6 @@ html[data-theme="dark"] .journey-v2 {
   color: var(--garden-plot-ink);
   line-height: 1.25;
   font-size: 11px;
-}
-
-.journey-featured[data-complete="true"] {
-  border-color: var(--green);
 }
 
 @keyframes journey-watered {
@@ -361,8 +590,8 @@ html[data-theme="dark"] .journey-v2 {
 
 @keyframes journey-grow {
   from {
-    transform: translateY(5px) scale(0.9);
-    opacity: 0.5;
+    transform: translateY(8px) scale(0.2);
+    opacity: 0;
   }
   to {
     transform: none;
@@ -370,10 +599,25 @@ html[data-theme="dark"] .journey-v2 {
   }
 }
 
+@keyframes journey-wilt-away {
+  0%,
+  15% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .journey-plant,
-  .journey-plant[data-watered="true"] {
-    animation: none;
+  .journey-plant[data-watered="true"],
+  .journey-plant[data-sprouting="true"],
+  .journey-plant[data-recovered="true"] {
+    animation-name: none;
+  }
+
+  .journey-plant[data-recovered="true"]::after {
+    content: none;
   }
 }
 
@@ -389,11 +633,13 @@ html[data-theme="dark"] .journey-v2 {
   align-items: center;
   gap: 6px;
   color: var(--garden-plot-ink);
+  padding-inline: 4px;
   font-size: 14px;
 }
 
 .journey-v2 .journey-sow {
   color: var(--garden-plot-ink);
+  padding-inline: 4px;
   text-decoration: underline;
   text-underline-offset: 3px;
 }
