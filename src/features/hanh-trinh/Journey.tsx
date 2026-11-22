@@ -26,11 +26,11 @@ const firstRegion = catalog.topics[0];
 const firstRegionLessons = catalog.lessons.filter((lesson) => lesson.topicId === firstRegion.id);
 // Plot centers on the map, from the lowest clearing to the highest.
 const paintedStops = [
-  { left: "29%", top: "73%" },
-  { left: "72%", top: "60%" },
+  { left: "29%", top: "72.5%" },
+  { left: "72%", top: "59.5%" },
   { left: "26%", top: "48%" },
-  { left: "71%", top: "34%" },
-  { left: "26%", top: "25%" },
+  { left: "72%", top: "34.3%" },
+  { left: "26%", top: "25.7%" },
 ];
 const firstTrial = cultivationRealms[1];
 const sharedWatering = "Bình tưới chung";
@@ -366,7 +366,7 @@ function JourneyTrail({
                 data-recovered={recovering.length > 0 || undefined}
                 aria-current={current ? "step" : undefined}
               >
-                <div className="journey-garden-preview" aria-hidden="true">
+                <div className="journey-garden-preview" aria-hidden="true" hidden={Boolean(scene && !grown.length)}>
                   {preview.map((word) => {
                     const revived = recovered(word.id);
                     const health = healthOf(word.id);
