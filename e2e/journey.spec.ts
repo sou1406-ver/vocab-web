@@ -28,7 +28,6 @@ test("loads an atlas only when a visible plant needs it", async ({ page }) => {
 
   await page.getByRole("button", { name: "Gieo luống 1", exact: true }).click();
   const sow = page.getByRole("dialog");
-  const gardenSheet = sheetLoaded("45");
   // The first plot is address, with three required senses.
   for (let sense = 0; sense < 3; sense++) {
     await expect(sow.getByRole("heading", { name: "address", exact: true })).toBeVisible();
@@ -38,8 +37,11 @@ test("loads an atlas only when a visible plant needs it", async ({ page }) => {
   }
   await page.keyboard.press("Escape");
   await expect(progress).toHaveText("1/12 đã trồng");
-  await gardenSheet;
-  expect([...requested]).toEqual(["10", "45"]);
+  await expect(page.locator('.journey-field .journey-plant[data-stage="mam"]')).toHaveCSS(
+    "background-image",
+    /sprout.*\.webp/,
+  );
+  expect([...requested]).toEqual(["10"]);
 });
 
 test("sows a bed and waters a plant in one sandbox garden", async ({ page }, info) => {
@@ -230,7 +232,9 @@ test("unlocks the first trial from planted words independently of garden complet
 
 test("opens a future region and waters another garden from its reminder", async ({ page }) => {
   await page.goto("/prototype/hanh-trinh");
+  await expect(page.locator(".journey-map")).toHaveAttribute("data-app-ready", "true");
   const nextRegion = page.getByRole("button", { name: "Văn phòng Chưa khám phá" });
+  await expect(nextRegion).toBeEnabled();
   await nextRegion.click();
   await expect(page.getByRole("button", { name: "Văn phòng Đang khám phá" })).toHaveAttribute("aria-expanded", "true");
   await page.locator('a[href="/prototype/hanh-trinh/vuon/6"]').click();

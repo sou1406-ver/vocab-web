@@ -1,4 +1,4 @@
-// Run with `node scripts/build-journey-art.mjs` after adding PNG atlases or map backgrounds to art-source/.
+// Run with `node scripts/build-journey-art.mjs` after adding PNGs to art-source/.
 import { mkdir, readdir, stat } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import sharp from "sharp";
@@ -17,8 +17,9 @@ for (const file of files) {
   const target = new URL(encodeURIComponent(file.name.replace(/\.png$/, ".webp")), output);
   const { size } = await stat(input);
   const isMap = file.name.startsWith("map-");
+  const width = file.name === "sprout.png" ? 240 : isMap ? 1100 : sheetWidth;
   const encoded = await sharp(fileURLToPath(input))
-    .resize({ width: isMap ? 960 : sheetWidth, withoutEnlargement: true })
+    .resize({ width, withoutEnlargement: true })
     .webp({ quality: isMap ? 82 : 80, alphaQuality: 10, effort: 6 })
     .toFile(fileURLToPath(target));
   totalBytes += encoded.size;

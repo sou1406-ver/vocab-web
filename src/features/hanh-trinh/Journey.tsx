@@ -7,7 +7,7 @@ import { ArrowUpRight, Droplet, Leaf, Plus, X } from "lucide-react";
 import { CultivationAvatar } from "../../components/CultivationAvatar";
 import { bookById } from "../../data/catalog";
 import { cultivationOf, cultivationRealms } from "../../domain/cultivation";
-import { dayKey, emptySnapshot } from "../../domain/learning";
+import { dayKey, emptySnapshot, INTERVALS, nextDue } from "../../domain/learning";
 import { learningItems, mergeReviewGroups, studyWords } from "../../domain/lexicon";
 import { simulateSnapshot } from "../../domain/simulate";
 import { planReviews, replaySkills, type ReviewItem } from "../../domain/skills";
@@ -35,7 +35,33 @@ const paintedStops = [
 const firstTrial = cultivationRealms[1];
 const sharedWatering = "Bình tưới chung";
 
-function demoPreset(settings: Snapshot["settings"], words: Word[], due: number) {
+function seedMaturePlants(snapshot: Snapshot, items: readonly Word[], at: number) {
+  const { timezone } = snapshot.settings;
+  const learnAt = at - 6 * 86_400_000;
+  const firstReview = nextDue(learnAt, INTERVALS[0], timezone);
+  const nextReview = nextDue(firstReview, INTERVALS[1], timezone);
+  const days = [learnAt, firstReview, nextReview].map((time) => ({ at: time, day: dayKey(time, timezone) }));
+  for (const { id: wordId } of items) {
+    for (const questionKind of ["meaning", "recall"] as const) {
+      days.forEach((date, index) => {
+        const sessionId = `demo-growth-${snapshot.events.length}`;
+        snapshot.events.push({
+          id: `${sessionId}:0`,
+          sessionId,
+          wordId,
+          ...date,
+          questionKind,
+          mode: index === 0 ? "learn" : "review",
+          correct: true,
+          assisted: false,
+        });
+      });
+    }
+  }
+}
+
+function demoPreset(settings: Snapshot["settings"], words: Word[], due: number, mature = false) {
+  const at = Date.now();
   const items = studyWords(words);
   const snapshot = simulateSnapshot(
     settings,
@@ -46,15 +72,17 @@ function demoPreset(settings: Snapshot["settings"], words: Word[], due: number) 
       introducedToday: 0,
       streak: 0,
     },
+    at,
   );
   for (const item of items) {
     if (item.groupWordId && item.groupWordId !== item.id) snapshot.progress[item.id].groupWordId = item.groupWordId;
   }
+  if (mature) seedMaturePlants(snapshot, items.slice(due), at);
   return snapshot;
 }
 
 function plantedPreset(settings: Snapshot["settings"]) {
-  const snapshot = simulateSnapshot(settings, catalog, { learned: 4, due: 2, introducedToday: 0, streak: 0 });
+  const snapshot = demoPreset(settings, contracts.slice(0, 4), 2, true);
   const first = snapshot.progress[contracts[0].id];
   first.dueAt -= 3 * 86_400_000;
   return snapshot;
@@ -201,6 +229,7 @@ export function JourneyMap() {
         settings,
         catalog.words.filter((word) => lessons.has(word.lesson)),
         18,
+        true,
       );
     });
   };
@@ -210,7 +239,7 @@ export function JourneyMap() {
   };
 
   return (
-    <div className="page journey-v2 journey-map" ref={scene}>
+    <div className="page journey-v2 journey-map" ref={scene} data-app-ready={ready}>
       <header className="journey-heading">
         <h1 tabIndex={-1}>Hành trình Luyện đan sư</h1>
         <p>
@@ -231,6 +260,7 @@ export function JourneyMap() {
                     id={`region-${topic.id}`}
                     className="journey-region"
                     aria-expanded={open}
+                    disabled={!ready}
                     onClick={() => setRegion(open && region === topic.id ? firstRegion.id : topic.id)}
                   >
                     <span>{topic.title}</span>
