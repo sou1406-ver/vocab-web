@@ -348,7 +348,7 @@ function JourneyTrail({
           const preview = [
             ...recovering,
             ...grown.filter((word) => !recovered(word.id)),
-            ...words.filter((word) => !planted(word, data.progress)),
+            ...(scene ? [] : words.filter((word) => !planted(word, data.progress))),
           ].slice(0, 4);
           const current = currentId === lesson.id && ready;
           return (
@@ -383,9 +383,9 @@ function JourneyTrail({
                             />
                             {health !== "healthy" && <Droplet className="journey-preview-drop" />}
                           </>
-                        ) : !scene ? (
+                        ) : (
                           <span className="journey-soil" />
-                        ) : null}
+                        )}
                       </span>
                     );
                   })}

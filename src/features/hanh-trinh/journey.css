@@ -278,15 +278,60 @@ html[data-theme="dark"] .journey-v2 {
   display: none;
 }
 
+.journey-trail[data-painted] .journey-garden-preview:not([hidden]) {
+  display: flex;
+  align-items: end;
+  justify-content: center;
+  justify-self: center;
+  gap: 0;
+  width: 88%;
+  height: clamp(40px, 8vw, 83px);
+}
+
 .journey-trail[data-painted] .journey-preview-spot {
-  height: clamp(29px, 7vw, 71px);
+  flex: 0 0 27%;
+  height: auto;
+  margin-inline: -2%;
+  rotate: var(--fan-angle, 0deg);
+  transform-origin: 50% 88%;
+}
+
+.journey-trail[data-painted] .journey-preview-spot:first-child:not(:only-child),
+.journey-trail[data-painted] .journey-preview-spot:last-child:not(:only-child) {
+  z-index: 1;
+  scale: 0.89;
+}
+
+.journey-trail[data-painted] .journey-preview-spot:first-child:not(:only-child) {
+  --fan-angle: -18deg;
+}
+
+.journey-trail[data-painted] .journey-preview-spot:last-child:not(:only-child) {
+  --fan-angle: 18deg;
+}
+
+.journey-trail[data-painted] .journey-preview-spot:not(:first-child, :last-child) {
+  translate: 0 -14%;
+}
+
+.journey-trail[data-painted] .journey-preview-spot:nth-child(2):nth-last-child(3) {
+  --fan-angle: -6deg;
+}
+
+.journey-trail[data-painted] .journey-preview-spot:nth-child(3):nth-last-child(2) {
+  --fan-angle: 6deg;
 }
 
 .journey-trail[data-painted] .journey-preview-spot .journey-plant {
-  width: auto;
-  max-width: 100%;
-  height: 100%;
+  width: 100%;
+  height: auto;
   max-height: none;
+}
+
+.journey-trail[data-painted] .journey-preview-drop {
+  width: 10px;
+  height: 10px;
+  rotate: calc(-1 * var(--fan-angle, 0deg));
 }
 
 .journey-trail[data-painted] .journey-stop-caption {
