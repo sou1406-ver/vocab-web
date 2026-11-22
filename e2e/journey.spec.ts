@@ -46,6 +46,13 @@ test("sows a bed and waters a plant in one sandbox garden", async ({ page }, inf
   test.setTimeout(90000);
   await page.goto("/prototype/hanh-trinh");
   const featured = page.getByRole("link", { name: /Contracts.*4\/12/ });
+  const paintedMap = page.locator(".journey-trail[data-painted]");
+  await expect(paintedMap).toHaveCSS("background-image", /map-kinh-doanh.*\.webp/);
+  await paintedMap.evaluate(async (element) => {
+    const image = new Image();
+    image.src = getComputedStyle(element).backgroundImage.slice(5, -2);
+    await image.decode();
+  });
   await expect(featured.locator(".journey-plant")).toHaveCount(4);
   await expect(featured).toHaveAttribute("aria-current", "step");
   await expect(featured).toBeInViewport();
@@ -58,6 +65,7 @@ test("sows a bed and waters a plant in one sandbox garden", async ({ page }, inf
     await featured.scrollIntoViewIfNeeded();
     await page.screenshot({ path: info.outputPath(`map-${width}-${theme}.png`) });
   }
+  await paintedMap.screenshot({ path: info.outputPath(`painted-region-${width}.png`) });
   await featured.click();
   const garden = /\/prototype\/hanh-trinh\/vuon\/1$/;
   await expect(page).toHaveURL(garden);
@@ -211,6 +219,12 @@ test("unlocks the first trial from planted words independently of garden complet
   await page.getByRole("button", { name: "Xong vùng 1 · nhiều cây khát", exact: true }).click();
   await expect(furnace).toHaveAttribute("data-complete", "true");
   await expect(furnace).toContainText("5/5 vườn hoàn thành");
+  await expect(
+    page
+      .getByRole("link", { name: /Conferences.*12\/12/ })
+      .locator(".journey-plant")
+      .first(),
+  ).toHaveCSS("background-image", /\/55\.[^/]+\.webp/);
   await expect(page.locator('a[aria-current="step"][href$="/vuon/6"]')).toBeInViewport();
 });
 

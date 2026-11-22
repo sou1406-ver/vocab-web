@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import { ArrowUpRight, Droplet, Flame, Leaf, Plus, X } from "lucide-react";
+import { ArrowUpRight, Droplet, Leaf, Plus, X } from "lucide-react";
 import { CultivationAvatar } from "../../components/CultivationAvatar";
 import { bookById } from "../../data/catalog";
 import { cultivationOf, cultivationRealms } from "../../domain/cultivation";
@@ -17,12 +17,21 @@ import type { AnswerEvent, Snapshot, Topic, Word } from "../../domain/types";
 import { JourneyRound } from "./JourneyRound";
 import { healthLabels, plantHealth, plantStage, stageLabels, type PlantHealth, type PlantStage } from "./garden-state";
 import { plantSprite } from "./art/plant-sprites";
+import firstRegionMap from "./art/web/map-kinh-doanh.webp";
 
 const journeyPath = "/prototype/hanh-trinh";
 const catalog = bookById("toeic-600")!.catalog;
 const contracts = catalog.words.filter((word) => word.lesson === 1);
 const firstRegion = catalog.topics[0];
 const firstRegionLessons = catalog.lessons.filter((lesson) => lesson.topicId === firstRegion.id);
+// Plot centers on the map, from the lowest clearing to the highest.
+const paintedStops = [
+  { left: "29%", top: "73%" },
+  { left: "72%", top: "60%" },
+  { left: "26%", top: "48%" },
+  { left: "71%", top: "34%" },
+  { left: "26%", top: "25%" },
+];
 const firstTrial = cultivationRealms[1];
 const sharedWatering = "Bình tưới chung";
 
@@ -304,19 +313,16 @@ function JourneyTrail({
     }));
   const complete = gardens.filter(({ words }) => words.every((word) => planted(word, data.progress))).length;
   const hasFurnace = Boolean(onFurnace);
+  const scene = topic.id === firstRegion.id ? firstRegionMap : undefined;
   const trailName = `Đường qua vùng ${topic.title}`;
   return (
-    <section className="journey-trail" aria-label={trailName} id={hasFurnace ? `region-${topic.id}` : undefined}>
-      <svg className="journey-road" viewBox="0 0 1000 600" preserveAspectRatio="none" aria-hidden="true">
-        <path
-          d={
-            hasFurnace
-              ? "M 500 630 C 500 595 370 605 355 550 S 645 525 645 450 S 355 425 355 350 S 645 325 645 250 S 355 225 355 150 S 500 110 500 50 L 500 -30"
-              : "M 500 630 C 500 595 355 600 355 540 S 645 490 645 420 S 355 370 355 300 S 645 250 645 180 S 355 130 355 60 S 500 28 500 -30"
-          }
-          vectorEffect="non-scaling-stroke"
-        />
-      </svg>
+    <section
+      className="journey-trail"
+      aria-label={trailName}
+      id={hasFurnace ? `region-${topic.id}` : undefined}
+      data-painted={scene ? true : undefined}
+      style={scene && { backgroundImage: `url(${scene.src})`, aspectRatio: `${scene.width} / ${scene.height}` }}
+    >
       {onFurnace && (
         <button
           type="button"
@@ -326,7 +332,6 @@ function JourneyTrail({
           disabled={!ready}
           onClick={onFurnace}
         >
-          <Flame size={26} aria-hidden="true" />
           <strong>Lò đan</strong>
           <span>
             {complete}/{gardens.length} vườn hoàn thành
@@ -337,7 +342,7 @@ function JourneyTrail({
       {gardens
         .slice()
         .reverse()
-        .map(({ lesson, words }) => {
+        .map(({ lesson, words }, index) => {
           const grown = words.filter((word) => planted(word, data.progress));
           const recovering = grown.filter((word) => recovered(word.id));
           const preview = [
@@ -352,6 +357,7 @@ function JourneyTrail({
               key={lesson.id}
               id={`garden-${lesson.id}`}
               data-current={current || undefined}
+              style={scene && paintedStops[gardens.length - 1 - index]}
             >
               <Link
                 className="journey-garden-stop"
@@ -377,9 +383,9 @@ function JourneyTrail({
                             />
                             {health !== "healthy" && <Droplet className="journey-preview-drop" />}
                           </>
-                        ) : (
+                        ) : !scene ? (
                           <span className="journey-soil" />
-                        )}
+                        ) : null}
                       </span>
                     );
                   })}

@@ -3,6 +3,7 @@ import sheet20 from "./web/20.webp";
 import sheet30 from "./web/30.webp";
 import sheet35 from "./web/35.webp";
 import sheet45 from "./web/45.webp";
+import sheet55 from "./web/55.webp";
 import type { PlantStage } from "../garden-state";
 
 const columns = 5;
@@ -12,6 +13,7 @@ const sheets = [
   { image: sheet30, rows: 2 },
   { image: sheet35, rows: 1 },
   { image: sheet45, rows: 2 },
+  { image: sheet55, rows: 2 },
 ];
 
 // Each sheet is read left to right, then top to bottom. Append new sheets to preserve plant order.
